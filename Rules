@@ -3,7 +3,7 @@
 # A few helpful tips about the Rules file:
 #
 # * The string given to #compile and #route are matching patterns for
-#   identifiers--not for paths. Therefore, you can’t match on extension.
+#   identifiers--not for paths. Therefore, you can't match on extension.
 #
 # * The order of rules is important: for each item, only the first matching
 #   rule is applied.
@@ -13,15 +13,30 @@
 #   item, use the pattern "/about/*/"; "/about/*" will also select the parent,
 #   because "*" matches zero or more characters.
 
+preprocess do
+  generate_blog_pages
+end
+
+compile '/posts/*' do
+  filter :kramdown
+  layout 'post'
+  layout "default"
+end
+
 compile '*' do
   if item[:extension] == 'css'
-    # don’t filter stylesheets
+    # don't filter stylesheets
   elsif item.binary?
-    # don’t filter binary items
+    # don't filter binary items
   else
     filter :erb
     layout 'default'
   end
+end
+
+route '/posts/*' do
+  y, m, d, slug = /([0-9]+)\-([0-9]+)\-([0-9]+)\-([^\/]+)/.match(item.identifier).captures
+  "/#{slug}/index.html"
 end
 
 route '*' do
