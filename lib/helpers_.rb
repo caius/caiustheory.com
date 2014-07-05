@@ -138,11 +138,15 @@ module Foo
 
   ArchiveMonth = Struct.new(:year, :month) do
     def path
-      @path ||= "/#{year}/#{month}/"
+      @path ||= "/#{year}/#{month_index}/"
     end
 
     def name
       @name ||= "#{month_name} #{year}"
+    end
+
+    def month_index
+      "%02d" % month
     end
 
     def month_name
@@ -150,6 +154,7 @@ module Foo
     end
   end
 
+  # Returns array of ArchiveMonth instances for year/months containing posts
   def archive_months
     chronological_posts.flat_map { |year, months| months.keys.map { |month| ArchiveMonth.new(year, month) } }
   end
