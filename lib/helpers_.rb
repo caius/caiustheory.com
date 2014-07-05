@@ -83,18 +83,27 @@ module Foo
     path.gsub(%r{//+}, "/")
   end
 
+  # All tags across all posts blogwide
   def tags
     posts.map {|x| x[:tags] }.flatten.compact.uniq
   end
 
+  # Given a string, turns it into a URL slug
   def slugify(str)
     str.downcase.gsub(/\s+/, '-')
   end
 
+  # Returns path for next page
   def next_page_path
     slashify(@pagination_path, "page", @page_number + 1)
   end
 
+  # Returns path for previous page
+  def previous_page_path
+    slashify(@page_number <= 2 ? @pagination_path : [@pagination_path, "page", @page_number - 1])
+  end
+
+  # Actually builds the blog
   def generate_blog_pages
     # Paginated list of posts
     paginate_posts_at(path: "/", posts: posts, page_title: "Latest")
@@ -118,7 +127,6 @@ module Foo
       )
 
       months.each do |month, month_posts|
-        month_name = Date::MONTHNAMES[month]
         paginate_posts_at(
           path: "/#{year}/#{"%02d" % month}",
           posts: month_posts,
