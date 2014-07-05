@@ -25,6 +25,7 @@ module Foo
       item[:kind] ||= "article"
       item[:created_at] ||= extract_post_created_at(item)
       item[:title] ||= extract_post_title(item)
+      item[:tags] ||= []
     end
     posts
   end
