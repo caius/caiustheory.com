@@ -1,0 +1,7 @@
+# <%= @item[:title] %>
+
+  By <%= @item[:author] %>
+  <<%= @config[:base_url] + @item.path %>>
+  <%= display_time(@item[:created_at]) %>
+
+<%= yield %>

@@ -14,6 +14,11 @@ module CaiusTheory
     post.identifier[%r{/(\d+-\d+-\d+)([\w-]+)/?$}, 2].split("-").map(&:capitalize).join(" ")
   end
 
+  def display_time(time)
+    # dup in case we're passed @item[:created_at] which is frozen
+    time.dup.utc.strftime("%Y-%m-%d %H:%M:%S")
+  end
+
   # Override Blogging#articles to select items in /post, rather than of kind article.
   # Also makes sure the kind defaults to "article" and created_at defaults to being extracted
   # from the filename, rather than having to specify both in the metadata.
