@@ -79,7 +79,7 @@ module Foo
   end
 
   def posts_per_page
-    1
+    10
   end
 
   def tags
