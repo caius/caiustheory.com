@@ -119,6 +119,24 @@ module Foo
     end
   end
 
+  ArchiveMonth = Struct.new(:year, :month) do
+    def path
+      @path ||= "/#{year}/#{month}/"
+    end
+
+    def name
+      @name ||= "#{month_name} #{year}"
+    end
+
+    def month_name
+      @month_name ||= Date::MONTHNAMES[month]
+    end
+  end
+
+  def archive_months
+    chronological_posts.flat_map { |year, months| months.keys.map { |month| ArchiveMonth.new(year, month) } }
+  end
+
 end
 
 include Foo
