@@ -44,11 +44,9 @@ module Foo
 
   # path is expected to be a string
   # page_title can be a String or Lambda. Lambda takes one argument, current page number
-  def paginate_posts_at(path:, posts:, page_title: "CaiusTheory", feed: false)
-    # Make sure path starts/ends with forward slash
-    path = "/#{path[%r{\A/?(.+?)/?\z}, 1]}/"
-    # Atom feed path
-    feed_path = "#{path}feed/"
+  def paginate_posts_at(path:, posts:, page_title: "CaiusTheory")
+    path = slashify(path)
+
     # Split the entire list of articles in a list of sub-lists
     post_pages = posts.each_slice(posts_per_page).to_a
 
@@ -57,21 +55,27 @@ module Foo
       page_num = i + 1
 
       @items << ::Nanoc3::Item.new(
-      # @item.attributes is a bit of a hack, but it passes through whatever we pass as attributes
-      # here to the blog_archive template, which is where we actually consume them.
-      %{<%= render("page", @item.attributes) { } %>},
-      {
-        :title => (page_title.is_a?(String) ? page_title : page_title[page_num] ),
-        :page_number => page_num,
-        :next_page => post_pages[page_num] != nil,
-        :pagination_path => path,
-        :posts => subarticles,
-        :feed_uri => (feed_path if feed == true)
-      },
-      # First page is at /, every page thereafter at /page/:i
-      (page_num == 1 ? path : "#{path}page/#{page_num}/")
+        # @item.attributes is a bit of a hack, but it passes through whatever we pass as attributes
+        # here to the blog_archive template, which is where we actually consume them.
+        %{<%= render("page", @item.attributes) { } %>},
+        {
+          title: (page_title.is_a?(String) ? page_title : page_title[page_num] ),
+          page_number: page_num,
+          next_page: post_pages[page_num] != nil,
+          previous_page: post_pages[i - 1] != nil,
+          pagination_path: path,
+          posts: subarticles,
+        },
+        # First page is at /, every page thereafter at /page/:i
+        (page_num == 1 ? path : slashify("#{path}page/#{page_num}") )
       )
     end
+  end
+
+  def slashify(path)
+    path = "/#{path}" unless path.start_with?("/")
+    path << "/" unless path.end_with?("/")
+    path.gsub(%r{//+}, "/")
   end
 
   def posts_per_page
@@ -86,9 +90,13 @@ module Foo
     str.downcase.gsub(/\s+/, '-')
   end
 
+  def next_page_path
+    slashify([@pagination_path, "page", @page_number + 1].join("/"))
+  end
+
   def generate_blog_pages
     # Paginated list of posts
-    paginate_posts_at(path: "/", posts: posts, page_title: "Latest", feed: true)
+    paginate_posts_at(path: "/", posts: posts, page_title: "Latest")
 
     # Tag pages
     tags.each do |tagname|

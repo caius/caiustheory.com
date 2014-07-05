@@ -7,3 +7,11 @@
     </article>
   </div>
 <% end %>
+
+<div class="pagination">
+  <ul>
+    <% if next_page %>
+      <li><%= link_to "Next Page", next_page_path %></li>
+    <% end %>
+  </ul>
+</div>
