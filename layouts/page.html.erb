@@ -7,5 +7,8 @@
     <% if next_page %>
       <li><%= link_to "Next Page", next_page_path %></li>
     <% end %>
+    <% if previous_page %>
+      <li><%= link_to "Previous Page", previous_page_path %></li>
+    <% end %>
   </ul>
 </div>
