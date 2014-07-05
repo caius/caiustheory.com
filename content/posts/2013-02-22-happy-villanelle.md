@@ -1,11 +1,9 @@
 ---
-title: Happy Villanelle
-author: Caius Durling
-created_at: 2014-06-01 09:00:00 +0000
-kind: article
+title: "Happy Villanelle"
+author: "Caius Durling"
+created_at: 2013-02-22 15:15:03 +0000
 tags:
-  - poetry
-  - villanelle
+  - "poetry"
 ---
 
 The writing group that Carole and Liberty belong to had a homework this month to write a Villanelle. It's a very specific kind of poem, written to both a repeating line structure and a rhyming pattern. (If you go read [Liberty's villanelle][libv] she explains it properly at the start.)
