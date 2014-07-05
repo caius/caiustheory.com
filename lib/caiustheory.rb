@@ -27,8 +27,15 @@ module CaiusTheory
     # Setup some things that the Blogging module expect
     posts.each do |item|
       item[:kind] ||= "article"
-      item[:created_at] ||= extract_post_created_at(item)
       item[:title] ||= extract_post_title(item)
+
+      unless item[:author]
+        item[:author] = @config[:author_name]
+        item[:author_uri] = @config[:author_uri]
+      end
+      item[:author_uri] ||= @config[:base_url]
+
+      item[:created_at] ||= extract_post_created_at(item)
       item[:tags] ||= []
     end
     posts
