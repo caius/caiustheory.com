@@ -63,7 +63,7 @@ module Foo
           title: (page_title.is_a?(String) ? page_title : page_title[page_num] ),
           page_number: page_num,
           next_page: post_pages[page_num] != nil,
-          previous_page: post_pages[i - 1] != nil,
+          previous_page: page_num > 1,
           pagination_path: path,
           posts: subarticles,
         },
