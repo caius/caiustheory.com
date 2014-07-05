@@ -1,5 +1,5 @@
 <div class='post'>
-  <h1><%= item[:title] %></h1>
+  <h1><%= @post_title || item[:title] %></h1>
   <aside>Posted at: <%= item[:created_at] %></aside>
   <article>
     <%= block_given? ? yield : item.compiled_content %>
