@@ -1,6 +1,15 @@
 <div class='post'>
+
   <h1><%= @post_title || item[:title] %></h1>
-  <aside>Posted at: <%= item[:created_at] %></aside>
+
+  <aside>
+    <span>
+      <%= link_to item[:author], item[:author_uri] %>
+    </span>
+    -
+    <abbr title="<%= display_isotime(item[:created_at]) %>"><%= display_time(item[:created_at]) %></abbr>
+  </aside>
+
   <article>
     <%= block_given? ? yield : item.compiled_content %>
   </article>

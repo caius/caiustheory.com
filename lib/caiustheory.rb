@@ -19,6 +19,10 @@ module CaiusTheory
     time.dup.utc.strftime("%Y-%m-%d %H:%M:%S")
   end
 
+  def display_isotime(time)
+    time.dup.utc.iso8601.sub("Z", "+00:00")
+  end
+
   # Override Blogging#articles to select items in /post, rather than of kind article.
   # Also makes sure the kind defaults to "article" and created_at defaults to being extracted
   # from the filename, rather than having to specify both in the metadata.
