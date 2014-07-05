@@ -23,6 +23,8 @@ base_url: "http://caiustheory.com"
 author_name: "Caius Durling"
 author_uri: "http://caius.name"
 
+posts_per_page: 10
+
 prune:
   # Whether to automatically remove files not managed by nanoc from the output
   # directory. For safety reasons, this is turned off by default.

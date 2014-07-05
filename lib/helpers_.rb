@@ -48,6 +48,7 @@ module Foo
     path = slashify(path)
 
     # Split the entire list of articles in a list of sub-lists
+    posts_per_page = @config[:posts_per_page]
     post_pages = posts.each_slice(posts_per_page).to_a
 
     # Generate a Nanoc3::Item for each of these pages
@@ -76,10 +77,6 @@ module Foo
     path = "/#{path}" unless path.start_with?("/")
     path << "/" unless path.end_with?("/")
     path.gsub(%r{//+}, "/")
-  end
-
-  def posts_per_page
-    10
   end
 
   def tags
