@@ -177,4 +177,18 @@ module CaiusTheory
 
     slashify("tag", @tag_paths[name])
   end
+
+  # Given an item, builds a string of HTML links to all the tags for said item as an english list
+  def tag_sentence_for(item)
+    return "" if item[:tags].empty?
+
+    tag_links = item[:tags].map do |tag|
+      link_to tag, tag_path(tag)
+    end
+
+    return tag_links.first if tag_links.size == 1
+
+    [tag_links[0..-2].join(", "), "and", tag_links.last].join(" ")
+  end
+
 end

@@ -4,4 +4,11 @@
   <article>
     <%= block_given? ? yield : item.compiled_content %>
   </article>
+
+  <ul class="entry-meta">
+    <li class="entry-tags">
+      Tags: <%= tag_sentence_for(item) %>
+    </li>
+  </ul>
+
 </div>
