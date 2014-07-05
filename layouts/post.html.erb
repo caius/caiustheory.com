@@ -2,6 +2,6 @@
   <h1><%= item[:title] %></h1>
   <aside>Posted at: <%= item[:created_at] %></aside>
   <article>
-    <%= yield %>
+    <%= block_given? ? yield : item.compiled_content %>
   </article>
 </div>
