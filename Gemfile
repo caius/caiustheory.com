@@ -7,3 +7,4 @@ gem "pygments.rb"
 
 gem "adsf"
 gem "listen"
+gem 'guard-nanoc'
