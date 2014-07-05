@@ -68,12 +68,16 @@ module Foo
           posts: subarticles,
         },
         # First page is at /, every page thereafter at /page/:i
-        (page_num == 1 ? path : slashify("#{path}page/#{page_num}") )
+        (page_num == 1 ? path : slashify(path, "page", page_num) )
       )
     end
   end
 
-  def slashify(path)
+  # Takes a string or array of path components
+  # Joins the components together with slashes and adds leading/trailing slashes if required
+  # Returns string
+  def slashify(*components)
+    path = components.join("/")
     path = "/#{path}" unless path.start_with?("/")
     path << "/" unless path.end_with?("/")
     path.gsub(%r{//+}, "/")
@@ -88,7 +92,7 @@ module Foo
   end
 
   def next_page_path
-    slashify([@pagination_path, "page", @page_number + 1].join("/"))
+    slashify(@pagination_path, "page", @page_number + 1)
   end
 
   def generate_blog_pages
