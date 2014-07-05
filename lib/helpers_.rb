@@ -99,11 +99,11 @@ module Foo
     # Paginated list of posts
     paginate_posts_at(path: "/", posts: posts, page_title: "Latest")
 
-    # Tag pages
+    # Tag Archives
     tags.each do |tagname|
       paginate_posts_at(
-        path: "/tag/#{slugify(tagname)}",
-        posts: posts.select {|post| post[:tags].include?(tagname) },
+        path: tag_path(tagname),
+        posts: posts.select { |post| post[:tags].include?(tagname) },
         page_title: "Posts tagged #{tagname}"
       )
     end
@@ -146,6 +146,20 @@ module Foo
     chronological_posts.flat_map { |year, months| months.keys.map { |month| ArchiveMonth.new(year, month) } }
   end
 
+  # Returns the URI path for a tag archive page
+  def tag_path(name)
+    # Unless there's an override, we just slugify the tag name to get the path
+    @tag_paths ||= begin
+      {
+        "test::unit" => "testunit",
+        "ruby1.9" => "ruby19",
+      }.tap do |hash|
+        hash.default_proc = -> (h, k) { hash[k] = slugify(k) }
+      end
+    end
+
+    slugify("tag", @tag_paths[name])
+  end
 end
 
 include Foo
