@@ -195,6 +195,28 @@ body > main article footer p {
   font-size: 0.9em;
 }
 
+body > main nav {
+  font-size: 0.8em;
+}
+
+body > main nav ul li.previous {
+  float: left;
+}
+
+body > main nav ul li.previous:before {
+  content: "\2190";
+  padding-right: 0.3em;
+}
+
+body > main nav ul li.next {
+  float: right;
+}
+
+body > main nav ul li.next:after {
+  content: "\2192";
+  padding-left: 0.3em;
+}
+
 body > nav {
   width: 20%;
   float: right;

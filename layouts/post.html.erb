@@ -12,3 +12,21 @@
           </p>
         </footer>
       </article>
+
+<% if item[:surrounding_posts] %>
+      <nav>
+        <ul>
+          <% if (prev_post_id = item[:surrounding_posts][:before]) %>
+            <% prev_post = articles[prev_post_id] %>
+            <li class="previous"><%= link_to(prev_post[:title], prev_post.path) %></li>
+          <% end %>
+
+          <% if (next_post_id = item[:surrounding_posts][:after]) %>
+            <% next_post = articles[next_post_id] %>
+            <li class="next"><%= link_to(next_post[:title], next_post.path) %></li>
+          <% end %>
+        </ul>
+
+        <span class="clear"></span>
+      </nav>
+<% end %>

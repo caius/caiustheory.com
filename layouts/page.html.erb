@@ -1,5 +1,5 @@
 <% posts.each do |post| %>
-  <%= render("post", :item => post, :post_title => link_to(post[:title], post)) %>
+  <%= render("post", collection: true, item: post, post_title: link_to(post[:title], post)) %>
 <% end %>
 
 <div class="pagination">
