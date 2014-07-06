@@ -17,24 +17,32 @@ preprocess do
   generate_blog_pages
 end
 
-compile '/posts/*', :rep => :text do
+compile "/posts/*", :rep => :text do
   layout "post_text"
 end
 
-compile '/posts/*' do
+compile "/posts/*" do
   filter :kramdown
-  layout 'post'
+  layout "post"
   layout "default"
 end
 
-compile '*' do
-  if item[:extension] == 'css'
+compile "/sitemap/" do
+  filter :erb
+end
+
+compile "/feed/" do
+  filter :erb
+end
+
+compile "*" do
+  if item[:extension] == "css"
     # don't filter stylesheets
   elsif item.binary?
     # don't filter binary items
   else
     filter :erb
-    layout 'default'
+    layout "default"
   end
 end
 
@@ -50,25 +58,22 @@ route "/posts/*", :rep => :text do
   "/#{slug}.text"
 end
 
-route '/posts/*' do
+route "/posts/*" do
   y, m, d, slug = H.post_identifier_components(item.identifier)
   "/#{slug}.html"
 end
 
 
-route '*' do
-  if item[:extension] == 'css'
-    # Write item with identifier /foo/ to /foo.css
-    item.identifier.chop + '.css'
-  elsif item.binary?
+route "*" do
+  if item.binary? || %w(css xml).include?(item[:extension])
     # Write item with identifier /foo/ to /foo.ext
-    item.identifier.chop + '.' + item[:extension]
+    item.identifier.chop + "." + item[:extension]
   elsif item.identifier == "/"
     "/index.html"
   else
     # Write item with identifier /foo/ to /foo.html
-    item.identifier.chop + '.html'
+    item.identifier.chop + ".html"
   end
 end
 
-layout '*', :erb
+layout "*", :erb
