@@ -1,0 +1,4 @@
+# Hide log and vendor directories from search popups.
+myExtraExcludes = "output"
+excludeInFileChooser  = "{$excludeInFileChooser,$myExtraExcludes}"
+excludeInFolderSearch = "{$excludeInFolderSearch,$myExtraExcludes}"
