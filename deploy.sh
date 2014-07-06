@@ -1,3 +1,22 @@
 #!/usr/bin/env bash
 
-rsync -aP --delete-after output/ brutus:www/static.caiustheory.com/htdocs
+set -e
+
+# Copies a generated CaiusTheory up to the webserver
+
+# Make sure we're compiled first, pass --no-compile as sole argument to skip
+if [[ $1 != "--no-compile" ]]; then
+  nanoc compile
+fi
+
+# Deploy to webserver!
+rsync \
+  -rsh=ssh \
+  -vvvv \
+  --archive \
+  --partial \
+  --progress \
+  --compress \
+  --delay-updates \
+  --delete-after \
+  output/ brutus:www/static.caiustheory.com/htdocs
