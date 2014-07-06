@@ -1,23 +1,14 @@
-<div class='post'>
+      <article>
+        <header>
+          <h1><%= @post_title || item[:title] %></h1>
+          <time datetime="<%= display_isotime(item[:created_at]) %>"><%= display_time(item[:created_at]) %></time>
+        </header>
 
-  <h1><%= @post_title || item[:title] %></h1>
+        <%= block_given? ? yield : item.compiled_content %>
 
-  <aside>
-    <span>
-      <%= link_to item[:author], item[:author_uri] %>
-    </span>
-    -
-    <abbr title="<%= display_isotime(item[:created_at]) %>"><%= display_time(item[:created_at]) %></abbr>
-  </aside>
-
-  <article>
-    <%= block_given? ? yield : item.compiled_content %>
-  </article>
-
-  <ul class="entry-meta">
-    <li class="entry-tags">
-      Tags: <%= tag_sentence_for(item) %>
-    </li>
-  </ul>
-
-</div>
+        <footer>
+          <p class="tags">
+            <strong>Tags:</strong> <%= tag_sentence_for(item) %>
+          </p>
+        </footer>
+      </article>
