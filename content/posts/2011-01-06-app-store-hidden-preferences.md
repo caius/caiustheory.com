@@ -33,8 +33,6 @@ Yank up a terminal window, bash out the following...
 
 ...head back to the MAS and install another (free) app, and hey presto, it's leaving my dock alone! Hopefully that's all I needed to continue using my Dock as I like. (Hidden, and left alone.)
 
-*Find any other hiddens prefs for the MAS? [Mail me](caius@caius.name) or leave a comment and I'll update accordingly.*
-
 **Update 2011-01-06:**
 
 Seems my joy was short-lived. I'd re-downloaded an app I'd already purchased and it just showed download progress in the MAS app, not in the dock. Installing new applications still shows up in the dock (annoyingly.)
@@ -48,4 +46,3 @@ As I understand it, the App\ Store.app invokes a binary inside `/System/Library/
 [storeagentdump]: https://gist.github.com/768837
 
 I've given up for now, but I reckon it should be possible to create a bundle that swizzles the right methods in storeagent to stop it placing the downloads on the Dock.
-
