@@ -27,22 +27,40 @@ module CaiusTheory
   # Also makes sure the kind defaults to "article" and created_at defaults to being extracted
   # from the filename, rather than having to specify both in the metadata.
   def articles
-    posts = @items.select {|item| item.identifier =~ %r{^/post} }
-    # Setup some things that the Blogging module expect
-    posts.each do |item|
-      item[:kind] ||= "article"
-      item[:title] ||= extract_post_title(item)
+    @articles ||= begin
+      posts = @items.select {|item| item.identifier =~ %r{^/post} }
+      # Setup some things that the Blogging module expect
+      posts.each_with_index do |item, index|
+        item[:kind] ||= "article"
+        item[:title] ||= extract_post_title(item)
 
-      unless item[:author]
-        item[:author] = @config[:author_name]
-        item[:author_uri] = @config[:author_uri]
+        unless item[:author]
+          item[:author] = @config[:author_name]
+          item[:author_uri] = @config[:author_uri]
+        end
+        item[:author_uri] ||= @config[:base_url]
+
+        item[:created_at] ||= extract_post_created_at(item)
+        item[:tags] ||= []
+
+        item[:surrounding_posts] ||= begin
+          h = {before: nil, after: nil}
+
+          # Check we have a preceeding post
+          if index - 1 >= 0
+            h[:before] = index - 1
+          end
+
+          # Check we have a following post
+          if (index + 1) < posts.size
+            h[:after] = index + 1
+          end
+
+          h
+        end
       end
-      item[:author_uri] ||= @config[:base_url]
-
-      item[:created_at] ||= extract_post_created_at(item)
-      item[:tags] ||= []
+      posts
     end
-    posts
   end
 
   # We're dealing with posts, not articles
@@ -72,7 +90,7 @@ module CaiusTheory
 
       @items << ::Nanoc3::Item.new(
         # @item.attributes is a bit of a hack, but it passes through whatever we pass as attributes
-        # here to the blog_archive template, which is where we actually consume them.
+        # here to the page template, which is where we actually consume them.
         %{<%= render("page", @item.attributes) { } %>},
         {
           title: (page_title.is_a?(String) ? page_title : page_title[page_num] ),
