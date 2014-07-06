@@ -78,6 +78,8 @@ body > main {
 body > main article {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 0.8em;
+  margin-bottom: 3em;
+  clear: left;
 }
 
 body > main article header {
@@ -86,8 +88,21 @@ body > main article header {
 }
 
 body > main article h1 {
-  font-size: 1.5em;
+  font-size: 1.8em;
   margin-bottom: 0.5em;
+}
+
+body > main article h1 a,
+body > main article h1 a:link,
+body > main article h1 a:visited {
+  color: #111;
+  text-decoration: none;
+}
+
+body > main article h1 a:hover {
+  background: transparent;
+  color: #111;
+  text-decoration: underline;
 }
 
 body > main article header time {
