@@ -25,7 +25,10 @@ body {
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
   font-family: Georgia, Times, serif;
 }
 
@@ -111,6 +114,23 @@ body > main article header time {
 
 body > main article p {
   margin-top: 1em;
+}
+
+body > main article h2 {
+  margin-top: 1em;
+  font-size: 1.8em;
+}
+
+body > main article h3 {
+  margin-top: 1em;
+  font-size: 1.6em;
+}
+
+body > main article h4 {
+  margin-top: 1em;
+  font-size: 1.4em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #555;
 }
 
 body > main article ul,
