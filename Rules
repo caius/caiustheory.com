@@ -55,12 +55,12 @@ end
 
 route "/posts/*", :rep => :text do
   y, m, d, slug = H.post_identifier_components(item.identifier)
-  "/#{slug}.text"
+  "/#{slug}/index.txt"
 end
 
 route "/posts/*" do
   y, m, d, slug = H.post_identifier_components(item.identifier)
-  "/#{slug}.html"
+  "/#{slug}/index.html"
 end
 
 
