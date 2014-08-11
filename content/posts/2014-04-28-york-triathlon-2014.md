@@ -6,11 +6,11 @@ tags:
 
 Completed the York sprint distance tri in 1:28:37 total, and didn't die in the process. Split times & my thoughts below..
 
-400m Swim: 00:08:08
-T1: 00:03:47
-18km Bike: 00:38:43
-T2: 00:00:58
-5km Run: 00:38:08
+400m Swim: 00:08:08  
+T1: 00:03:47  
+18km Bike: 00:38:43  
+T2: 00:00:58  
+5km Run: 00:38:08  
 
 (Amusingly the official time for my swim was 00:10:10, which then makes my official time for T1 00:00:38; Fastest Swim/Bike transition time in the tri on paper! Ahem.)
 
