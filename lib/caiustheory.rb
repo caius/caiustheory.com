@@ -4,8 +4,10 @@ module CaiusTheory
   include Nanoc3::Helpers::LinkTo
 
   # Infer the post's created_at time from the filename for the specified post
+  # Defaults to 10:00:00 on the date extracted from filename
+  # Returns Time or nil
   def extract_post_created_at post
-    post.identifier[%r{/(\d+-\d+-\d+)[\w-]+/?$}, 1]
+    Time.parse("#{post.identifier[%r{/(\d+-\d+-\d+)[\w-]+/?$}, 1]} 10:00:00+00:00")
   end
 
   # Takes in "hello-world", outputs "Hello World"
