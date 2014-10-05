@@ -6,6 +6,7 @@ set -e
 
 # Make sure we're compiled first, pass --no-compile as sole argument to skip
 if [[ $1 != "--no-compile" ]]; then
+  rm -rf output/
   nanoc compile
 fi
 
