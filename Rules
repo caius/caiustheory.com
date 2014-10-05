@@ -56,9 +56,12 @@ route "/posts/*" do
   "/#{slug}/index.html"
 end
 
+route "/assets/*" do
+  item.identifier.chop
+end
 
 route "*" do
-  if item.binary? || %w(css xml).include?(item[:extension])
+  if item.binary? || %w(xml).include?(item[:extension])
     # Write item with identifier /foo/ to /foo.ext
     item.identifier.chop + "." + item[:extension]
   else
