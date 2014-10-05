@@ -54,7 +54,7 @@ So here's how to use SmartOS to compile a more up to date AMD-friendly Smartos!
 
 4. Update the image to the latest packages, etc:
 
-        pkgin update && pkgin full-upgrade
+        pkgin -y update && pkgin -y full-upgrade
 
 5. Install a few images we'll need to compile & package SmartOS:
 
@@ -71,6 +71,8 @@ So here's how to use SmartOS to compile a more up to date AMD-friendly Smartos!
 
         cp {sample.,}configure.smartos
         ./configure
+
+      *(You'll probably get asked to accept the java license during configuration, so keep half an eye on it)*
 
 9. Once configure has completed (which doesn't take *too* long, 15 minutes or so), start building:
 
