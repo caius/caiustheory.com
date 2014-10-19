@@ -17,7 +17,8 @@
         </footer>
       </article>
 
-<% if item[:surrounding_posts] %>
+<%# If we're building the individual posts' page, output links to surrounding items %>
+<% if !@collection && item[:surrounding_posts] %>
       <nav>
         <ul>
           <% if (prev_post_id = item[:surrounding_posts][:before]) %>
