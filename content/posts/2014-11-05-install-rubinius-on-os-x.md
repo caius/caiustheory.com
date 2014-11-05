@@ -5,7 +5,7 @@ created_at: 2014-11-05 12:50:16 +0000
 tags:
 ---
 
-Using [ruby-install][], [homebrew][] building it for use with [chruby][], here's how I install [Rubinius][] under Yosemite (works for Mountain Lion as well.)
+Using [ruby-install][], [homebrew][] building it for use with [chruby][], here's how I install [Rubinius][] under Yosemite (works for Mavericks as well.)
 
 [ruby-install]: https://github.com/postmodern/ruby-install/
 [homebrew]: http://brew.sh/
