@@ -10,3 +10,4 @@ gem "adsf"
 gem "listen"
 gem 'guard-nanoc'
 gem "w3c_validators"
+gem "rake"
