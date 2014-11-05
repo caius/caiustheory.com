@@ -5,7 +5,7 @@ created_at: 2014-11-05 12:50:16 +0000
 tags:
 ---
 
-Using [ruby-install][], [homebrew][] building it for use with [chruby][], here's how I install [Rubinius][] under Yosemite (should work under Mountain Lion as well.)
+Using [ruby-install][], [homebrew][] building it for use with [chruby][], here's how I install [Rubinius][] under Yosemite (works for Mountain Lion as well.)
 
 [ruby-install]: https://github.com/postmodern/ruby-install/
 [homebrew]: http://brew.sh/
@@ -21,7 +21,7 @@ Using [ruby-install][], [homebrew][] building it for use with [chruby][], here's
         $ export PATH="$(brew --prefix llvm)/bin:$PATH"
 
         # Or, for ZSH
-        $ export path=( $(brew --prefix llvm)/bin $path )
+        $ path=( $(brew --prefix llvm)/bin $path )
 
 3. Install rubinius, v2.3.0 at the time of writing
 
