@@ -46,20 +46,13 @@ compile "*" do
   end
 end
 
-module H
-  module_function
-  def post_identifier_components(identifier)
-    /([0-9]+)\-([0-9]+)\-([0-9]+)\-([^\/]+)/.match(identifier).captures
-  end
-end
-
 route "/posts/*", :rep => :text do
-  y, m, d, slug = H.post_identifier_components(item.identifier)
+  _, _, _, slug = CaiusTheory.post_identifier_components(item.identifier)
   "/#{slug}/index.txt"
 end
 
 route "/posts/*" do
-  y, m, d, slug = H.post_identifier_components(item.identifier)
+  _, _, _, slug = CaiusTheory.post_identifier_components(item.identifier)
   "/#{slug}/index.html"
 end
 

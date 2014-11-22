@@ -3,17 +3,28 @@ module CaiusTheory
   include Nanoc3::Helpers::Rendering
   include Nanoc3::Helpers::LinkTo
 
+  # Extracts the pieces from a post's identifier
+  #
+  # identifier [String (responds to #match)] identifier to extract dates/slug from
+  #
+  # Returns Array (year, month, day, slug)
+  def post_identifier_components(identifier)
+    /([0-9]+)\-([0-9]+)\-([0-9]+)\-([^\/]+)/.match(identifier).captures
+  end
+  module_function :post_identifier_components
+
   # Infer the post's created_at time from the filename for the specified post
   # Defaults to 10:00:00 on the date extracted from filename
   # Returns Time or nil
-  def extract_post_created_at post
-    Time.parse("#{post.identifier[%r{/(\d+-\d+-\d+)[\w-]+/?$}, 1]} 10:00:00+00:00")
+  def extract_post_created_at(post)
+    date = post_identifier_components(post.identifier).first(3).join("-")
+    Time.parse("#{date} 10:00:00+00:00")
   end
 
   # Takes in "hello-world", outputs "Hello World"
   # Override by specifying "title: Hello World!" in the post's metadata
-  def extract_post_title post
-    post.identifier[%r{/(\d+-\d+-\d+)([\w-]+)/?$}, 2].split("-").map(&:capitalize).join(" ")
+  def extract_post_title(post)
+    post_identifier_components(post.identifier).last.split("-").map(&:capitalize).join(" ")
   end
 
   def display_time(time)
