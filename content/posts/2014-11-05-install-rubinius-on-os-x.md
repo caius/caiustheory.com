@@ -3,6 +3,10 @@ title: "Install Rubinius on OS X"
 author: "Caius Durling"
 created_at: 2014-11-05 12:50:16 +0000
 tags:
+  - install
+  - "OS X"
+  - Rubinius
+  - Ruby
 ---
 
 Using [ruby-install][], [homebrew][] building it for use with [chruby][], here's how I install [Rubinius][] under Yosemite (works for Mavericks as well.)
