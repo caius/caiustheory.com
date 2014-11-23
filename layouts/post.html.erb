@@ -1,7 +1,7 @@
       <article>
         <header>
           <h1><%= @post_title || item[:title] %></h1>
-          <time datetime="<%= display_isotime(item[:created_at]) %>"><%= display_time(item[:created_at]) %></time>
+          <time datetime="<%= display_isotime(item[:created_at]) %>"><%= display_date(item[:created_at]) %></time>
         </header>
 
         <%= block_given? ? yield : item.compiled_content %>

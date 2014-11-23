@@ -34,6 +34,11 @@ module CaiusTheory
     time.dup.utc.strftime("%Y-%m-%d %H:%M:%S")
   end
 
+  def display_date(time)
+    # dup in case we're passed @item[:created_at] which is frozen
+    time.dup.utc.strftime("%Y-%m-%d")
+  end
+
   def display_isotime(time)
     time.dup.utc.iso8601.sub("Z", "+00:00")
   end
