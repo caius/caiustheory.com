@@ -57,6 +57,14 @@
         padding-top: 0.5em;
       }
 
+      div.post-separator {
+        display: block;
+        clear: both;
+        border-top: 1px solid #000;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+      }
+
     </style>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -67,25 +75,37 @@
 
   </head>
   <body>
-    <header>
-      <h1><%= link_to "Caius Theory", "/" %></h1>
-      <h2>Now with even more cowbell&hellip;</h2>
-    </header>
 
-    <main>
-      <%= yield %>
-    </main>
+    <div class="container">
+      <header class="row">
+        <h1 class="col-md-6"><%= link_to "Caius Theory", "/" %></h1>
+        <h2 class="col-md-6 text-right">Now with even more cowbell&hellip;</h2>
+        <span class="clearfix"></span>
+      </header>
 
-    <span class="clear"></span>
+      <main class="row col-md-10 col-md-offset-1">
+        <%= yield %>
+      </main>
 
-    <footer>
-      <p class="first">
-        <%= link_to "CaiusTheory", "/" %>
-      </p>
-      <p class="last">
-        Inspired by <%= link_to "sp", "http://labs.utopian.net/habari/theme/sp/" %>
-      </p>
-      <span class="clear"></span>
-    </footer>
+      </main>
+
+      <footer class="row col-md-12">
+        <ul class="list-inline text-center">
+          <li><a href="http://caius.name/">Author</a></li>
+          &sect;
+          <li><a href="/archives">Archives</a></li>
+          &sect;
+          <li><a href="/feed.xml">Feed</a></li>
+          &sect;
+          <li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+        </ul>
+      </footer>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/assets/bootstrap.min.js"></script>
   </body>
 </html>
