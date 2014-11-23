@@ -1,3 +1,5 @@
+require "set"
+
 module CaiusTheory
   include Nanoc3::Helpers::Blogging
   include Nanoc3::Helpers::Rendering
@@ -129,10 +131,19 @@ module CaiusTheory
     path.gsub(%r{//+}, "/")
   end
 
-  # All tags across all posts blogwide
-  def tags
-    posts.map {|x| x[:tags] }.flatten.compact.uniq
+  # Returns a hash containing tags => posts
+  #
+  # Keys are tags, values are posts
+  #
+  # Returns hash
+  def posts_by_tag
+    posts.each_with_object(Hash.new { |h, k| h[k] = Set.new }) do |item, hash|
+      item[:tags].each do |tag|
+        hash[tag.downcase] << item
+      end
+    end
   end
+
 
   # Given a string, turns it into a URL slug
   def slugify(str)
@@ -155,10 +166,10 @@ module CaiusTheory
     paginate_posts_at(path: "/", posts: posts, page_title: "Latest")
 
     # Tag Archives
-    tags.each do |tagname|
+    posts_by_tag.each do |tagname, tagged_posts|
       paginate_posts_at(
         path: tag_path(tagname),
-        posts: posts.select { |post| post[:tags].include?(tagname) },
+        posts: tagged_posts,
         page_title: "Posts tagged #{tagname}"
       )
     end
