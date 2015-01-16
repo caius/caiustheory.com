@@ -10,6 +10,13 @@ task :tags do
   puts tags.sort_by(&:downcase).uniq.map {|x| x[/\W/] ? x.inspect : x }
 end
 
+desc "Builds the website locally"
+task :build do
+  exec "nanoc", "compile"
+end
+
+task :default => :build
+
 desc "Deploys to caiustheory.com"
 task :deploy do
   exec "./deploy.sh"
