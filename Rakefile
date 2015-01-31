@@ -1,3 +1,5 @@
+require "bundler/setup"
+
 desc "List existing tags used in posts"
 task :tags do
   require "yaml"
