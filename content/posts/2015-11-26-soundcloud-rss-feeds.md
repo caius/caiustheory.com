@@ -2,13 +2,14 @@
 title: "SoundCloud RSS Feeds"
 author: "Caius Durling"
 created_at: 2015-11-26 23:33:37 +0000
+updated_at: 2015-11-29 21:07:38 +0000
 tags:
     - bookmarklet
     - geek
     - soundcloud
 ---
 
-[SoundCloud][] appears to have gained popularity in recent times for hosting podcasts on. As a consumer of their service they're pretty good at everything except having a visible RSS feed on a profile page for a show! If I want to listen to a shown in my podcast app of choice, an RSS feed is the easiest way for me to achieve that.
+[SoundCloud][] appears to have gained popularity in recent times for hosting podcasts on. As a consumer of their service they're pretty good at everything except having a visible RSS feed on a profile page for a show! If I want to listen to a show in my podcast app of choice, an RSS feed is the easiest way for me to achieve that.
 
 [SoundCloud]: https://soundcloud.com
 
