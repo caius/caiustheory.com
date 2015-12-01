@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>exec(3) in Go - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Using <a href="http://man7.org/linux/man-pages/man3/exec.3.html">exec(3)</a> from Go is simple enough, once you figure out to look in the <a href="http://golang.org/pkg/syscall/">syscall</a> package and how to pass arguments to the new command.</p>
+
+<p>As a simple example, I'm going to exec <code>/bin/echo</code> with a hardcoded string from the go binary. <em>The program built here is in the <a href="https://github.com/caius/gecho">gecho</a> (Gecko, geddit?) git repo, which each stage as a commit.</em></p>
+
+<p>In our main function lets setup some variables we're going to need for arguments to <code>syscall.Exec</code>:</p>
+
+<pre><code>func main() {
+	cmdPath := "/bin/echo"
+	cmdArgs := []string{"Hello", "World"}
+	cmdEnv := []string{}    
+}
+</code></pre>
+
+<p><em>(We could use <code>os.Environ()</code> for <code>cmdEnv</code> to take the ENV from the go binary, but we don't require anything from the environmnt here so it doesn't matter that we aren't.)</em></p>
+
+<p>Now we have the arguments for <code>syscall.Exec</code>, lets add that in and see what happens:</p>
+
+<pre><code>err := syscall.Exec(cmdPath, cmdArgs, cmdEnv)
+if err != nil {
+    panic(err)
+}
+</code></pre>
+
+<p>And running the file (<code>go run gecho.go</code> compiles &amp; runs for us) gives the following output:</p>
+
+<pre><code>World
+</code></pre>
+
+<p>Err, say what now? Where's "Hello" gone?!</p>
+
+<p>Took me a while to figure this out when I originally ran into this. The answer is staring us right in the face if we go look at the <a href="http://golang.org/pkg/syscall/#Exec">syscall.Exec docs</a>. Lets have a look at the function signature, argument names and all:</p>
+
+<pre><code>func Exec(argv0 string, argv []string, envv []string) (err error)
+</code></pre>
+
+<p>Hmm. The first argument is <code>argv0</code> (and a string), rather than <code>binaryPath</code> or something similar. The second argument is then <code>argv</code> and an array of strings.</p>
+
+<p><em>At this point I remember that the first element of <code>argv</code> in other runtimes is the name of the binary or command invoked - <code>$0</code> in a bash script is the name of the script for example.</em></p>
+
+<p>The answer is simple. <code>cmdArgs</code> in our script should have <code>/bin/echo</code> as the first element, and then we pass <code>cmdArgs[0], cmdArgs</code> as the first two arguments to <code>syscall.Exec</code>. Lets give that a go:</p>
+
+<pre><code>func main() {
+	cmdArgs := []string{"/bin/echo", "Hello", "World"}
+	cmdEnv := []string{}
+
+	err := syscall.Exec(cmdArgs[0], cmdArgs, cmdEnv)
+	if err != nil {
+		panic(err)
+	}
+}
+</code></pre>
+
+<p>And running it (<code>go run gecho.go</code> remember) gives the expected output:</p>
+
+<pre><code>Hello World
+</code></pre>
+
+<p>Excellent. Now I just need to remember <code>argv</code> contains the command name as <code>argv[0]</code> and we're golden.</p>
+
+<hr />
+
+<p>There is also the <a href="http://golang.org/pkg/os/exec/">os/exec</a> package in the stdlib, which is intended for executing other binaries as child processes from what I can tell. Tellingly, when you create a <code>exec.Cmd</code> struct with <code>exec.Command()</code> you give it the name as first argument, and args as following arguments. Then it has the following snippet in the documentation:</p>
+
+<blockquote>
+  <p>The returned Cmd's Args field is constructed from the command name followed by the elements of arg, so arg should not include the command name itself. For example, <code>Command("echo", "hello")</code></p>
+</blockquote>
+
+<p>So <code>cmd := exec.Command("echo", "hello"); cmd.Args</code> would return <code>[]string{"echo", "hello"}</code> - which is recognisable as what we have to pass to <code>syscall.Exec</code>!</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

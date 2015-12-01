@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Use datamapper sessions with merb & datamapper - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <h3 id="issue">Issue</h3>
+
+<p>Can't use merb sessions with datamapper &amp; mysql, get back an error about needing an id on the text column or something (I had the error a couple of days ago.)</p>
+
+<h3 id="solution">Solution</h3>
+
+<p>I suggest grabbing merb_datamapper svn source to fix this in.  To do so make sure you have subversion installed on your machine (I'm assuming a Unix based machine here.)</p>
+
+<ol>
+  <li>
+    <p>Checkout the source</p>
+
+    <pre><code> svn co http://svn.devjavu.com/merb/plugins/merb_datamapper
+</code></pre>
+
+    <p>Checks out the svn source to ./merb_datamapper</p>
+  </li>
+  <li>
+    <p>Open up the affected file in your favourite editor <em>(I use TextMate)</em></p>
+
+    <pre><code> cd merb_datamapper
+ mate lib/merb/sessions/data_mapper_session.rb
+</code></pre>
+  </li>
+  <li>
+    <p>Find line 25 that contains</p>
+
+    <p><code>property :session_id, :text, :lazy =&gt; false, :key =&gt; true</code></p>
+
+    <p>and remove <code>:text, :lazy =&gt; false</code> to replace it with <code>:string</code></p>
+
+    <p><code>property :session_id, :string, :key =&gt; true</code></p>
+
+    <p>Save and close the file, thats the editing done.  Now to install the gem.</p>
+  </li>
+  <li>
+    <p>Build the gem</p>
+
+    <pre><code> rake gem
+</code></pre>
+  </li>
+  <li>
+    <p>Install the gem</p>
+
+    <pre><code> sudo gem install pkg/merb_datamapper-0.5.gem
+</code></pre>
+  </li>
+</ol>
+
+<p>And you're away with the fix installed.  Now just run <code>merb</code> to create your sessions table in the db.  Hope this helped!</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

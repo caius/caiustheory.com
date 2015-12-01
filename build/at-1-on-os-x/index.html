@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>at(1) on OS X - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>I recently came across the <a href="http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man1/at.1.html"><code>at(1)</code></a> command, and wondered why it wasn't executing jobs I gave it on my machine. Had a poke around the man pages, and discovered in <a href="http://developer.apple.com/mac/library/documentation/Darwin/Reference/ManPages/man8/atrun.8.html"><code>atrun(8)</code></a> that by default <code>launchd(8)</code> has the <code>atrun</code> entry disabled.</p>
+
+<p>To enable it (and have <code>at</code> jobs fire) you simply need to run the following command once:</p>
+
+<pre><code>sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.atrun.plist
+</code></pre>
+
+<p>Personally I've taken to using this to sleep my machine after a custom amount of time, mainly because my alarm clock/sleep timer of choice (<a href="http://embraceware.com/awaken/">Awaken</a>) can't handle playing <a href="http://www.spotify.com/">Spotify</a> for x minutes and then sleeping the machine. The following command puts the machine to sleep, which (quite effectively) silences spotify.</p>
+
+<pre><code>echo "osascript -e 'tell app \"Finder\" to sleep'" | at 1:00am
+</code></pre>
+
+<p>See the <a href="http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man1/at.1.html"><code>at(1)</code></a> manpage for how to specify the time, but as I'm only ever scheduling it on the same day (usually 20 minutes or so in advance), just passing the time works fine.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

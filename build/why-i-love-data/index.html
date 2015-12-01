@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Why I love DATA - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>In a ruby script, there's a keyword <code>__END__</code> that for a long time I thought just marked anything after it as a comment. So I used to use it to store snippets and notes about the script that weren't really needed inline. Then one day I stumbled across the <code>DATA</code> constant, and wondered what flaming magic it was.</p>
+
+<p><code>DATA</code> is in fact an IO object, that you can read from (or anything else you'd do with an IO object). It contains all the content after <code>__END__</code> in that ruby script file<a href="#fn1">*</a>. (It only exists when the file contains <code>__END__</code>, and for the first file ruby invokes though. See <a href="#fn1">footnote</a> for more details.)</p>
+
+<p>How can we use this, and why indeed do I love this fickle constant? I mostly use it for quick scripts where I need to process text data, rather than piping to STDIN.</p>
+
+<p>Given a list of URLs that I want to open in my web browser and look at, I could do the following for instance:</p>
+
+<pre><code>DATA.each_line.map(&amp;:chomp).each do |url|
+  `open "#{url}"`
+end
+
+__END__
+http://google.com/
+http://yahoo.com/
+</code></pre>
+
+<p>which upon running (on a mac) would open all the URLs listed in DATA in my default web browser. (For bonus points, use <a href="https://github.com/copiousfreetime/launchy#readme">Launchy</a> for cross-platform compatibility.) Really handy &amp; quick/simple when you've got 500+ URLs to open at once to go through. (I once had a job that required me to do this daily. Fun.)</p>
+
+<p>Or given a bunch of CSV data that you just want one column for, you could reach for <code>cut</code> or <code>awk</code> in the terminal, but ruby has a really good CSV library which I trust and know how to use already. Why not just use that &amp; <code>DATA</code> to pull out the field you want?</p>
+
+<pre><code>require "csv"
+
+CSV.parse(DATA, headers: true).each do |row|
+  puts row["kName"]
+end
+
+__END__
+kId,kName,kURL
+1,Google UK,http://google.co.uk
+2,"Yahoo, UK",http://yahoo.co.uk
+
+# &gt;&gt; Google UK
+# &gt;&gt; Yahoo, UK
+</code></pre>
+
+<p>I find when the data I want to munge is already in my clipboard, and I can run ruby scripts directly from text editors without having to save a file, it saves having to write the data out to a file, have ruby read it back in, etc just to do something with the data. I can just write the script reading from <code>DATA</code>, paste the data in and run it. Which also lets me run it iteratively and build up a slightly more complex script that I don't want to keep. Then do what I need with the output and close the file without saving it.</p>
+
+<p><span id="fn1">*</span> technically DATA is an IO handler to read <code>__FILE__</code>, which has been wound forward to the start of the first line after <code>__END__</code> in the file. And it only exists for the first ruby file to be invoked by the interpreter.</p>
+
+<pre><code>$ cat &gt; tmp/data.rb &lt;&lt;RB
+p DATA.read
+__END__
+data.rb
+RB
+
+$ ruby tmp/data.rb
+"data.rb\n"
+
+$ cat &gt; tmp/data-require.rb &lt;&lt;RB
+require "./tmp/data"
+RB
+
+$ ruby tmp/data-require.rb
+/Users/caius/tmp/data.rb:1:in `&lt;top (required)&gt;': uninitialized constant DATA (NameError)
+</code></pre>
+
+<p>And because it's a handle to <code>__FILE__</code> though, you can rewind it and read the entire ruby script into itself…</p>
+
+<pre><code>$ ruby tmp/readself.rb 
+DATA.rewind
+print DATA.read
+
+__END__
+something goes here
+</code></pre>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

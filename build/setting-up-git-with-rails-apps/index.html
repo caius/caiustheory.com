@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Setting up git with rails apps - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>When I create a new rails app, I'm constantly going back to another project and stealing the <code>.gitignore</code> file from it to make sure that git doesn't know about certain files rails either updates frequently, or stores machine-specific data in. The latter is generally just <code>config/database.yml</code>, because I develop alongside my colleagues at <a title="Brightbox - Serious Rails Hosting" href="http://brightbox.co.uk/">Brightbox</a> and we deploy via <a href="http://www.capify.org/">capistrano</a>, we always put the <code>database.yml</code> file in the shared directory on the server, so we each have our own version with our local credentials in it locally. And thus we don't want it to be tracked by git.</p>
+
+<p>Here's what I've collated from various sources over the few weeks I've been using git + rails everyday.</p>
+
+<h4 id="gitignore">.gitignore</h4>
+
+<pre><code>config/database.yml
+log/*.log
+tmp/*
+
+# OS X only
+.DS_Store
+**/.DS_Store
+</code></pre>
+
+<p>Then to make sure <code>log/</code> and <code>tmp/</code> are tracked, I just add a blank .gitignore file in them.</p>
+
+<pre><code>touch log/.gitignore
+touch tmp/.gitignore
+</code></pre>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

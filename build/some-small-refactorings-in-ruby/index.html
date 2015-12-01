@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Some Small Refactorings in Ruby - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Here's a few things I refactor as I write code down initially. Not entirely convinced it's strictly refactoring, but it's how I amend from one pattern I see in a line or three of code into a different structure that I feel achieves the same result with cleaner or more concise code.</p>
+
+<h3 id="multiple-equality-comparisons">Multiple equality comparisons</h3>
+
+<p>Testing the equality of an object against another is fairly simple, just do <code>foo == "bar"</code>. However, I usually try to test against multiple objects in a slightly different way. Your first thought might be that the easiest way is just to chain a series of <code>==</code> with the OR (<code>||</code>) operator.</p>
+
+<pre><code>foo == "bar" || foo == "baz" || foo == :sed || foo == 5
+</code></pre>
+
+<p>I much prefer to flip it around, think of the objects I'm testing against as a collection (<code>Array</code>), and then ask them if they contain the object I'm checking. And for that, I use <code>Array#include?</code></p>
+
+<pre><code>    ["bar", "baz", :sed, 5].include?(foo)
+</code></pre>
+
+<p><em>(And if you're only testing against strings, you could use <code>%w(bar baz)</code> as a shortcut to create the array. Here's more <a href="http://caiustheory.com/ruby-shortcuts">ruby shortcuts</a>.)</em></p>
+
+<h3 id="assigning-multiple-items-from-a-nested-hash-to-variables">Assigning multiple items from a nested hash to variables</h3>
+
+<p>Occasionally I find myself needing to be given a hash of a hash of data (most recently, an <a href="https://github.com/intridea/omniauth/wiki">omniauth</a> auth hash) and assign some values from it to separate variables within my code. Given the following hash, containing a nested hash:</p>
+
+<pre><code>details = {
+  uid: "12345",
+  info: {
+    name: "Caius Durling",
+    nickname: "caius",
+  },
+}
+</code></pre>
+
+<p>Lets say we want to extract the name and nickname fields from <code>details[:info]</code> hash into their own local variables (or instance variables within a class, more likely.) We should probably handle the case of <code>details[:info]</code> not being a hash, and try not to read from it if that's the case - so we might end up with something like the following:</p>
+
+<pre><code>name = details[:info] &amp;&amp; details[:info][:name]
+nickname = details[:info] &amp;&amp; details[:info][:nickname]
+
+name # =&gt; "Caius Durling"
+nickname # =&gt; "caius"
+</code></pre>
+
+<p>And then in the spirit of <a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">DRYing</a> up our code, we see there's duplication in both lines in checking <code>details[:info]</code> exists (not actually that it's a hash, but hey ho, we rely on upstream to send us <code>nil</code> or a hash.) So we reduce it down using an if statement and give ourselves slightly less to type at the same time.</p>
+
+<pre><code>if (( info = details[:info] ))
+  name = info[:name]
+  nickname = info[:nickname]
+end
+
+name # =&gt; "Caius Durling"
+nickname # =&gt; "caius"
+</code></pre>
+
+<h3 id="returning-two-values-conditionally">Returning two values conditionally</h3>
+
+<p>Sometimes a method will end with a ternary, where depending on a condition it'll either return one or another value. If this conditional returns true, then the first value is returned. Otherwise it returns the second value. You could quite easily write it out as an if/else longer-form block too.</p>
+
+<pre><code>def my_method
+  @blah == foo ? :foo_matches : :no_match
+end
+</code></pre>
+
+<p>My brain finds picking the logic in this apart slightly harder mentally, than if I drop a <a href="http://en.wikipedia.org/wiki/Return_early">return early</a> bomb on the method. Then it reads more akin to how I'd think through the logic. Return the first value if this conditional returns true. Otherwise the method returns this second value. I think the second value being on a completely separate line helps me make this mental distinction quicker too.</p>
+
+<p>So I'd write it this way:</p>
+
+<pre><code>def my_method
+  return :foo_matches if @blah == foo
+  :no_match
+end
+</code></pre>
+
+<h3 id="returning-nil-or-a-value-conditionally">Returning nil or a value conditionally</h3>
+
+<p>Following on from the last snippet, but taking advantage of the ruby runtime a bit more, is when you're wanting to return a value if a conditional is true, or otherwise false. The easy way is to just write <code>nil</code> in the ternary:</p>
+
+<pre><code>def my_method
+  @foo == :bar ? :foo_matches : nil
+end
+</code></pre>
+
+<p>However, we know ruby returns the result of the last expression in the method. And that if a single line conditional isn't met, it returns nil from the expression. Combining that, we can rewrite the previous example into this:</p>
+
+<pre><code>def my_method
+  :foo_matches if @foo == :bar
+end
+</code></pre>
+
+<p>And it will still return nil in the case that <code>@foo</code> doesn't match <code>:bar</code>.</p>
+
+<h3 id="returning-a-boolean">Returning a boolean</h3>
+
+<p>Sometimes you have a method that returns the result of a conditional, but it's written to return true/false in a conditional instead.</p>
+
+<p><code>
+def my_method
+  @foo == :bar ? true : false
+end
+</code></p>
+
+<p>The really easy refactor here is to just remove the ternary and leave the conditional.</p>
+
+<p><code>
+def my_method
+  @foo == :bar
+end
+</code></p>
+
+<p>And of course if you were returning <code>false</code> when the conditional evaluates to <code>true</code>, you can either negate the comparison (use <code>!=</code> in that example), or negate the entire conditional result by prepending <code>!</code> to the line.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

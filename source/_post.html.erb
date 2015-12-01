@@ -1,0 +1,19 @@
+<article>
+
+  <header>
+    <h1><%= article.title %></h1>
+    <time datetime="<%= article.date.utc.iso8601.sub("Z", "+00:00") %>"><%= article.date.utc.strftime("%Y-%m-%d %H:%M:%S") %></time>
+  </header>
+
+  <%= article.body %>
+
+  <footer>
+    <p class="tags">
+      <strong>Tags:</strong> <%= tag_list_for(article.tags) %>
+    </p>
+
+    <p class="license">
+      This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </p>
+  </footer>
+</article>

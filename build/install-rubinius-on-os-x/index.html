@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Install Rubinius on OS X - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Using <a href="https://github.com/postmodern/ruby-install/">ruby-install</a>, <a href="http://brew.sh/">homebrew</a> building it for use with <a href="https://github.com/postmodern/chruby/">chruby</a>, here's how I install <a href="http://rubini.us/">Rubinius</a> under Yosemite (works for Mavericks as well.)</p>
+
+<ol>
+  <li>
+    <p>Make sure llvm is installed</p>
+
+    <pre><code> $ brew install llvm
+</code></pre>
+  </li>
+  <li>
+    <p>Prepend the homebrew-installed llvm tools to your path</p>
+
+    <pre><code> $ export PATH="$(brew --prefix llvm)/bin:$PATH"
+
+ # Or, for ZSH
+ $ path=( $(brew --prefix llvm)/bin $path )
+</code></pre>
+  </li>
+  <li>
+    <p>Install rubinius, v2.3.0 at the time of writing</p>
+
+    <pre><code> $ ruby-install rbx 2.3.0
+</code></pre>
+  </li>
+  <li>
+    <p>Open a fresh shell once that's built, and you should be able to switch to rbx!</p>
+
+    <pre><code> $ chruby rbx
+ $ ruby -v
+ rubinius 2.3.0 (2.1.0 9d61df5d 2014-10-31 3.5.0 JI) [x86_64-darwin14.0.0]
+</code></pre>
+  </li>
+</ol>
+
+<hr />
+
+<p><em>There is also a homebrew tap for rubinius which should also work instead of the above. I couldn't get it working on one of my laptops though, which is why I was installing by hand using the above instead. The tap is at <a href="https://github.com/rubinius/homebrew-apps/">https://github.com/rubinius/homebrew-apps/</a> and <a href="https://twitter.com/brixen/status/529725881498226688">https://twitter.com/brixen/status/529725881498226688</a> explains install steps.</em></p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

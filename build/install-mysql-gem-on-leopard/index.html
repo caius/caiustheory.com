@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Install Mysql Gem on Leopard - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>So, I keep having to reinstall mysql5 and rubygems from time to time for various reasons. I always install mysql5 through <a href="http://macports.org/">MacPorts</a> as a dependency for the php5 port (along with various other bits for the LA*P stack).</p>
+
+<pre><code>sudo port install php5 +mysql5 +pear +readline +sockets +apache2 +sqlite
+</code></pre>
+
+<p>Once this is installed then I have <code>mysql</code> and can setup my databases, etc.</p>
+
+<p>Ignoring the rest of the LAMP stack, I then need to connect Ruby to the Mysql I just installed through MacPorts. Its quite simple to do, once you know the right argument to pass to it. The easiest way is to just tell it where the <code>mysql5_conf</code> file is and let it figure out the rest for itself.</p>
+
+<pre><code>sudo gem install mysql -- --with-mysql-config=/opt/local/bin/mysql_config5
+</code></pre>
+
+<p>Hopefully this will save me 10 minutes of googling next time I need to do this!</p>
+
+<h3 id="update-2009-01-21">Update 2009-01-21</h3>
+
+<p>I'm an idiot and typed the <code>gem install</code> command by hand, and ended up with <code>--with-mysql-conf</code> instead of <code>--with-mysql-config</code>. Updated now.</p>
+
+<h3 id="update-2009-10-19">Update 2009-10-19</h3>
+
+<p>On Snow Leopard I needed to tell rubygems to install the gem as a 64-bit binary. Hattip to <a href="http://www.schmidp.com/2009/06/14/rubyrails-and-mysql-on-snow-leopard-10a380/comment-page-1/">Philipp</a></p>
+
+<pre><code>sudo env ARCHFLAGS="-arch x86_64" gem install mysql -- --with-mysql-config=/opt/local/bin/mysql_config5
+</code></pre>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

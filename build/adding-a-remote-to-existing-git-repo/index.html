@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Adding a remote to existing git repo - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Usually for me this happens when I have an existing project and I setup a <a href="http://github.com/">github</a> repo for it. As part of the setup for the github project, it gives you the commands to run to add the github repo as a remote to my local git repo.</p>
+
+<pre><code>cd existing_git_repo
+git remote add origin git@github.com:caius/foo.git
+git push origin master
+</code></pre>
+
+<p>The problem then is you've added the remote account, but the local master branch isn't tracking the remote master branch, so when you try and just <code>git pull</code> it will fail with a message telling you to set the remote refs up.</p>
+
+<blockquote>
+  <p>Julius:foo(master) caius$ git pull<br />
+You asked me to pull without telling me which branch you<br />
+want to merge with, and 'branch.master.merge' in<br />
+your configuration file does not tell me either.  Please<br />
+name which branch you want to merge on the command line and<br />
+try again (e.g. 'git pull <repository> <refspec>').  
+See git-pull(1) for details on the refspec.</refspec></repository></p>
+
+  <p>If you often merge with the same branch, you may want to<br />
+configure the following variables in your configuration<br />
+file:</p>
+
+  <pre><code>branch.master.remote = &lt;nickname&gt;
+branch.master.merge = &lt;remote-ref&gt;
+remote.&lt;nickname&gt;.url = &lt;url&gt;
+remote.&lt;nickname&gt;.fetch = &lt;refspec&gt;
+</code></pre>
+
+  <p>See git-config(1) for details.</p>
+</blockquote>
+
+<p>The answer is to do what it says funnily enough, and add the remote refs tracking to the config file. The easiest way I've found of doing this is to edit <code>.git/config</code> and add the following at the bottom of it.</p>
+
+<pre><code>[branch "master"]
+    remote = origin
+    merge = refs/heads/master
+</code></pre>
+
+<p><em>Remember to change the branch or remote names if you need to.</em></p>
+
+<p>Once you've added that to the config you can run <code>git pull</code> on the master branch and it'll do the usual automagical thing and pull the remote master branch changes into the local one!</p>
+
+<h4 id="updated-2008-11-09">Updated 2008-11-09</h4>
+
+<p>See CiarÃƒÂ¡n's comment below for an all-inclusive command to do the above.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

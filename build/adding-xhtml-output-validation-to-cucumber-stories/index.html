@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Adding XHTML output validation to Cucumber stories - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>At the 2009 <a href="http://barcampleeds.com/">Barcamp Leeds</a> I attended a talk by <a href="http://neilcrosby.com/vcard/">Neil Crosby</a> where he talked about automated testing, and about how he felt there was a gap in everything that people were testing. Everyone has unit tests, and people are doing full stack testing too, but no-one (so he feels) does XHTML/CSS/JS validation as part of their automated test suite. And certainly from what I've seen on the mainstream Ruby site's about testing, I agreed with him.</p>
+
+<p>So after his talk I had a quick look at his <a href="http://github.com/NeilCrosby/frontend-test-suite/tree/master">frontend test suite</a>, and started wondering where exactly I would fit frontend validation testing into my workflow. Would it be part of my unit tests (RSpec), or part of the full stack tests (Cucumber)? As you've probably guessed by the title of this post, its ended up going into my cucumber tests. Since the initial play its been something I've mused about occasionally, but not something I've actively looked into how to implement as part of my test workflow.</p>
+
+<p>Fast-forward a few weeks from <a href="http://barcampleeds.com/">Barcamp Leeds</a> and I see a news article in my feed reader entitled <a href="http://tenderlovemaking.com/2009/06/12/easy-markup-validation/">"Easy Markup Validation"</a> which gets me hopeful someone's solved this frontend validation thing easily for Rubyists. A quick read through and I'm sold on it and installing the gem. Opened an existing project I'm working on which has a fairly extensive test suite (both unit tests &amp; full stack tests) and tried to slot the validation into my controller unit tests.</p>
+
+<p>Problem with doing this is by default RSpec-rails doesn't generate the views in your controller specs. At that point I realised I was already generating the full page when I was doing a full stack test using <a href="http://github.com/langalex/culerity/tree/master">culerity</a> and <a href="http://cukes.info/">cucumber</a>. So why not just add a cucumber step in my stories to validate the HTML on each page I visit? Mainly because its not enough of a failure for this app to have invalid XHTML markup. Having valid markup would be nice, but I'd rather have it as a separate test to my stories in some way.</p>
+
+<p>Currently I just do that by only validating if <code>ENV["VALIDATION"]</code> is set to anything, so a normal run of my cucumber stories will just test the app does what its supposed to do. If I run them with <code>VALIDATION=true</code> then it will check my markup is valid as well.</p>
+
+<p><strong>features/support/env.rb</strong></p>
+
+<pre><code>require "markup_validity" if ENV["VALIDATION"]
+</code></pre>
+
+<p><strong>features/step_definitions/general_steps.rb</strong></p>
+
+<pre><code>Then %r/the page is valid XHTML/ do
+  $browser.html.should be_xhtml_strict if ENV["VALIDATION"]
+end
+</code></pre>
+
+<p><strong>features/logging_in.feature</strong></p>
+
+<pre><code>Feature: Logging in
+  In order to do stuff
+  As a registered user
+  I want to login
+
+  Scenario: Successful Login
+    Given there is a user called "Caius"
+
+    When I goto the homepage
+    Then the page is valid XHTML
+
+    When I click on the "Login" link
+    Then I am redirected to the login page
+    And the page is valid XHTML
+
+    When I enter my login details
+    And I click "Login"
+    Then I am redirected to my dashboard
+    And the page is valid XHTML
+</code></pre>
+
+<p>Now when I run <code>cucumber features/logging_in.feature</code>, it doesn't validate the HTML, it just makes sure that I can login as my user and that I am redirected to the right places. But if I run <code>VALIDATION=true cucumber features/logging_in.feature</code>, then it <em>does</em> validate my XHTML on the homepage, the login page and on the user's dashboard. If it fails validation then it gives you a fairly helpful error message as to what it was expecting and what it found instead.</p>
+
+<p>From a quick run against a couple of stories in my app I discovered that I've not been wrapping form elements in an enclosing element, so they've been quickly fixed and now they validate. Now I realise this gem is only testing XHTML output, and doesn't include CSS or JS validation, but from a quick peek at the gem's source it should be fairly easy to add both of those in I think, although again they aren't major errors for me yet in this app.</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

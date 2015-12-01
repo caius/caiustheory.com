@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Install GCC-4.2.1 (Apple build 5666.3) with Xcode 4.2 - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>As of Xcode 4.2 Apple have stopped bundling GCC with it, shipping only the (mostly) compatible llvm-gcc binary instead. The suggested fix is to install GCC using the <a href="https://github.com/kennethreitz/osx-gcc-installer">osx-gcc-installer</a> project. However, I wanted to build and install it from source, which apple provides at <a href="http://opensource.apple.com/">http://opensource.apple.com/</a>.</p>
+
+<p>You should already have installed Xcode 4.2 from the app store, then basically the following steps are to grab the tarball from the <a href="http://opensource.apple.com/release/developer-tools-41/">4.1 developer tools source</a>, unpack &amp; compile it, then install it into the right places.</p>
+
+<h2 id="instructions">Instructions</h2>
+
+<pre><code># Grab and unpack the tarball
+$ mkdir ~/tmp &amp;&amp; cd ~/tmp
+$ curl -O http://opensource.apple.com/tarballs/gcc/gcc-5666.3.tar.gz
+$ tar zxf gcc-5666.3.tar.gz
+$ cd gcc-5666.3
+
+# Setup some stuff it requires
+$ mkdir -p build/obj build/dst build/sym
+# And then build it. You should go make a cup of tea or five whilst this runs.
+$ gnumake install RC_OS=macos RC_ARCHS='i386 x86_64' TARGETS='i386 x86_64' \
+  SRCROOT=`pwd` OBJROOT=`pwd`/build/obj DSTROOT=`pwd`/build/dst SYMROOT=`pwd`/build/sym
+
+# And finally install it
+$ sudo ditto build/dst /
+</code></pre>
+
+<p>And now you should have <code>gcc-4.2</code> in your <code>$PATH</code>, available to build all the things that <code>llvm-gcc</code> fails to compile.</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

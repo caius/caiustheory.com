@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Find shell commands with which - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>So I have this command in my $PATH, <code>apachectl</code>. Because I'm on a mac and I've installed apache2 through <a href="http://macports.org/">MacPorts</a>, the command that gets found first is my macports install in <code>/opt</code>. Up until now I've always known that <code>which apachectl</code> will find that location, but to find any other locations of <code>apachectl</code> I'd usually use <code>locate</code> and <code>egrep</code> together.</p>
+
+<p>Here's my original workflow, lets find the location of the <code>apachectl</code> being called when I don't specify a path.</p>
+
+<pre><code>Julius:~ caius$ which apachectl
+/opt/local/apache2/bin/apachectl
+</code></pre>
+
+<p>Simple enough. Now lets figure out what other locations there's an <code>apachectl</code> installed at.</p>
+
+<pre><code>Julius:~ caius$ locate apachectl | egrep "\/apachectl$"
+/opt/local/apache2/bin/apachectl
+/opt/local/var/macports/software/apache2/2.2.11_0+darwin_9/opt/local/apache2/bin/apachectl
+/usr/sbin/apachectl
+</code></pre>
+
+<p>Right, so now I know where else a command exists in the filesystem called <code>apachectl</code>, but I don't know if any of those is in my $PATH, or what order they come in when searching through my $PATH. In this (old) workflow I'd have compared them to my $PATH manually as there's so few of them.</p>
+
+<p>So I noticed <a href="http://awhitebox.com">Ali</a> googling for the <code>which</code> man page on IRC, and <em>(quite stupidly)</em> poked fun at him for doing so. I then swallowed my ego and actually followed the link to the man page, and boy was I glad I did. Just shows with even a fairly simple command like <code>which</code>, you sure don't know everything!</p>
+
+<p>What I discovered was that <code>which</code> has a single flag you can pass it, <code>-a</code>. From the <a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?which">man page</a>:</p>
+
+<pre><code>-a     print all matching pathnames of each argument
+</code></pre>
+
+<p>Right. So that <code>locate | grep</code> command plus manually figuring out what is in my $PATH is really hard work then. <code>which -a</code> should give us the same results, but a lot faster and with a lot less manual thought.</p>
+
+<pre><code>Julius:~ caius$ which -a apachectl
+/opt/local/apache2/bin/apachectl
+/usr/sbin/apachectl
+</code></pre>
+
+<p>And hey presto, yet another useful bit of bash knowledge for me, thanks to <a href="http://awhitebox.com">Ali</a> not being afraid to <acronym title="Read the Fucking Manual">RTFM</acronym>!</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

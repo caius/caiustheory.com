@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Quantum Javascript Bug - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>So I've got some js I've written to update a couple of <code>&lt;select&gt;</code> lists in a form, and it was all working fine for me (under Safari.) <a href="http://johnleach.co.uk/">John</a> happened to mention it wasn't working for him under Firefox, so I fired up Firefox and took a look. Could reproduce it perfectly, changing the first popup was populating the second one, but then wasn't selecting the right value from the list.</p>
+
+<p>Having no idea what was happened I figured I'd enable firebug and watch it execute to figure out what was happening. Enabled firebug, reloaded the page, selected from the first popup… and <strong>voila!</strong> It updated the second one and selected the correct row! WTF!!!</p>
+
+<p>Turned firebug off and it didn't work, turned it back on and it worked. Figured it might be something buggy in the Firefox 3.0.5 js runtime, so I grabbed a copy of the new <a href="http://www.mozilla.com/en-US/firefox/all-beta.html">beta 3.5</a> and tried it in there—still failed to update the page as it should.</p>
+
+<p>Then started poking around the javascript code, the function that was seemingly failing to run was being triggered by a setTimeout() call set to 1 second. We figured it might be the timing causing it, so started playing around with the time, tried anything from ½ a second up to 4 seconds but still no joy in firefox with firebug turned off.</p>
+
+<p>Then <a href="http://johnleach.co.uk/">John</a> went looking for the javascript errors in firefox (with firebug off) and discovered that it was throwing an error because <code>window.console</code> didn't exist. All of a sudden it made perfect sense! Safari has <code>window.console.log()</code> for writing to the console log, as does firebug. But of course firefox <em>without</em> firebug doesn't!</p>
+
+<p>So the function was just exiting on that error. It was very weird initially to have it work perfectly as soon as the developer tools were enabled!</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

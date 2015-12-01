@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Migrating Rubygems to Ruby 1.9.x - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>So I just installed ruby 1.9.1 through <a href="http://macports.org/">MacPorts</a> and wanted to easily migrate my rubygems across from 1.8 to see which ones would fail to install.</p>
+
+<p>Thought about it for a while, then came up with the following bash one-liner to do it:</p>
+
+<pre><code>gem list | grep "(" | awk '{ print $1 }' | xargs -L 1 gem1.9 install
+</code></pre>
+
+<p><strong>NB:</strong> Installing Ruby 1.9.1 through macports <code>sudo port install ruby19</code> means I get <code>ruby1.9</code>, <code>gem1.9</code> and <code>rake1.9</code> installed alongside my usual 1.8 <code>ruby</code>, <code>gem</code> and <code>rake</code>.</p>
+
+<p>That grabs the list of installed gems from <code>gem</code>, searches for lines containing "(" so it only grabs the gem names, spits out the first section of the line, which is the name of the gem, and finally calls <code>gem1.9 install</code> for each line via <code>xargs -L 1</code>. Make sure to run it as root or prefix <code>gem1.9</code> with <code>sudo</code>. <em>(Or let it install in your home folder, but I hate that.)</em></p>
+
+<p>From my quick run of the above snippet, 75% of my gems installed <em>(73 out of 98)</em> and the other few that failed to install were ones like <a href="http://github.com/why/hpricot/tree/master">Hpricot</a> that require native extensions compiling. You can see the entire list of failures and successes of the gems in <a href="http://pastie.textmate.org/pastes/376136">this pastie</a></p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

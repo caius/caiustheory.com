@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Changing hostname in SmartOS Zone - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Given a non-global zone in SmartOS that we want to change the hostname of, we need to make sure to edit the following files to change it:</p>
+
+<ul>
+  <li><code>/etc/hosts</code></li>
+  <li><code>/etc/nodename</code></li>
+</ul>
+
+<p>A quick way to do that is with <code>sed</code> <em>(renaming "fred" to "beth" here)</em>:</p>
+
+<pre><code>sed -e 's/fred/beth/g' -i /etc/hosts /etc/nodename
+</code></pre>
+
+<p>Then shutdown &amp; start the zone <em>(from my testing a restart doesn't apply it)</em>.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

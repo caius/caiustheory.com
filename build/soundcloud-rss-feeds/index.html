@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>SoundCloud RSS Feeds - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p><a href="https://soundcloud.com">SoundCloud</a> appears to have gained popularity in recent times for hosting podcasts on. As a consumer of their service they're pretty good at everything except having a visible RSS feed on a profile page for a show! If I want to listen to a shown in my podcast app of choice, an RSS feed is the easiest way for me to achieve that.</p>
+
+<p>Turns out SoundCloud <em>do</em> have RSS feeds, they're just well hidden and unfindable from the profile page itself. Thankfully, you can construct the URL for it from information on the profile page, and here's a bookmarklet that will do it for you:</p>
+
+<pre><code>javascript:var%20userURI;var%20metaTags=document.getElementsByTagName(
+%22meta%22);for(var%20i=0;i&lt;metaTags.length;i++){t=metaTags[i];if(
+t.attributes[%22property%22]&amp;&amp;t.attributes[%22property%22].value==
+%22al:ios:url%22){userURI=t.content;}}if(userURI){u=userURI.split(%22//%22)[1];
+window.location=%22http://feeds.soundcloud.com/users/soundcloud:%22+u+
+%22/sounds.rss%22;}
+</code></pre>
+
+<p>Or as a <a href="javascript:var%20userURI;var%20metaTags=document.getElementsByTagName(%22meta%22);for(var%20i=0;i&lt;metaTags.length;i++){t=metaTags[i];if(t.attributes[%22property%22]&amp;&amp;t.attributes[%22property%22].value==%22al:ios:url%22){userURI=t.content;}}if(userURI){u=userURI.split(%22//%22)[1];window.location=%22http://feeds.soundcloud.com/users/soundcloud:%22+u+%22/sounds.rss%22;}">handy link</a> to copy to your bookmarks bar. Simply click/run that when on a SoundCloud profile page and you'll be taken to the RSS Feed URL.</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

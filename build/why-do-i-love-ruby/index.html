@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Why do I love Ruby? - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>So mother (who can't program) just posed me the question</p>
+
+<blockquote>
+  <p>Why is Ruby your favourite programming language?</p>
+</blockquote>
+
+<p>Me being a show off jumped straight into <a href="http://macromates.com/">TextMate</a> and banged out some code in real time to show her.  First up, a quick little one-liner of Ruby code to output a String:</p>
+
+<pre><code>puts "Hello World"
+# =&gt; "Hello World"
+</code></pre>
+
+<p>So she goes, "Sure, but whats so brilliant about that?" So I just decide to reverse the string, have it output in reverse order:</p>
+
+<pre><code>puts "Hello World".reverse
+# =&gt; "dlroW olleH"
+</code></pre>
+
+<p>Then the next question comes, "So what makes that so much easier than in other languages?" Well now I was thinking on the spot about which other language I can bang out a quick example in without having to look up too much information.  PHP seems the logical choice, being the language I know best behind Ruby.</p>
+
+<p>Thinking about how to do it in PHP, I can't think of a function to reverse the content of a string, but I know that <code>array_reverse()</code> exists, so I just split it into an array and reverse that array.  Only problem is I can't remember how to split a string by <code>""</code>, I don't think <code>explode( "", $var )</code> does the job.  So I quickly jump in and write the following code to test my concern.</p>
+
+<pre><code>&lt;?php
+$a = "Hello World"
+$b = explode( "", $a );
+$c = array_reverse( $b );
+echo implode( "", $c );
+?&gt;
+# =&gt; ERROR
+</code></pre>
+
+<p>The reason for the error is because I've missed a semi colon off the end of line 2, to this I get the response, "well thats certainly not as nice as ruby." Just because one little character is missing!</p>
+
+<p>So I fix the semi colon and run it again, now I get an error complaining about explode not being able to split by a missing delimiter (the empty string - <code>""</code>)  So I go hunting through the <a href="http://php.net/">php.net</a> docs and find <code>str_split()</code>, which does exactly what I want it to.</p>
+
+<p>In replacing <code>explode()</code> with <code>str_split()</code> and running it via the <code>php</code> command line binary, I realise that I haven't got any <code>\n</code> (newlines) at the end of it, so it doesn't display nicely in the terminal.  I thus update the script to the following and show her the result:</p>
+
+<pre><code>&lt;?php
+$a = "Hello World";
+$b = explode( "", $a );
+$c = array_reverse( $b );
+echo implode( "", $c )."\n";
+?&gt;
+# =&gt; "dlroW olleH"
+</code></pre>
+
+<p>And so she goes away seeing why I prefer Ruby to other languages for <em>most</em> programming I do. There are things Ruby fails at (and don't get me started on why rails isn't going to replace php!) and other places where it succeeds very well.</p>
+
+<p>But each to their own, and my own favourite is Ruby!</p>
+
+<h3 id="update">Update</h3>
+
+<p>As pointed out in the comments, if I had looked a bit further I would've found <code>strrev()</code> which does the same as the <code>reverse</code> method in Ruby.  So in fact the final code would be:</p>
+
+<pre><code># Ruby Code
+puts "Hello World".reverse
+
+# PHP Code
+echo strrev( "Hello World" );
+</code></pre>
+
+<p>So it turns out this was a bad way to show why I prefer Ruby to PHP code wise to mother, think I might have to just bite the bullet and write about why I prefer <code>object.method</code> to <code>method( object )</code>!</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>The Shell Meme - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>I ran across <a href="http://lstoll.net/2008/04/shell-meme/">The Shell Meme</a> on <a href="http://lstoll.net/">Lincoln Stoll's</a> blog, and figured I'd, uh, <em>borrow</em> it.</p>
+
+<p>Run this command in a new shell:</p>
+
+<pre><code>history|awk '{a[$2]++} END{for(i in a){printf "%5d\t%s\n ",a[i],i}}'|sort -rn|head
+</code></pre>
+
+<p>I get this as the output</p>
+
+<pre><code>379    git
+221    cd
+181    ssh
+77    sudo
+69    ruby
+66    ls
+34    rake
+33    m
+32    bb
+31    m.
+</code></pre>
+
+<p><code>bb</code> changes directory straight into my <a href="http://www.brightbox.co.uk/">BrightBox</a> source directory. <code>m</code> and <code>m.</code> are <a href="http://macromates.com/">TextMate</a> alias's to open files or directories in TextMate for editing.</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Compile &amp; run swift files directly - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.</p>
+
+<p>Using the <code>xcrun</code> binary, we can reach into the current Xcode <code>/bin</code> folder and run binaries within there. So <code>xcrun swift</code> lets you run the swift binary to compile files for instance. If you view the help with <code>-h</code>, there's a useful flag <code>-i</code> listed there:</p>
+
+<blockquote>
+  <p>-i               Immediate mode</p>
+</blockquote>
+
+<p>Turns out immediate mode means "compile &amp; run" in the same command, which is what we're after.</p>
+
+<pre><code>    $ cat hello.swift
+    println("Hello World")
+
+    $ xcrun swift -i hello.swift
+    Hello World
+</code></pre>
+
+<p>Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!</p>
+
+<pre><code>    $ cat hello2.swift
+    #!/usr/bin/env xcrun swift -i
+    
+    println("Hello World 2")
+
+    $ chmod +x hello2.swift
+    $ ./hello2.swift
+    Hello World 2
+</code></pre>
+
+<p>No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

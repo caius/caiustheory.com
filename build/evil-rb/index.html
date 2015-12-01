@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>evil.rb - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Here be hax. Don't <strong>ever</strong> do these. ;-)</p>
+
+<h2 id="reduce-local-variables-with-instanceeval">Reduce local variables with instance_eval</h2>
+
+<p>Sometimes (usually in a one-liner) I want to do some work with a value without assigning it to a variable. Chucking an <code>#instance_eval</code> call in there will set <code>self</code> to the value, which saves having to assign it to a local value. Pretty much only used by me in one-off scripts or cli commands.</p>
+
+<h4 id="good">Good</h4>
+
+<pre><code>start_date, end_date = ["24 Dec 2011", "23 Jan 2013"].map {|d| Date.parse(d) }
+puts "#{start_date} to #{end_date} is #{(end_date - start_date).to_i} days"
+</code></pre>
+
+<h4 id="bad">Bad</h4>
+
+<pre><code>puts ["24 Dec 2011", "23 Jan 2013"].map {|d| Date.parse(d) }
+  .instance_eval { "#{first} to #{last} is #{(last - first).to_i} days" }
+</code></pre>
+
+<p>See, way less code! <em>cough, cough</em></p>
+
+<h3 id="bonus-usage-misdirection">Bonus usage: Misdirection</h3>
+
+<p>I also dropped some instance_eval on our campfire bot at <a href="https://emberads.com/">EmberAds</a> to always blame one person, but without the code reading as such.</p>
+
+<pre><code>%w{Dom Mel Caius CBetta Baz}.sample.instance_eval { "(4V5A8F5T=&amp;$`".unpack("u")[0] }
+</code></pre>
+
+<p>That does not return one of the array elements as you might think it does from quickly scanning the code…</p>
+
+<h2 id="set-method-local-variables-in-default-arguments">Set method-local variables in default arguments</h2>
+
+<p>You have a method and it takes one argument, which has a default value of <code>nil</code> specified. You then run into the situation where you need to know if <code>nil</code> was passed to the method, or if you're getting the default value of <code>nil</code>. You could change the default value to something you choose to be the "default value" and unlikely to be passed from elsewhere as the argument's value, and reset the parameter to <code>nil</code> after checking it, like this:</p>
+
+<pre><code>def output name=:default_value
+  if name == :default_value
+    name = "caius"
+    default = true
+  end
+
+  "name: #{name.inspect} -- default: #{default.inspect}"
+end
+
+output() # =&gt; "name: \"caius\" -- default: true"
+output("fred") # =&gt; "name: \"fred\" -- default: nil"
+</code></pre>
+
+<p>That's quite a lot of code added to the method just to find out if we passed a default value or not. And if we forget to reset the value when it's <code>:default_value</code> then we end up leaking that into whatever the method does with that value. We also have the problem that one day the program <em>could</em> possibly send that "default value" we've chosen as the actual parameter, and we'd blindly change it thinking it was set as the default value, not the passed argument.</p>
+
+<p>Instead we could (ab)use the power of ruby, and have ruby decide to set <code>default = true</code> for us when, and only when, the variable is set <em>to</em> the default value.</p>
+
+<pre><code>def output name=((default=true); "caius")
+  "name: #{name.inspect} -- default: #{default.inspect}"
+end
+
+output() # =&gt; "name: \"caius\" -- default: true"
+output("fred") # =&gt; "name: \"fred\" -- default: nil"
+</code></pre>
+
+<p>As you can see, the output is identical. Yet we have no extra code <em>inside</em> the method to figure out if we were given the default value or not. And as a bonus to that, we no longer have to check for a specific value being passed and presume that is actually the default, and not one passed by the program elsewhere.</p>
+
+<p>I posted this one in <a href="https://gist.github.com/1528785">a gist</a> a while back (to show <a href="http://avdi.org/">Avdi</a> it looks like), and people came up with some more insane things to do with it, including <a href="https://gist.github.com/1528785#comment-71861">returning early</a>, <a href="https://gist.github.com/1528785#comment-71862">raising errors</a> or even <a href="https://gist.github.com/1528785#comment-71876">redefining the current method</a>, all from the argument list! I'd suggest going to read them, it's a mixture of OMG HAHA and OMFG NO WAY WHYY?!?!.</p>
+
+<h3 id="dont-do-this">Don't do this.</h3>
+
+<p>Don't do the above. No really, don't do them. Unless you're writing a one-off thing. But seriously, don't do them. :-D</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Automatically Deploying Website From Remote Git Repository - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Before I start, I'll just quickly run through where I put stuff on my server. Apache logs and config are in the ubuntu default folders: <code>/var/log/apache2</code> and <code>/etc/apache2/</code> respectively.</p>
+
+<pre><code>Websites:  /home/caius/vhosts/&lt;domain name&gt;/htdocs
+Git Repos: /home/caius/git/&lt;domain name&gt;.git
+</code></pre>
+
+<p>So I have a git repo locally, <code>~/projects/somesite.com/</code>, and want to deploy it to my webserver. I'll keep the git repo in <code>~/git/</code> and set it up so that when I push to the repo <em>(over ssh)</em> it will automatically checkout the new changes into the website's htdocs folder.</p>
+
+<p>I'm assuming DNS is already setup (or I've used <a href="http://github.com/bjeanes/ghost/tree/master">ghost</a> to map it locally.) And that I've setup the virtualhost in apache pointing at <code>/home/caius/vhosts/somesite.com/htdocs</code> and reloaded apache so the config is in place.</p>
+
+<h2 id="remote-machine">Remote Machine</h2>
+
+<p>We create a bare git repo, then point the working tree at the docroot of our website. This means all the git stuff is kept in the <code>somesite.git</code> folder, but the files themselves are checked out to the website's folder. Then we setup a post-receive hook to update the worktree folder after new changes have been pushed to the repo.</p>
+
+<pre><code>$ cd git
+$ mkdir somesite.git
+$ cd somesite.git/
+$ git init --bare
+Initialized empty Git repository in /home/caius/git/somesite.git/
+$ git --bare update-server-info
+$ git config core.worktree /home/caius/vhosts/somesite.com/htdocs
+$ git config core.bare false
+$ git config receive.denycurrentbranch ignore
+$ cat &gt; hooks/post-receive
+#!/bin/sh
+git checkout -f
+^D
+$ chmod +x hooks/post-receive
+</code></pre>
+
+<h2 id="local-machine">Local Machine</h2>
+
+<p>And now on the client machine we add the remote repo as a git remote, and then push to it.</p>
+
+<pre><code>$ git remote add web ssh://myserver/home/caius/git/somesite.git
+$ git push web +master:refs/heads/master
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 229 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To ssh://myserver/home/caius/git/somesite.git
+ * [new branch]      master -&gt; master
+</code></pre>
+
+<h2 id="all-done">All Done</h2>
+
+<p>And now if you go to <em>somesite.com</em> you'll see the contents of your git repo there. (<em>somesite.com</em> is just an example url though, I don't actually own it!)</p>
+
+<h3 id="helpful-urls">Helpful URLs</h3>
+
+<ul>
+  <li><a href="http://toroid.org/ams/git-website-howto">http://toroid.org/ams/git-website-howto</a></li>
+  <li><a href="http://www.mblondel.org/journal/2008/05/25/git-memo/">http://www.mblondel.org/journal/2008/05/25/git-memo/</a></li>
+  <li><a href="http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html">http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html</a></li>
+</ul>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

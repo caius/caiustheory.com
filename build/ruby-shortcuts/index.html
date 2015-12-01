@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Ruby Shortcuts - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>There's a few useful shorthand ways to create certain objects in Ruby, a couple of obvious ones are <code>[]</code> to create an <code>Array</code> and <code>{}</code> to create a <code>Hash</code> (Or block/<code>Proc</code>). There's some not so obvious ones too, for creating strings, regexes and executing shell commands.</p>
+
+<p>With all of the examples I've used <code>{}</code> as the delimiter characters, but you can use a variety of characters. Personally I tend to use <code>{}</code> unless the string contains them, in which case I'll use <code>//</code> or <code>@@</code>. My only exception appears to be <code>%w</code>, for which I tend to use <code>()</code>.</p>
+
+<h3 id="strings">Strings</h3>
+
+<p><code>%</code> and <code>%Q</code> are the same as using double quotes, including string interpolation. Really useful when you want to create a string that contains double quotes, but without the hassle of escaping them.</p>
+
+<pre><code>%{}                 # =&gt; ""
+%Q{}                # =&gt; ""
+
+%{caius}            # =&gt; "caius"
+%{caius #{5}}       # =&gt; "caius 5"
+%{some "foo" thing} # =&gt; "some \"foo\" thing"
+</code></pre>
+
+<p><code>%q</code> is equivalent to using single quotes. Behaves exactly the same, no string interpolation.</p>
+
+<pre><code>%q{}           # =&gt; ''
+%q{caius}      # =&gt; "caius"
+%q{caius #{5}} # =&gt; "caius \#{5}"
+</code></pre>
+
+<h3 id="arrays">Arrays</h3>
+
+<p><code>%w</code> is the equivalent of using String#split. It takes a string and splits it on whitespace. With the added bonus of being able to escape whitespace too. <code>%W</code> allows string interpolation.</p>
+
+<pre><code>%w(foo bar sed)  # =&gt; ["foo", "bar", "sed"]
+%w(foo\ bar sed) # =&gt; ["foo bar", "sed"]
+%W(foo #{5} bar) # =&gt; ["foo", "5", "bar"]
+</code></pre>
+
+<h3 id="regexes">Regexes</h3>
+
+<p><code>%r</code> is just like using <code>//</code> to create a regexp object. Comes in handy when you're writing a regex containing <code>/</code> as you don't have to continually escape it.</p>
+
+<pre><code>%r{foo|bar} # =&gt; /foo|bar/
+%r{foo/bar} # =&gt; /foo\/bar/
+</code></pre>
+
+<h3 id="symbols">Symbols</h3>
+
+<p><code>%s</code> creates a symbol, just like writing <code>:foo</code> manually. It takes care of escaping the symbol, but unlike <code>:""</code> it doesn't allow string interpolation however.</p>
+
+<pre><code>%s{foo}      # =&gt; :foo
+%s{foo/bar}  # =&gt; :"foo/bar"
+:"foo-#{5}"  # =&gt; :"foo-5"
+%s{foo-#{5}} # =&gt; :"foo-\#{5}"
+</code></pre>
+
+<h3 id="shelling-out">Shelling out</h3>
+
+<p><code>%x</code> is the same as backticks (<code>``</code>), executes the command in a shell and returns the output as a string. And just like backticks it supports string interpolation.</p>
+
+<pre><code>`echo hi`     # =&gt; "hi\n"
+%x{echo hi}   # =&gt; "hi\n"
+%x{echo #{5}} # =&gt; "5\n"
+</code></pre>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

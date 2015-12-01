@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>+[NSObject load] in MacRuby - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p><em>If you've not heard of it, <a href="http://www.macruby.org/">MacRuby</a> is <q>an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.</q> Basically means you write in Ruby using Objective-C frameworks, and vice versa. It's pretty damn cool to be honest!</em></p>
+
+<h3 id="what-is-nsobject-load">What is +[NSObject load]?</h3>
+
+<p>From the <a href="http://developer.apple.com/mac/library/documentation/cocoa/reference/foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load">documentation</a>:</p>
+
+<blockquote>
+  <p>Invoked whenever a class or category is added to the Objective-C runtime; implement this method to perform class-specific behavior upon loading.</p>
+</blockquote>
+
+<p>This means when your class is loaded, and implements the <code>load</code> method, you get a <code>load</code> message sent to your class. Which means you can start doing stuff as soon as your class is loaded by the runtime.</p>
+
+<p>The main place I've seen it used (and used it myself) is in <a href="http://www.culater.net/software/SIMBL/SIMBL.php">SIMBL</a> plugins. A SIMBL plugin is an NSBundle that contains code which is loaded (injected) into a running application shortly after said application is launched. It lets you extend (or "fix") cocoa applications with additional features. So you have this bundle of code, that gets loaded into a running application some point after it starts, and you want to run some code as the bundle is loaded - usually to kick off doing whatever you want to do in the plugin. This is where <code>load</code> becomes useful.</p>
+
+<p>Here's a quick implementation that just logs to the console:</p>
+
+<pre><code>@implementation MainController
+
++ (void) load
+{
+    NSlog(@"MainController#load called");
+}
+</code></pre>
+
+<h3 id="now-where-does-macruby-come-into-this">Now where does MacRuby come into this?</h3>
+
+<p>Well I came across a need to do the same in ruby, have some code triggered when the class is loaded into the runtime. Tried implementing <code>Class.load</code> but to no avail. Then remembered MacRuby is just ruby! And I can call any code from within my ruby class definition.</p>
+
+<p>For continuity I still call it <code>Class.load</code>, but then call it as soon as I've defined it in the class. Eg:</p>
+
+<pre><code>class MainController
+
+    def self.load
+        NSLog "MainController#load called"
+    end
+    self.load
+
+end
+</code></pre>
+
+<p>Of course, I'm not sure when the Objective-C method is called, it's probably after the entire class has been defined rather than as soon as <code>load</code> has been loaded into the runtime. So you might want to move the <code>self.load</code> call to just before the closing <code>end</code>.</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>
