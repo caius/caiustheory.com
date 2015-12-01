@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Refactoring code logically - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>And now an example of how I write my ruby code and get it down to the bare, readable, minimum code needed. This is real life code taken from a website I'm building, but I've changed the objects to a blog post because more people will relate to that easier.</p>
+
+<p>The show object has an id passed in using the <code>params</code> Hash, I want to check if that post exists in the database first.  If it does, then render the page, and if it doesn't return a 404 error page.</p>
+
+<p>So I start off by writing this in <em>longhand</em> ruby, I'm using the <a href="http://merbivore.com/">merb</a> framework with <a href="http://datamapper.com/">DataMapper</a> ORM by the way.</p>
+
+<pre><code>def show
+    @post = Post.first(params[:id])
+    if @post
+        render
+    else
+        raise "404 - Not found"
+    end
+end
+</code></pre>
+
+<p>Now whilst theres nothing wrong with this code, it just doesn't look right to me. There is a big if/else statement in there whilst I'm sure there doesn't need to be.</p>
+
+<p>Now I know if I return at any point in a ruby method, it exits the method at that point. So the first thing to is to refactor the <code>if</code> test to remove a line of code. I shall assign <code>@post</code> to the result of the DB as the actual if statement's test.</p>
+
+<pre><code>def show
+    if @post = Post.first(params[:id])
+        render
+    else
+        raise "404 - Not found"
+    end
+end
+</code></pre>
+
+<p>So thats reading slightly better, and also is a line less of code. Now I wonder if I can use a <code>return true</code> in there to stop me having to explicitly state an <code>else</code> clause.</p>
+
+<pre><code>def show
+    if @post = post.first(params[:id])
+        render
+        return true
+    end
+    raise "404 - Not found"
+end
+</code></pre>
+
+<p>Now the eagerest amongst you will be wondering what the advantage of that code is. It doesn't appear any more readable (slightly less in fact as you have to figure out its an implicit else) and is exactly the same amount of lines as the previous example. But what if we change the <code>if</code> to an <code>if !</code> and flip the code logic around?</p>
+
+<pre><code>def show
+    if !@post = Post.first(params[:id])
+        raise "404 - not found"
+    end
+    render
+end
+</code></pre>
+
+<p>Now a raise will stop the code executing, and in the real application you would in fact just redirect to your 404 error page. The problem now is the <code>if !</code> looks ugly and isn't easily readable.</p>
+
+<p>All <code>unless</code> does is <code>if !</code>, that is, if the inverse of the result of the test statement is true, then invoke the block given to it. A quick example for you:</p>
+
+<pre><code># without unless
+if !@user.logged_in?
+    puts "Please login."
+end
+
+# using unless
+unless @user.logged_in?
+    puts "Please login."
+end
+</code></pre>
+
+<p>Now whilst <code>if !</code> doesn't seem that bad compared to <code>unless</code>, the readablility of the code increases. It reads more as a flow of logic, and is quicker for the human brain to walk through (my brain anyway!)</p>
+
+<p>So using unless we get 4 lines of code that is easily readable.</p>
+
+<pre><code>def show
+    unless @post = Post.first(params[:id])
+        raise "404 - Not found"
+    end
+    render
+end
+</code></pre>
+
+<p>Now what if we go one step further and use the unless shorthand way of testing and exectuting one line of code?</p>
+
+<pre><code>def show
+    raise "404 - Not found" unless @post = Post.first(params[:id])
+    render
+end
+</code></pre>
+
+<p>And that is generally how I write my code logically.  Of course for something simple like this I'd probably jump in at the last block having refactored it in my head first, but for more complex things I tend to write them exlicitly and then refactor them down whilst maintaining readability of my code.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

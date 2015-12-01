@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Installing Ubuntu on an iMac G3 - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>I decided to install ubuntu onto my iMac G3<ref>450Mhz G3, 768mb ram, 20GB Hard Drive</ref> to play around with.  Only problem was it would boot so far, then just stop at a black screen.  In googling the fix, the blog post that contains the fix is <em>slightly</em> outdated and 100% 404.</p>
+
+<p>Here is the fix, updated for Ubuntu 6.10 Desktop PPC:</p>
+
+<ol>
+  <li>
+    <p>When the screen goes black, drop to the console</p>
+
+    <pre><code> Control - Option - F2
+</code></pre>
+
+    <p><em>(if you need to log in use the name ubuntu to log in.)</em></p>
+
+    <pre><code> $ sudo nano /etc/X11/xorg.conf
+</code></pre>
+  </li>
+  <li>
+    <p>Change the frequencies in monitor section as follows:</p>
+
+    <pre><code> Section “Monitor”
+     Identifier “Generic Monitor”
+     Option “DPMS”
+     HorizSync 60-60
+     VertRefresh 43-117
+ EndSection
+</code></pre>
+  </li>
+  <li>After the changes then type <code>control-o</code>, <code>return</code> (to accept the filename), then <code>control-x</code> (save and exit nano)</li>
+  <li>
+    <p>Restart X by running the following:</p>
+
+    <pre><code> sudo killall gdm &amp;&amp; sudo /etc/init.d/gdm start
+</code></pre>
+  </li>
+</ol>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Read standard input using Objective-C - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>On a couple of occasions now I've wanted to read from <code>STDIN</code> into an Objective-C command line tool, and both times I've had to hunt quite a bit to find the answer because nothing shows up in google for the search terms I used. "Objective-c read from stdin" and "objc read stdin" both turn up results ranging from using <code>NSInputStream</code> to dropping some C++ in there.</p>
+
+<p>The answer is quite simple really, just use <code>NSFileHandle</code>. More specifically <code>+[NSFileHandle fileHandleWithStandardInput]</code>. You can then read all data currently in <code>STDIN</code>, monitor it for new data and anything else you can do with a normal <code>NSFileHandle</code>.</p>
+
+<p>And here's some example code, reads all data from <code>STDIN</code> and stores it into an NSString:</p>
+
+<pre><code>NSFileHandle *input = [NSFileHandle fileHandleWithStandardInput];
+NSData *inputData = [NSData dataWithData:[input readDataToEndOfFile]];
+NSString *inputString = [[NSString alloc] initWithData:inputData encoding:NSUTF8StringEncoding];
+</code></pre>
+
+<p><em>I'm using this in GarbageCollected apps, memory management without GC is left as an exercise to the user.</em></p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

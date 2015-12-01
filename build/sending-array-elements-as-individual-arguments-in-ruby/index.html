@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Sending Array elements as individual arguments in Ruby - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Lets imagine we've got an array of strings, and we want to print it out as a list of strings using printf. <em>(If you're complaining about my logic here, hold fire for just a second good sir/madam.)</em></p>
+
+<p>So we start off with the array of strings, and then pass it to printf with the right amount of <code>%s</code>'s in the format string:</p>
+
+<pre><code>arr = ["one", "two", "three"]
+
+printf "%s, %s, %s", arr
+# ~&gt; -:3:in `printf': too few arguments (ArgumentError)
+# ~&gt;     from -:3
+</code></pre>
+
+<p>Oh whoops, we've actually only passed <code>"%s, %s, %s", ["one", "two", "three"]</code> to printf. So of course it whinges about not getting enough arguments. Now how do we fix this, how <strong>do</strong> we pass an array with each element a seperate argument to a method?</p>
+
+<p>We use the <code>*</code> of course! Just prefix the variable name with <code>*</code> and the method is passed each element as separate arguments, rather than the whole array as one arguement.</p>
+
+<p>Going back to our <code>printf</code> example above, we simply insert one character <em>(the lowly <code>*</code>)</em> and end up with a string being outputted.</p>
+
+<pre><code>printf "%s, %s, %s", *arr
+# &gt;&gt; one, two, three
+</code></pre>
+
+<p>Now I realise this is a partially stupid example, but it serves to explain the point I wanted to make. If you were complaining about my choice of printf earlier, here is the way I think most rubyists would solve this problem instead.</p>
+
+<pre><code>arr = ["one", "two", "three"]
+
+print arr.join(" ")
+# &gt;&gt; one two three
+</code></pre>
+
+<p>And if I wanted to be slightly cleverer with the <code>printf</code> version, and print out an array containing an unknown number of strings, but of a set width, then I could do the following. <em>(NB: This is actually how I ran into this problem.)</em></p>
+
+<pre><code>arr = ["one", "two", "three"]
+
+printf arr.map { "%6s" }.join, *arr
+# &gt;&gt;    one   two three
+</code></pre>
+
+<p>And that is where the lowly <code>*</code> comes in.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

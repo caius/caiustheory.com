@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>App Store Hidden Preferences - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p><em>See the Update at the end before you get excited :(</em></p>
+
+<p>Having just installed 10.6.6 to use the Mac App Store, I was <a href="http://twitter.com/Caius/status/23096911170899968">slightly annoyed</a> that it fills my dock with apps as I install them. I'm a bit strange, in that I use a hidden preference to make the dock uneditable (it stops me accidentally dragging an app off.) But that means I can't drag off the Mac App Store installed apps either.</p>
+
+<p>Had a quick look through <code>/Applications/App Store.app/Contents/MacOS/App Store</code> with <code>strings</code> (love that tool) and noted a few strings that looked interesting. (There's a full list <a href="https://gist.github.com/768442">in this gist</a>.) There wasn't anything that explicitly stated it stopped it putting anything in the dock, but I did notice an option that stopped it showing <strong>install progress</strong> in the dock.</p>
+
+<p>Yank up a terminal window, bash out the following…</p>
+
+<pre><code>defaults write com.apple.appstore FRDebugShowInstallProgress -bool NO
+</code></pre>
+
+<p>…head back to the MAS and install another (free) app, and hey presto, it's leaving my dock alone! Hopefully that's all I needed to continue using my Dock as I like. (Hidden, and left alone.)</p>
+
+<p><strong>Update 2011-01-06:</strong></p>
+
+<p>Seems my joy was short-lived. I'd re-downloaded an app I'd already purchased and it just showed download progress in the MAS app, not in the dock. Installing new applications still shows up in the dock (annoyingly.)</p>
+
+<p>I've been having a poke through how it all hangs together, and if it's possible to actually block downloads from the Dock or not. It doesn't look like there's a hidden preference to hide new apps from downloading in the dock, you can just disable the progress bars in the dock with prefs. The MAS.app seems to be codenamed "Firenze", with <a href="https://gist.github.com/768829">the "hidden" prefs</a> being prefixed with "FRDebug".</p>
+
+<p>As I understand it, the App\ Store.app invokes a binary inside <code>/System/Library/PrivateFrameworks/CommerceKit.framework</code> called "storeagent" to do the actual downloading/talking to the dock. From looking at the <a href="https://gist.github.com/768837">class-dump</a> of storeagent it communicates with the dock to place a new type of DockTile. Interesting sounding methods to (potentially?) swizzle are <code>-[DownloadQueue sendDownloadListToDock]</code> and <code>-[DownloadQueue tellDockToAddDownload:]</code>.</p>
+
+<p>I've given up for now, but I reckon it should be possible to create a bundle that swizzles the right methods in storeagent to stop it placing the downloads on the Dock.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>#to_param and keyword slugs - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Imagine you've got a blogging app and it's currently generating URL paths like <code>posts/10</code> for individual posts. You decide the path should contain the post title (in some form) to make your URLs friendlier when someone reads them. I know I certainly prefer to read <a href="http://caiustheory.com/abusing-ruby-19-and-json-for-fun">http://caiustheory.com/abusing-ruby-19-and-json-for-fun</a> vs <a href="http://caiustheory.com/?id=70">http://caiustheory.com/?id=70</a>. <em>(That's a fun blog post if you're into (ab)using ruby occasionally!)</em></p>
+
+<p>Now you know <em>all</em> about how to change the URL path that rails generates—just define <code>to_param</code> in your app. Something simple that generates a slug consisting of hyphens and lowercase alphanumerical characters. For example:</p>
+
+<pre><code># 70-abusing-ruby-1-9-json-for-fun
+def to_param
+  "#{id}-#{title.gsub(/\W/, "-").squeeze("-")}".downcase
+end
+</code></pre>
+
+<p><em><strong>NB</strong>: You might want to go the route of storing the slug against the post record in the database and thus generating it before saving the record. In which case the rest of this post is sort of moot and you just need to search on that column. If not, then read on!</em></p>
+
+<p>Now we're generating a nice human-readable URL we need to change the way we find the post in the controller's show action. Up until now it's been a simple <code>@post = Post.find(params[:id])</code> to grab the record out the database. Problem now is <code>params[:id]</code> is <code>"70-abusing-ruby-1-9-json-for-fun"</code>, rather than just <code>"70"</code>. A quick check in the <a href="http://ruby-doc.org/core/classes/String.html#M001149">String#to_i</a> docs reveals it "Returns the result of interpreting leading characters in str as an integer base base (between 2 and 36)." Basically it extracts the first number it comes across and returns it.</p>
+
+<p>Knowing that we can just lean on it to extract the id before using find to look for the post: <code>@post = Post.find(params[:id].to_i)</code>. Fantastic! We've got nice human readable paths on our blog posts and they can be found in the database. All finished… or are we?</p>
+
+<p>There's still a rather embarassing bug in our code where we're not explicitly checking the slug in the URL against the slug of the Post we've extracted from the database. If we visited <code>/posts/70-ruby-19-sucks-and-python-rules-4eva</code> it would load the blog post and render it without batting an eyelid. This has caused <a href="http://www.niemanlab.org/2011/04/how-url-spoofing-can-put-libelous-words-into-news-orgs-mouths/">rather a few embarrassing situations</a> for some high profile media outlets who don't (or didn't) check their URLs and just output the content. Luckily there's a simple way for us to check this.</p>
+
+<p>All we want to do is render the content if the id param matches the slug of the post exactly, and return a 404 page if it doesn't. We already know the id param (<code>params[:id]</code>) and have pulled the Post object out of the database and stored it in an instance variable (<code>@post</code>). The <code>@post</code> knows how to generate it's own slug, using <code>#to_param</code>.</p>
+
+<p>So we end up with something like the following in our posts controller, which does all the above and correctly returns a 404 if someone enters an invalid slug (even if it starts with a valid post id):</p>
+
+<pre><code>def show
+  @post = Post.find(params[:id].to_i)
+  render_404 &amp;&amp; return unless params[:id] == @post.to_param
+end
+
+def render_404
+  render :file =&gt; Rails.root + "public/404.html", :status =&gt; :not_found
+end
+</code></pre>
+
+<p>And going to an invalid path like <code>/posts/70-ruby-19-sucks-and-python-rules-4eva</code> just renders the default rails 404 page with a 404 HTTP status. (If you want the id to appear at the end of the path, alter <code>to_param</code> accordingly and do something like <code>params[:id].match(/\d+$/)</code> to extract the Post's id to search on.)</p>
+
+<p>Hey presto, we've implemented human readable slugs that are tamper-proof (without storing them in the database.)</p>
+
+<p><em>(And bonus points if in fact you spotted I used my blog as an example, but that it isn't a rails app. (Nor contains the blog post ID in the pretty URL.) It's actually powered by <a href="http://habariproject.org/">Habari</a>!</em></p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

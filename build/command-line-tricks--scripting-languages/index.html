@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Command line tricks: Scripting Languages - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>To search your php.ini file quickly and easily with the option to use regular expressions, I tend to drop back to the <acronym title="command line interface">cli</acronym>.  The reason for this is I can easily parse the output of <code>phpinfo()</code> with <code>grep</code>, and can do various things with the output, could even pass it to a script if I really wanted to.</p>
+
+<p>Here is the line I use to search <code>phpinfo()</code></p>
+
+<pre><code>echo "&lt;?php phpinfo() ?&gt;" | php | grep -i $search_string
+</code></pre>
+
+<p>It passes the string through the php interpreter and then searches through it with grep.</p>
+
+<p>You can also do other nifty things with the shell &amp; php + ruby especially (though I imagine python &amp; perl work in the same way.) For instance I wanted to see if the following ruby would return the number of seconds since the <a href="http:/en.wikipedia.org/wiki/Unix_Time">epoch</a> till now.</p>
+
+<pre><code>puts Time.now.to_i
+</code></pre>
+
+<p>Now I could fire up a PHP page and do something like the following</p>
+
+<pre><code>&lt;?php
+    echo "php: " . time() . "\n";
+    echo `ruby -e 'puts "ruby: #{Time.now.to_i}"'`;
+?&gt;
+</code></pre>
+
+<p>But what if I've not got a web server with PHP running on the machine I'm using? Well then I could drop back to the shell and run it through <code>php</code> using <code>cat</code> as a way to insert multiple lines, and it would look like the following</p>
+
+<pre><code>Julius:~ caius$ cat | php
+&lt;?php
+    echo "php: " . time() . "\n";
+    echo `ruby -e 'puts "ruby: #{Time.now.to_i}"'`;
+?&gt;
+^D
+php: 1203004463
+ruby: 1203004463
+</code></pre>
+
+<p>Now this works, but why do I want to remember all that php, and seeing as I have to drop back to the shell to access the ruby statement, why not just let the shell do all the work? So after a few seconds thinking, I came up with this</p>
+
+<pre><code>ruby -e 'puts "ruby: #{Time.now.to_i}"' &amp;&amp; \
+echo '&lt;?php echo "PHP: " . time() . "\n" ?&gt;' | php
+</code></pre>
+
+<p>This runs the ruby code through <code>ruby</code> and the php code through <code>php</code> without dropping back to the shell from within a language interpreter :)</p>
+
+<h3 id="update">Update:</h3>
+
+<p>Following fangels comment pointing out <code>php -r</code> is the equivilent of <code>ruby -e</code> I've since modified the final commands to read as follows</p>
+
+<pre><code>ruby -e 'puts "ruby: #{Time.now.to_i}"' &amp;&amp; \
+php -r 'echo "PHP: ".time()."\n";'
+</code></pre>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

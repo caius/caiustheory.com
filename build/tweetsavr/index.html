@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>TweetSavr - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>I've had a dream for a while. A simple webapp that takes the last tweet in a conversation and outputs that conversation in chronological order on a page you can link to forevermore. Occasionally I'll google to see if anything new's turned up, but they all seem to do far more, require the start and end tweets or are covered in ads.</p>
+
+<p>So one friday evening I just built it. It's called <a href="http://tweetsavr.com/">TweetSavr</a>. It's very simple—to the point the error page is just a standard 500 server error page currently. It fetches, caches and displays a conversation, given just the last tweet in said conversation.</p>
+
+<p>KISS extends to the interface as well, I'm quite a fan of <a href="http://jerz.setonhill.edu/writing/etext/url-hacking.htm">URL hacking</a> to use webapps, so TweetSavr works on that basis as well. The homepage sort of has some help telling you how to use it, but you basically take the (old-twitter) URL of the last tweet and paste it after tweetsavr.com in the address bar. Eg, <a href="http://tweetsavr.com/http://twitter.com/ElizabethN/status/19766711653765120">http://tweetsavr.com/http://twitter.com/ElizabethN/status/19766711653765120</a>. It'll then redirect you through to the actual page for that conversation. You can also put just the status id on the end of the URL, <a href="http://tweetsavr.com/19766711653765120">http://tweetsavr.com/19766711653765120</a> and hey presto, it loads.</p>
+
+<p>The caching layer is moderately rudimentary, after fetching a tweet that isn't in the cache it writes out a hash of data for that tweet into a yaml file. And when looking up a tweet it checks to see if that file exists, reading it in from disk if it is. Bonus side-effect is it builds up a corpus of tweets as yaml files on disk.</p>
+
+<p>It lives on the internet at <a href="http://tweetsavr.com/">http://tweetsavr.com/</a> and the source is on github at <a href="http://github.com/caius/tweetsavr">http://github.com/caius/tweetsavr</a></p>
+
+<p>Side note: isn't it wonderful what we can create given just a few hours, a server somewhere in the cloud, and an idea? Never ceases to amaze me what can be built in just a short amount of time, even the dead simple things.</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Validating Data with Regular Expressions in Ruby - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>I happened to be sent a link to the <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a> paper on <a href="https://www.owasp.org/images/8/89/Rails_Security_2.pdf">Rails Security</a> recently and started reading it. Partway in there's a section on Regular Expressions, which opens with the following line:</p>
+
+<blockquote>
+  <p>A common pitfall in Ruby's regular expressions is to match the string's beginning and end by <code>^</code> and <code>$</code>, instead of <code>\A</code> and <code>\z</code>.</p>
+</blockquote>
+
+<p>Now I've never used <code>\A</code> and <code>\z</code> in my regular expressions to validate data, I've only ever used <code>^</code> and <code>$</code> assuming they matched the start and end of the string. This becomes an issue with validating data in rails, because <code>%0A</code> (<code>\n</code> URL encoded) is decoded by rails before passing the string to your model to validate.</p>
+
+<h2 id="testing-our-expectations">Testing our expectations</h2>
+
+<p>Lets say we want to validate the string as a username for our app. A username is 5 characters long and consists only of lowercase letters.</p>
+
+<pre><code>regex = /^[a-z]{5}$/
+</code></pre>
+
+<p>First we make sure it matches the data we want it to:</p>
+
+<pre><code>"caius".validate(regex) =&gt; true
+</code></pre>
+
+<p>Excellent, that validated. Now we'll try a shorter string, which we expect to fail.</p>
+
+<pre><code>"cai".validate(regex) =&gt; false
+</code></pre>
+
+<p>Once more, it behaves how we expected it to. The shorter string was rejected as we wanted it to be. Now, what happens if we test a string with a newline character in it? We'll make sure the data before the <code>\n</code> is valid, and then add some more data after the newline.</p>
+
+<pre><code>"caius\nfoo".validate(regex) =&gt; true
+</code></pre>
+
+<p>Uh oh! That validated and would've been saved as a username?!</p>
+
+<p>Lets have a look at exactly what's happening there, the <code>$</code> matches the <code>\n</code> character, so the regex is only matching the first 5 characters of the string, and just ignores anything after the <code>\n</code>. As it turns out, this is exactly what we've asked the regex to match, but we didn't want this behaviour.</p>
+
+<p>Now you might be thinking, "So what? someone can have a username with a newline in it." For starters this will probably display weirdly anywhere you use their username, but more importantly it opens your application to an injection attack. Suppose they took advantage of this by setting their username to include some javascript on the page which stole your login cookie and sent it to them. You view their account in the admin section and oh no! They can login as your admin account and do what they want.</p>
+
+<p>Simple example of this is just having it output an alert dialog. <em>(This is actually the code I'll use to test an application as its not malicious, but blindingly obvious if the javascript is executed or not.)</em></p>
+
+<pre><code>"caius\n&lt;script&gt;alert('hello')&lt;/script&gt;".validate(regex) =&gt; true
+</code></pre>
+
+<p>Ok, so that was the result we were expecting this time, although it's still not the outcome we wanted. Anytime their username is viewed (providing you aren't escaping the data to HTML entities) you'll see the following:</p>
+
+<p><img alt="javascript alert dialog" src="http://caius.name/images/qs/javascript-alert-dialog.png" /></p>
+
+<h2 id="the-solution">The Solution</h2>
+
+<p>Having realised from our testing above that ^$ matches the beginning/end of a <em>line</em> in ruby not the beginning and end of a <em>string</em>, I hear you cry, "How do we make sure we're matching the entire string?!"</p>
+
+<p>The answer is pretty simple. Just swap out <code>^$</code> for <code>\A\z</code>. Lets go ahead and try this with the same data as we have above, but with the modified regular expression.</p>
+
+<pre><code>new_regex = /\A[a-z]{5}\z/
+"caius".validate(new_regex) =&gt; true
+</code></pre>
+
+<p>That's a good start, the valid string still matches.</p>
+
+<pre><code>"cai".validate(new_regex) =&gt; false
+</code></pre>
+
+<p>Looks like it's going well, invalid string is invalid.</p>
+
+<pre><code>"caius\nfoo".validate(new_regex) =&gt; false
+</code></pre>
+
+<p>Oh Excellent! It's validating this one correctly now.</p>
+
+<p>And just for consistency, lets test it with a more likely attack string.</p>
+
+<pre><code>"caius\n&lt;script&gt;alert('hello')&lt;/script&gt;".validate(new_regex) =&gt; false
+</code></pre>
+
+<p>Fantastic! We've fixed the security hole in our validation of the user's username.</p>
+
+<hr />
+
+<p>If you want to actually run the code above you'll need the following at the start of the ruby script to patch the validate method into String.</p>
+
+<pre><code>class String
+  def validate regex
+    !self[regex].nil?
+  end
+end
+</code></pre>
+
+<p><strong><em>Update:</em></strong> I had <code>\Z</code> in the <code>new_regex</code> rather than the <code>\z</code> it should've been. Thanks <a href="http://ciaranwal.sh/">Ciarán</a>.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

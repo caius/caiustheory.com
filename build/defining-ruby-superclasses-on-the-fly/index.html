@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Defining Ruby Superclasses On The Fly - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Any rubyist that's defined a class should understand the following class definition:</p>
+
+<pre><code>class Foo &lt; Object
+end
+</code></pre>
+
+<p>It creates a new Constant (<code>Foo</code>) that is a subclass of <code>Object</code>. Pretty straightforward. But what you might not know is that ruby executes each line it reads in as it reads them. So we could do the following to show that:</p>
+
+<pre><code>class Foo &lt; Object
+  puts "we just defined object!"
+end
+</code></pre>
+
+<p>And get the following output when we run that file:</p>
+
+<pre><code># &gt;&gt; we just defined object!
+</code></pre>
+
+<p>So.. we know ruby is executing things on the fly whilst defining classes for us. How can we use this for profit and shenanigans?! (Err, use this for vanquishing evil and creating readable code I mean. Honest.)</p>
+
+<p>How about if we've got a couple of opinionated people who like to think they've got the biggest ego in the interpreter? The last one to be loaded likes to have any new people ushered into the interpreter to be a subclass of themselves. Lets abuse a global for storing it in, and use a method to choose that on the fly when creating a new class.</p>
+
+<pre><code>def current_awkward_bugger
+  $awkward_bugger
+end
+
+class Simon; end
+$awkward_bugger = Simon
+
+class Fred &lt; current_awkward_bugger()
+end
+Fred.superclass # =&gt; Simon
+
+class Harold; end
+$awkward_bugger = Harold
+
+class John &lt; current_awkward_bugger()
+end
+John.superclass # =&gt; Harold
+</code></pre>
+
+<p>Okay, so that looks a bit different to normally defined classes. We create <code>Simon</code>, assign him to the awkward bugger global then create <code>Fred</code>, who subclasses the return value of the <code>current_awkward_bugger</code> method which happens to be <code>Simon</code> currently. Then <code>Harold</code> muscles his way into the interpreter and decides he's going to be the current awkward bugger, so poor <code>John</code> gets to subclass <code>Harold</code> even though he's defined in the same way as <code>Fred</code>.</p>
+
+<p>On a somewhat related note there's a lovely method called <code>const_missing</code> that gets invoked when you call a Constant in ruby that isn't defined. (Much like <code>method_missing</code> if you're familiar with that.) Means you can do even more shenanigans with non-existent superclasses for classes you're defining.</p>
+
+<pre><code>class Simon; end
+class Harold; end
+
+class Object
+  def self.const_missing konstant
+    [Simon, Harold].shuffle.first
+  end
+end
+
+class Fred &lt; ArrogantBastard
+end
+Fred.superclass # =&gt; Simon
+
+class Albert &lt; ArrogantBastard
+end
+Albert.superclass # =&gt; Harold
+</code></pre>
+
+<p>So here we're choosing from Simon and Harold on the fly each time a missing constant is referenced (in this case the aptly named <code>ArrogantBastard</code> constant.) If you run this code yourself you'll see the superclasses change on each run according to what your computer picks that time.</p>
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

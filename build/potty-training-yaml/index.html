@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Potty Training YAML - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Ran into a problem today where I have a class with a few attributes on it, but I only want a certain three of those attributes to appear in the YAML dump of a class instance.</p>
+
+<p>Diving straight into a code example–lets say we have a <code>Contact</code> class, and we only want to dump the <code>name</code>, <code>email</code> and <code>website</code> attributes.</p>
+
+<pre><code>require "yaml"
+
+class Contact
+    attr_accessor :name, :email, :website, :telephone
+
+    # helper method to make setting up easy
+    def initialize params={}
+      params.each do |key, value|
+        meffod = "#{key.to_s}="
+        send(meffod, value) if respond_to?(meffod)
+      end
+    end
+end
+
+# And create an instance for us to play with
+caius = Contact.new(
+  :name =&gt; "Caius",
+  :email =&gt; "dev@caius.name",
+  :website =&gt; "http://caius.name/",
+  :telephone =&gt; "12345"
+)
+</code></pre>
+
+<p>As we'd expect when dumping this, all instance variables get dumped out:</p>
+
+<pre><code>print caius.to_yaml
+# &gt;&gt; --- !ruby/object:Contact 
+# &gt;&gt; email: dev@caius.name
+# &gt;&gt; name: Caius
+# &gt;&gt; telephone: "12345"
+# &gt;&gt; website: http://caius.name/
+</code></pre>
+
+<p>Initially I tried to override <code>to_yaml</code> and unset the instance variables I didn't want showing up, but that just made them show up empty. After digging around a bit more, I happened across the <a href="http://yaml4r.sourceforge.net/doc/page/type_families.htm">Type Families</a> page in the yaml4r docs, which right at the bottom mentions <code>to_yaml_properties</code>.</p>
+
+<p>Turns out <code>to_yaml_properties</code> returns an array of instance variable names (as strings) that should be dumped out as part of the object. A quick method definition later, and we're only dumping the variables we want. (<em>See my <a href="http://caiustheory.com/ruby-shortcuts">Ruby Shortcuts</a> post if you don't know what <code>%w()</code> does</em>)</p>
+
+<pre><code>class Contact
+    def to_yaml_properties
+        %w(@name @email @website)
+    end
+end
+</code></pre>
+
+<p>And now we dump the class, expecting only the three attributes to be outputted:</p>
+
+<pre><code>print caius.to_yaml
+# &gt;&gt; --- !ruby/object:Contact 
+# &gt;&gt; name: Caius
+# &gt;&gt; email: dev@caius.name
+# &gt;&gt; website: http://caius.name/
+</code></pre>
+
+<p>Success!</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

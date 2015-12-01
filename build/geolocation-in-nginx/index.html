@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Geolocation in nginx - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>Sometimes you need to have a rough idea of where your website visitor is located. There's many ways to geolocate them, but if you just want to go to country level then <a href="http://dev.maxmind.com/geoip/geolite">MaxMind have free geo databases</a> available to help you. When we needed to do this quickly on-the-fly at EmberAds, we came up with the <a href="https://github.com/emberads/trifle#readme">trifle</a> gem, which supports ipv4 and ipv6 lookups.</p>
+
+<p>Recently I was searching for something else to do with nginx and ran across <a href="http://www.ruby-forum.com/topic/125810">a mailing list thread</a> about using the maxmind database with nginx's <a href="http://wiki.nginx.org/NginxHttpGeoModule">HTTP Geo module</a> and do the lookup directly in nginx itself. Finally got a chance to sit down and work out the logistics of doing this. I've done this on an ubuntu 12.04 box, with the expected config file layouts that come with ubuntu.</p>
+
+<p>Run the following on your server (as someone with write access to nginx config files):</p>
+
+<pre><code># Generate the text file for nginx to import
+perl &lt;(curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl) &lt; &lt;(zip=$(tempfile) &amp;&amp; curl -s -o $zip http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip &amp;&amp; unzip -p $zip) &gt; /etc/nginx/nginx_ip_country.txt
+
+# Tell nginx to work out the IP country and store in variable
+echo 'geo $IP_COUNTRY {
+  default --;
+  include /etc/nginx/nginx_ip_country.txt;
+}' &gt; /etc/nginx/conf.d/ip_country.conf
+</code></pre>
+
+<p>Now go find the http block for the vhost you want to have the header passed to, and assuming it's passenger, add the following:</p>
+
+<pre><code># http {
+  # server_name freddy.com;
+  passenger_set_cgi_param HTTP_X_IP_COUNTRY $IP_COUNTRY;
+# }
+</code></pre>
+
+<p>(If you don't use passenger, look at the docs for <a href="http://wiki.nginx.org/HttpProxyModule#proxy_pass_header">proxy_pass_header</a> or <a href="http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header">fastcgi_pass_header</a> to see which you'll require for your setup.)</p>
+
+<p>Reload nginx, and behold, <code>request.env["HTTP_X_IP_COUNTRY"]</code> (assuming a rack app running under ruby) will be a two letter country code, or <code>"--"</code>.</p>
+
+<p>Unfortunately this is IPv4 only currently, there's a <a href="http://forum.nginx.org/read.php?29,232648">thread on the nginx mailing list from November 2012</a> saying IPv6 support should be coming on the v1.3 branch of nginx, but with no known ETA. So currently for IPv6 support, take a look at <a href="https://github.com/emberads/trifle#readme">EmberAds' trifle gem</a> instead.</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

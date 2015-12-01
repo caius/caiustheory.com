@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Add to iCloud Reading List programmatically - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>One piece of a larger puzzle I'm trying to solve currently, was how to add a given URL to my Apple "<a href="http://www.apple.com/uk/safari/#icloud">Reading List</a>" that is stored in iCloud and synced across all my OS X and iOS devices. More specifically, I wanted to add URLs to the list from my mac running Mavericks (10.9). I had a quick look at the Cocoa APIs and couldn't see anything in OS X to do this. (iOS has an API to do it from Cocoa-land it seems though.)</p>
+
+<p>I figured <a href="http://www.apple.com/uk/safari/">Safari.app</a> was the key to getting this done on OS X, given it has the ability itself to add the current page to the reading list, either via a keyboard command, a menu item, or a button in the address bar. One quick mental leap later, and I was wondering if the engineers at Apple had been nice enough to expose that via Applescript for me to take advantage of.</p>
+
+<p>One quick stop in "Script Editor.app" later, and I had the Applescript dictionary open for Safari.app. Lo and behold, there is rather handily an Applescript command called "add reading list item", which does <strong>exactly</strong> what I want. It has a few different options you can call it with, depending on whether you want Safari to go populate the title &amp; preview text, or if you want to specify it yourself at save-time.</p>
+
+<p>As I want to be able to call this from multiple runtimes, I've chosen to save it as an executable, which leans on <a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/osascript.1.html"><code>osascript</code></a> to run the actual Applescript. And here it is:</p>
+
+<pre><code>#!/usr/bin/env osascript
+
+on run argv
+    if (count of argv) &gt; 0
+        tell app "Safari" to add reading list item (item 1 of argv as text)
+    end if
+end run
+</code></pre>
+
+<p>Save it as whatever you want (eg. <code>add_to_reading_list</code>), make it executable (<code>chmod +x add_to_reading_list</code>), and then run it with the URL you want saving as the first argument.</p>
+
+<pre><code>$ add_to_reading_list "http://caius.name/"
+$ add_to_reading_list "http://google.com/"
+# … etc …
+</code></pre>
+
+<p><em>(Adding support for specifying preview text and title is left as an exercise for the reader!)</em></p>
+
+<p>Have fun reading later!</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

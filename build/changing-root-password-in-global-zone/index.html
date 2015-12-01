@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Changing root password in global zone - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>SmartOS mounts <code>/etc/shadow</code> from <code>/usbkey/shadow</code> so we can change the root password for the global zone after install. Here's how:</p>
+
+<ol>
+  <li>Fire up a console or ssh session as root in the global zone</li>
+  <li>
+    <p>Check the existing permissions on the file</p>
+
+    <pre><code> $ ls -l /usbkey/shadow
+ -r--------   1 root     root         560 Oct 19 16:45 /usbkey/shadow
+</code></pre>
+  </li>
+  <li>
+    <p>Make the file writable</p>
+
+    <pre><code> $ chmod 600 /usbkey/shadow
+</code></pre>
+  </li>
+  <li>
+    <p>Fire up <code>vi</code> to edit the file</p>
+
+    <pre><code> $ vi /usbkey/shadow
+</code></pre>
+  </li>
+  <li>
+    <p>Edit the line containing root to change the crypted password. See <a href="https://us-east.manta.joyent.com/smartosman/public/man4/shadow.4.html"><code>shadow(4)</code></a> if you need help with the format of <code>/etc/shadow</code> &amp; use <code>/usr/lib/cryptpass</code> to generate a hash for the password you desire. <em>(Remember to clean the bash history!)</em></p>
+  </li>
+  <li>
+    <p>Save the file and exit <code>vi</code></p>
+  </li>
+  <li>
+    <p>Make the file readonly again</p>
+
+    <pre><code> $ chmod 400 /usbkey/shadow
+</code></pre>
+  </li>
+  <li>
+    <p>Double check permissions are correct on the file again</p>
+
+    <pre><code> $ ls -l /usbkey/shadow
+ -r--------   1 root     root         560 Oct 19 16:49 /usbkey/shadow
+</code></pre>
+  </li>
+</ol>
+
+<p>Job done. Verify by logging in as root (invoking <code>/usr/bin/login</code> from an ssh session makes this easy to verify.)</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>View Raw Source - CaiusTheory</title>
+
+    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="/feed/" />
+
+    <link rel="stylesheet" href="/stylesheets/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1><a href="/">Caius Theory</a></h1>
+      <h2>Now with even more cowbell&hellip;</h2>
+    </header>
+
+    <main>
+      <p>So I write this blog using <a href="http://daringfireball.net/projects/markdown/">Markdown</a> because I'm a human and writing <code>stuff &lt;strong&gt;with&lt;/strong&gt; tags</code> is just <strong>WRONG</strong>. Thankfully, <a href="http://daringfireball.net/">Gruber</a> solved this problem by writing markdown.</p>
+
+<p>Now on the <a href="http://daringfireball.net/projects/markdown/">markdown page</a> he says:</p>
+
+<blockquote>
+  <p>The best way to get a feel for Markdown’s formatting syntax is simply to look at a Markdown-formatted document. For example, you can view the Markdown source for the article text on this page here: <a href="http://daringfireball.net/projects/markdown/index.text">http://daringfireball.net/projects/markdown/index.text</a></p>
+</blockquote>
+
+<blockquote>
+  <p>(You can use this ‘.text’ suffix trick to view the Markdown source for the content of each of the pages in this section, e.g. the Syntax and License pages.)</p>
+</blockquote>
+
+<p>And ever since I noticed that I've always read his articles using the '.text' trick. One of the plugins I've been meaning to write for <a href="http://habariproject.org/">habari</a> is one that replicates this '.text' behaviour. So tonight I decided to try and write it, started picking through the <a href="http://wiki.habariproject.org/en/Creating_A_Plugin">Plugin documentation</a> in preparation. Got a bit stuck with it as I've been out of the habari development loop for a few months, popped into <a href="irc://irc.freenode.net/#habari">#habari</a> and asked if I was thinking along the right lines.</p>
+
+<p>Few minutes later <a href="http://asymptomatic.net/">Owen</a> pops up and sends me a link to <a href="http://svn.habariproject.org/habari-extras/plugins/plaintext/trunk/plaintext.plugin.php">plaintext.plugin.php</a>, which does exactly what I was trying to do! Couple of tweaks later (switching it to '.text' instead of '.md') and its installed and working on this blog. Feel free to view the <a href="http://caiustheory.com/view-raw-source.text">raw source</a> of this post. Or any other post on this site.</p>
+
+<h3 id="updated-2009-01-31">Updated 2009-01-31</h3>
+
+<p>Added to the habari-extras repo as the <a href="http://svn.habariproject.org/habari-extras/plugins/plaintext/trunk/plaintext.plugin.php">Plaintext</a> plugin.</p>
+
+
+    </main>
+
+    <nav>
+      <div class="archives">
+        <h3>Archives</h3>
+<!--        <ul>
+            <li></li>
+        </ul>
+-->
+      </div>
+
+      <div class="feed">
+        <link rel="alternate" type="application/rss+xml" title="Syndicate (atom)" href="/feed/" />
+      </div>
+    </nav>
+
+    <span class="clear"></span>
+
+    <footer>
+      <p class="first">
+        <a href="/">CaiusTheory</a>
+      </p>
+      <p class="last">
+        Inspired by <a href="http://labs.utopian.net/habari/theme/sp/">sp</a>
+      </p>
+      <span class="clear"></span>
+    </footer>
+  </body>
+</html>
