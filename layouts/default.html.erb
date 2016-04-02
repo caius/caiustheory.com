@@ -1,48 +1,111 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><%= "#{item[:title]} - " if item[:title] %>CaiusTheory</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
+    <!-- <link rel="icon" href="/favicon.ico"> -->
     <link rel="alternate" type="application/rss+xml" title="Caius Theory" href="/feed/" />
 
-    <link rel="stylesheet" href="<%= @items["/stylesheet/"].path %>" type="text/css" media="screen" title="no title" charset="utf-8">
+    <title><%= "#{item[:title]} - " if item[:title] %>CaiusTheory</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="<%= @items["/assets/bootstrap.min.css/"].path %>" type="text/css" media="screen" title="no title" charset="utf-8">
+    <style type="text/css" media="screen">
+      body > div > header {
+        border-bottom: 1px solid #000;
+      }
+
+      body > div > header h2 {
+        color: #888;
+        font-size: 1.5em;
+        margin-top: 1.5em;
+      }
+
+      article header {
+        margin-bottom: 1.5em;
+      }
+
+      article header time {
+        font-size: 1.3em;
+        color: #888;
+      }
+
+      article footer {
+        border-top: 1px dashed #ccc;
+        margin-top: 2em;
+        padding-top: 0.5em;
+        margin-bottom: 2em;
+      }
+
+      main nav li.previous:before {
+        padding-right: 0.3em;
+        content: "\2190";
+      }
+
+      main nav li.next:after {
+        padding-left: 0.3em;
+        content: "\2192";
+      }
+
+      .container > footer {
+        clear: both;
+        border-top: 1px solid #000;
+        padding-top: 0.5em;
+      }
+
+      div.post-separator {
+        display: block;
+        clear: both;
+        border-top: 1px solid #000;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+      }
+
+    </style>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
   </head>
   <body>
-    <header>
-      <h1><%= link_to "Caius Theory", "/" %></h1>
-      <h2>Now with even more cowbell&hellip;</h2>
-    </header>
 
-    <main>
-      <%= yield %>
-    </main>
+    <div class="container">
+      <header class="row">
+        <h1 class="col-md-6"><%= link_to "Caius Theory", "/" %></h1>
+        <h2 class="col-md-6 text-right">Now with even more cowbell&hellip;</h2>
+        <span class="clearfix"></span>
+      </header>
 
-    <nav>
-      <!--TODO: search field? -->
-      <div class="archives">
-        <h3>Archives</h3>
-        <ul>
-          <% archive_months.each do |archive| %>
-            <li><%= link_to archive.name, archive.path %></li>
-          <% end %>
+      <main class="row col-md-10 col-md-offset-1">
+        <%= yield %>
+      </main>
+
+      </main>
+
+      <footer class="row col-md-12">
+        <ul class="list-inline text-center">
+          <li><a href="http://caius.name/">Author</a></li>
+          &sect;
+          <li><a href="/archives">Archives</a></li>
+          &sect;
+          <li><a href="/feed.xml">Feed</a></li>
+          &sect;
+          <li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
         </ul>
-      </div>
-      <div class="feed">
-        <%= link_to "Syndicate (atom)", items["/feed/"].path %>
-      </div>
-    </nav>
+      </footer>
+    </div>
 
-    <span class="clear"></span>
-
-    <footer>
-      <p class="first">
-        <%= link_to "CaiusTheory", "/" %>
-      </p>
-      <p class="last">
-        Inspired by <%= link_to "sp", "http://labs.utopian.net/habari/theme/sp/" %>
-      </p>
-      <span class="clear"></span>
-    </footer>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/assets/bootstrap.min.js"></script>
   </body>
 </html>

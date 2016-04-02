@@ -1,2 +1,2 @@
 include CaiusTheory
-include Nanoc3::Helpers::XMLSitemap
+include Nanoc::Helpers::XMLSitemap

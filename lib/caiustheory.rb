@@ -1,9 +1,9 @@
 require "set"
 
 module CaiusTheory
-  include Nanoc3::Helpers::Blogging
-  include Nanoc3::Helpers::Rendering
-  include Nanoc3::Helpers::LinkTo
+  include Nanoc::Helpers::Blogging
+  include Nanoc::Helpers::Rendering
+  include Nanoc::Helpers::LinkTo
 
   # Extracts the pieces from a post's identifier
   #
@@ -32,6 +32,11 @@ module CaiusTheory
   def display_time(time)
     # dup in case we're passed @item[:created_at] which is frozen
     time.dup.utc.strftime("%Y-%m-%d %H:%M:%S")
+  end
+
+  def display_date(time)
+    # dup in case we're passed @item[:created_at] which is frozen
+    time.dup.utc.strftime("%Y-%m-%d")
   end
 
   def display_isotime(time)
@@ -99,11 +104,11 @@ module CaiusTheory
     posts_per_page = @config[:posts_per_page]
     post_pages = posts.each_slice(posts_per_page).to_a
 
-    # Generate a Nanoc3::Item for each of these pages
+    # Generate a Nanoc::Item for each of these pages
     post_pages.each_with_index do |subarticles, i|
       page_num = i + 1
 
-      @items << ::Nanoc3::Item.new(
+      @items << ::Nanoc::Item.new(
         # @item.attributes is a bit of a hack, but it passes through whatever we pass as attributes
         # here to the page template, which is where we actually consume them.
         %{<%= render("page", @item.attributes) { } %>},
