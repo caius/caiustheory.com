@@ -1,0 +1,9 @@
+<%- current_page.data.title = "Posts tagged #{tagname}" -%>
+
+<% wrap_layout :layout do %>
+
+  <% articles.each do |post| %>
+    <%= partial "_post_content", locals: {current_article: post} %>
+  <% end %>
+
+<% end %>

@@ -1,0 +1,9 @@
+# <%= current_page.data.title %>
+
+  By Caius Durling
+  <<%= URI.join(app.config.site_url, current_page.path.sub("index.text", "")) %>>
+  <%= current_page.data.date.iso8601 %>
+  Licensed under the Creative Commons Attribution-ShareAlike 4.0 International License <http://creativecommons.org/licenses/by-sa/4.0/>
+
+
+<%= Middleman::FileRenderer.new(@app, current_page.file_descriptor[:full_path].to_s).template_data_for_file %>
