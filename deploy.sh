@@ -6,8 +6,8 @@ set -e
 
 # Make sure we're compiled first, pass --no-compile as sole argument to skip
 if [[ $1 != "--no-compile" ]]; then
-  rm -rf output/
-  nanoc compile
+  rm -rf build/
+  bundle exec middleman build --verbose
 fi
 
 # Deploy to webserver!
@@ -19,4 +19,4 @@ rsync \
   --compress \
   --delay-updates \
   --delete-after \
-  output/ nonus:www/caiustheory.com/htdocs
+  build/ nonus:www/caiustheory.com/htdocs
