@@ -1,4 +1,6 @@
-crash.log
-Gemfile.lock
-output/
-tmp/
+/crash.log
+/Gemfile.lock
+/build/
+/.sass-cache/
+/output/
+/tmp/
