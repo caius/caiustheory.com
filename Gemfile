@@ -4,7 +4,7 @@ source "https://rubygems.org"
 gem "middleman", "< 5"
 gem "middleman-blog"
 gem "middleman-livereload"
-gem "middleman-plaintext"
+gem "middleman-plaintext", github: "caius/middleman-plaintext"
 gem "middleman-postdated"
 
 gem "kramdown", "< 2"
