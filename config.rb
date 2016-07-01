@@ -31,9 +31,9 @@ activate :blog do |b|
   b.month_link = "/{year}/{month}.html"
   b.taglink = "/tag/{tag}.html"
 
-  b.generate_month_pages = !true
-  b.generate_tag_pages = !true
-  b.generate_year_pages = !true
+  b.generate_month_pages = true
+  b.generate_tag_pages = true
+  b.generate_year_pages = true
   # Fuck your day archives
   b.generate_day_pages = false
 
