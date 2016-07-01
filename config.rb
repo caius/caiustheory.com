@@ -44,6 +44,7 @@ end
 activate :directory_indexes
 
 activate :plaintext do |c|
+  c.filename = "index.txt"
   c.layout = "blog_post.text"
   c.handle_file = lambda do |resource|
     resource.path.start_with?("posts/") && resource.path.end_with?(".html")
