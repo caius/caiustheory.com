@@ -1,9 +1,23 @@
-<%- current_page.data.title = "Latest" -%>
+---
+pageable: true
+---
+
+<%- current_page.data.title = "Latest"%>
 
 <% wrap_layout :layout do %>
 
-    <% blog.articles.first(10).each do |post| %>
+    <% page_articles.each do |post| %>
       <%= partial "_post_content", locals: {current_article: post} %>
     <% end %>
 
+    <div class="pagination">
+      <ul>
+        <% if next_page %>
+        <li><%= link_to "Next Page", next_page.path %></li>
+        <% end %>
+        <% if prev_page %>
+        <li><%= link_to "Previous Page", prev_page.path %></li>
+        <% end %>
+      </ul>
+    </div>
 <% end %>

@@ -39,6 +39,11 @@ activate :blog do |b|
 
   # Disable summaries
   b.summary_length = -1
+
+  # Glorious pagination
+  b.paginate = true
+  b.per_page = 10
+  b.page_link = "page/{num}"
 end
 
 activate :directory_indexes
