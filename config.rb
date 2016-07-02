@@ -5,7 +5,7 @@ set :bind_address, "127.0.0.1"
 set :server_name, "localhost"
 
 set :extensions_with_layout, %w(html)
-set :relative_links, true
+set :relative_links, false
 
 module ParameterizeOverride
   SUBSTITUTIONS = {
