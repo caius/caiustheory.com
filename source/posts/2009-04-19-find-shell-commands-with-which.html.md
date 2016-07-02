@@ -39,7 +39,7 @@ So I noticed [Ali][] googling for the `which` man page on IRC, and *(quite stupi
 
 What I discovered was that `which` has a single flag you can pass it, `-a`. From the [man page][man]:
 
-[man]: http://unixhelp.ed.ac.uk/CGI/man-cgi?which
+[man]: https://www.freebsd.org/cgi/man.cgi?query=which&format=html
 
     -a     print all matching pathnames of each argument
 
