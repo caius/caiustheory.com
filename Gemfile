@@ -1,13 +1,15 @@
 source "https://rubygems.org"
 
-gem "nanoc"
-gem "kramdown"
-gem "builder"
-gem "pygments.rb"
-gem "nokogiri"
+# Middleman Gems
+gem "middleman", "< 5"
+gem "middleman-blog", "< 5"
+gem "middleman-livereload", "~> 3.4.6"
+gem "middleman-plaintext", "~> 0.8.1"
+gem "middleman-postdated", "~> 0.5.0"
 
-gem "adsf"
-gem "listen"
-gem 'guard-nanoc'
-gem "w3c_validators"
-gem "rake"
+gem "kramdown", "< 2"
+gem "builder", "~> 3.0"
+
+# Debugging tools
+gem "byebug"
+gem "pry"

@@ -1,10 +1,12 @@
 # [CaiusTheory.com](http://caiustheory.com/)
 
-A [nanoc](http://rubygems.org/gems/nanoc) generated static blog for [Caius](http://caius.name/) located at <http://caiustheory.com/>.
+A [middleman][] generated static blog for [Caius](http://caius.name/) located at <http://caiustheory.com/>.
+
+[middleman]: https://middlemanapp.com
 
 ## Licenses
 
-The blog posts under in `content/posts` is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+The blog content under in `source/posts` are licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
 * * *
 
