@@ -12,6 +12,7 @@ fi
 
 # Deploy to webserver!
 rsync \
+  --dry-run \
   --rsh=ssh \
   --archive \
   --partial \
