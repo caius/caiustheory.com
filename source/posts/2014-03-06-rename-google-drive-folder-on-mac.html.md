@@ -8,7 +8,7 @@ tags:
 ---
 
 1. Quit Google Drive app
-2. Rename "~/Google Drive/" to whatever you want
+2. Rename `~/Google Drive/` to whatever you want
 3. Open Google Drive and wait for it to complain the folder is missing
 4. Click the menu item and click the warning item
 5. Click "Locate Folder.." button on the right in window that pops up

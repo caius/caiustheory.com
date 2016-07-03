@@ -29,13 +29,15 @@ As I want to be able to call this from multiple runtimes, I've chosen to save it
 
 [osascript]: https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/osascript.1.html
 
-    #!/usr/bin/env osascript
+```applescript
+#!/usr/bin/env osascript
 
-    on run argv
-        if (count of argv) > 0
-            tell app "Safari" to add reading list item (item 1 of argv as text)
-        end if
-    end run
+on run argv
+    if (count of argv) > 0
+        tell app "Safari" to add reading list item (item 1 of argv as text)
+    end if
+end run
+```
 
 Save it as whatever you want (eg. `add_to_reading_list`), make it executable (`chmod +x add_to_reading_list`), and then run it with the URL you want saving as the first argument.
 
@@ -46,4 +48,3 @@ Save it as whatever you want (eg. `add_to_reading_list`), make it executable (`c
 *(Adding support for specifying preview text and title is left as an exercise for the reader!)*
 
 Have fun reading later!
-

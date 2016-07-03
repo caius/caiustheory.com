@@ -18,9 +18,12 @@ The answer is quite simple really, just use `NSFileHandle`. More specifically `+
 
 And here's some example code, reads all data from `STDIN` and stores it into an NSString:
 
-    NSFileHandle *input = [NSFileHandle fileHandleWithStandardInput];
-    NSData *inputData = [NSData dataWithData:[input readDataToEndOfFile]];
-    NSString *inputString = [[NSString alloc] initWithData:inputData encoding:NSUTF8StringEncoding];
+```objc
+NSFileHandle *input = [NSFileHandle fileHandleWithStandardInput];
+NSData *inputData = [NSData dataWithData:[input readDataToEndOfFile]];
+NSString *inputString = [[NSString alloc]
+  initWithData:inputData encoding:NSUTF8StringEncoding];
+```
 
 *I'm using this in GarbageCollected apps, memory management without GC is left as an exercise to the user.*
 

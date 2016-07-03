@@ -18,19 +18,22 @@ OS X Lion comes with ruby 1.8.7-p249 installed, although it's compiled against l
 
 Luckily you can grab the source of ruby and compile just the readline extension, and move it into the right place for it to just work. Here's what's been working for me:
 
-    # Install readline using homebrew
-    $ brew install readline
-    
-    # Download the ruby source and check out 1.8.7-p249
-    $ mkdir ~/tmp && cd ~/tmp
-    $ git clone git://github.com/ruby/ruby
-    $ cd ruby
-    $ git checkout v1_8_7_249
-    $ cd ext/readline
-    $ ruby extconf.rb --with-readline-dir=$(brew --prefix readline) --disable-libedit
-    $ make
+```shell
+# Install readline using homebrew
+brew install readline
+
+# Download the ruby source and check out 1.8.7-p249
+mkdir ~/tmp && cd ~/tmp
+git clone git://github.com/ruby/ruby
+cd ruby
+git checkout v1_8_7_249
+cd ext/readline
+ruby extconf.rb --with-readline-dir=$(brew --prefix readline) --disable-libedit
+make
+```
 
 Now you should have `readline.bundle` in the current directory, and it should be compiled against your homebrew-installed readline library, rather than libedit that comes with the system. We can quickly double-check that by using `otool` to check what the binary is linked against.
+
 
     $ otool -L readline.bundle
     readline.bundle:
@@ -41,14 +44,17 @@ Now you should have `readline.bundle` in the current directory, and it should be
 
 And in the output you should see a line listing "libreadline", and no lines listing "libedit". Which that shows, we've compiled it properly then. Now the bundle is built we need to move it into the right place so it's loaded when ruby is invoked.
 
-    $ RL_PATH="/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin11.0"
-    # Back up the original bundle, just in cases
-    $ sudo mv "$RL_PATH/readline.bundle" "$RL_PATH/readline.bundle.libedit"
-    $ sudo mv readline.bundle "$RL_PATH/readline.bundle"
+```shell
+RL_PATH="/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin11.0"
+# Back up the original bundle, just in cases
+sudo mv "$RL_PATH/readline.bundle" "$RL_PATH/readline.bundle.libedit"
+sudo mv readline.bundle "$RL_PATH/readline.bundle"
+```
 
 And that's it. You've got a proper compiled-against-readline installed ruby 1.8.7-p249 on 10.7 now.
 
 One gotcha I ran into was needing to pass the same arguments to rvm when installing any other version of 1.8.7 on the same machine. Simple enough, just need to remember to do it though.
 
-    $ CC=gcc-4.2 rvm install 1.8.7-p357 -C --with-readline-dir=$(brew --prefix readline) --disable-libedit
-
+```shell
+CC=gcc-4.2 rvm install 1.8.7-p357 -C --with-readline-dir=$(brew --prefix readline) --disable-libedit
+```

@@ -19,7 +19,10 @@ I ran across [The Shell Meme][tsm] on [Lincoln Stoll's][stoll] blog, and figured
 
 Run this command in a new shell:
 
-    history|awk '{a[$2]++} END{for(i in a){printf "%5d\t%s\n ",a[i],i}}'|sort -rn|head
+```shell
+history | awk '{ a[$2]++ } END { for(i in a){printf "%5d\t%s\n ",a[i],i} }' | \
+  sort -rn | head
+```
 
 I get this as the output
 

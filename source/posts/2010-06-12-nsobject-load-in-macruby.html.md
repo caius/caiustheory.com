@@ -38,12 +38,14 @@ The main place I've seen it used (and used it myself) is in [SIMBL][] plugins. A
 
 Here's a quick implementation that just logs to the console:
 
+```objc
     @implementation MainController
     
     + (void) load
     {
         NSlog(@"MainController#load called");
     }
+```
 
 ### Now where does MacRuby come into this?
 
@@ -51,14 +53,14 @@ Well I came across a need to do the same in ruby, have some code triggered when 
 
 For continuity I still call it `Class.load`, but then call it as soon as I've defined it in the class. Eg:
 
-    class MainController
-    
-        def self.load
-            NSLog "MainController#load called"
-        end
-        self.load
-    
-    end
+```ruby
+class MainController
+  def self.load
+    NSLog "MainController#load called"
+  end
+
+  self.load
+end
+```
 
 Of course, I'm not sure when the Objective-C method is called, it's probably after the entire class has been defined rather than as soon as `load` has been loaded into the runtime. So you might want to move the `self.load` call to just before the closing `end`.
-

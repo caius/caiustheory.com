@@ -24,22 +24,30 @@ You should already have installed Xcode 4.2 from the app store, then basically t
 
 [devtools4.1]: http://opensource.apple.com/release/developer-tools-41/
 
+**Update 2016-07-03:** I'd suggest just using homebrew to install this these days:
+
+```shell
+brew install homebrew/dupes/apple-gcc42
+```
+
 ## Instructions
 
-    # Grab and unpack the tarball
-    $ mkdir ~/tmp && cd ~/tmp
-    $ curl -O http://opensource.apple.com/tarballs/gcc/gcc-5666.3.tar.gz
-    $ tar zxf gcc-5666.3.tar.gz
-    $ cd gcc-5666.3
-    
-    # Setup some stuff it requires
-    $ mkdir -p build/obj build/dst build/sym
-    # And then build it. You should go make a cup of tea or five whilst this runs.
-    $ gnumake install RC_OS=macos RC_ARCHS='i386 x86_64' TARGETS='i386 x86_64' \
-      SRCROOT=`pwd` OBJROOT=`pwd`/build/obj DSTROOT=`pwd`/build/dst SYMROOT=`pwd`/build/sym
-    
-    # And finally install it
-    $ sudo ditto build/dst /
+```shell
+# Grab and unpack the tarball
+mkdir ~/tmp && cd ~/tmp
+curl -O http://opensource.apple.com/tarballs/gcc/gcc-5666.3.tar.gz
+tar zxf gcc-5666.3.tar.gz
+cd gcc-5666.3
+
+# Setup some stuff it requires
+mkdir -p build/obj build/dst build/sym
+# And then build it. You should go make a cup of tea or five whilst this runs.
+gnumake install RC_OS=macos RC_ARCHS='i386 x86_64' TARGETS='i386 x86_64' \
+  SRCROOT=`pwd` OBJROOT=`pwd`/build/obj DSTROOT=`pwd`/build/dst \
+  SYMROOT=`pwd`/build/sym
+
+# And finally install it
+sudo ditto build/dst /
+```
 
 And now you should have `gcc-4.2` in your `$PATH`, available to build all the things that `llvm-gcc` fails to compile.
-

@@ -23,13 +23,17 @@ So, I keep having to reinstall mysql5 and rubygems from time to time for various
 
 [MacPorts]: http://macports.org/
 
-    sudo port install php5 +mysql5 +pear +readline +sockets +apache2 +sqlite
+```shell
+sudo port install php5 +mysql5 +pear +readline +sockets +apache2 +sqlite
+```
 
 Once this is installed then I have `mysql` and can setup my databases, etc.
 
 Ignoring the rest of the LAMP stack, I then need to connect Ruby to the Mysql I just installed through MacPorts. Its quite simple to do, once you know the right argument to pass to it. The easiest way is to just tell it where the `mysql5_conf` file is and let it figure out the rest for itself.
 
-    sudo gem install mysql -- --with-mysql-config=/opt/local/bin/mysql_config5
+```shell
+sudo gem install mysql -- --with-mysql-config=/opt/local/bin/mysql_config5
+```
 
 Hopefully this will save me 10 minutes of googling next time I need to do this!
 
@@ -41,4 +45,7 @@ I'm an idiot and typed the `gem install` command by hand, and ended up with `--w
 
 On Snow Leopard I needed to tell rubygems to install the gem as a 64-bit binary. Hattip to [Philipp](http://www.schmidp.com/2009/06/14/rubyrails-and-mysql-on-snow-leopard-10a380/comment-page-1/)
 
-    sudo env ARCHFLAGS="-arch x86_64" gem install mysql -- --with-mysql-config=/opt/local/bin/mysql_config5
+```shell
+sudo env ARCHFLAGS="-arch x86_64" gem install mysql -- \
+  --with-mysql-config=/opt/local/bin/mysql_config5
+```

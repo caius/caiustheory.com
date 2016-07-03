@@ -20,7 +20,9 @@ My text editor [TextMate][TM] has a nice feature called "Filter through command"
 
 Anyway, I've never used it before, but today I had a text file with 30 or so url's in, each on a new line, so I thought I'd test it out.  I selected it to input the document & to not replace the output.  I then entered the following command, which is a ruby command to take each line that isn't blank, and run the shell command `open $url`.
 
-    ruby -e 'a = ARGF.read.scan(/\S+/); a.each { |x| `open #{x}` }'
+```shell
+ruby -e 'a = ARGF.read.scan(/\S+/); a.each { |x| `open #{x}` }'
+```
 
 What this does is take ARGF (the document) and read it in line by line, but only the non-whitespace characters (so newlines, space, etc are ignored.)  And it assigns it to an array called `a`.  What I then do is for each item of `a`, we run it past the shell command `open`, which on OS X if you pass it a URL it just opens that URL in the default browser.
 
@@ -32,5 +34,6 @@ The power of Unix *(OS X)* & TextMate (amongst other tools) just never ceases to
 
 I just realised if you change the regex to scan for http://.* then it'll select all website URLs.
 
-    ruby -e 'a = ARGF.read.scan(/^http://.*$/); a.each { |url| `open #{url}` }'
-
+```shell
+ruby -e 'a = ARGF.read.scan(/^http://.*$/); a.each { |url| `open #{url}` }'
+```

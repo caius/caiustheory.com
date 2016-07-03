@@ -25,22 +25,20 @@ I suggest grabbing merb_datamapper svn source to fix this in.  To do so make sur
 1. Checkout the source 
 
         svn co http://svn.devjavu.com/merb/plugins/merb_datamapper
-    
-    Checks out the svn source to ./merb_datamapper
-    
+
 2. Open up the affected file in your favourite editor *(I use TextMate)*
 
         cd merb_datamapper
         mate lib/merb/sessions/data_mapper_session.rb
-    
+
 3. Find line 25 that contains
-    
-    `property :session_id, :text, :lazy => false, :key => true`
-        
+
+        `property :session_id, :text, :lazy => false, :key => true`
+
     and remove `:text, :lazy => false` to replace it with `:string`
-        
-    `property :session_id, :string, :key => true`
-        
+
+        `property :session_id, :string, :key => true`
+
     Save and close the file, thats the editing done.  Now to install the gem.
 
 4. Build the gem
@@ -50,5 +48,5 @@ I suggest grabbing merb_datamapper svn source to fix this in.  To do so make sur
 5. Install the gem
 
         sudo gem install pkg/merb_datamapper-0.5.gem
-    
+
 And you're away with the fix installed.  Now just run `merb` to create your sessions table in the db.  Hope this helped!

@@ -50,8 +50,10 @@ Switching to the mac, now I try and open the file with TextMate, only to realise
 
 Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for "ringer" and I found the following lines:
 
-    <key>RINGER_VOLUME</key>
-    <string>ringer</string>
+```xml
+<key>RINGER_VOLUME</key>
+<string>ringer</string>
+```
 
 Change the "ringer" to "Ringer" between the `<string>` and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a `.string`. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the `xml1` in the previous command to `binary1`.
 

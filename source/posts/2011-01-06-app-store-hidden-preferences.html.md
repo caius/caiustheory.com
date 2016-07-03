@@ -29,7 +29,9 @@ Had a quick look through `/Applications/App Store.app/Contents/MacOS/App Store` 
 
 Yank up a terminal window, bash out the following...
 
-    defaults write com.apple.appstore FRDebugShowInstallProgress -bool NO
+```shell
+defaults write com.apple.appstore FRDebugShowInstallProgress -bool NO
+```
 
 ...head back to the MAS and install another (free) app, and hey presto, it's leaving my dock alone! Hopefully that's all I needed to continue using my Dock as I like. (Hidden, and left alone.)
 
