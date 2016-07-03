@@ -1,3 +1,9 @@
+require_relative "lib/extensions/parameterize_override"
+
+# Map these tag names to historical versions
+ParameterizeOverride.add_override "ruby1.9", "ruby19"
+ParameterizeOverride.add_override "test::unit", "testunit"
+
 # Fuck it
 Time.zone = "UTC"
 
@@ -6,23 +12,6 @@ set :server_name, "localhost"
 
 set :extensions_with_layout, %w(html)
 set :relative_links, false
-
-module ParameterizeOverride
-  SUBSTITUTIONS = {
-    "ruby1.9" => "ruby19",
-    "test::unit" => "testunit",
-  }
-
-  def safe_parameterize(str)
-    if (replacement = SUBSTITUTIONS[str])
-      super(replacement)
-    else
-      super
-    end
-  end
-end
-Middleman::Blog::UriTemplates.prepend(ParameterizeOverride)
-Middleman::Blog::UriTemplates.singleton_class.prepend(ParameterizeOverride)
 
 ###
 # Page options, layouts, aliases and proxies
