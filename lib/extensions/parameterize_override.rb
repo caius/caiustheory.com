@@ -21,5 +21,8 @@ module ParameterizeOverride
   end
 end
 
-Middleman::Blog::UriTemplates.prepend(ParameterizeOverride)
-Middleman::Blog::UriTemplates.singleton_class.prepend(ParameterizeOverride)
+# These implementations are identical, but both called so we have to intercept them both. 😂
+[Middleman::Util::UriTemplates, Middleman::Blog::UriTemplates].each do |mod|
+  mod.prepend(ParameterizeOverride)
+  mod.singleton_class.prepend(ParameterizeOverride)
+end
