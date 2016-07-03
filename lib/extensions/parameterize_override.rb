@@ -4,14 +4,16 @@
 # Done so we can override some tag names
 #
 module ParameterizeOverride
-  SUBSTITUTIONS = {}
+  def self.substitutions
+    @substitutions ||= {}
+  end
 
   def self.add_override(original, correction)
-    SUBSTITUTIONS[original] = correction
+    substitutions[original] = correction
   end
 
   def safe_parameterize(str)
-    if (replacement = SUBSTITUTIONS[str])
+    if (replacement = ParameterizeOverride.substitutions[str])
       super(replacement)
     else
       super
