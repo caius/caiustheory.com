@@ -13,10 +13,7 @@ set :server_name, "localhost"
 set :extensions_with_layout, %w(html)
 set :relative_links, false
 
-###
-# Page options, layouts, aliases and proxies
-###
-
+# The blog! The whole point of this site..
 activate :blog do |b|
   b.name = "CaiusTheory"
   b.layout = "blog_post"
@@ -52,8 +49,10 @@ activate :blog do |b|
   b.page_link = "page/{num}"
 end
 
+# /foo/index.html instead of /foo.html
 activate :directory_indexes
 
+# Add text versions of all posts
 activate :plaintext do |c|
   c.filename = "index.txt"
   c.layout = "blog_post.text"
@@ -62,6 +61,7 @@ activate :plaintext do |c|
   end
 end
 
+# Pick up dates from filename if missing from frontmatter
 activate :postdated
 
 # Per-page layout changes:
