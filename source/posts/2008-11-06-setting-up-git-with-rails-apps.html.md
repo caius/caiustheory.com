@@ -29,7 +29,9 @@ Here's what I've collated from various sources over the few weeks I've been usin
     .DS_Store
     **/.DS_Store
 
-Then to make sure `log/` and `tmp/` are tracked, I just add a blank .gitignore file in them.
+Then to make sure `log/` and `tmp/` are tracked, convention is to add a blank `.gitkeep` file in them.
 
-    touch log/.gitignore
-    touch tmp/.gitignore
+```shell
+touch log/.gitkeep
+touch tmp/.gitkeep
+```

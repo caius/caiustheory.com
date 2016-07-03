@@ -23,7 +23,9 @@ So I just installed ruby 1.9.1 through [MacPorts][] and wanted to easily migrate
 
 Thought about it for a while, then came up with the following bash one-liner to do it:
 
-    gem list | grep "(" | awk '{ print $1 }' | xargs -L 1 gem1.9 install
+```shell
+gem list | grep "(" | awk '{ print $1 }' | xargs -L 1 gem1.9 install
+```
 
 **NB:** Installing Ruby 1.9.1 through macports `sudo port install ruby19` means I get `ruby1.9`, `gem1.9` and `rake1.9` installed alongside my usual 1.8 `ruby`, `gem` and `rake`.
 

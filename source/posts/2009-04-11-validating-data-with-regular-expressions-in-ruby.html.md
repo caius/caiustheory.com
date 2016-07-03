@@ -27,19 +27,27 @@ Now I've never used `\A` and `\z` in my regular expressions to validate data, I'
 
 Lets say we want to validate the string as a username for our app. A username is 5 characters long and consists only of lowercase letters.
 
-    regex = /^[a-z]{5}$/
+```ruby
+regex = /^[a-z]{5}$/
+```
 
 First we make sure it matches the data we want it to:
 
-    "caius".validate(regex) => true
+```ruby
+"caius".validate(regex) # => true
+```
 
 Excellent, that validated. Now we'll try a shorter string, which we expect to fail.
 
-    "cai".validate(regex) => false
+```ruby
+"cai".validate(regex) # => false
+```
 
 Once more, it behaves how we expected it to. The shorter string was rejected as we wanted it to be. Now, what happens if we test a string with a newline character in it? We'll make sure the data before the `\n` is valid, and then add some more data after the newline.
 
-    "caius\nfoo".validate(regex) => true
+```ruby
+"caius\nfoo".validate(regex) # => true
+```
 
 Uh oh! That validated and would've been saved as a username?!
 
@@ -49,7 +57,9 @@ Now you might be thinking, "So what? someone can have a username with a newline 
 
 Simple example of this is just having it output an alert dialog. *(This is actually the code I'll use to test an application as its not malicious, but blindingly obvious if the javascript is executed or not.)*
 
-    "caius\n<script>alert('hello')</script>".validate(regex) => true
+```ruby
+"caius\n<script>alert('hello')</script>".validate(regex) # => true
+```
 
 Ok, so that was the result we were expecting this time, although it's still not the outcome we wanted. Anytime their username is viewed (providing you aren't escaping the data to HTML entities) you'll see the following:
 
@@ -61,22 +71,30 @@ Having realised from our testing above that ^$ matches the beginning/end of a *l
 
 The answer is pretty simple. Just swap out `^$` for `\A\z`. Lets go ahead and try this with the same data as we have above, but with the modified regular expression.
 
-    new_regex = /\A[a-z]{5}\z/
-    "caius".validate(new_regex) => true
+```ruby
+new_regex = /\A[a-z]{5}\z/
+"caius".validate(new_regex) # => true
+```
 
 That's a good start, the valid string still matches.
 
-    "cai".validate(new_regex) => false
+```ruby
+"cai".validate(new_regex) # => false
+```
 
 Looks like it's going well, invalid string is invalid.
 
-    "caius\nfoo".validate(new_regex) => false
+```ruby
+"caius\nfoo".validate(new_regex) # => false
+```
 
 Oh Excellent! It's validating this one correctly now.
 
 And just for consistency, lets test it with a more likely attack string.
 
-    "caius\n<script>alert('hello')</script>".validate(new_regex) => false
+```ruby
+"caius\n<script>alert('hello')</script>".validate(new_regex) # => false
+```
 
 Fantastic! We've fixed the security hole in our validation of the user's username.
 
@@ -84,10 +102,12 @@ Fantastic! We've fixed the security hole in our validation of the user's usernam
 
 If you want to actually run the code above you'll need the following at the start of the ruby script to patch the validate method into String.
 
-    class String
-      def validate regex
-        !self[regex].nil?
-      end
-    end
+```ruby
+class String
+  def validate regex
+    !self[regex].nil?
+  end
+end
+```
 
 ***Update:*** I had `\Z` in the `new_regex` rather than the `\z` it should've been. Thanks [Ciarán](http://ciaranwal.sh/).

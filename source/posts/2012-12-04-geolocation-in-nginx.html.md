@@ -28,25 +28,31 @@ Recently I was searching for something else to do with nginx and ran across [a m
 
 Run the following on your server (as someone with write access to nginx config files):
 
-    # Generate the text file for nginx to import
-    perl <(curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl) < <(zip=$(tempfile) && curl -s -o $zip http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip && unzip -p $zip) > /etc/nginx/nginx_ip_country.txt
+```shell
+# Generate the text file for nginx to import
+perl <(curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl) \
+< <(zip=$(tempfile) && \
+curl -so $zip http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip \
+&& unzip -p $zip) > /etc/nginx/nginx_ip_country.txt
 
-    # Tell nginx to work out the IP country and store in variable
-    echo 'geo $IP_COUNTRY {
-      default --;
-      include /etc/nginx/nginx_ip_country.txt;
-    }' > /etc/nginx/conf.d/ip_country.conf
+# Tell nginx to work out the IP country and store in variable
+echo 'geo $IP_COUNTRY {
+  default --;
+  include /etc/nginx/nginx_ip_country.txt;
+}' > /etc/nginx/conf.d/ip_country.conf
+```
 
 Now go find the http block for the vhost you want to have the header passed to, and assuming it's passenger, add the following:
 
-    # http {
-      # server_name freddy.com;
-      passenger_set_cgi_param HTTP_X_IP_COUNTRY $IP_COUNTRY;
-    # }
+```nginx
+# http {
+  # server_name freddy.com;
+  passenger_set_cgi_param HTTP_X_IP_COUNTRY $IP_COUNTRY;
+# }
+```
 
 (If you don't use passenger, look at the docs for [proxy\_pass\_header](http://wiki.nginx.org/HttpProxyModule#proxy_pass_header) or [fastcgi\_pass\_header](http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header) to see which you'll require for your setup.)
 
 Reload nginx, and behold, `request.env["HTTP_X_IP_COUNTRY"]` (assuming a rack app running under ruby) will be a two letter country code, or `"--"`.
 
 Unfortunately this is IPv4 only currently, there's a [thread on the nginx mailing list from November 2012](http://forum.nginx.org/read.php?29,232648) saying IPv6 support should be coming on the v1.3 branch of nginx, but with no known ETA. So currently for IPv6 support, take a look at [EmberAds' trifle gem][trifle] instead.
-

@@ -33,7 +33,7 @@ And create a couple of files for us to play with:
 Ignore one of the files so we can check other matches are still ignored later on:
 
     $ echo "baz" >> .gitignore
-    $ git ststatus
+    $ git status
     # On branch master
     #
     # Initial commit
@@ -65,7 +65,6 @@ Lets see if it worked, or if we can still see our .gitignore:
 And lets just double-check that `.gitignore` and `baz` still exist on the filesystem:
 
     $ ls -a
-    .               ..              .git            .gitignore      bar             baz
-    
-Fantastic! Turns out adding ".gitignore" to `.gitignore` works perfectly. The file is still parsed by git to ignore everything else too, so it does exactly what I needed in this instance.
+    .  ..  .git  .gitignore  bar  baz
 
+Fantastic! Turns out adding ".gitignore" to `.gitignore` works perfectly. The file is still parsed by git to ignore everything else too, so it does exactly what I needed in this instance.

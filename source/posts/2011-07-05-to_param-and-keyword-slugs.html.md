@@ -24,10 +24,12 @@ Imagine you've got a blogging app and it's currently generating URL paths like `
 
 Now you know *all* about how to change the URL path that rails generates—just define `to_param` in your app. Something simple that generates a slug consisting of hyphens and lowercase alphanumerical characters. For example:
 
-    # 70-abusing-ruby-1-9-json-for-fun
-    def to_param
-      "#{id}-#{title.gsub(/\W/, "-").squeeze("-")}".downcase
-    end
+```ruby
+# 70-abusing-ruby-1-9-json-for-fun
+def to_param
+  "#{id}-#{title.gsub(/\W/, "-").squeeze("-")}".downcase
+end
+```
 
 ***NB**: You might want to go the route of storing the slug against the post record in the database and thus generating it before saving the record. In which case the rest of this post is sort of moot and you just need to search on that column. If not, then read on!*
 
@@ -45,20 +47,22 @@ All we want to do is render the content if the id param matches the slug of the 
 
 So we end up with something like the following in our posts controller, which does all the above and correctly returns a 404 if someone enters an invalid slug (even if it starts with a valid post id):
 
-    def show
-      @post = Post.find(params[:id].to_i)
-      render_404 && return unless params[:id] == @post.to_param
-    end
+```ruby
+def show
+  @post = Post.find(params[:id].to_i)
+  render_404 && return unless params[:id] == @post.to_param
+end
 
-    def render_404
-      render :file => Rails.root + "public/404.html", :status => :not_found
-    end
+def render_404
+  render :file => Rails.root + "public/404.html", :status => :not_found
+end
+```
 
 And going to an invalid path like `/posts/70-ruby-19-sucks-and-python-rules-4eva` just renders the default rails 404 page with a 404 HTTP status. (If you want the id to appear at the end of the path, alter `to_param` accordingly and do something like `params[:id].match(/\d+$/)` to extract the Post's id to search on.)
 
 Hey presto, we've implemented human readable slugs that are tamper-proof (without storing them in the database.)
 
-*(And bonus points if in fact you spotted I used my blog as an example, but that it isn't a rails app. (Nor contains the blog post ID in the pretty URL.) It's actually powered by [Habari][]!*
+*(And bonus points if in fact you spotted I used my blog as an example, but that it isn't a rails app. (Nor contains the blog post ID in the pretty URL.) It's actually powered by [Habari][] at the time of posting!*
 
 [Habari]: http://habariproject.org/
 

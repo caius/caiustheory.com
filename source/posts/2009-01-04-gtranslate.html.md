@@ -20,11 +20,13 @@ Its fairly simple to use, there is an [examples.rb][eg] included with it, but th
 
 [eg]: http://github.com/caius/gtranslate/tree/master/examples.rb
 
-    # Convert from english to french
-    Google::Translate.english_to_french( "Hello" ) # => "Bonjour"
-    
-    # There is also a short(er)-hand version
-    Google::Tr.en_to_fr( "Hello" )
+```ruby
+# Convert from english to french
+Google::Translate.english_to_french( "Hello" ) # => "Bonjour"
+
+# There is also a short(er)-hand version
+Google::Tr.en_to_fr( "Hello" )
+```
 
 As per usual with all my code its available on my [github account][GH], as the [GTranslate][gt] project. I'll throw some specs together for it and package it up as a gem soon.
 

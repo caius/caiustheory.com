@@ -7,11 +7,22 @@ ParameterizeOverride.add_override "test::unit", "testunit"
 # Fuck it
 Time.zone = "UTC"
 
+# Ignore all our draft posts
+ignore "drafts/*"
+
 set :bind_address, "127.0.0.1"
 set :server_name, "localhost"
 
 set :extensions_with_layout, %w(html)
 set :relative_links, false
+
+# Code syntax, leans on kramdown
+set :markdown_engine, :kramdown
+set :markdown,
+  input: "GFM",
+  hard_wrap: false,
+  syntax_highlighter: "rouge",
+  enable_coderay: false
 
 # The blog! The whole point of this site..
 activate :blog do |b|

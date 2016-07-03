@@ -43,38 +43,42 @@ Currently I just do that by only validating if `ENV["VALIDATION"]` is set to any
 
 **features/support/env.rb**
 
-    require "markup_validity" if ENV["VALIDATION"]
+```ruby
+require "markup_validity" if ENV["VALIDATION"]
+```
 
 **features/step\_definitions/general\_steps.rb**
 
-    Then %r/the page is valid XHTML/ do
-      $browser.html.should be_xhtml_strict if ENV["VALIDATION"]
-    end
+```ruby
+Then %r/the page is valid XHTML/ do
+  $browser.html.should be_xhtml_strict if ENV["VALIDATION"]
+end
+```
 
 **features/logging\_in.feature**
 
-    Feature: Logging in
-      In order to do stuff
-      As a registered user
-      I want to login
+```cucumber
+Feature: Logging in
+  In order to do stuff
+  As a registered user
+  I want to login
 
-      Scenario: Successful Login
-        Given there is a user called "Caius"
+  Scenario: Successful Login
+    Given there is a user called "Caius"
 
-        When I goto the homepage
-        Then the page is valid XHTML
+    When I goto the homepage
+    Then the page is valid XHTML
 
-        When I click on the "Login" link
-        Then I am redirected to the login page
-        And the page is valid XHTML
+    When I click on the "Login" link
+    Then I am redirected to the login page
+    And the page is valid XHTML
 
-        When I enter my login details
-        And I click "Login"
-        Then I am redirected to my dashboard
-        And the page is valid XHTML
-    
+    When I enter my login details
+    And I click "Login"
+    Then I am redirected to my dashboard
+    And the page is valid XHTML
+```
 
 Now when I run `cucumber features/logging_in.feature`, it doesn't validate the HTML, it just makes sure that I can login as my user and that I am redirected to the right places. But if I run `VALIDATION=true cucumber features/logging_in.feature`, then it *does* validate my XHTML on the homepage, the login page and on the user's dashboard. If it fails validation then it gives you a fairly helpful error message as to what it was expecting and what it found instead.
 
 From a quick run against a couple of stories in my app I discovered that I've not been wrapping form elements in an enclosing element, so they've been quickly fixed and now they validate. Now I realise this gem is only testing XHTML output, and doesn't include CSS or JS validation, but from a quick peek at the gem's source it should be fairly easy to add both of those in I think, although again they aren't major errors for me yet in this app.
-
