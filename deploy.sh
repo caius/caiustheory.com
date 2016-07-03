@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+set -x
 
 # Copies a generated CaiusTheory up to the webserver
 
