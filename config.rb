@@ -13,6 +13,14 @@ set :server_name, "localhost"
 set :extensions_with_layout, %w(html)
 set :relative_links, false
 
+# Code syntax, leans on kramdown
+set :markdown_engine, :kramdown
+set :markdown,
+  input: "GFM",
+  hard_wrap: false,
+  syntax_highlighter: "rouge",
+  enable_coderay: false
+
 # The blog! The whole point of this site..
 activate :blog do |b|
   b.name = "CaiusTheory"
