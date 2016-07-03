@@ -7,6 +7,9 @@ ParameterizeOverride.add_override "test::unit", "testunit"
 # Fuck it
 Time.zone = "UTC"
 
+# Ignore all our draft posts
+ignore "drafts/*"
+
 set :bind_address, "127.0.0.1"
 set :server_name, "localhost"
 
