@@ -97,45 +97,29 @@ end
 helpers do
   # Given an item, builds a string of HTML links to all the tags for said item as an english list
   def tag_sentence_for(article)
-    article_tags = Array(article.data.tags)
-    return "" if article_tags.empty?
+    links = article.tags
+      .map { |tagname| Middleman::Util::UriTemplates.safe_parameterize tagname }
+      .map { |slug| sitemap.find_resource_by_page_id "tag/#{slug}/index.html" }
+      .map { |resource| link_to resource.locals["tagname"], resource }
+    list_sentence(links)
+  end
 
-    tag_links = article_tags.map do |tag|
-      link_to(tag, tag_path(tag))
+  # Turn a list of elements into a sentence listing them
+  #
+  # Expected outcomes:
+  #   []                  => ""
+  #   %w(one)             => "one"
+  #   %(one two)          => "one and two"
+  #   %w(one two three)   => "one, two and three"
+  #
+  def list_sentence(elements)
+    case elements.size
+    when 0
+      ""
+    when 1
+      elements.first
+    else
+      [elements[0..-2].join(", "), "and", elements.last].join(" ")
     end
-
-    return tag_links.first if tag_links.size == 1
-
-    [tag_links[0..-2].join(", "), "and", tag_links.last].join(" ")
-  end
-
-  # Returns the URI path for a tag archive page
-  def tag_path(name)
-    # Unless there's an override, we just slugify the tag name to get the path
-    @tag_paths ||= begin
-      {
-        "test::unit" => "testunit",
-        "ruby1.9" => "ruby19",
-      }.tap do |hash|
-        hash.default_proc = -> (h, k) { hash[k] = slugify(k) }
-      end
-    end
-
-    slashify("tag", @tag_paths[name])
-  end
-
-  # Given a string, turns it into a URL slug
-  def slugify(str)
-    str.downcase.gsub(/\s+/, '-')
-  end
-
-  # Takes a string or array of path components
-  # Joins the components together with slashes and adds leading/trailing slashes if required
-  # Returns string
-  def slashify(*components)
-    path = components.join("/")
-    path = "/#{path}" unless path.start_with?("/")
-    path << "/" unless path.end_with?("/")
-    path.gsub(%r{//+}, "/")
   end
 end
