@@ -96,7 +96,7 @@ configure :build do
   set :site_url, "http://caiustheory.com/"
 
   # Pre-build compressed files for nginx's pleasure
-  # activate :gzip
+  activate :gzip
 
   # Minify CSS on build
   activate :minify_css
