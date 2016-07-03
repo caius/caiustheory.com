@@ -1,3 +1,9 @@
+require_relative "lib/extensions/parameterize_override"
+
+# Map these tag names to historical versions
+ParameterizeOverride.add_override "ruby1.9", "ruby19"
+ParameterizeOverride.add_override "test::unit", "testunit"
+
 # Fuck it
 Time.zone = "UTC"
 
@@ -7,27 +13,7 @@ set :server_name, "localhost"
 set :extensions_with_layout, %w(html)
 set :relative_links, false
 
-module ParameterizeOverride
-  SUBSTITUTIONS = {
-    "ruby1.9" => "ruby19",
-    "test::unit" => "testunit",
-  }
-
-  def safe_parameterize(str)
-    if (replacement = SUBSTITUTIONS[str])
-      super(replacement)
-    else
-      super
-    end
-  end
-end
-Middleman::Blog::UriTemplates.prepend(ParameterizeOverride)
-Middleman::Blog::UriTemplates.singleton_class.prepend(ParameterizeOverride)
-
-###
-# Page options, layouts, aliases and proxies
-###
-
+# The blog! The whole point of this site..
 activate :blog do |b|
   b.name = "CaiusTheory"
   b.layout = "blog_post"
@@ -63,8 +49,10 @@ activate :blog do |b|
   b.page_link = "page/{num}"
 end
 
+# /foo/index.html instead of /foo.html
 activate :directory_indexes
 
+# Add text versions of all posts
 activate :plaintext do |c|
   c.filename = "index.txt"
   c.layout = "blog_post.text"
@@ -73,6 +61,7 @@ activate :plaintext do |c|
   end
 end
 
+# Pick up dates from filename if missing from frontmatter
 activate :postdated
 
 # Per-page layout changes:
@@ -108,45 +97,29 @@ end
 helpers do
   # Given an item, builds a string of HTML links to all the tags for said item as an english list
   def tag_sentence_for(article)
-    article_tags = Array(article.data.tags)
-    return "" if article_tags.empty?
+    links = article.tags
+      .map { |tagname| Middleman::Util::UriTemplates.safe_parameterize tagname }
+      .map { |slug| sitemap.find_resource_by_page_id "tag/#{slug}/index.html" }
+      .map { |resource| link_to resource.locals["tagname"], resource }
+    list_sentence(links)
+  end
 
-    tag_links = article_tags.map do |tag|
-      link_to(tag, tag_path(tag))
+  # Turn a list of elements into a sentence listing them
+  #
+  # Expected outcomes:
+  #   []                  => ""
+  #   %w(one)             => "one"
+  #   %(one two)          => "one and two"
+  #   %w(one two three)   => "one, two and three"
+  #
+  def list_sentence(elements)
+    case elements.size
+    when 0
+      ""
+    when 1
+      elements.first
+    else
+      [elements[0..-2].join(", "), "and", elements.last].join(" ")
     end
-
-    return tag_links.first if tag_links.size == 1
-
-    [tag_links[0..-2].join(", "), "and", tag_links.last].join(" ")
-  end
-
-  # Returns the URI path for a tag archive page
-  def tag_path(name)
-    # Unless there's an override, we just slugify the tag name to get the path
-    @tag_paths ||= begin
-      {
-        "test::unit" => "testunit",
-        "ruby1.9" => "ruby19",
-      }.tap do |hash|
-        hash.default_proc = -> (h, k) { hash[k] = slugify(k) }
-      end
-    end
-
-    slashify("tag", @tag_paths[name])
-  end
-
-  # Given a string, turns it into a URL slug
-  def slugify(str)
-    str.downcase.gsub(/\s+/, '-')
-  end
-
-  # Takes a string or array of path components
-  # Joins the components together with slashes and adds leading/trailing slashes if required
-  # Returns string
-  def slashify(*components)
-    path = components.join("/")
-    path = "/#{path}" unless path.start_with?("/")
-    path << "/" unless path.end_with?("/")
-    path.gsub(%r{//+}, "/")
   end
 end
