@@ -1,6 +1,7 @@
 ---
 title: Much Wenlock Triathlon 2016
 author: Caius Durling
+date: 2016-07-10T16:00:00Z
 tags:
   - triathlon
 ---
