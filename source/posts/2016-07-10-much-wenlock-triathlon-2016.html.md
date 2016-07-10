@@ -21,7 +21,7 @@ Lovely start to the cycle route, massive downhill on recently resurfaced roads f
 
 Bike racked easily, shoes swapped, gel necked and a couple of Lucozade bottles clutched and off to run. Took on another gel.
 
-**Run: 01:04:37**
+**7km Run: 01:04:37**
 
 Needed all the fluid I carried, didn't take anything else during the run and felt no less energetic than the other disciplines. Legs didn't really hurt, just felt like lead and had no power. Route was basically a mini trail run then up a tarmac road to the turning point then head back via trail run to finish. Adopted a walk/run approach.
 
