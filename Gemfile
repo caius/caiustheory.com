@@ -11,6 +11,8 @@ gem "kramdown", "< 2"
 gem "builder", "~> 3.0"
 gem "rouge"
 
+gem "rake"
+
 # Debugging tools
 gem "byebug"
 gem "pry"
