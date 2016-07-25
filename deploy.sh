@@ -5,6 +5,8 @@ set -x
 
 # Copies a generated CaiusTheory up to the webserver
 
+bundle check || bundle install
+
 # Make sure we're compiled first, pass --no-compile as sole argument to skip
 if [[ $1 != "--no-compile" ]]; then
   rm -rf build/
