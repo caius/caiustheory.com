@@ -1,10 +1,10 @@
 ---
 title: SmartOS Recovery mount /usbkey
-date: 2016-07-25T17:59Z
+date: 2016-07-25 17:59:00
 tags:
-  - SmartOS
   - fix
   - geek
+  - SmartOS
 ---
 
 Recently I managed to hose a box in a perfectly self-inflicted storm of idiocy. Imagine a SmartOS server with the following issues:
@@ -15,9 +15,9 @@ Recently I managed to hose a box in a perfectly self-inflicted storm of idiocy. 
 
 Needless to say, this caused a tiny issue in the server doing what it's supposed to. Luckily I had access to a KVM remote console for the box and the following worked.
 
-Bring the machine up or reboot it if it's already running and during the boot menu selection, choose the Recovery Mode boot option (second entry usually). Wait for the login prompt to appear and login with `root`/`root`.
+I brought the machine up, choosing the second option for recovery at the grub menu. Waited for a login prompt, then logged in with `root`/`root`.
 
-You then need to mount `/usbkey` so you can edit the configs, which firstly means importing the zfs pool it resides on, then mounting the share.
+Realised quite quickly that `/usbkey` must be persisted on the `zones` zfs pool otherwise the configuration would be lost after shutdown, so imported the correct pool, created a directory to mount into and then mounted the zfs share.
 
 ```shell
 zpool import zones
