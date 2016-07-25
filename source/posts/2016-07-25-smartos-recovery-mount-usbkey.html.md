@@ -1,6 +1,6 @@
 ---
 title: SmartOS Recovery mount /usbkey
-date: 2016-07-25 17:59 UTC
+date: 2016-07-25T17:59Z
 tags:
   - SmartOS
   - fix
