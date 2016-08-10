@@ -19,7 +19,7 @@ Then instead of eyeballing `Gemfile.lock`, I wrote an awk script to pull out the
 BEGIN {
   parent = 0
   parent_printed = 0
-  rails = "^rail(s|ties)|action(mailer|pack|view)|active(job|model|record|support)$"
+  rails_gems = "^(rail(s|ties)|action(mailer|pack|view)|active(job|model|record|support))$"
 }
 
 # We only want the specs from the GEM section
@@ -27,7 +27,8 @@ NR == 1, $1 ~ /GEM/ { next }
 $1 == "" { exit }
 
 # Skip parent gems we don't care about (rails itself…)
-$0 ~ /^ {4}[^ ]/ && $1 ~ rails {
+$0 ~ /^ {4}[^ ]/ &&
+$1 ~ rails_gems {
   parent = 0
   parent_printed = 0
   next
@@ -43,11 +44,13 @@ $0 ~ /^ {4}[^ ]/ {
 
 # If the nested gem (6 space prefix) matches rails-names and we have a parent value
 # set then we print them out - making sure to only print the parent once
-$0 ~ /^ {6}[^ ]/ && $1 ~ rails && parent != 0 {
- if (parent_printed == 0) {
-   parent_printed = 1
-   print parent
- }
+$0 ~ /^ {6}[^ ]/ &&
+$1 ~ rails_gems &&
+parent != 0 {
+  if (parent_printed == 0) {
+    parent_printed = 1
+    print parent
+  }
 
   print $0
 }
@@ -62,37 +65,33 @@ awk -f rails5.awk Gemfile.lock
 And you'll get output like this, to run through and see if any of the dependencies are pinning to lower versions than you need.
 
 ```
-    climate_control (0.0.3)
-      activesupport (>= 3.0)
-    cucumber-rails (1.4.2)
-      rails (>= 3, < 5)
-    devise (3.5.6)
-      railties (>= 3.2.6, < 5)
-    factory_girl (4.5.0)
+    coffee-rails (4.0.1)
+      railties (>= 4.0.0, < 5.0)
+    factory_girl (4.4.0)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.5.0)
+    factory_girl_rails (4.4.1)
       railties (>= 3.0.0)
-    globalid (0.3.6)
+    globalid (0.3.7)
       activesupport (>= 4.1.0)
+    google-api-client (0.8.6)
+      activesupport (>= 3.2)
     jquery-rails (3.1.4)
       railties (>= 3.0, < 5.0)
-    paperclip (4.3.2)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-    responders (2.1.1)
-      railties (>= 4.2.0, < 5.1)
-    rspec-rails (3.4.0)
+    jquery-ui-rails (5.0.5)
+      railties (>= 3.2.16)
+    rails-deprecated_sanitizer (1.0.3)
+      activesupport (>= 4.2.0.alpha)
+    rails-dom-testing (1.0.7)
+      activesupport (>= 4.2.0.beta, < 5.0)
+    rspec-rails (3.4.2)
       actionpack (>= 3.0, < 4.3)
       activesupport (>= 3.0, < 4.3)
       railties (>= 3.0, < 4.3)
-    sass-rails (5.0.4)
+    sass-rails (4.0.5)
       railties (>= 4.0.0, < 5.0)
-      sprockets-rails (>= 2.0, < 4.0)
-    sprockets-rails (3.0.4)
-      actionpack (>= 4.0)
-      activesupport (>= 4.0)
-    whenever (0.9.2)
-      activesupport (>= 2.3.4)
+    sprockets-rails (2.3.3)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
 ```
 
 In this case, I'm trying to take this app to rails 5.0, so all the ones specifying `< 5` and `< 4.3` need upgrading beforehand.
