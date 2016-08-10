@@ -1,6 +1,6 @@
 ---
 title: Find dependencies blocking rails upgrades
-date: 2016-08-10 11:39 UTC
+date: 2016-08-10T11:39:00Z
 tags:
   - ruby
   - rails
