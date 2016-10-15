@@ -1,6 +1,6 @@
 ---
 title: Stop HealthKit causing SIGABRT
-date: 2016-10-15 09:15 UTC
+date: 2016-10-15T09:15:00Z
 tags:
   - iOS
   - swift
