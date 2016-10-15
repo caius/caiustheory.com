@@ -1,5 +1,6 @@
 require "yaml"
 
+desc "List all tags from all posts"
 task :tags do
   tags = Dir["source/posts/**/*.html.md"].flat_map do |path|
     YAML.load_file(path)["tags"]
