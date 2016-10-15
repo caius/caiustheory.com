@@ -1,5 +1,6 @@
 ---
 title: Stop HealthKit causing SIGABRT
+author: Caius Durling
 date: 2016-10-15T09:15:00Z
 tags:
   - iOS
