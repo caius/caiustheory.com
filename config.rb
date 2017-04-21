@@ -58,6 +58,8 @@ activate :blog do |b|
   b.paginate = true
   b.per_page = 10
   b.page_link = "page/{num}"
+
+  b.new_article_template = File.expand_path("source/new_article.erb", __dir__)
 end
 
 # /foo/index.html instead of /foo.html
