@@ -30,7 +30,7 @@ activate :blog do |b|
   b.layout = "blog_post"
 
   # Read everything date-delimited under posts/
-  b.sources = "posts/{year}-{month}-{day}-{title}.html"
+  b.sources = "posts/{year}/{year}-{month}-{day}-{title}.html"
 
   # For use with `middleman article`
   b.default_extension = ".md"
