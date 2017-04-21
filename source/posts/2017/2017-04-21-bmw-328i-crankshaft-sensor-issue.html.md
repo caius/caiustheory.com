@@ -16,7 +16,7 @@ Reading the codes showed one related to the crankshaft sensor:
 
 _(Codes can also show up in hex, which would be "83 Crankshaft Sensor".)_
 
-I duly replaced both the Crankshaft Sensor (Part # XXXXXX) and the Camshaft Sensor (Part # XXXXXX), but it was still throwing the crankshaft sensor code.
+I duly replaced both the Crankshaft Sensor (Part # 12141703277) and the Camshaft Sensor (Part # 12141703221), but it was still throwing the crankshaft sensor code.
 
 Upon closer inspection, the sensor wire in the plug for the crankshaft sensor wasn't pushed fully into the socket under the intake manifold. This lead to the ECU not being able to get a signal from the sensor, so it quite correctly threw a code and didn't run correctly.
 
