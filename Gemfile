@@ -9,7 +9,7 @@ gem "middleman-postdated", "~> 0.5.0"
 
 gem "kramdown", "< 2"
 gem "builder", "~> 3.0"
-gem "rouge"
+gem "rouge", "< 2"
 
 gem "rake"
 
