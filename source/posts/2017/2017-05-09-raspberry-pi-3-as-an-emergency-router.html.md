@@ -1,6 +1,6 @@
 ---
 title: Raspberry Pi 3 as an emergency router
-date: 2017-05-09T20:55Z
+date: 2017-05-09T20:55:00Z
 tags:
   - RPi
   - networking
