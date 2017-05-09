@@ -26,6 +26,6 @@ Other things I'm also trying to be good about doing:
 And some useful reading I ran across in my quest to level up bash-scripts:
 
 * [Bash Exit Traps](http://redsymbol.net/articles/bash-exit-traps/)
-* [Use the unofficial Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) (Yes, _two_ posts on <http://redsymbol.net/>. Well worth reading.)
+* [Use the unofficial Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) (Yes, _two_ posts from <http://redsymbol.net/>. Well worth reading.)
 * [Bash scripting quirks & safety tips](https://jvns.ca/blog/2017/03/26/bash-quirks/)
 * [Bash hackers wiki](http://wiki.bash-hackers.org/)
