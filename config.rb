@@ -111,7 +111,7 @@ helpers do
   def tag_sentence_for(article)
     links = article.tags
       .map { |tagname| Middleman::Util::UriTemplates.safe_parameterize tagname }
-      .map { |slug| sitemap.find_resource_by_page_id "tag/#{slug}/index.html" }
+      .map { |slug| sitemap.find_resource_by_page_id "tag/#{slug}" }
       .map { |resource| link_to resource.locals["tagname"], resource }
     list_sentence(links)
   end
