@@ -1,7 +1,9 @@
 ---
 title: Wenlock Olympian Triathlon 2017
+author: Caius Durling
 date: 2017-07-13T12:55:45Z
 tags:
+  - triathlon
 ---
 
 Second year in a row doing this Tri, [last year][wenlock 2016] I came away feeling like I hadn't given it my best and wanted to return to complete unfinished business. *(Spoilers: I managed better this year.)*
