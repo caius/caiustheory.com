@@ -22,4 +22,4 @@ rsync \
   --compress \
   --delay-updates \
   --delete-after \
-  build/ nonus:www/caiustheory.com/htdocs
+  build/ nonus2.vm.caius.name:www/caiustheory.com/htdocs
