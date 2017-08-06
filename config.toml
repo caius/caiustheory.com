@@ -1,0 +1,28 @@
+verbose = true
+
+baseURL = "http://caiustheory.com/"
+theme = "caiustheory"
+
+languageCode = "en-gb"
+
+disableKinds = ["section", "taxonomyTerm", "RSS", "sitemap", "robotsTXT", "404"]
+
+[taxonomies]
+tag = "tag"
+
+# We don't want no stinking dates in our permalinks
+[permalinks]
+post = "/:slug/"
+
+# Let the magic happen for /:slug.text
+[outputFormats.PlainText]
+mediaType = "text/plain"
+isPlainText = true
+
+[outputs]
+page = ["HTML", "PlainText"]
+
+[blackfriday]
+smartypants = false
+smartDashes = false
+extensions = ["strikethrough", "footnotes", "autoHeaderIds"]
