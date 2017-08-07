@@ -20,3 +20,15 @@ production: build
 .PHONY: tags
 tags:
 	ruby -ryaml -e 'puts Dir["content/post/*.md"].flat_map { |path| YAML.load_file(path)["tag"] }.compact.sort.uniq'
+
+.PHONY: deploy
+deploy: production
+	rsync --dry-run \
+		--rsh=ssh \
+		--archive \
+		--partial \
+		--progress \
+		--compress \
+		--delay-updates \
+		--delete-after \
+		public/ caiustheory:www/caiustheory.com/htdocs
