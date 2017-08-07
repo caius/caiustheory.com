@@ -26,3 +26,7 @@ page = ["HTML", "PlainText"]
 smartypants = false
 smartDashes = false
 extensions = ["strikethrough", "footnotes", "autoHeaderIds"]
+
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
