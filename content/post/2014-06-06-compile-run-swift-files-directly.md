@@ -1,5 +1,5 @@
 ---
-title: "Compile &amp; run swift files directly"
+title: "Compile & run swift files directly"
 author: "Caius Durling"
 date: 2014-06-06 14:32:18 +0000
 tag:

@@ -1,5 +1,5 @@
 ---
-title: "Abusing Ruby 1.9 &amp; JSON for fun"
+title: "Abusing Ruby 1.9 & JSON for fun"
 author: "Caius Durling"
 date: 2011-02-07 19:16:58 +0000
 tag:
