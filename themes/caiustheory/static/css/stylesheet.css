@@ -131,6 +131,16 @@ body > header h1 {
   font-size: 3em;
 }
 
+body > header h1 a,
+body > header h1 a:link,
+body > header h1 a:visited {
+  text-decoration: none;
+}
+
+body > header h1 a:hover {
+  text-decoration: underline;
+}
+
 body > header h2 {
   float: right;
   font-size: 1em;
@@ -286,16 +296,31 @@ body > main nav ul li.next:after {
   padding-left: 0.3em;
 }
 
-body > main > ol li {
+body > main.list h2 {
+  margin-top: 0.8em;
+}
+
+body > main.list > h2 {
+  font-size: 1.4em;
+}
+
+body > main.list ol li {
   line-height: 1.8em;
   font-family: Courier, monospace;
   font-size: 1.1em;
+  margin-left: 1em;
 }
 
-body > main > ol a,
-body > main > ol a:link,
-body > main > ol a:visited {
+body > main.list ol a,
+body > main.list ol a:link,
+body > main.list ol a:visited {
   border-bottom: 1px solid #111;
+}
+
+body > main.list ol a:hover {
+  color: #fff;
+  padding: 5px;
+  margin-left: -5px;
 }
 
 body > nav {
