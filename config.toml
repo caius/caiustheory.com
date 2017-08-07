@@ -5,7 +5,7 @@ theme = "caiustheory"
 
 languageCode = "en-gb"
 
-disableKinds = ["section", "taxonomyTerm", "RSS", "sitemap", "robotsTXT", "404"]
+disableKinds = ["section", "taxonomyTerm"]
 
 [taxonomies]
 tag = "tag"
