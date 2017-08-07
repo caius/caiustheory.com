@@ -4,6 +4,7 @@ baseURL = "http://caiustheory.com/"
 theme = "caiustheory"
 
 languageCode = "en-gb"
+copyright = "This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License"
 
 disableKinds = ["section", "taxonomyTerm"]
 
@@ -14,6 +15,8 @@ tag = "tag"
 [permalinks]
 post = "/:slug/"
 
+[outputFormats]
+
 # Let the magic happen for /:slug.text
 [outputFormats.PlainText]
 mediaType = "text/plain"
@@ -21,6 +24,7 @@ isPlainText = true
 
 [outputs]
 page = ["HTML", "PlainText"]
+home = ["HTML", "RSS"]
 
 [blackfriday]
 smartypants = false
@@ -30,3 +34,6 @@ extensions = ["strikethrough", "footnotes", "autoHeaderIds"]
 [sitemap]
   changefreq = "monthly"
   priority = 0.5
+
+[author]
+  name = "Caius Durling"
