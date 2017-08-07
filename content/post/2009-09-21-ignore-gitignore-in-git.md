@@ -1,5 +1,6 @@
 ---
 title: "Ignore .gitignore in Git"
+slug: ignore-gitignore-in-git
 author: "Caius Durling"
 date: 2009-09-21 06:00:00 +0000
 tag:

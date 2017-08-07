@@ -1,5 +1,6 @@
 ---
 title: "Command line tricks: Scripting Languages"
+slug: command-line-tricks--scripting-languages
 author: "Caius Durling"
 date: 2008-02-14 16:24:27 +0000
 tag:

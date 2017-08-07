@@ -1,5 +1,6 @@
 ---
 title: "Fix Mail.app crashing after 10.5.6 upgrade"
+slug: fix-mailapp-crashing-after-1056-upgrade
 author: "Caius Durling"
 date: 2008-12-17 13:58:04 +0000
 tag:

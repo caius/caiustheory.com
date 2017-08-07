@@ -1,5 +1,6 @@
 ---
 title: "Removing non-existent source from rubygems"
+slug: removing-non-existant-source-from-rubygems
 author: "Caius Durling"
 date: 2008-11-07 06:08:28 +0000
 tag:

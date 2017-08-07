@@ -1,5 +1,6 @@
 ---
 title: York April 2014 Triathlon
+slug: york-triathlon-2014
 date: 2014-04-28 10:00:00
 tag:
   - triathlon

@@ -1,5 +1,6 @@
 ---
 title: "Migrating Rubygems to Ruby 1.9.x"
+slug: migrating-rubygems-to-ruby-19x
 author: "Caius Durling"
 date: 2009-01-31 20:29:57 +0000
 tag:

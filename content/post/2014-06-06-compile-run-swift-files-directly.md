@@ -1,5 +1,6 @@
 ---
 title: "Compile & run swift files directly"
+slug: compile-run-swift-files-directly
 author: "Caius Durling"
 date: 2014-06-06 14:32:18 +0000
 tag:

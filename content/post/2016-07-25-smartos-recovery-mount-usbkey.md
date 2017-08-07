@@ -1,5 +1,6 @@
 ---
 title: SmartOS Recovery mount /usbkey
+slug: smartos-recovery-mount-usbkey
 date: 2016-07-25 17:59:00
 tag:
   - fix

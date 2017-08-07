@@ -1,5 +1,6 @@
 ---
 title: "Bad Recruiters - Rhys Evans at Devonshire"
+slug: bad-recruiters-rhys-evans-at-devonshire
 author: "Caius Durling"
 date: 2011-02-09 14:03:49 +0000
 tag:

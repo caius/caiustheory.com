@@ -1,5 +1,6 @@
 ---
 title: "Use datamapper sessions with merb & datamapper"
+slug: use-datamapper-sessions-with-merb-datamapper
 author: "Caius Durling"
 date: 2008-02-05 20:27:31 +0000
 tag:
