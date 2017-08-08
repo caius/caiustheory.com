@@ -11,8 +11,14 @@ build: clean
 
 .PHONY: postprocess
 postprocess: build
-	time find public -type f \( -name '*.txt' -o -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.xml' -o -name '*.svg' \) -exec gzip -v -k -f --best {} \;
+	# Feed lives at a different name
 	mv public/index.xml public/feed.xml
+
+	# Poor person's asset hashing, using MD5
+	./bin/hash_assets
+
+	# Finally compress all the files we can to help nginx out
+	time find public -type f \( -name '*.txt' -o -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.xml' -o -name '*.svg' \) -exec gzip -v -k -f --best {} \;
 
 .PHONY: tags
 tags:
