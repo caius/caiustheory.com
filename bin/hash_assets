@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#
+# hash_assets
+# Poor person's asset pipeline
+# MIT License (c) Caius Durling <dev@caius.name>
+#
+# Expects static content in public/ folder. Finds css & js files, moves them to
+# a hashed location & then updates all references in HTML files.
+#
+
+[[ "$TRACE" ]] && set -o xtrace
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o noclobber
+
+cd public
+
+for asset in "$(find . -type f \( -name '*.css' -or -name '*.js' \))"
+do
+  asset_hash=$(sha1sum "${asset}" | awk '{ print $1 }')
+  hashed_asset=$(echo "${asset}" | sed -Ee 's/(.+)\.(.+)$/\1-'${asset_hash}'.\2/')
+  mv "${asset}" "${hashed_asset}"
+
+  find . -type f -name '*.html' | xargs -P4 -L1 sed -i '' -Ee 's#'${asset:1}'#'${hashed_asset:1}'#'
+done
