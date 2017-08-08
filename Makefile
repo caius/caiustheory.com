@@ -10,7 +10,7 @@ build: clean
 	hugo
 
 .PHONY: postprocess
-postprocess: build
+postprocess:
 	# Feed lives at a different name
 	mv public/index.xml public/feed.xml
 
@@ -24,18 +24,6 @@ postprocess: build
 tags:
 	ruby -ryaml -e 'puts Dir["content/post/*.md"].flat_map { |path| YAML.load_file(path)["tag"] }.compact.sort.uniq'
 
-.PHONY: production
-production: postprocess
-	rsync --dry-run \
-    --rsh=ssh \
-    --archive \
-    --partial \
-    --progress \
-    --compress \
-    --delay-updates \
-    --delete-after \
-    public/ caiustheory:www/caiustheory.com/htdocs
-
 .PHONY: staging
 staging: clean
 	hugo -b http://staging.caiustheory.com
@@ -43,3 +31,9 @@ staging: clean
 	rsync --rsh=ssh --archive --partial --progress --compress \
 		--delay-updates --delete-after \
 		public/ caiustheory:www/staging.caiustheory.com/htdocs
+
+.PHONY: production
+production: postprocess
+	rsync --dry-run --rsh=ssh --archive --partial --progress --compress \
+		--delay-updates --delete-after \
+		public/ caiustheory:www/caiustheory.com/htdocs
