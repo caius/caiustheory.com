@@ -8,6 +8,9 @@ copyright = "This work is licensed under a Creative Commons Attribution-ShareAli
 
 disableKinds = ["section", "taxonomyTerm"]
 
+PygmentsCodeFences = true
+PygmentsUseClasses = true
+
 [taxonomies]
 tag = "tag"
 
