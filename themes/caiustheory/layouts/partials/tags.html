@@ -1,0 +1,3 @@
+<p class="tags">
+  <strong>Tags:</strong> {{ delimit (apply (apply (sort .) "partial" "tag-link" ".") "chomp" ".") ", " " and " }}
+</p>

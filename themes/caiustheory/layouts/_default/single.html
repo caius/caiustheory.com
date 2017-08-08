@@ -1,0 +1,56 @@
+{{- partial "header" . -}}
+
+<main>
+
+<article>
+  <header>
+    <h1><a href="{{ .URL }}">{{ .Title }}</a></h1>
+    <time datetime="{{ .Date }}">{{ .Date.Format "2006-01-02 15:04:05" }}</time>
+  </header>
+
+  {{- .Content -}}
+
+  <footer>
+    {{- if .Params.Tag -}}
+      {{- partial "tags" .Params.Tag -}}
+    {{- end -}}
+
+      <p class="license">
+        This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+  </footer>
+
+</article>
+
+<nav>
+  <div class="pagination">
+    <ul>
+      {{- range where .Site.Pages.ByDate "Section" "post" -}}
+        {{- if gt $.Date.Unix .Date.Unix -}}
+          {{- $.Scratch.Set "previous" . -}}
+        {{- end -}}
+        {{- if lt $.Date.Unix .Date.Unix -}}
+          {{- $.Scratch.Set "next" . -}}
+        {{- end -}}
+      {{- end -}}
+
+      {{- if $.Scratch.Get "previous" -}}
+        {{- with $.Scratch.Get "previous" -}}
+          <li class="previous"><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+        {{- end -}}
+      {{- end -}}
+
+      {{- if $.Scratch.Get "next" -}}
+        {{- with $.Scratch.Get "next" -}}
+          <li class="next"><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+        {{- end -}}
+      {{- end -}}
+    </ul>
+
+    <span class="clear"></span>
+  </div>
+</nav>
+
+</main>
+
+{{- partial "footer" . -}}
