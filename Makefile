@@ -34,7 +34,8 @@ staging: clean
 		public/ caiustheory:www/staging.caiustheory.com/htdocs
 
 .PHONY: production
-production: postprocess
-	rsync --dry-run --rsh=ssh --archive --partial --progress --compress \
+production: build
+	@@make postprocess
+	rsync --rsh=ssh --archive --partial --progress --compress \
 		--delay-updates --delete-after \
 		public/ caiustheory:www/caiustheory.com/htdocs
