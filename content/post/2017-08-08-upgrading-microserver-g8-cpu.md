@@ -23,15 +23,15 @@ My criteria were more than 2 cores/threads, ECC ram **has** to be supported and 
 
 CPU         | Cores | Threads | TDP (W) | Passmark | Price (£)
 ------------|-------|---------|---------|----------|----------
-G1610T      | 2     | 2       | 35      | 2322     | 12.00
+*G1610T*      | 2     | 2       | 35      | 2322     | 12.00
 E3-1220L v2 | 2     | 4       | 17      | 3701     | 120.00
 E3-1220L    | 2     | 4       | 20      | 3563     | 60.00
 E3-1260L    | 4     | 8       | 45      | 6534     | 80.00
 E3-1265L    | 4     | 8       | 45      | 6054     | 64.00
-E3-1265L v2 | 4     | 8       | 45      | 7733     | 133.00
+**E3-1265L v2** | 4     | 8       | 45      | 7733     | 133.00
 E3-1230l v3 | 4     | 8       | 25      | 7207     | 167.00
 
-*Stock CPU is first in the list for comparison*
+*Stock CPU is first in the list for comparison. Bold one is the chosen upgrade.*
 
 
 After some deliberation, I decided to pick up the E3-1265L v2 from Ebay. It has a slightly higher TDP, but not so much that I'm worried about the temperature in the server. Most importantly it supports ECC ram & quadruples the physical cores, whilst providing a whopping eight threads for processing power. More than enough for a couple of concurrent Plex transcodes with cycles left over for other things at the same time.
