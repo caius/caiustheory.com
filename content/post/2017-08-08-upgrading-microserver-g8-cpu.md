@@ -13,7 +13,7 @@ My home server is a [HP Proliant Microserver Gen 8][g8], which is modestly power
 
 Both the G8 and the previous revision, the G7, are moderately expandable in terms of memory & storage devices. (Not least of which is an internal USB port, which is useful plugging the SmartOS boot device into, no chance of it being knocked out!) I've upgraded the memory and HDDs in the time I've had the machine. ([Here's how I upgraded the memory on the cheap][g8 memory upgrade]!)
 
-The Gen 8 specifically is a little more upgradable however, as it comes with a 1155 CPU socket. Mine contained a [cpu][stock cpu] from new, which whilst quicker than the AMD one in the G7, was only two cores / two threads and not massively fast in the grand scheme of things.
+The Gen 8 specifically is a little more upgradable however, as it comes with a 1155 CPU socket. Mine contained a [Celeron G1610T CPU][stock cpu] from new, which whilst quicker than the AMD one in the G7, was only two cores / two threads and not massively fast in the grand scheme of things.
 
 Given I run a few different things on the home server, it acts as a NAS for a handful of laptops, [plex server][], [crashplan][] backup server, gathers various stats from network devices & runs the [unifi controller][]. Mostly it's fine, but transcoding in Plex specifically burns the CPU and on the odd occasion I've noticed it being slower than realtime and having to wait for the server to catch up.
 
