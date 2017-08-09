@@ -29,6 +29,7 @@ tags:
 staging: clean
 	hugo -b http://staging.caiustheory.com
 	@@make postprocess
+	cp staging-robots.txt public/robots.txt
 	rsync --rsh=ssh --archive --partial --progress --compress \
 		--delay-updates --delete-after \
 		public/ caiustheory:www/staging.caiustheory.com/htdocs
