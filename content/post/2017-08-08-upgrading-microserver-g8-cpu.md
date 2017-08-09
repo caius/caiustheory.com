@@ -5,7 +5,6 @@ author: Caius Durling
 tag:
   - cpu
   - hardware
-  - HP
   - microserver
 ---
 
