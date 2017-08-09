@@ -48,18 +48,18 @@ First boot with the processor went very smoothly, SmartOS recognises it quite ha
 
 I'm also happy with the temperatures, even after streaming a couple of videos via plex for an hour or so, whilst backing up a laptop via crashplan, as well as the usual stuff that's always running on the machine, everything was still well within normal ranges.
 
-SENSOR           | VALUE      | UNITS      | STATE
------------------|------------|------------|------
-01-Inlet Ambient | 22.000     | degrees C  | ok
-02-CPU           | 40.000     | degrees C  | ok
-03-P1 DIMM 1-2   | 40.000     | degrees C  | ok
-05-Chipset       | 56.000     | degrees C  | ok
-06-Chipset Zone  | 44.000     | degrees C  | ok
-07-VR P1 Zone    | 61.000     | degrees C  | ok
-09-iLO Zone      | 49.000     | degrees C  | ok
-11-PCI 1 Zone    | 40.000     | degrees C  | ok
-12-Sys Exhaust   | 48.000     | degrees C  | ok
-Fan 1            | 12.544     | percent    | ok
+Sensor        | Value      | Units      | State
+--------------|------------|------------|------
+Inlet Ambient | 22.000     | degrees C  | ok
+CPU           | 40.000     | degrees C  | ok
+P1 DIMM 1-2   | 40.000     | degrees C  | ok
+Chipset       | 56.000     | degrees C  | ok
+Chipset Zone  | 44.000     | degrees C  | ok
+VR P1 Zone    | 61.000     | degrees C  | ok
+iLO Zone      | 49.000     | degrees C  | ok
+PCI 1 Zone    | 40.000     | degrees C  | ok
+Sys Exhaust   | 48.000     | degrees C  | ok
+Fan 1         | 12.544     | percent    | ok
 
 All in all, great success!
 

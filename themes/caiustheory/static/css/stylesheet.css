@@ -274,6 +274,30 @@ body > main article footer p {
   font-size: 0.9em;
 }
 
+body > main article table {
+  margin: 1em;
+  margin-left: 4em;
+}
+
+body > main article table th {
+  font-weight: bold;
+}
+
+body > main article table th,
+body > main article table td {
+  padding: 0.5em 1em;
+  border-right: 1px solid #555;
+}
+
+body > main article table th:last-child,
+body > main article table td:last-child {
+  border-right: none;
+}
+
+body > main article table th {
+  border-bottom: 1px solid #111;
+}
+
 body > main nav {
   font-size: 0.8em;
 }
