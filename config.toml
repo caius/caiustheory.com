@@ -30,9 +30,13 @@ isPlainText = true
 mediaType = "application/rss"
 baseName = "feed"
 
+[outputFormats.JSONFeed]
+mediaType = "application/json"
+baseName = "feed"
+
 [outputs]
 page = ["HTML", "PlainText"]
-home = ["HTML", "RSSFeed"]
+home = ["HTML", "RSSFeed", "JSONFeed"]
 
 [blackfriday]
 smartypants = false
