@@ -12,7 +12,6 @@ build: clean
 .PHONY: postprocess
 postprocess:
 	# Stuff that lives at a different place
-	mv public/index.xml public/feed.xml
 	mv public/tag/ruby1.9 public/tag/ruby19
 
 	# Poor person's asset hashing, using MD5
