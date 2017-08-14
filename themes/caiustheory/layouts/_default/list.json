@@ -17,8 +17,8 @@
                 "title": "{{ .Title }}",
                 "content_text": {{ .Content | jsonify }},
                 "url": "{{ .Permalink }}",
-                "date_published": "{{ .Date }}",
-                "tags": "{{ delimit .Params.tag "," }}"
+                "date_published": "{{ .Date.Format "2006-01-02T15:04:05Z" }}",
+                "tags": {{ .Params.tag | jsonify }}
             }
         {{ end }}
     ]
