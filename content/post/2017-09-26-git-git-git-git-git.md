@@ -16,7 +16,7 @@ git: 'git' is not a git command. See 'git --help'.
 
 What a git.
 
-My initial thought was overriding the `git` binary in my `$PATH` and having it strip any leading arguments that match `git`, so we end up running just the `git status` at the end of the arguments. An easier way is to just use [`git-config`][gitconfig]'s `alias.*` functionality to expand the first argument being `git` to a shell command.
+My initial thought was overriding the `git` binary in my `$PATH` and having it strip any leading arguments that match `git`, so we end up running just the `git status` at the end of the arguments. An easier way is to just use [`git-config`][git-config]'s `alias.*` functionality to expand the first argument being `git` to a shell command.
 
 ```shell
 git config --global alias.git '!exec git'
