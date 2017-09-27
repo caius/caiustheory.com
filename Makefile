@@ -7,7 +7,7 @@ clean:
 
 .PHONY: build
 build: clean
-	hugo
+	hugo --verbose
 
 .PHONY: postprocess
 postprocess:
@@ -26,7 +26,7 @@ tags:
 
 .PHONY: staging
 staging: clean
-	hugo -b http://staging.caiustheory.com
+	hugo --verbose -b http://staging.caiustheory.com
 	@@make postprocess
 	cp staging-robots.txt public/robots.txt
 	rsync --rsh=ssh --archive --partial --progress --compress \
