@@ -45,10 +45,7 @@ echo 'geo $IP_COUNTRY {
 Now go find the http block for the vhost you want to have the header passed to, and assuming it's passenger, add the following:
 
 ```nginx
-# http {
-  # server_name freddy.com;
-  passenger_set_cgi_param HTTP_X_IP_COUNTRY $IP_COUNTRY;
-# }
+passenger_set_cgi_param HTTP_X_IP_COUNTRY $IP_COUNTRY;
 ```
 
 (If you don't use passenger, look at the docs for [proxy\_pass\_header](http://wiki.nginx.org/HttpProxyModule#proxy_pass_header) or [fastcgi\_pass\_header](http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header) to see which you'll require for your setup.)
