@@ -28,12 +28,12 @@ What to do when you want to reclaim some disk space? Delete unused ruby versions
 Then the problem is we're left with artifacts hanging around, namely any gems we installed for ruby 2.0.0 or 2.1.7 are still present under `~/.gem` using up disk space. We could go through and find them by hand, or we could get the computer to delete anything under `~/.gem` that doesn't have a corresponding runtime under `~/.rubies`.
 
 ```shell
-diff --old-line-format= --unchanged-line-format= --new-line-format=$HOME/.gem/ruby/%L <(ls ~/.rubies \
-  | sed -Ee 's/ruby-|-p[0-9]+//g') <(ls ~/.gem/ruby) \
-  | xargs rm -r
+diff --old-line-format= --unchanged-line-format= --new-line-format=$HOME/.gem/ruby/%L \
+  <(ls ~/.rubies | sed -Ee 's/ruby-|-p[0-9]+//g') <(ls ~/.gem/ruby) \
+  | xargs -pL1 rm -r
 ```
 
-(Drop the final `| xargs rm -r` to list out what it will delete.)
+(`xargs -pL1` will prompt with each command it wants to run before running it - answer `y` to proceed, anything else to prevent it running that command. Lets you see what ruby versions it is removing before it does so.)
 
     $ ls ~/.gem/ruby
     2.0.0
@@ -41,9 +41,11 @@ diff --old-line-format= --unchanged-line-format= --new-line-format=$HOME/.gem/ru
     2.3.1
     2.4.1
 
-    $ diff --old-line-format= --unchanged-line-format= --new-line-format=$HOME/.gem/ruby/%L <(ls ~/.rubies \
-      | sed -Ee 's/ruby-|-p[0-9]+//g') <(ls ~/.gem/ruby) \
-      | xargs rm -r
+    $ diff --old-line-format= --unchanged-line-format= --new-line-format=$HOME/.gem/ruby/%L \
+      <(ls ~/.rubies | sed -Ee 's/ruby-|-p[0-9]+//g') <(ls ~/.gem/ruby) \
+      | xargs -pL1 rm -r
+    rm -r /Users/caius/.gem/ruby/2.0.0?...y
+    rm -r /Users/caius/.gem/ruby/2.1.7?...y
 
     $ ls ~/.gem/ruby
     2.3.1
