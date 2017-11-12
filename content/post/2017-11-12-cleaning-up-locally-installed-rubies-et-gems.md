@@ -1,4 +1,14 @@
-# Cleaning up locally installed Rubies & Gems
+---
+title: "Cleaning up locally installed Rubies & Gems"
+date: 2017-11-12T11:30:24Z
+author: Caius Durling
+tag:
+  - bash
+  - cli
+  - code
+  - ruby
+  - rubygems
+---
 
 Given the following is broadly true:
 
