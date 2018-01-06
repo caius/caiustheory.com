@@ -39,3 +39,10 @@ production: build
 	rsync --rsh=ssh --archive --partial --progress --compress \
 		--delay-updates --delete-after \
 		public/ caiustheory:www/caiustheory.com/htdocs
+
+fetch_production:
+	rsync -Lavz caiustheory:www/caiustheory.com/htdocs/ tmp/caiustheory-production
+
+diff: build fetch_production
+	@@make postprocess
+	diff -r -U5 tmp/caiustheory-production public | egrep -v 'Binary files.+(feed|index|sitemap)\.\w+\.gz'
