@@ -16,6 +16,10 @@ They have a bunch of documentation at <https://circleci.com/docs/2.0/>. Basic gi
 
 The first step is finding a base image that contains ruby, node and chrome/chromedriver so the the app runs, assets compile and rails feature specs work respectively.
 
+The available images for ruby are listed at <https://github.com/CircleCI-Public/circleci-dockerfiles/tree/master/ruby/images>, and the mariadb images are listed at <https://github.com/CircleCI-Public/circleci-dockerfiles/tree/master/mariadb/images>. For the ruby images you'll want to use the `…-node-browsers` image as it has Node.js for assets and Chrome/chromedriver installed for headless browser testing.
+
+So the start of our config file looks something like the following:
+
 ```yaml
 version: 2
 working_directory: "~/project"
@@ -99,6 +103,8 @@ jobs:
       name: "Run tests"
       command: "bundle exec rspec"
 ```
+
+May your test runs always be green and your bugs be squished.
 
 [CircleCI]: https://circleci.com
 [bundler]: https://bundler.io
