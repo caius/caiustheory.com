@@ -1,6 +1,6 @@
 ---
 title: "Running rails tests under CircleCI 2.0 with MariaDB"
-date: 2018-07-11T19:30:00Z
+date: 2018-07-11T18:30:00Z
 author: Caius Durling
 tag:
   - circleci
