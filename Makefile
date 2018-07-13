@@ -14,8 +14,8 @@ postprocess:
 	# Stuff that lives at a different place
 	mv public/tag/ruby1.9 public/tag/ruby19
 
-	# Finally compress all the files we can to help nginx out
-	time find public -type f \( -name '*.txt' -o -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.xml' -o -name '*.svg' \) -exec gzip -v -k -f --best {} \;
+	# Finally compress all the files we can to help nginx out. Do this in parallel for speeeed
+	time find public -type f \( -name '*.txt' -o -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.xml' -o -name '*.svg' \) -print0 | xargs -L10 -P4 -0 gzip -v -k -f --best
 
 .PHONY: tags
 tags:
