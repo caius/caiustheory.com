@@ -1,4 +1,4 @@
 # Hide log and vendor directories from search popups.
-myExtraExcludes = "output,build"
+myExtraExcludes = "output,build,public,tmp"
 excludeInFileChooser  = "{$excludeInFileChooser,$myExtraExcludes}"
 excludeInFolderSearch = "{$excludeInFolderSearch,$myExtraExcludes}"
