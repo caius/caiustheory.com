@@ -1,16 +1,18 @@
-# [CaiusTheory.com](http://caiustheory.com/)
+# [CaiusTheory.com][]
 
-A [middleman][] generated static blog for [Caius](http://caius.name/) located at <http://caiustheory.com/>.
+A [hugo][] generated static blog for [Caius][] located at <http://caiustheory.com/>.
 
-[middleman]: https://middlemanapp.com
+[CaiusTheory.com]: http://caiustheory.com/
+[hugo]: https://gohugo.io/
+[Caius]: http://caius.name/
 
 ## Licenses
 
-The blog content under in `source/posts` are licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+The blog content under in `content/post` are licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
 * * *
 
-All the code in `**/*.{sh,rb}` is MIT licensed:
+Everything not in `content/post` is MIT licensed:
 
     The MIT License (MIT)
     Copyright © 2014 Caius Durling <dev@caius.name>
