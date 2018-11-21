@@ -2,6 +2,8 @@
 title: "Prefixing Git Branch With Initials"
 date: 2018-11-21T20:30:40+00:00
 author: Caius Durling
+reviewers:
+  - James Inman
 tag:
   - shell
   - git
@@ -9,7 +11,7 @@ tag:
 
 Working somewhere where we prefix our branches with the creator's initials, I sometimes forget to do so.[^1] This leads to me having to rename the branch, typing out the whole name again after adding `cd/` to the start of it.
 
-Computers are meant to solve repetative problems for us, so lets put it to work in this case too. My [~/bin][binfiles] contains [`git current-branch`][git-current-branch], which returns the current branch name.
+Computers are meant to solve repetitive problems for us, so let's put it to work in this case too. My [~/bin][binfiles] contains [`git current-branch`][git-current-branch], which returns the current branch name.
 
 If we hardcode the initials, this becomes a simple command to recall from our history:[^2]
 
@@ -17,7 +19,7 @@ If we hardcode the initials, this becomes a simple command to recall from our hi
 git branch --move --force cd/$(git current-branch)
 ```
 
-But computers are supposed to solve all repetitive work, including knowing how I am right? Correct, my local user account knows my full name, so we can work out my initials from that. We can lean on the `id(1)` command to get the full name, then strip it down to just the initials.[^3][^4]
+But computers are supposed to solve all repetitive work, including knowing who I am, right? Correct, my local user account knows my full name, so we can work out my initials from that. Lets lean on the `id(1)` command to lookup the user's details then strip it down to just the initials.[^3][^4]
 
 ```shell
 id -F
