@@ -4,6 +4,7 @@
   <{{ .Permalink }}>  
   {{ .Date.Format "2006-01-02T15:04:05Z" }}  
   Licensed under the Creative Commons Attribution-ShareAlike 4.0 International License <http://creativecommons.org/licenses/by-sa/4.0/>  
+  {{- if .Params.reviewers -}}Many thanks to {{ delimit .Params.reviewers "," }} for proof reading. Remaining mistakes are mine alone.  {{- end -}}
 
 
 {{ .RawContent }}
