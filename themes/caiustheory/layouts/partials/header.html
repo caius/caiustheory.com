@@ -9,6 +9,8 @@
 
     {{ $styles := resources.Get "css/stylesheet.css" | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $styles.Permalink }}" type="text/css" media="screen" title="no title">
+
+    {{ template "_internal/opengraph.html" . }}
   </head>
   <body>
     <header>

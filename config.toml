@@ -13,6 +13,9 @@ PygmentsCodeFences = true
 PygmentsUseClasses = true
 pygmentsUseClassic=true
 
+[params]
+description = "Now with even more cowbell…"
+
 [taxonomies]
 tag = "tag"
 
