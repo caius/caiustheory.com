@@ -34,7 +34,10 @@
           {{- $.Scratch.Set "previous" . -}}
         {{- end -}}
         {{- if lt $.Date.Unix .Date.Unix -}}
-          {{- $.Scratch.Set "next" . -}}
+          {{- if $.Scratch.Get "next" -}}
+          {{- else -}}
+            {{- $.Scratch.Set "next" . -}}
+          {{- end -}}
         {{- end -}}
       {{- end -}}
 
