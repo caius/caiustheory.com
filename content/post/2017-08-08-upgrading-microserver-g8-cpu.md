@@ -28,7 +28,6 @@ E3-1220L    | 2     | 4       | 20      | 3563     | 60.00
 E3-1260L    | 4     | 8       | 45      | 6534     | 80.00
 E3-1265L    | 4     | 8       | 45      | 6054     | 64.00
 **E3-1265L v2** | 4     | 8       | 45      | 7733     | 133.00
-E3-1230l v3 | 4     | 8       | 25      | 7207     | 167.00
 
 *Stock CPU is first in the list for comparison. Bold one is the chosen upgrade.*
 
@@ -62,6 +61,12 @@ Fan 1         | 12.544     | percent    | ok
 
 All in all, great success!
 
+
+&nbsp;
+&nbsp;
+
+*Updated 2018-12-30: [@tomwardill][] [notes][tomwardill cpu tweet] the E3-1230L V3 doesn't fit: "The E3-1230L V3 that you list doesn't fit, it's a 1150 socket, not a 1155". The table of candidates has been altered to remove it.*
+
 [g8]: https://www.hpe.com/uk/en/product-catalog/servers/proliant-servers/pip.hpe-proliant-microserver-gen8.5379860.html
 [g8 memory upgrade]: /finding-cheap-microserver-g8-memory/
 [stock cpu]: https://ark.intel.com/products/71074/Intel-Celeron-Processor-G1610T-2M-Cache-2_30-GHz
@@ -71,3 +76,5 @@ All in all, great success!
 [upgrade process]: https://b3n.org/installed-xeon-e3-1230v2-in-gen8-hp-microserver/
 [upgrade candidates]: http://n40l.wikia.com/wiki/Cpu_gen8
 [plex cpu]: https://support.plex.tv/hc/en-us/articles/201774043
+[@tomwardill]: https://twitter.com/tomwardill/
+[tomwardill cpu tweet]: https://twitter.com/tomwardill/status/999002779887824896
