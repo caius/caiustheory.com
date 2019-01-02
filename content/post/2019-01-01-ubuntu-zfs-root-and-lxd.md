@@ -85,6 +85,20 @@ Install LXD
     apt install -y lxd
     zfs create rpool/lxd
 
+Setup LXD to use zfs root dataset
+
+    lxd init
+
+When asked about adding a storage pool, answer yes, then tell it zfs, then decline creating a new pool, then answer `rpool/lxd` when prompted for existing dataset name.
+
+    root@bert:~# zfs list | grep lxd
+    rpool/lxd              576K   897G    96K  none
+    rpool/lxd/containers    96K   897G    96K  none
+    rpool/lxd/custom        96K   897G    96K  none
+    rpool/lxd/deleted       96K   897G    96K  none
+    rpool/lxd/images        96K   897G    96K  none
+    rpool/lxd/snapshots     96K   897G    96K  none
+
 
 References
 
