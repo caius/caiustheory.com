@@ -13,6 +13,8 @@ PygmentsCodeFences = true
 PygmentsUseClasses = true
 pygmentsUseClassic=true
 
+# enableGitInfo = true
+
 [params]
 description = "Now with even more cowbell…"
 
