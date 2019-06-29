@@ -1,5 +1,6 @@
 .PHONY: all
-all: build
+all:
+	@echo There is no default
 
 .PHONY: clean
 clean:
@@ -7,7 +8,7 @@ clean:
 
 .PHONY: build
 build: clean
-	hugo --verbose
+	hugogit --gc --minify --cleanDestinationDir
 
 .PHONY: postprocess
 postprocess:
@@ -20,26 +21,3 @@ postprocess:
 .PHONY: tags
 tags:
 	ruby -ryaml -e 'puts Dir["content/post/*.md"].flat_map { |path| YAML.load_file(path)["tag"] }.compact.sort.uniq'
-
-.PHONY: staging
-staging: clean
-	hugo --verbose -b http://staging.caiustheory.com
-	@@make postprocess
-	cp staging-robots.txt public/robots.txt
-	rsync --rsh=ssh --archive --partial --progress --compress \
-		--delay-updates --delete-after \
-		public/ caiustheory:www/staging.caiustheory.com/htdocs
-
-.PHONY: production
-production: build
-	@@make postprocess
-	rsync --rsh=ssh --archive --partial --progress --compress \
-		--delay-updates --delete-after \
-		public/ caiustheory:www/caiustheory.com/htdocs
-
-fetch_production:
-	rsync -Lavz caiustheory:www/caiustheory.com/htdocs/ tmp/caiustheory-production
-
-diff: build fetch_production
-	@@make postprocess
-	diff -r -U5 tmp/caiustheory-production public | egrep -v 'Binary files.+(feed|index|sitemap)\.\w+\.gz'
