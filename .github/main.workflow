@@ -40,7 +40,7 @@ action "publish-caiustheory" {
   uses = "peaceiris/actions-gh-pages@v1.0.1"
   env = {
     PUBLISH_DIR = "./public"
-    PUBLISH_BRANCH = "deploy-test"
+    PUBLISH_BRANCH = "gh-pages"
   }
   secrets = ["ACTIONS_DEPLOY_KEY"]
 }
