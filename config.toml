@@ -1,6 +1,6 @@
 verbose = true
 
-baseURL = "http://caiustheory.com"
+baseURL = "https://caiustheory.com"
 title = "Caius Theory"
 theme = "caiustheory"
 
