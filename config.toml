@@ -25,20 +25,28 @@ tag = "tag"
 [permalinks]
 post = "/:slug/"
 
+[mediaTypes]
+
+  [mediaTypes."text/markdown"]
+  suffixes = ["text"]
+
 [outputFormats]
 
-# Let the magic happen for /:slug.text
-[outputFormats.PlainText]
-mediaType = "text/plain"
-isPlainText = true
+  # Let the magic happen for /:slug.text
+  [outputFormats.PlainText]
+  mediaType = "text/markdown"
+  baseName = "index"
+  isPlainText = true
+  isUgly = false
+  rel = "alternate"
 
-[outputFormats.RSSFeed]
-mediaType = "application/rss"
-baseName = "feed"
+  [outputFormats.RSSFeed]
+  mediaType = "application/rss"
+  baseName = "feed"
 
-[outputFormats.JSONFeed]
-mediaType = "application/json"
-baseName = "feed"
+  [outputFormats.JSONFeed]
+  mediaType = "application/json"
+  baseName = "feed"
 
 [outputs]
 page = ["HTML", "PlainText"]
