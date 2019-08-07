@@ -9,6 +9,10 @@ copyright = "This work is licensed under a Creative Commons Attribution-ShareAli
 
 disableKinds = ["section", "taxonomyTerm"]
 
+# Turn on Ugly URLs for everything (/slug.format)
+# We then override this for all formats except plaintext for pretty urls
+uglyurls = true
+
 PygmentsCodeFences = true
 PygmentsUseClasses = true
 pygmentsUseClassic=true
@@ -31,13 +35,15 @@ post = "/:slug/"
   suffixes = ["text"]
 
 [outputFormats]
+  [outputFormats.HTML]
+  noUgly = true
 
   # Let the magic happen for /:slug.text
   [outputFormats.PlainText]
   mediaType = "text/markdown"
   baseName = "index"
   isPlainText = true
-  isUgly = false
+  noUgly = false
   rel = "alternate"
 
   [outputFormats.RSSFeed]
