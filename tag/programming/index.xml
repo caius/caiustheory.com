@@ -1,0 +1,954 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>programming on Caius Theory</title><link>https://caiustheory.com/tag/programming/</link><description>Recent content in programming on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 09 May 2017 18:23:58 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/programming/index.xml" rel="self" type="application/rss+xml"/><item><title>Bash script setup</title><link>https://caiustheory.com/bash-script-setup/</link><pubDate>Tue, 09 May 2017 18:23:58 +0000</pubDate><guid>https://caiustheory.com/bash-script-setup/</guid><description>&lt;p&gt;Recently I&#39;ve been writing a bunch of bash scripts for various things. As some up-front safety checks I&#39;ve taken to opening every script with the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[[&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$TRACE&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o xtrace
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o errexit
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o nounset
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o pipefail
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o noclobber&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Other things I&#39;m also trying to be good about doing:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;using &lt;code&gt;readonly&lt;/code&gt; when declaring variables which shouldn&#39;t be mutated&lt;/li&gt;
+&lt;li&gt;Trapping errors using an error function, and cleaning up anything temporary in there&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And some useful reading I ran across in my quest to level up bash-scripts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://redsymbol.net/articles/bash-exit-traps/&#34;&gt;Bash Exit Traps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://redsymbol.net/articles/unofficial-bash-strict-mode/&#34;&gt;Use the unofficial Bash Strict Mode&lt;/a&gt; (Yes, &lt;em&gt;two&lt;/em&gt; posts from &lt;a href=&#34;http://redsymbol.net/&#34;&gt;http://redsymbol.net/&lt;/a&gt;. Well worth reading.)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jvns.ca/blog/2017/03/26/bash-quirks/&#34;&gt;Bash scripting quirks &amp;amp; safety tips&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://wiki.bash-hackers.org/&#34;&gt;Bash hackers wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>evil.rb</title><link>https://caiustheory.com/evil-rb/</link><pubDate>Wed, 23 Jan 2013 11:07:43 +0000</pubDate><guid>https://caiustheory.com/evil-rb/</guid><description>
+&lt;p&gt;Here be hax. Don&#39;t &lt;strong&gt;ever&lt;/strong&gt; do these. ;-)&lt;/p&gt;
+&lt;h2 id=&#34;reduce-local-variables-with-instance-eval&#34;&gt;Reduce local variables with instance_eval&lt;/h2&gt;
+&lt;p&gt;Sometimes (usually in a one-liner) I want to do some work with a value without assigning it to a variable. Chucking an &lt;code&gt;#instance_eval&lt;/code&gt; call in there will set &lt;code&gt;self&lt;/code&gt; to the value, which saves having to assign it to a local value. Pretty much only used by me in one-off scripts or cli commands.&lt;/p&gt;
+&lt;h4 id=&#34;good&#34;&gt;Good&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;start_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;end_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;24 Dec 2011&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;23 Jan 2013&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parse&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;start_date&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; to &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;end_date&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; is &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;end_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;start_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_i&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; days&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&#34;bad&#34;&gt;Bad&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;24 Dec 2011&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;23 Jan 2013&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parse&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;instance_eval&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; to &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;last&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; is &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;last&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_i&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; days&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;See, way less code! &lt;em&gt;cough, cough&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;bonus-usage-misdirection&#34;&gt;Bonus usage: Misdirection&lt;/h3&gt;
+&lt;p&gt;I also dropped some instance_eval on our campfire bot at &lt;a href=&#34;https://emberads.com/&#34;&gt;EmberAds&lt;/a&gt; to always blame one person, but without the code reading as such.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;sx&#34;&gt;%w{Dom Mel Caius CBetta Baz}&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sample&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;instance_eval&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
+&lt;span class=&#34;s2&#34;&gt;&amp;#34;(4V5A8F5T=&amp;amp;$`&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unpack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;u&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That does not return one of the array elements as you might think it does from quickly scanning the code…&lt;/p&gt;
+&lt;h2 id=&#34;set-method-local-variables-in-default-arguments&#34;&gt;Set method-local variables in default arguments&lt;/h2&gt;
+&lt;p&gt;You have a method and it takes one argument, which has a default value of &lt;code&gt;nil&lt;/code&gt; specified. You then run into the situation where you need to know if &lt;code&gt;nil&lt;/code&gt; was passed to the method, or if you&#39;re getting the default value of &lt;code&gt;nil&lt;/code&gt;. You could change the default value to something you choose to be the &amp;quot;default value&amp;quot; and unlikely to be passed from elsewhere as the argument&#39;s value, and reset the parameter to &lt;code&gt;nil&lt;/code&gt; after checking it, like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;output&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:default_value&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:default_value&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;default&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;s2&#34;&gt;&amp;#34;name: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inspect&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; -- default: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inspect&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;name: \&amp;#34;caius\&amp;#34; -- default: true&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;fred&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;name: \&amp;#34;fred\&amp;#34; -- default: nil&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That&#39;s quite a lot of code added to the method just to find out if we passed a default value or not. And if we forget to reset the value when it&#39;s &lt;code&gt;:default_value&lt;/code&gt; then we end up leaking that into whatever the method does with that value. We also have the problem that one day the program &lt;em&gt;could&lt;/em&gt; possibly send that &amp;quot;default value&amp;quot; we&#39;ve chosen as the actual parameter, and we&#39;d blindly change it thinking it was set as the default value, not the passed argument.&lt;/p&gt;
+&lt;p&gt;Instead we could (ab)use the power of ruby, and have ruby decide to set &lt;code&gt;default = true&lt;/code&gt; for us when, and only when, the variable is set &lt;em&gt;to&lt;/em&gt; the default value.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;output&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;s2&#34;&gt;&amp;#34;name: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inspect&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; -- default: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inspect&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;name: \&amp;#34;caius\&amp;#34; -- default: true&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;fred&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;name: \&amp;#34;fred\&amp;#34; -- default: nil&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As you can see, the output is identical. Yet we have no extra code &lt;em&gt;inside&lt;/em&gt; the method to figure out if we were given the default value or not. And as a bonus to that, we no longer have to check for a specific value being passed and presume that is actually the default, and not one passed by the program elsewhere.&lt;/p&gt;
+&lt;p&gt;I posted this one in &lt;a href=&#34;https://gist.github.com/1528785&#34;&gt;a gist&lt;/a&gt; a while back (to show &lt;a href=&#34;http://avdi.org/&#34;&gt;Avdi&lt;/a&gt; it looks like), and people came up with some more insane things to do with it, including &lt;a href=&#34;https://gist.github.com/1528785#comment-71861&#34;&gt;returning early&lt;/a&gt;, &lt;a href=&#34;https://gist.github.com/1528785#comment-71862&#34;&gt;raising errors&lt;/a&gt; or even &lt;a href=&#34;https://gist.github.com/1528785#comment-71876&#34;&gt;redefining the current method&lt;/a&gt;, all from the argument list! I&#39;d suggest going to read them, it&#39;s a mixture of OMG HAHA and OMFG NO WAY WHYY?!?!.&lt;/p&gt;
+&lt;h3 id=&#34;don-t-do-this&#34;&gt;Don&#39;t do this.&lt;/h3&gt;
+&lt;p&gt;Don&#39;t do the above. No really, don&#39;t do them. Unless you&#39;re writing a one-off thing. But seriously, don&#39;t do them. :-D&lt;/p&gt;</description></item><item><title>Geolocation in nginx</title><link>https://caiustheory.com/geolocation-in-nginx/</link><pubDate>Tue, 04 Dec 2012 09:42:00 +0000</pubDate><guid>https://caiustheory.com/geolocation-in-nginx/</guid><description>&lt;p&gt;Sometimes you need to have a rough idea of where your website visitor is located. There&#39;s many ways to geolocate them, but if you just want to go to country level then &lt;a href=&#34;http://dev.maxmind.com/geoip/geolite&#34;&gt;MaxMind have free geo databases&lt;/a&gt; available to help you. When we needed to do this quickly on-the-fly at EmberAds, we came up with the &lt;a href=&#34;https://github.com/emberads/trifle#readme&#34;&gt;trifle&lt;/a&gt; gem, which supports ipv4 and ipv6 lookups.&lt;/p&gt;
+&lt;p&gt;Recently I was searching for something else to do with nginx and ran across &lt;a href=&#34;http://www.ruby-forum.com/topic/125810&#34;&gt;a mailing list thread&lt;/a&gt; about using the maxmind database with nginx&#39;s &lt;a href=&#34;http://wiki.nginx.org/NginxHttpGeoModule&#34;&gt;HTTP Geo module&lt;/a&gt; and do the lookup directly in nginx itself. Finally got a chance to sit down and work out the logistics of doing this. I&#39;ve done this on an ubuntu 12.04 box, with the expected config file layouts that come with ubuntu.&lt;/p&gt;
+&lt;p&gt;Run the following on your server (as someone with write access to nginx config files):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Generate the text file for nginx to import&lt;/span&gt;
+perl &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&amp;lt; &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;zip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;tempfile&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;curl -so &lt;span class=&#34;nv&#34;&gt;$zip&lt;/span&gt; http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; unzip -p &lt;span class=&#34;nv&#34;&gt;$zip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &amp;gt; /etc/nginx/nginx_ip_country.txt
+&lt;span class=&#34;c1&#34;&gt;# Tell nginx to work out the IP country and store in variable&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;geo $IP_COUNTRY {
+&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt; default --;
+&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt; include /etc/nginx/nginx_ip_country.txt;
+&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;}&amp;#39;&lt;/span&gt; &amp;gt; /etc/nginx/conf.d/ip_country.conf&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now go find the http block for the vhost you want to have the header passed to, and assuming it&#39;s passenger, add the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-nginx&#34; data-lang=&#34;nginx&#34;&gt;&lt;span class=&#34;k&#34;&gt;passenger_set_cgi_param&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;HTTP_X_IP_COUNTRY&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$IP_COUNTRY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(If you don&#39;t use passenger, look at the docs for &lt;a href=&#34;http://wiki.nginx.org/HttpProxyModule#proxy_pass_header&#34;&gt;proxy_pass_header&lt;/a&gt; or &lt;a href=&#34;http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header&#34;&gt;fastcgi_pass_header&lt;/a&gt; to see which you&#39;ll require for your setup.)&lt;/p&gt;
+&lt;p&gt;Reload nginx, and behold, &lt;code&gt;request.env[&amp;quot;HTTP_X_IP_COUNTRY&amp;quot;]&lt;/code&gt; (assuming a rack app running under ruby) will be a two letter country code, or &lt;code&gt;&amp;quot;--&amp;quot;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Unfortunately this is IPv4 only currently, there&#39;s a &lt;a href=&#34;http://forum.nginx.org/read.php?29,232648&#34;&gt;thread on the nginx mailing list from November 2012&lt;/a&gt; saying IPv6 support should be coming on the v1.3 branch of nginx, but with no known ETA. So currently for IPv6 support, take a look at &lt;a href=&#34;https://github.com/emberads/trifle#readme&#34;&gt;EmberAds&#39; trifle gem&lt;/a&gt; instead.&lt;/p&gt;</description></item><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p&gt;Dear future Caius searching for this issue,&lt;/p&gt;
+&lt;p&gt;The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is &lt;code&gt;libqt4-dev&lt;/code&gt;. That is, to &lt;code&gt;gem install capybara-webkit&lt;/code&gt;, you need to run &lt;code&gt;aptitude install libqt4-dev&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Yours helpfully,&lt;br /&gt;
+Past Caius&lt;/p&gt;</description></item><item><title>Install GCC-4.2.1 (Apple build 5666.3) with Xcode 4.2</title><link>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</link><pubDate>Sun, 30 Oct 2011 17:36:48 +0000</pubDate><guid>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</guid><description>
+&lt;p&gt;As of Xcode 4.2 Apple have stopped bundling GCC with it, shipping only the (mostly) compatible llvm-gcc binary instead. The suggested fix is to install GCC using the &lt;a href=&#34;https://github.com/kennethreitz/osx-gcc-installer&#34;&gt;osx-gcc-installer&lt;/a&gt; project. However, I wanted to build and install it from source, which apple provides at &lt;a href=&#34;http://opensource.apple.com/&#34;&gt;http://opensource.apple.com/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You should already have installed Xcode 4.2 from the app store, then basically the following steps are to grab the tarball from the &lt;a href=&#34;http://opensource.apple.com/release/developer-tools-41/&#34;&gt;4.1 developer tools source&lt;/a&gt;, unpack &amp;amp; compile it, then install it into the right places.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update 2016-07-03:&lt;/strong&gt; I&#39;d suggest just using homebrew to install this these days:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;brew install homebrew/dupes/apple-gcc42&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;instructions&#34;&gt;Instructions&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Grab and unpack the tarball&lt;/span&gt;
+mkdir ~/tmp &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/tmp
+curl -O http://opensource.apple.com/tarballs/gcc/gcc-5666.3.tar.gz
+tar zxf gcc-5666.3.tar.gz
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gcc-5666.3
+&lt;span class=&#34;c1&#34;&gt;# Setup some stuff it requires&lt;/span&gt;
+mkdir -p build/obj build/dst build/sym
+&lt;span class=&#34;c1&#34;&gt;# And then build it. You should go make a cup of tea or five whilst this runs.&lt;/span&gt;
+gnumake install &lt;span class=&#34;nv&#34;&gt;RC_OS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;macos &lt;span class=&#34;nv&#34;&gt;RC_ARCHS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;i386 x86_64&amp;#39;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TARGETS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;i386 x86_64&amp;#39;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRCROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;OBJROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/obj &lt;span class=&#34;nv&#34;&gt;DSTROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/dst &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SYMROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/sym
+&lt;span class=&#34;c1&#34;&gt;# And finally install it&lt;/span&gt;
+sudo ditto build/dst /&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And now you should have &lt;code&gt;gcc-4.2&lt;/code&gt; in your &lt;code&gt;$PATH&lt;/code&gt;, available to build all the things that &lt;code&gt;llvm-gcc&lt;/code&gt; fails to compile.&lt;/p&gt;</description></item><item><title>TweetSavr</title><link>https://caiustheory.com/tweetsavr/</link><pubDate>Sat, 22 Oct 2011 12:05:39 +0000</pubDate><guid>https://caiustheory.com/tweetsavr/</guid><description>&lt;p&gt;I&#39;ve had a dream for a while. A simple webapp that takes the last tweet in a conversation and outputs that conversation in chronological order on a page you can link to forevermore. Occasionally I&#39;ll google to see if anything new&#39;s turned up, but they all seem to do far more, require the start and end tweets or are covered in ads.&lt;/p&gt;
+&lt;p&gt;So one friday evening I just built it. It&#39;s called &lt;a href=&#34;http://tweetsavr.com/&#34;&gt;TweetSavr&lt;/a&gt;. It&#39;s very simple—to the point the error page is just a standard 500 server error page currently. It fetches, caches and displays a conversation, given just the last tweet in said conversation.&lt;/p&gt;
+&lt;p&gt;KISS extends to the interface as well, I&#39;m quite a fan of &lt;a href=&#34;http://jerz.setonhill.edu/writing/etext/url-hacking.htm&#34;&gt;URL hacking&lt;/a&gt; to use webapps, so TweetSavr works on that basis as well. The homepage sort of has some help telling you how to use it, but you basically take the (old-twitter) URL of the last tweet and paste it after tweetsavr.com in the address bar. Eg, &lt;a href=&#34;http://tweetsavr.com/http://twitter.com/ElizabethN/status/19766711653765120&#34;&gt;http://tweetsavr.com/http://twitter.com/ElizabethN/status/19766711653765120&lt;/a&gt;. It&#39;ll then redirect you through to the actual page for that conversation. You can also put just the status id on the end of the URL, &lt;a href=&#34;http://tweetsavr.com/19766711653765120&#34;&gt;http://tweetsavr.com/19766711653765120&lt;/a&gt; and hey presto, it loads.&lt;/p&gt;
+&lt;p&gt;The caching layer is moderately rudimentary, after fetching a tweet that isn&#39;t in the cache it writes out a hash of data for that tweet into a yaml file. And when looking up a tweet it checks to see if that file exists, reading it in from disk if it is. Bonus side-effect is it builds up a corpus of tweets as yaml files on disk.&lt;/p&gt;
+&lt;p&gt;It lives on the internet at &lt;a href=&#34;http://tweetsavr.com/&#34;&gt;http://tweetsavr.com/&lt;/a&gt; and the source is on github at &lt;a href=&#34;http://github.com/caius/tweetsavr&#34;&gt;http://github.com/caius/tweetsavr&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Side note: isn&#39;t it wonderful what we can create given just a few hours, a server somewhere in the cloud, and an idea? Never ceases to amaze me what can be built in just a short amount of time, even the dead simple things.&lt;/p&gt;</description></item><item><title>#to_param and keyword slugs</title><link>https://caiustheory.com/to_param-and-keyword-slugs/</link><pubDate>Tue, 05 Jul 2011 23:13:43 +0000</pubDate><guid>https://caiustheory.com/to_param-and-keyword-slugs/</guid><description>&lt;p&gt;Imagine you&#39;ve got a blogging app and it&#39;s currently generating URL paths like &lt;code&gt;posts/10&lt;/code&gt; for individual posts. You decide the path should contain the post title (in some form) to make your URLs friendlier when someone reads them. I know I certainly prefer to read &lt;a href=&#34;http://caiustheory.com/abusing-ruby-19-and-json-for-fun&#34;&gt;http://caiustheory.com/abusing-ruby-19-and-json-for-fun&lt;/a&gt; vs &lt;a href=&#34;http://caiustheory.com/?id=70&#34;&gt;http://caiustheory.com/?id=70&lt;/a&gt;. &lt;em&gt;(That&#39;s a fun blog post if you&#39;re into (ab)using ruby occasionally!)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Now you know &lt;em&gt;all&lt;/em&gt; about how to change the URL path that rails generates—just define &lt;code&gt;to_param&lt;/code&gt; in your app. Something simple that generates a slug consisting of hyphens and lowercase alphanumerical characters. For example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 70-abusing-ruby-1-9-json-for-fun&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;to_param&lt;/span&gt;
+&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;gsub&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sr&#34;&gt;/\W/&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;squeeze&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;-&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;downcase&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;*&lt;strong&gt;NB&lt;/strong&gt;: You might want to go the route of storing the slug against the post record in the database and thus generating it before saving the record. In which case the rest of this post is sort of moot and you just need to search on that column. If not, then read on!*&lt;/p&gt;
+&lt;p&gt;Now we&#39;re generating a nice human-readable URL we need to change the way we find the post in the controller&#39;s show action. Up until now it&#39;s been a simple &lt;code&gt;@post = Post.find(params[:id])&lt;/code&gt; to grab the record out the database. Problem now is &lt;code&gt;params[:id]&lt;/code&gt; is &lt;code&gt;&amp;quot;70-abusing-ruby-1-9-json-for-fun&amp;quot;&lt;/code&gt;, rather than just &lt;code&gt;&amp;quot;70&amp;quot;&lt;/code&gt;. A quick check in the &lt;a href=&#34;http://ruby-doc.org/core/classes/String.html#M001149&#34;&gt;String#to_i&lt;/a&gt; docs reveals it &amp;quot;Returns the result of interpreting leading characters in str as an integer base base (between 2 and 36).&amp;quot; Basically it extracts the first number it comes across and returns it.&lt;/p&gt;
+&lt;p&gt;Knowing that we can just lean on it to extract the id before using find to look for the post: &lt;code&gt;@post = Post.find(params[:id].to_i)&lt;/code&gt;. Fantastic! We&#39;ve got nice human readable paths on our blog posts and they can be found in the database. All finished… or are we?&lt;/p&gt;
+&lt;p&gt;There&#39;s still a rather embarassing bug in our code where we&#39;re not explicitly checking the slug in the URL against the slug of the Post we&#39;ve extracted from the database. If we visited &lt;code&gt;/posts/70-ruby-19-sucks-and-python-rules-4eva&lt;/code&gt; it would load the blog post and render it without batting an eyelid. This has caused &lt;a href=&#34;http://www.niemanlab.org/2011/04/how-url-spoofing-can-put-libelous-words-into-news-orgs-mouths/&#34;&gt;rather a few embarrassing situations&lt;/a&gt; for some high profile media outlets who don&#39;t (or didn&#39;t) check their URLs and just output the content. Luckily there&#39;s a simple way for us to check this.&lt;/p&gt;
+&lt;p&gt;All we want to do is render the content if the id param matches the slug of the post exactly, and return a 404 page if it doesn&#39;t. We already know the id param (&lt;code&gt;params[:id]&lt;/code&gt;) and have pulled the Post object out of the database and stored it in an instance variable (&lt;code&gt;@post&lt;/code&gt;). The &lt;code&gt;@post&lt;/code&gt; knows how to generate it&#39;s own slug, using &lt;code&gt;#to_param&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So we end up with something like the following in our posts controller, which does all the above and correctly returns a 404 if someone enters an invalid slug (even if it starts with a valid post id):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
+&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;render_404&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;unless&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_param&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;render_404&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:file&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Rails&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;root&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;public/404.html&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:status&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:not_found&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And going to an invalid path like &lt;code&gt;/posts/70-ruby-19-sucks-and-python-rules-4eva&lt;/code&gt; just renders the default rails 404 page with a 404 HTTP status. (If you want the id to appear at the end of the path, alter &lt;code&gt;to_param&lt;/code&gt; accordingly and do something like &lt;code&gt;params[:id].match(/\d+$/)&lt;/code&gt; to extract the Post&#39;s id to search on.)&lt;/p&gt;
+&lt;p&gt;Hey presto, we&#39;ve implemented human readable slugs that are tamper-proof (without storing them in the database.)&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;(And bonus points if in fact you spotted I used my blog as an example, but that it isn&#39;t a rails app. (Nor contains the blog post ID in the pretty URL.) It&#39;s actually powered by &lt;a href=&#34;http://habariproject.org/&#34;&gt;Habari&lt;/a&gt; at the time of posting!&lt;/em&gt;&lt;/p&gt;</description></item><item><title>&#43;[NSObject load] in MacRuby</title><link>https://caiustheory.com/nsobject-load-in-macruby/</link><pubDate>Sat, 12 Jun 2010 02:11:32 +0000</pubDate><guid>https://caiustheory.com/nsobject-load-in-macruby/</guid><description>
+&lt;p&gt;&lt;em&gt;If you&#39;ve not heard of it, &lt;a href=&#34;http://www.macruby.org/&#34;&gt;MacRuby&lt;/a&gt; is &lt;q&gt;an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.&lt;/q&gt; Basically means you write in Ruby using Objective-C frameworks, and vice versa. It&#39;s pretty damn cool to be honest!&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;what-is-nsobject-load&#34;&gt;What is +[NSObject load]?&lt;/h3&gt;
+&lt;p&gt;From the &lt;a href=&#34;http://developer.apple.com/mac/library/documentation/cocoa/reference/foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load&#34;&gt;documentation&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Invoked whenever a class or category is added to the Objective-C runtime; implement this method to perform class-specific behavior upon loading.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This means when your class is loaded, and implements the &lt;code&gt;load&lt;/code&gt; method, you get a &lt;code&gt;load&lt;/code&gt; message sent to your class. Which means you can start doing stuff as soon as your class is loaded by the runtime.&lt;/p&gt;
+&lt;p&gt;The main place I&#39;ve seen it used (and used it myself) is in &lt;a href=&#34;http://www.culater.net/software/SIMBL/SIMBL.php&#34;&gt;SIMBL&lt;/a&gt; plugins. A SIMBL plugin is an NSBundle that contains code which is loaded (injected) into a running application shortly after said application is launched. It lets you extend (or &amp;quot;fix&amp;quot;) cocoa applications with additional features. So you have this bundle of code, that gets loaded into a running application some point after it starts, and you want to run some code as the bundle is loaded - usually to kick off doing whatever you want to do in the plugin. This is where &lt;code&gt;load&lt;/code&gt; becomes useful.&lt;/p&gt;
+&lt;p&gt;Here&#39;s a quick implementation that just logs to the console:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt; &lt;span class=&#34;k&#34;&gt;@implementation&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MainController&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;NSlog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;@&amp;#34;MainController#load called&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;now-where-does-macruby-come-into-this&#34;&gt;Now where does MacRuby come into this?&lt;/h3&gt;
+&lt;p&gt;Well I came across a need to do the same in ruby, have some code triggered when the class is loaded into the runtime. Tried implementing &lt;code&gt;Class.load&lt;/code&gt; but to no avail. Then remembered MacRuby is just ruby! And I can call any code from within my ruby class definition.&lt;/p&gt;
+&lt;p&gt;For continuity I still call it &lt;code&gt;Class.load&lt;/code&gt;, but then call it as soon as I&#39;ve defined it in the class. Eg:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MainController&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;
+&lt;span class=&#34;no&#34;&gt;NSLog&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;MainController#load called&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;load&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Of course, I&#39;m not sure when the Objective-C method is called, it&#39;s probably after the entire class has been defined rather than as soon as &lt;code&gt;load&lt;/code&gt; has been loaded into the runtime. So you might want to move the &lt;code&gt;self.load&lt;/code&gt; call to just before the closing &lt;code&gt;end&lt;/code&gt;.&lt;/p&gt;</description></item><item><title>Potty Training YAML</title><link>https://caiustheory.com/potty-training-yaml/</link><pubDate>Mon, 10 May 2010 21:46:17 +0000</pubDate><guid>https://caiustheory.com/potty-training-yaml/</guid><description>&lt;p&gt;Ran into a problem today where I have a class with a few attributes on it, but I only want a certain three of those attributes to appear in the YAML dump of a class instance.&lt;/p&gt;
+&lt;p&gt;Diving straight into a code example--lets say we have a &lt;code&gt;Contact&lt;/code&gt; class, and we only want to dump the &lt;code&gt;name&lt;/code&gt;, &lt;code&gt;email&lt;/code&gt; and &lt;code&gt;website&lt;/code&gt; attributes.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;yaml&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Contact&lt;/span&gt;
+&lt;span class=&#34;kp&#34;&gt;attr_accessor&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:email&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:website&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:telephone&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# helper method to make setting up easy&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;initialize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{})&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;each&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;meffod&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_s&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;=&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;send&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;meffod&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;respond_to?&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;meffod&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# And create an instance for us to play with&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;caius&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Contact&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;new&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ss&#34;&gt;:name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Caius&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ss&#34;&gt;:email&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;dev@caius.name&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ss&#34;&gt;:website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://caius.name/&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ss&#34;&gt;:telephone&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;12345&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As we&#39;d expect when dumping this, all instance variables get dumped out:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;caius&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_yaml&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; --- !ruby/object:Contact &lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; email: dev@caius.name&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; name: Caius&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; telephone: &amp;#34;12345&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; website: http://caius.name/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Initially I tried to override &lt;code&gt;to_yaml&lt;/code&gt; and unset the instance variables I didn&#39;t want showing up, but that just made them show up empty. After digging around a bit more, I happened across the &lt;a href=&#34;http://yaml4r.sourceforge.net/doc/page/type_families.htm&#34;&gt;Type Families&lt;/a&gt; page in the yaml4r docs, which right at the bottom mentions &lt;code&gt;to_yaml_properties&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Turns out &lt;code&gt;to_yaml_properties&lt;/code&gt; returns an array of instance variable names (as strings) that should be dumped out as part of the object. A quick method definition later, and we&#39;re only dumping the variables we want. (&lt;em&gt;See my &lt;a href=&#34;http://caiustheory.com/ruby-shortcuts&#34;&gt;Ruby Shortcuts&lt;/a&gt; post if you don&#39;t know what &lt;code&gt;%w()&lt;/code&gt; does&lt;/em&gt;)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Contact&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;to_yaml_properties&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%w(@name @email @website)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And now we dump the class, expecting only the three attributes to be outputted:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;caius&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_yaml&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; --- !ruby/object:Contact &lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; name: Caius&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; email: dev@caius.name&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; website: http://caius.name/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Success!&lt;/p&gt;</description></item><item><title>Ruby Shortcuts</title><link>https://caiustheory.com/ruby-shortcuts/</link><pubDate>Thu, 18 Mar 2010 22:32:45 +0000</pubDate><guid>https://caiustheory.com/ruby-shortcuts/</guid><description>
+&lt;p&gt;There&#39;s a few useful shorthand ways to create certain objects in Ruby, a couple of obvious ones are &lt;code&gt;[]&lt;/code&gt; to create an &lt;code&gt;Array&lt;/code&gt; and &lt;code&gt;{}&lt;/code&gt; to create a &lt;code&gt;Hash&lt;/code&gt; (Or block/&lt;code&gt;Proc&lt;/code&gt;). There&#39;s some not so obvious ones too, for creating strings, regexes and executing shell commands.&lt;/p&gt;
+&lt;p&gt;With all of the examples I&#39;ve used &lt;code&gt;{}&lt;/code&gt; as the delimiter characters, but you can use a variety of characters. Personally I tend to use &lt;code&gt;{}&lt;/code&gt; unless the string contains them, in which case I&#39;ll use &lt;code&gt;//&lt;/code&gt; or &lt;code&gt;@@&lt;/code&gt;. My only exception appears to be &lt;code&gt;%w&lt;/code&gt;, for which I tend to use &lt;code&gt;()&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;strings&#34;&gt;Strings&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;%&lt;/code&gt; and &lt;code&gt;%Q&lt;/code&gt; are the same as using double quotes, including string interpolation. Really useful when you want to create a string that contains double quotes, but without the hassle of escaping them.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;sx&#34;&gt;%{}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%Q{}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%{caius}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;caius&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%{caius &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;sx&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;caius 5&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%{some &amp;#34;foo&amp;#34; thing}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;some \&amp;#34;foo\&amp;#34; thing&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;%q&lt;/code&gt; is equivalent to using single quotes. Behaves exactly the same, no string interpolation.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;sx&#34;&gt;%q{}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%q{caius}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;caius&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%q{caius #{5}}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;caius \#{5}&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;arrays&#34;&gt;Arrays&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;%w&lt;/code&gt; is the equivalent of using String#split. It takes a string and splits it on whitespace. With the added bonus of being able to escape whitespace too. &lt;code&gt;%W&lt;/code&gt; allows string interpolation.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;sx&#34;&gt;%w(foo bar sed)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; [&amp;#34;foo&amp;#34;, &amp;#34;bar&amp;#34;, &amp;#34;sed&amp;#34;]&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%w(foo\ bar sed)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; [&amp;#34;foo bar&amp;#34;, &amp;#34;sed&amp;#34;]&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%W(foo &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;sx&#34;&gt; bar)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; [&amp;#34;foo&amp;#34;, &amp;#34;5&amp;#34;, &amp;#34;bar&amp;#34;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;regexes&#34;&gt;Regexes&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;%r&lt;/code&gt; is just like using &lt;code&gt;//&lt;/code&gt; to create a regexp object. Comes in handy when you&#39;re writing a regex containing &lt;code&gt;/&lt;/code&gt; as you don&#39;t have to continually escape it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;sr&#34;&gt;%r{foo|bar}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; /foo|bar/&lt;/span&gt;
+&lt;span class=&#34;sr&#34;&gt;%r{foo/bar}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; /foo\/bar/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;symbols&#34;&gt;Symbols&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;%s&lt;/code&gt; creates a symbol, just like writing &lt;code&gt;:foo&lt;/code&gt; manually. It takes care of escaping the symbol, but unlike &lt;code&gt;:&amp;quot;&amp;quot;&lt;/code&gt; it doesn&#39;t allow string interpolation however.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;sx&#34;&gt;%s{foo}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; :foo&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%s{foo/bar}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; :&amp;#34;foo/bar&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ss&#34;&gt;:&amp;#34;foo-&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; :&amp;#34;foo-5&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%s{foo-#{5}}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; :&amp;#34;foo-\#{5}&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;shelling-out&#34;&gt;Shelling out&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;%x&lt;/code&gt; is the same as backticks (&lt;code&gt;``&lt;/code&gt;), executes the command in a shell and returns the output as a string. And just like backticks it supports string interpolation.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;sb&#34;&gt;`echo hi`&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;hi\n&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%x{echo hi}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;hi\n&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;sx&#34;&gt;%x{echo &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;sx&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;5\n&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Read standard input using Objective-C</title><link>https://caiustheory.com/read-standard-input-using-objective-c/</link><pubDate>Sun, 06 Dec 2009 11:50:08 +0000</pubDate><guid>https://caiustheory.com/read-standard-input-using-objective-c/</guid><description>&lt;p&gt;On a couple of occasions now I&#39;ve wanted to read from &lt;code&gt;STDIN&lt;/code&gt; into an Objective-C command line tool, and both times I&#39;ve had to hunt quite a bit to find the answer because nothing shows up in google for the search terms I used. &amp;quot;Objective-c read from stdin&amp;quot; and &amp;quot;objc read stdin&amp;quot; both turn up results ranging from using &lt;code&gt;NSInputStream&lt;/code&gt; to dropping some C++ in there.&lt;/p&gt;
+&lt;p&gt;The answer is quite simple really, just use &lt;code&gt;NSFileHandle&lt;/code&gt;. More specifically &lt;code&gt;+[NSFileHandle fileHandleWithStandardInput]&lt;/code&gt;. You can then read all data currently in &lt;code&gt;STDIN&lt;/code&gt;, monitor it for new data and anything else you can do with a normal &lt;code&gt;NSFileHandle&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;And here&#39;s some example code, reads all data from &lt;code&gt;STDIN&lt;/code&gt; and stores it into an NSString:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt;&lt;span class=&#34;n&#34;&gt;NSFileHandle&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;input&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSFileHandle&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fileHandleWithStandardInput&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;NSData&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputData&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSData&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;dataWithData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;input&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;readDataToEndOfFile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]];&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;NSString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSString&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;alloc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;initWithData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputData&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;encoding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSUTF8StringEncoding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;I&#39;m using this in GarbageCollected apps, memory management without GC is left as an exercise to the user.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Ignore .gitignore in Git</title><link>https://caiustheory.com/ignore-gitignore-in-git/</link><pubDate>Mon, 21 Sep 2009 06:00:00 +0000</pubDate><guid>https://caiustheory.com/ignore-gitignore-in-git/</guid><description>&lt;p&gt;Recently I ran into an issue where I was working on a project which had files I wanted git to ignore, but I didn&#39;t want to commit a &lt;code&gt;.gitignore&lt;/code&gt; file into the project. In case you don&#39;t know, any files matching a pattern in &lt;code&gt;.gitignore&lt;/code&gt; in a git repository are ignored by git. (Unless the file(s) have already been committed, then they need removing from git before they are ignored.)&lt;/p&gt;
+&lt;p&gt;Initially I figured I could just throw the patterns I needed excluded into my global &lt;code&gt;~/.gitignore&lt;/code&gt;, but quickly realised that I needed files matching these patterns to show up in other git repos, so going the global route really wasn&#39;t an option. After some thought I wondered if you could make git ignore &lt;code&gt;.gitignore&lt;/code&gt;, whilst still getting it to ignore files matching the other patterns in the &lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Lets create a new empty repo to test this crazy idea in:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mkdir foo
+$ cd foo
+$ git init
+Initialized empty Git repository in /Volumes/Brutus/Users/caius/foo/.git/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And create a couple of files for us to play with:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ touch bar
+$ touch baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ignore one of the files so we can check other matches are still ignored later on:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;baz&amp;quot; &amp;gt;&amp;gt; .gitignore
+$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+# (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+#
+# .gitignore
+# bar
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ok so far, but we can still see .gitignore in git, so now for the crazy shindig, ignore the ignore file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;.gitignore&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lets see if it worked, or if we can still see our .gitignore:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+# (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+#
+# bar
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And lets just double-check that &lt;code&gt;.gitignore&lt;/code&gt; and &lt;code&gt;baz&lt;/code&gt; still exist on the filesystem:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls -a
+. .. .git .gitignore bar baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Fantastic! Turns out adding &amp;quot;.gitignore&amp;quot; to &lt;code&gt;.gitignore&lt;/code&gt; works perfectly. The file is still parsed by git to ignore everything else too, so it does exactly what I needed in this instance.&lt;/p&gt;</description></item><item><title>Capitalise &#34;ringer&#34; on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p&gt;&lt;strong&gt;Backstory:&lt;/strong&gt; Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;quot;ringer&amp;quot; across the top. But when you have headphones plugged in, it says &amp;quot;Headphones&amp;quot;. &lt;em&gt;(Note the capitalisation difference.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Now I&#39;m not usually bothered by stuff like this (honest!) but as soon as I&#39;d noticed the &lt;em&gt;&amp;quot;bug&amp;quot;&lt;/em&gt;, I couldn&#39;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&#39;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code&gt;/System&lt;/code&gt; folder. And I&#39;d be able to change it!&lt;/p&gt;
+&lt;p&gt;Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&#39;s SSH server on and go looking for the setting. To do so I figured I&#39;d just need &lt;code&gt;grep&lt;/code&gt; installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p&gt;
+&lt;p&gt;So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the iPhone
+$ cd /System/Library/
+$ grep -r &amp;quot;ringer&amp;quot; *
+Binary file CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings matches
+Binary file CoreServices/SpringBoard.app/M68AP.plist matches
+Binary file CoreServices/SpringBoard.app/SpringBoard matches
+Binary file Frameworks/CFNetwork.framework/CFNetwork matches
+Binary file Frameworks/CFNetwork.framework/da.lproj/Localizable.strings matches
+Binary file Frameworks/CFNetwork.framework/no.lproj/Localizable.strings matches
+Binary file Frameworks/Foundation.framework/da.lproj/URL.strings matches
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;At which point I stopped the grep search (&lt;code&gt;^C&lt;/code&gt;) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code&gt;SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code&gt;. Making sure to have SSH enabled on your mac, a simple &lt;code&gt;scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code&gt; later and the file is sat in my home folder on my mac.&lt;/p&gt;
+&lt;p&gt;Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&#39;ve found a hint on &lt;a href=&#34;http://macosxhints.com&#34;&gt;MacOSXHints&lt;/a&gt; telling me how to convert from &lt;a href=&#34;http://www.macosxhints.com/article.php?story=20050430105126392&#34;&gt;binary to xml plist format&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the mac
+$ plutil -convert xml1 SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;quot;ringer&amp;quot; and I found the following lines:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;key&amp;gt;&lt;/span&gt;RINGER_VOLUME&lt;span class=&#34;nt&#34;&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;string&amp;gt;&lt;/span&gt;ringer&lt;span class=&#34;nt&#34;&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Change the &amp;quot;ringer&amp;quot; to &amp;quot;Ringer&amp;quot; between the &lt;code&gt;&amp;lt;string&amp;gt;&lt;/code&gt; and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code&gt;.string&lt;/code&gt;. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code&gt;xml1&lt;/code&gt; in the previous command to &lt;code&gt;binary1&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the mac
+$ plutil -convert binary1 SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&#39;ve edited:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the iPhone
+$ cd ~
+$ scp user@mac_name.local:SpringBoard.strings .
+$ cd /System/Library/CoreServices/SpringBoard.app/English.lproj/
+$ mv SpringBoard.strings SpringBoard.strings.bak
+$ cp ~/SpringBoard.strings SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then restart the phone, either in the usual manner or just run &lt;code&gt;reboot&lt;/code&gt; on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;quot;Ringer&amp;quot;!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://caius.name/images/ringer.jpg&#34; alt=&#34;Screenshot of Volume bezel&#34; /&gt;&lt;/p&gt;</description></item><item><title>Adding XHTML output validation to Cucumber stories</title><link>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</link><pubDate>Tue, 16 Jun 2009 10:19:11 +0000</pubDate><guid>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</guid><description>&lt;p&gt;At the 2009 &lt;a href=&#34;http://barcampleeds.com/&#34;&gt;Barcamp Leeds&lt;/a&gt; I attended a talk by &lt;a href=&#34;http://neilcrosby.com/vcard/&#34;&gt;Neil Crosby&lt;/a&gt; where he talked about automated testing, and about how he felt there was a gap in everything that people were testing. Everyone has unit tests, and people are doing full stack testing too, but no-one (so he feels) does XHTML/CSS/JS validation as part of their automated test suite. And certainly from what I&#39;ve seen on the mainstream Ruby site&#39;s about testing, I agreed with him.&lt;/p&gt;
+&lt;p&gt;So after his talk I had a quick look at his &lt;a href=&#34;http://github.com/NeilCrosby/frontend-test-suite/tree/master&#34;&gt;frontend test suite&lt;/a&gt;, and started wondering where exactly I would fit frontend validation testing into my workflow. Would it be part of my unit tests (RSpec), or part of the full stack tests (Cucumber)? As you&#39;ve probably guessed by the title of this post, its ended up going into my cucumber tests. Since the initial play its been something I&#39;ve mused about occasionally, but not something I&#39;ve actively looked into how to implement as part of my test workflow.&lt;/p&gt;
+&lt;p&gt;Fast-forward a few weeks from &lt;a href=&#34;http://barcampleeds.com/&#34;&gt;Barcamp Leeds&lt;/a&gt; and I see a news article in my feed reader entitled &lt;a href=&#34;http://tenderlovemaking.com/2009/06/12/easy-markup-validation/&#34;&gt;&amp;quot;Easy Markup Validation&amp;quot;&lt;/a&gt; which gets me hopeful someone&#39;s solved this frontend validation thing easily for Rubyists. A quick read through and I&#39;m sold on it and installing the gem. Opened an existing project I&#39;m working on which has a fairly extensive test suite (both unit tests &amp;amp; full stack tests) and tried to slot the validation into my controller unit tests.&lt;/p&gt;
+&lt;p&gt;Problem with doing this is by default RSpec-rails doesn&#39;t generate the views in your controller specs. At that point I realised I was already generating the full page when I was doing a full stack test using &lt;a href=&#34;http://github.com/langalex/culerity/tree/master&#34;&gt;culerity&lt;/a&gt; and &lt;a href=&#34;http://cukes.info/&#34;&gt;cucumber&lt;/a&gt;. So why not just add a cucumber step in my stories to validate the HTML on each page I visit? Mainly because its not enough of a failure for this app to have invalid XHTML markup. Having valid markup would be nice, but I&#39;d rather have it as a separate test to my stories in some way.&lt;/p&gt;
+&lt;p&gt;Currently I just do that by only validating if &lt;code&gt;ENV[&amp;quot;VALIDATION&amp;quot;]&lt;/code&gt; is set to anything, so a normal run of my cucumber stories will just test the app does what its supposed to do. If I run them with &lt;code&gt;VALIDATION=true&lt;/code&gt; then it will check my markup is valid as well.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;features/support/env.rb&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;markup_validity&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ENV&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;VALIDATION&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;features/step_definitions/general_steps.rb&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;no&#34;&gt;Then&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;%r/the page is valid XHTML/&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
+&lt;span class=&#34;vg&#34;&gt;$browser&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;html&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;should&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be_xhtml_strict&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ENV&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;VALIDATION&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;features/logging_in.feature&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cucumber&#34; data-lang=&#34;cucumber&#34;&gt;Feature: Logging in
+In order to do stuff
+As a registered user
+I want to login
+Scenario: Successful Login
+Given there is a user called &amp;#34;Caius&amp;#34;
+When I goto the homepage
+Then the page is valid XHTML
+When I click on the &amp;#34;Login&amp;#34; link
+Then I am redirected to the login page
+And the page is valid XHTML
+When I enter my login details
+And I click &amp;#34;Login&amp;#34;
+Then I am redirected to my dashboard
+And the page is valid XHTML&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now when I run &lt;code&gt;cucumber features/logging_in.feature&lt;/code&gt;, it doesn&#39;t validate the HTML, it just makes sure that I can login as my user and that I am redirected to the right places. But if I run &lt;code&gt;VALIDATION=true cucumber features/logging_in.feature&lt;/code&gt;, then it &lt;em&gt;does&lt;/em&gt; validate my XHTML on the homepage, the login page and on the user&#39;s dashboard. If it fails validation then it gives you a fairly helpful error message as to what it was expecting and what it found instead.&lt;/p&gt;
+&lt;p&gt;From a quick run against a couple of stories in my app I discovered that I&#39;ve not been wrapping form elements in an enclosing element, so they&#39;ve been quickly fixed and now they validate. Now I realise this gem is only testing XHTML output, and doesn&#39;t include CSS or JS validation, but from a quick peek at the gem&#39;s source it should be fairly easy to add both of those in I think, although again they aren&#39;t major errors for me yet in this app.&lt;/p&gt;</description></item><item><title>Automatically Deploying Website From Remote Git Repository</title><link>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</link><pubDate>Sat, 30 May 2009 02:30:40 +0000</pubDate><guid>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</guid><description>
+&lt;p&gt;Before I start, I&#39;ll just quickly run through where I put stuff on my server. Apache logs and config are in the ubuntu default folders: &lt;code&gt;/var/log/apache2&lt;/code&gt; and &lt;code&gt;/etc/apache2/&lt;/code&gt; respectively.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Websites: /home/caius/vhosts/&amp;lt;domain name&amp;gt;/htdocs
+Git Repos: /home/caius/git/&amp;lt;domain name&amp;gt;.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So I have a git repo locally, &lt;code&gt;~/projects/somesite.com/&lt;/code&gt;, and want to deploy it to my webserver. I&#39;ll keep the git repo in &lt;code&gt;~/git/&lt;/code&gt; and set it up so that when I push to the repo &lt;em&gt;(over ssh)&lt;/em&gt; it will automatically checkout the new changes into the website&#39;s htdocs folder.&lt;/p&gt;
+&lt;p&gt;I&#39;m assuming DNS is already setup (or I&#39;ve used &lt;a href=&#34;http://github.com/bjeanes/ghost/tree/master&#34;&gt;ghost&lt;/a&gt; to map it locally.) And that I&#39;ve setup the virtualhost in apache pointing at &lt;code&gt;/home/caius/vhosts/somesite.com/htdocs&lt;/code&gt; and reloaded apache so the config is in place.&lt;/p&gt;
+&lt;h2 id=&#34;remote-machine&#34;&gt;Remote Machine&lt;/h2&gt;
+&lt;p&gt;We create a bare git repo, then point the working tree at the docroot of our website. This means all the git stuff is kept in the &lt;code&gt;somesite.git&lt;/code&gt; folder, but the files themselves are checked out to the website&#39;s folder. Then we setup a post-receive hook to update the worktree folder after new changes have been pushed to the repo.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cd git
+$ mkdir somesite.git
+$ cd somesite.git/
+$ git init --bare
+Initialized empty Git repository in /home/caius/git/somesite.git/
+$ git --bare update-server-info
+$ git config core.worktree /home/caius/vhosts/somesite.com/htdocs
+$ git config core.bare false
+$ git config receive.denycurrentbranch ignore
+$ cat &amp;gt; hooks/post-receive
+#!/bin/sh
+git checkout -f
+^D
+$ chmod +x hooks/post-receive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;local-machine&#34;&gt;Local Machine&lt;/h2&gt;
+&lt;p&gt;And now on the client machine we add the remote repo as a git remote, and then push to it.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git remote add web ssh://myserver/home/caius/git/somesite.git
+$ git push web +master:refs/heads/master
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 229 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To ssh://myserver/home/caius/git/somesite.git
+* [new branch] master -&amp;gt; master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;all-done&#34;&gt;All Done&lt;/h2&gt;
+&lt;p&gt;And now if you go to &lt;em&gt;somesite.com&lt;/em&gt; you&#39;ll see the contents of your git repo there. (&lt;em&gt;somesite.com&lt;/em&gt; is just an example url though, I don&#39;t actually own it!)&lt;/p&gt;
+&lt;h3 id=&#34;helpful-urls&#34;&gt;Helpful URLs&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://toroid.org/ams/git-website-howto&#34;&gt;http://toroid.org/ams/git-website-howto&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.mblondel.org/journal/2008/05/25/git-memo/&#34;&gt;http://www.mblondel.org/journal/2008/05/25/git-memo/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&#34;&gt;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Find shell commands with which</title><link>https://caiustheory.com/find-shell-commands-with-which/</link><pubDate>Sun, 19 Apr 2009 15:02:04 +0000</pubDate><guid>https://caiustheory.com/find-shell-commands-with-which/</guid><description>&lt;p&gt;So I have this command in my $PATH, &lt;code&gt;apachectl&lt;/code&gt;. Because I&#39;m on a mac and I&#39;ve installed apache2 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt;, the command that gets found first is my macports install in &lt;code&gt;/opt&lt;/code&gt;. Up until now I&#39;ve always known that &lt;code&gt;which apachectl&lt;/code&gt; will find that location, but to find any other locations of &lt;code&gt;apachectl&lt;/code&gt; I&#39;d usually use &lt;code&gt;locate&lt;/code&gt; and &lt;code&gt;egrep&lt;/code&gt; together.&lt;/p&gt;
+&lt;p&gt;Here&#39;s my original workflow, lets find the location of the &lt;code&gt;apachectl&lt;/code&gt; being called when I don&#39;t specify a path.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Julius:~ caius$ which apachectl
+/opt/local/apache2/bin/apachectl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Simple enough. Now lets figure out what other locations there&#39;s an &lt;code&gt;apachectl&lt;/code&gt; installed at.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Julius:~ caius$ locate apachectl | egrep &amp;quot;\/apachectl$&amp;quot;
+/opt/local/apache2/bin/apachectl
+/opt/local/var/macports/software/apache2/2.2.11_0+darwin_9/opt/local/apache2/bin/apachectl
+/usr/sbin/apachectl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Right, so now I know where else a command exists in the filesystem called &lt;code&gt;apachectl&lt;/code&gt;, but I don&#39;t know if any of those is in my $PATH, or what order they come in when searching through my $PATH. In this (old) workflow I&#39;d have compared them to my $PATH manually as there&#39;s so few of them.&lt;/p&gt;
+&lt;p&gt;So I noticed &lt;a href=&#34;http://awhitebox.com&#34;&gt;Ali&lt;/a&gt; googling for the &lt;code&gt;which&lt;/code&gt; man page on IRC, and &lt;em&gt;(quite stupidly)&lt;/em&gt; poked fun at him for doing so. I then swallowed my ego and actually followed the link to the man page, and boy was I glad I did. Just shows with even a fairly simple command like &lt;code&gt;which&lt;/code&gt;, you sure don&#39;t know everything!&lt;/p&gt;
+&lt;p&gt;What I discovered was that &lt;code&gt;which&lt;/code&gt; has a single flag you can pass it, &lt;code&gt;-a&lt;/code&gt;. From the &lt;a href=&#34;https://www.freebsd.org/cgi/man.cgi?query=which&amp;amp;format=html&#34;&gt;man page&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-a print all matching pathnames of each argument
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Right. So that &lt;code&gt;locate | grep&lt;/code&gt; command plus manually figuring out what is in my $PATH is really hard work then. &lt;code&gt;which -a&lt;/code&gt; should give us the same results, but a lot faster and with a lot less manual thought.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Julius:~ caius$ which -a apachectl
+/opt/local/apache2/bin/apachectl
+/usr/sbin/apachectl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And hey presto, yet another useful bit of bash knowledge for me, thanks to &lt;a href=&#34;http://awhitebox.com&#34;&gt;Ali&lt;/a&gt; not being afraid to &lt;acronym title=&#34;Read the Fucking Manual&#34;&gt;RTFM&lt;/acronym&gt;!&lt;/p&gt;</description></item><item><title>Validating Data with Regular Expressions in Ruby</title><link>https://caiustheory.com/validating-data-with-regular-expressions-in-ruby/</link><pubDate>Sat, 11 Apr 2009 12:41:48 +0000</pubDate><guid>https://caiustheory.com/validating-data-with-regular-expressions-in-ruby/</guid><description>
+&lt;p&gt;I happened to be sent a link to the &lt;a href=&#34;https://www.owasp.org/index.php/Main_Page&#34;&gt;OWASP&lt;/a&gt; paper on &lt;a href=&#34;https://www.owasp.org/images/8/89/Rails_Security_2.pdf&#34;&gt;Rails Security&lt;/a&gt; recently and started reading it. Partway in there&#39;s a section on Regular Expressions, which opens with the following line:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A common pitfall in Ruby&#39;s regular expressions is to match the string&#39;s beginning and end by &lt;code&gt;^&lt;/code&gt; and &lt;code&gt;$&lt;/code&gt;, instead of &lt;code&gt;\A&lt;/code&gt; and &lt;code&gt;\z&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now I&#39;ve never used &lt;code&gt;\A&lt;/code&gt; and &lt;code&gt;\z&lt;/code&gt; in my regular expressions to validate data, I&#39;ve only ever used &lt;code&gt;^&lt;/code&gt; and &lt;code&gt;$&lt;/code&gt; assuming they matched the start and end of the string. This becomes an issue with validating data in rails, because &lt;code&gt;%0A&lt;/code&gt; (&lt;code&gt;\n&lt;/code&gt; URL encoded) is decoded by rails before passing the string to your model to validate.&lt;/p&gt;
+&lt;h2 id=&#34;testing-our-expectations&#34;&gt;Testing our expectations&lt;/h2&gt;
+&lt;p&gt;Lets say we want to validate the string as a username for our app. A username is 5 characters long and consists only of lowercase letters.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;regex&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sr&#34;&gt;/^[a-z]{5}$/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;First we make sure it matches the data we want it to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;regex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Excellent, that validated. Now we&#39;ll try a shorter string, which we expect to fail.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;cai&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;regex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Once more, it behaves how we expected it to. The shorter string was rejected as we wanted it to be. Now, what happens if we test a string with a newline character in it? We&#39;ll make sure the data before the &lt;code&gt;\n&lt;/code&gt; is valid, and then add some more data after the newline.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;foo&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;regex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Uh oh! That validated and would&#39;ve been saved as a username?!&lt;/p&gt;
+&lt;p&gt;Lets have a look at exactly what&#39;s happening there, the &lt;code&gt;$&lt;/code&gt; matches the &lt;code&gt;\n&lt;/code&gt; character, so the regex is only matching the first 5 characters of the string, and just ignores anything after the &lt;code&gt;\n&lt;/code&gt;. As it turns out, this is exactly what we&#39;ve asked the regex to match, but we didn&#39;t want this behaviour.&lt;/p&gt;
+&lt;p&gt;Now you might be thinking, &amp;quot;So what? someone can have a username with a newline in it.&amp;quot; For starters this will probably display weirdly anywhere you use their username, but more importantly it opens your application to an injection attack. Suppose they took advantage of this by setting their username to include some javascript on the page which stole your login cookie and sent it to them. You view their account in the admin section and oh no! They can login as your admin account and do what they want.&lt;/p&gt;
+&lt;p&gt;Simple example of this is just having it output an alert dialog. &lt;em&gt;(This is actually the code I&#39;ll use to test an application as its not malicious, but blindingly obvious if the javascript is executed or not.)&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;lt;script&amp;gt;alert(&amp;#39;hello&amp;#39;)&amp;lt;/script&amp;gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;regex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Ok, so that was the result we were expecting this time, although it&#39;s still not the outcome we wanted. Anytime their username is viewed (providing you aren&#39;t escaping the data to HTML entities) you&#39;ll see the following:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://caius.name/images/qs/javascript-alert-dialog.png&#34; alt=&#34;javascript alert dialog&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;the-solution&#34;&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;Having realised from our testing above that ^$ matches the beginning/end of a &lt;em&gt;line&lt;/em&gt; in ruby not the beginning and end of a &lt;em&gt;string&lt;/em&gt;, I hear you cry, &amp;quot;How do we make sure we&#39;re matching the entire string?!&amp;quot;&lt;/p&gt;
+&lt;p&gt;The answer is pretty simple. Just swap out &lt;code&gt;^$&lt;/code&gt; for &lt;code&gt;\A\z&lt;/code&gt;. Lets go ahead and try this with the same data as we have above, but with the modified regular expression.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;new_regex&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sr&#34;&gt;/\A[a-z]{5}\z/&lt;/span&gt;
+&lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;new_regex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That&#39;s a good start, the valid string still matches.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;cai&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;new_regex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Looks like it&#39;s going well, invalid string is invalid.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;foo&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;new_regex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Oh Excellent! It&#39;s validating this one correctly now.&lt;/p&gt;
+&lt;p&gt;And just for consistency, lets test it with a more likely attack string.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;lt;script&amp;gt;alert(&amp;#39;hello&amp;#39;)&amp;lt;/script&amp;gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;new_regex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Fantastic! We&#39;ve fixed the security hole in our validation of the user&#39;s username.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you want to actually run the code above you&#39;ll need the following at the start of the ruby script to patch the validate method into String.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;String&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;validate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;regex&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;regex&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nil?&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Update:&lt;/em&gt;&lt;/strong&gt; I had &lt;code&gt;\Z&lt;/code&gt; in the &lt;code&gt;new_regex&lt;/code&gt; rather than the &lt;code&gt;\z&lt;/code&gt; it should&#39;ve been. Thanks &lt;a href=&#34;http://ciaranwal.sh/&#34;&gt;Ciarán&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Safari 4 Hidden Preferences</title><link>https://caiustheory.com/safari-4-hidden-preferences/</link><pubDate>Tue, 24 Feb 2009 16:11:05 +0000</pubDate><guid>https://caiustheory.com/safari-4-hidden-preferences/</guid><description>
+&lt;p&gt;&lt;strong&gt;Updated 2009-06-09:&lt;/strong&gt; This post is for the Safari 4 &lt;strong&gt;beta&lt;/strong&gt; and will not work with the new Safari 4 released yesterday at the WWDC keynote. I&#39;ve had a look through that release and can&#39;t see any way to revert the address bar, etc sorry.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Having a quick poke through the new Safari binary yields the following strings:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ strings /Applications/Safari.app/Contents/MacOS/Safari | grep DebugSafari4
+DebugSafari4TabBarIsOnTop
+DebugSafari4IncludeToolbarRedesign
+DebugSafari4IncludeFancyURLCompletionList
+DebugSafari4IncludeGoogleSuggest
+DebugSafari4LoadProgressStyle
+DebugSafari4IncludeFlowViewInBookmarksView
+DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot
+DebugSafari4IncludeTopSites
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;NB: Run these commands in Terminal.app and then you need to restart Safari for them to take effect.&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;debugsafari4tabbarisontop&#34;&gt;DebugSafari4TabBarIsOnTop&lt;/h3&gt;
+&lt;p&gt;This moves the tab bar back where you expect it to be:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4TabBarIsOnTop -bool NO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;debugsafari4includetoolbarredesign-and-debugsafari4loadprogressstyle&#34;&gt;DebugSafari4IncludeToolbarRedesign and DebugSafari4LoadProgressStyle&lt;/h3&gt;
+&lt;p&gt;When both set to NO it restores the blue loading bar behind the URL. &lt;em&gt;Also puts a page loading spinner in the tab itself, which looks odd with the new tabs.&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeToolbarRedesign -bool NO
+$ defaults write com.apple.Safari DebugSafari4LoadProgressStyle -bool NO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;debugsafari4includefancyurlcompletionlist&#34;&gt;DebugSafari4IncludeFancyURLCompletionList&lt;/h3&gt;
+&lt;p&gt;Switches off the new URL autocomplete menu and goes back to the original one.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeFancyURLCompletionList -bool NO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;debugsafari4includegooglesuggest&#34;&gt;DebugSafari4IncludeGoogleSuggest&lt;/h3&gt;
+&lt;p&gt;Turns off the new Google suggest menu.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeGoogleSuggest -bool NO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;debugsafari4includeflowviewinbookmarksview&#34;&gt;DebugSafari4IncludeFlowViewInBookmarksView&lt;/h3&gt;
+&lt;p&gt;Removes CoverFlow from the Bookmarks view entirely. (&lt;a href=&#34;http://twitter.com/iacas/status/1245800183&#34;&gt;Credit&lt;/a&gt; to &lt;a href=&#34;http://nslog.com/&#34;&gt;Erik&lt;/a&gt;)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeFlowViewInBookmarksView -bool NO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;debugsafari4topsiteszoomtopageanimationdimssnapshot&#34;&gt;DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot&lt;/h3&gt;
+&lt;p&gt;Disables the dimming when you click on a Top Site and it scales the screenshot up to fill the screen.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot -bool NO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;debugsafari4includetopsites&#34;&gt;DebugSafari4IncludeTopSites&lt;/h3&gt;
+&lt;p&gt;Disables Top Sites feature completely.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeTopSites -bool NO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;undoing-changes&#34;&gt;Undoing changes&lt;/h2&gt;
+&lt;p&gt;Just run the defaults command with the &lt;code&gt;delete&lt;/code&gt; flag for the appropriate key you wish to delete.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ defaults delete com.apple.Safari &amp;lt;key&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;NB: Don&#39;t include the &lt;code&gt;-bool NO&lt;/code&gt; at the end, it just requires the key (eg: &amp;quot;DebugSafari4IncludeGoogleSuggest&amp;quot;)&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;update-2009-02-26&#34;&gt;Update 2009-02-26&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;http://swedishcampground.com/safari-4-hidden-preferences#comment-3265&#34;&gt;Jools points out in the comments&lt;/a&gt; how to reset the recent searches in the google search box.&lt;/p&gt;
+&lt;h3 id=&#34;update-2009-05-26&#34;&gt;Update 2009-05-26&lt;/h3&gt;
+&lt;p&gt;Lowell&#39;s kindly created a Mac OS X application to edit these settings without using Terminal. &lt;a href=&#34;http://github.com/cocoastep/tweaky&#34;&gt;http://github.com/cocoastep/tweaky&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;update-2010-11-18&#34;&gt;Update 2010-11-18&lt;/h3&gt;
+&lt;p&gt;Patric has kindly &lt;a href=&#34;http://www.movavi.com/opensource/safari-4-hidden-preferences-be&#34;&gt;translated this post into Belorussian&lt;/a&gt; and posted it on his site.&lt;/p&gt;</description></item><item><title>Migrating Rubygems to Ruby 1.9.x</title><link>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</link><pubDate>Sat, 31 Jan 2009 20:29:57 +0000</pubDate><guid>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</guid><description>&lt;p&gt;So I just installed ruby 1.9.1 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt; and wanted to easily migrate my rubygems across from 1.8 to see which ones would fail to install.&lt;/p&gt;
+&lt;p&gt;Thought about it for a while, then came up with the following bash one-liner to do it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;gem list &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;(&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $1 }&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -L &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; gem1.9 install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;NB:&lt;/strong&gt; Installing Ruby 1.9.1 through macports &lt;code&gt;sudo port install ruby19&lt;/code&gt; means I get &lt;code&gt;ruby1.9&lt;/code&gt;, &lt;code&gt;gem1.9&lt;/code&gt; and &lt;code&gt;rake1.9&lt;/code&gt; installed alongside my usual 1.8 &lt;code&gt;ruby&lt;/code&gt;, &lt;code&gt;gem&lt;/code&gt; and &lt;code&gt;rake&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;That grabs the list of installed gems from &lt;code&gt;gem&lt;/code&gt;, searches for lines containing &amp;quot;(&amp;quot; so it only grabs the gem names, spits out the first section of the line, which is the name of the gem, and finally calls &lt;code&gt;gem1.9 install&lt;/code&gt; for each line via &lt;code&gt;xargs -L 1&lt;/code&gt;. Make sure to run it as root or prefix &lt;code&gt;gem1.9&lt;/code&gt; with &lt;code&gt;sudo&lt;/code&gt;. &lt;em&gt;(Or let it install in your home folder, but I hate that.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;From my quick run of the above snippet, 75% of my gems installed &lt;em&gt;(73 out of 98)&lt;/em&gt; and the other few that failed to install were ones like &lt;a href=&#34;http://github.com/why/hpricot/tree/master&#34;&gt;Hpricot&lt;/a&gt; that require native extensions compiling. You can see the entire list of failures and successes of the gems in &lt;a href=&#34;http://pastie.textmate.org/pastes/376136&#34;&gt;this pastie&lt;/a&gt;&lt;/p&gt;</description></item><item><title>This is my Compiler</title><link>https://caiustheory.com/this-is-my-compiler/</link><pubDate>Fri, 30 Jan 2009 12:18:56 +0000</pubDate><guid>https://caiustheory.com/this-is-my-compiler/</guid><description>&lt;p&gt;As some friday fun in &lt;a href=&#34;http://twitter.com/geekupirc&#34;&gt;#geekup&lt;/a&gt; we ended up converting the &lt;a href=&#34;http://usmilitary.about.com/od/marines/l/blriflecreed.htm&#34;&gt;US Marines Creed&lt;/a&gt; to a geekier version.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is my compiler.&lt;br /&gt;
+There are many like it, but this one is MINE.&lt;br /&gt;
+My compiler is my best friend. It is my life.&lt;br /&gt;
+I must master it as I must master my life.&lt;br /&gt;
+My compiler without me is useless. Without my compiler, I am useless.&lt;br /&gt;
+I must run my compiler true.&lt;br /&gt;
+I must run faster than my bug who is trying to kill me.&lt;br /&gt;
+I must squash him before he squashes me. I will...&lt;br /&gt;
+My compiler and myself know that what counts in war is not the warnings we squash,&lt;br /&gt;
+the builds we create, nor the optimisations we make.&lt;br /&gt;
+We know it is the build errors fixed that count. We will fix...&lt;br /&gt;
+My compiler is human, even as I, because it is my life.&lt;br /&gt;
+Thus, I will learn it as a brother.&lt;br /&gt;
+I will learn its weaknesses, its strengths, its output, its code,&lt;br /&gt;
+its quirks, and its errors.&lt;br /&gt;
+I will ever guard it against the ravages of virii and disk failures.&lt;br /&gt;
+I will keep my compiler clean and ready, even as I am clean and ready.&lt;br /&gt;
+We will become part of each other. We will...&lt;br /&gt;
+Before Assembler I swear this creed.&lt;br /&gt;
+My compiler and myself are the defenders of good code.&lt;br /&gt;
+We are the masters of our bugs.&lt;br /&gt;
+We are the saviors of our code.&lt;br /&gt;
+So be it, until code is compiling and there are no bugs, but compiled code.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And then &lt;a href=&#34;http://jamx.org/&#34;&gt;jamx&lt;/a&gt; jumped in with the &lt;a href=&#34;http://en.wikipedia.org/wiki/Lord&#39;s_Prayer#English_versions&#34;&gt;Lords Prayer&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Our Compiler, who art in memory. GNU be thy name.&lt;br /&gt;
+Thy source code come, thy will be done.&lt;br /&gt;
+On script as it is in memory.&lt;br /&gt;
+Give us this day our daily data, and forgive us our segfaults as we forgive those who segfault against us.&lt;br /&gt;
+And lead us not into /dev/null but deliver us from M$,&lt;br /&gt;
+for thine is the domain, the cpu and the peeps.&lt;br /&gt;
+for (x=0; x&amp;lt;2; x++){ x=0; }&lt;br /&gt;
+Amen&lt;/p&gt;
+&lt;/blockquote&gt;</description></item><item><title>Install Mysql Gem on Leopard</title><link>https://caiustheory.com/install-mysql-gem-on-leopard/</link><pubDate>Wed, 21 Jan 2009 17:09:41 +0000</pubDate><guid>https://caiustheory.com/install-mysql-gem-on-leopard/</guid><description>
+&lt;p&gt;So, I keep having to reinstall mysql5 and rubygems from time to time for various reasons. I always install mysql5 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt; as a dependency for the php5 port (along with various other bits for the LA*P stack).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo port install php5 +mysql5 +pear +readline +sockets +apache2 +sqlite&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Once this is installed then I have &lt;code&gt;mysql&lt;/code&gt; and can setup my databases, etc.&lt;/p&gt;
+&lt;p&gt;Ignoring the rest of the LAMP stack, I then need to connect Ruby to the Mysql I just installed through MacPorts. Its quite simple to do, once you know the right argument to pass to it. The easiest way is to just tell it where the &lt;code&gt;mysql5_conf&lt;/code&gt; file is and let it figure out the rest for itself.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo gem install mysql -- --with-mysql-config&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/local/bin/mysql_config5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Hopefully this will save me 10 minutes of googling next time I need to do this!&lt;/p&gt;
+&lt;h3 id=&#34;update-2009-01-21&#34;&gt;Update 2009-01-21&lt;/h3&gt;
+&lt;p&gt;I&#39;m an idiot and typed the &lt;code&gt;gem install&lt;/code&gt; command by hand, and ended up with &lt;code&gt;--with-mysql-conf&lt;/code&gt; instead of &lt;code&gt;--with-mysql-config&lt;/code&gt;. Updated now.&lt;/p&gt;
+&lt;h3 id=&#34;update-2009-10-19&#34;&gt;Update 2009-10-19&lt;/h3&gt;
+&lt;p&gt;On Snow Leopard I needed to tell rubygems to install the gem as a 64-bit binary. Hattip to &lt;a href=&#34;http://www.schmidp.com/2009/06/14/rubyrails-and-mysql-on-snow-leopard-10a380/comment-page-1/&#34;&gt;Philipp&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo env &lt;span class=&#34;nv&#34;&gt;ARCHFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;-arch x86_64&amp;#34;&lt;/span&gt; gem install mysql -- &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; --with-mysql-config&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/local/bin/mysql_config5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>GTranslate</title><link>https://caiustheory.com/gtranslate/</link><pubDate>Sun, 04 Jan 2009 09:40:59 +0000</pubDate><guid>https://caiustheory.com/gtranslate/</guid><description>&lt;p&gt;I finally wrapped up some code I&#39;ve been meaning to write for a while, its a wrapper for the &lt;a href=&#34;http://translate.google.com/&#34;&gt;Google Translate API&lt;/a&gt;. Its also the first serious time I&#39;ve used &lt;code&gt;method_missing&lt;/code&gt; in a class, in this case its to add methods for translating between all the various languages.&lt;/p&gt;
+&lt;p&gt;Its fairly simple to use, there is an &lt;a href=&#34;http://github.com/caius/gtranslate/tree/master/examples.rb&#34;&gt;examples.rb&lt;/a&gt; included with it, but the basic usage is just this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Convert from english to french&lt;/span&gt;
+&lt;span class=&#34;no&#34;&gt;Google&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;Translate&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;english_to_french&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;Bonjour&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# There is also a short(er)-hand version&lt;/span&gt;
+&lt;span class=&#34;no&#34;&gt;Google&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;Tr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;en_to_fr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As per usual with all my code its available on my &lt;a href=&#34;http://github.com/caius/&#34;&gt;github account&lt;/a&gt;, as the &lt;a href=&#34;http://github.com/caius/gtranslate/&#34;&gt;GTranslate&lt;/a&gt; project. I&#39;ll throw some specs together for it and package it up as a gem soon.&lt;/p&gt;</description></item><item><title>The Shell Meme</title><link>https://caiustheory.com/the-shell-meme/</link><pubDate>Tue, 30 Dec 2008 18:29:35 +0000</pubDate><guid>https://caiustheory.com/the-shell-meme/</guid><description>&lt;p&gt;I ran across &lt;a href=&#34;http://lstoll.net/2008/04/shell-meme/&#34;&gt;The Shell Meme&lt;/a&gt; on &lt;a href=&#34;http://lstoll.net/&#34;&gt;Lincoln Stoll&#39;s&lt;/a&gt; blog, and figured I&#39;d, uh, &lt;em&gt;borrow&lt;/em&gt; it.&lt;/p&gt;
+&lt;p&gt;Run this command in a new shell:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;history&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ a[$2]++ } END { for(i in a){printf &amp;#34;%5d\t%s\n &amp;#34;,a[i],i} }&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; sort -rn &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; head&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I get this as the output&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;379 git
+221 cd
+181 ssh
+77 sudo
+69 ruby
+66 ls
+34 rake
+33 m
+32 bb
+31 m.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;bb&lt;/code&gt; changes directory straight into my &lt;a href=&#34;http://www.brightbox.co.uk/&#34;&gt;BrightBox&lt;/a&gt; source directory. &lt;code&gt;m&lt;/code&gt; and &lt;code&gt;m.&lt;/code&gt; are &lt;a href=&#34;http://macromates.com/&#34;&gt;TextMate&lt;/a&gt; alias&#39;s to open files or directories in TextMate for editing.&lt;/p&gt;</description></item><item><title>Sending Array elements as individual arguments in Ruby</title><link>https://caiustheory.com/sending-array-elements-as-individual-arguments-in-ruby/</link><pubDate>Fri, 26 Dec 2008 07:25:15 +0000</pubDate><guid>https://caiustheory.com/sending-array-elements-as-individual-arguments-in-ruby/</guid><description>&lt;p&gt;Lets imagine we&#39;ve got an array of strings, and we want to print it out as a list of strings using printf. &lt;em&gt;(If you&#39;re complaining about my logic here, hold fire for just a second good sir/madam.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;So we start off with the array of strings, and then pass it to printf with the right amount of &lt;code&gt;%s&lt;/code&gt;&#39;s in the format string:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;arr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;one&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;two&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;three&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;printf&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;%s, %s, %s&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;arr&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# ~&amp;gt; -:3:in `printf&amp;#39;: too few arguments (ArgumentError)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# ~&amp;gt; from -:3&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Oh whoops, we&#39;ve actually only passed &lt;code&gt;&amp;quot;%s, %s, %s&amp;quot;, [&amp;quot;one&amp;quot;, &amp;quot;two&amp;quot;, &amp;quot;three&amp;quot;]&lt;/code&gt; to printf. So of course it whinges about not getting enough arguments. Now how do we fix this, how &lt;strong&gt;do&lt;/strong&gt; we pass an array with each element a seperate argument to a method?&lt;/p&gt;
+&lt;p&gt;We use the &lt;code&gt;*&lt;/code&gt; of course! Just prefix the variable name with &lt;code&gt;*&lt;/code&gt; and the method is passed each element as separate arguments, rather than the whole array as one arguement.&lt;/p&gt;
+&lt;p&gt;Going back to our &lt;code&gt;printf&lt;/code&gt; example above, we simply insert one character &lt;em&gt;(the lowly &lt;code&gt;*&lt;/code&gt;)&lt;/em&gt; and end up with a string being outputted.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;printf&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;%s, %s, %s&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;arr&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; one, two, three&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now I realise this is a partially stupid example, but it serves to explain the point I wanted to make. If you were complaining about my choice of printf earlier, here is the way I think most rubyists would solve this problem instead.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;arr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;one&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;two&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;three&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; one two three&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And if I wanted to be slightly cleverer with the &lt;code&gt;printf&lt;/code&gt; version, and print out an array containing an unknown number of strings, but of a set width, then I could do the following. &lt;em&gt;(NB: This is actually how I ran into this problem.)&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;arr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;one&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;two&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;three&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;printf&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;%6s&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;arr&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; one two three&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And that is where the lowly &lt;code&gt;*&lt;/code&gt; comes in.&lt;/p&gt;</description></item><item><title>Merry Testing</title><link>https://caiustheory.com/merry-testing/</link><pubDate>Thu, 25 Dec 2008 15:01:54 +0000</pubDate><guid>https://caiustheory.com/merry-testing/</guid><description>
+&lt;p&gt;Just a few examples of the same test written in a few languages. Its testing setting the date on an object that is created in the tests&#39; setup method already. These fall under the unit testing, rather than full-stack testing.&lt;/p&gt;
+&lt;h3 id=&#34;testing-in-objc-with-ocunit-http-www-sente-ch-software-ocunit&#34;&gt;Testing in ObjC with &lt;a href=&#34;http://www.sente.ch/software/ocunit/&#34;&gt;OCUnit&lt;/a&gt;&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// Add a date and time
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;testSettingDate&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;NSDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSDate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;STAssertNoThrow&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;setDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;@&amp;#34;Shouldn&amp;#39;t raise an exception&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// And it should match when pulled out as well
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;STAssertEqualObjects&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;@&amp;#34;%@ should match %@&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;testing-in-ruby-using-rspec-http-rspec-info&#34;&gt;Testing in Ruby using &lt;a href=&#34;http://rspec.info/&#34;&gt;RSpec&lt;/a&gt;&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;it&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;should set the date successfully&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;
+&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# And it should match when pulled out as well&lt;/span&gt;
+&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;should&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;testing-in-ruby-using-test-unit-http-www-ruby-doc-org-stdlib-libdoc-test-unit-rdoc-classes-test-unit-html&#34;&gt;Testing in Ruby using &lt;a href=&#34;http://www.ruby-doc.org/stdlib/libdoc/test/unit/rdoc/classes/Test/Unit.html&#34;&gt;Test::Unit&lt;/a&gt;&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;test_setting_date&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;
+&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# And it should match when pulled out as well&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;assert_equal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;testing-in-php-using-phpunit-http-phpun-it&#34;&gt;Testing in PHP using &lt;a href=&#34;http://phpun.it/&#34;&gt;PHPUnit&lt;/a&gt;&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;function testSettingDate()
+{
+$date = date();
+$calc-&amp;gt;date = $date;
+# And it should match when pulled out as well
+$this-&amp;gt;assertEquals($calc-&amp;gt;date, $date);
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>When work just feels right</title><link>https://caiustheory.com/when-work-just-feels-right/</link><pubDate>Fri, 21 Nov 2008 11:51:08 +0000</pubDate><guid>https://caiustheory.com/when-work-just-feels-right/</guid><description>&lt;p&gt;Much like &lt;a href=&#34;http://www.3hv.co.uk/&#34; title=&#34;3hv&#34;&gt;Rahoul&#39;s&lt;/a&gt; post on &lt;a href=&#34;http://www.3hv.co.uk/blog/2008/10/16/working-for-brightbox/&#34; title=&#34;Working for Brightbox&#34;&gt;knowing you&#39;re on the right path&lt;/a&gt;, I had that moment this morning whilst we were discussing a future feature for our control panel.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;john&lt;/strong&gt;: will I be able to superpoke our customers?&lt;br /&gt;
+&lt;strong&gt;john&lt;/strong&gt;: is that in the spec?&lt;br /&gt;
+&lt;strong&gt;Jeremy&lt;/strong&gt;: &amp;quot;John made server10 a zombie&amp;quot;&lt;br /&gt;
+&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server10 zombified server9&amp;quot;&lt;br /&gt;
+&lt;strong&gt;Jeremy&lt;/strong&gt;: &amp;quot;David has poked server19 19234 times&amp;quot;&lt;br /&gt;
+&lt;strong&gt;john&lt;/strong&gt;: server16 messaged David &amp;quot;My disk is filling up and I have files I need to put somewhere, please help!&amp;quot;&lt;br /&gt;
+&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;Rahoul ended his friendship with server15&amp;quot;&lt;br /&gt;
+&lt;strong&gt;David&lt;/strong&gt;: &amp;quot;server02 is now married to server05&amp;quot;&lt;br /&gt;
+&lt;strong&gt;Rahoul&lt;/strong&gt;: server10 has sent you 12 videos of a fat man eating a cake&lt;br /&gt;
+&lt;strong&gt;David&lt;/strong&gt;: server11 joined the group &amp;quot;KVM ftw&amp;quot;&lt;br /&gt;
+&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server16 threw a sheep at server15&amp;quot;&lt;br /&gt;
+&lt;strong&gt;john&lt;/strong&gt;: server03 joined the group &amp;quot;Centos sucks!&amp;quot;&lt;br /&gt;
+&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server15 sent an emergency broadcast: physical movement detected&amp;quot;&lt;br /&gt;
+&lt;strong&gt;john&lt;/strong&gt;: storage03 has logged off&lt;br /&gt;
+&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;x13 flew to the moon 0 times&amp;quot;&lt;br /&gt;
+&lt;strong&gt;john&lt;/strong&gt;: disk5 in storage02 is now a zombie&lt;br /&gt;
+&lt;strong&gt;Jeremy&lt;/strong&gt;: disk4 in storage02 is now a zombie&lt;br /&gt;
+&lt;strong&gt;Jeremy&lt;/strong&gt;: disk3 in storage02 is now a zombie&lt;br /&gt;
+&lt;strong&gt;Jeremy&lt;/strong&gt;: disk2 in storage02 is now a zombie&lt;br /&gt;
+&lt;strong&gt;john&lt;/strong&gt;: storage02 was sold on ebay by Jeremy&lt;br /&gt;
+&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;john was sold on brightbox marketplace by storage5&amp;quot;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;(In case you don&#39;t know, I work for &lt;a href=&#34;http://www.brightbox.co.uk/&#34;&gt;Brightbox&lt;/a&gt;.)&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Adding a remote to existing git repo</title><link>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</link><pubDate>Sun, 09 Nov 2008 18:32:55 +0000</pubDate><guid>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</guid><description>
+&lt;p&gt;Usually for me this happens when I have an existing project and I setup a &lt;a href=&#34;http://github.com/&#34;&gt;github&lt;/a&gt; repo for it. As part of the setup for the github project, it gives you the commands to run to add the github repo as a remote to my local git repo.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd existing_git_repo
+git remote add origin git@github.com:caius/foo.git
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The problem then is you&#39;ve added the remote account, but the local master branch isn&#39;t tracking the remote master branch, so when you try and just &lt;code&gt;git pull&lt;/code&gt; it will fail with a message telling you to set the remote refs up.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git pull
+You asked me to pull without telling me which branch you
+want to merge with, and &#39;branch.master.merge&#39; in
+your configuration file does not tell me either. Please
+name which branch you want to merge on the command line and
+try again (e.g. &#39;git pull &amp;lt;repository&amp;gt; &amp;lt;refspec&amp;gt;&#39;).
+See git-pull(1) for details on the refspec.
+If you often merge with the same branch, you may want to
+configure the following variables in your configuration
+file:
+branch.master.remote = &amp;lt;nickname&amp;gt;
+branch.master.merge = &amp;lt;remote-ref&amp;gt;
+remote.&amp;lt;nickname&amp;gt;.url = &amp;lt;url&amp;gt;
+remote.&amp;lt;nickname&amp;gt;.fetch = &amp;lt;refspec&amp;gt;
+See git-config(1) for details.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The answer is to do what it says funnily enough, and add the remote refs tracking to the config file. The easiest way I&#39;ve found of doing this is to edit &lt;code&gt;.git/config&lt;/code&gt; and add the following at the bottom of it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;k&#34;&gt;[branch &amp;#34;master&amp;#34;]&lt;/span&gt;
+&lt;span class=&#34;na&#34;&gt;remote&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;origin
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; merge = refs/heads/master&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Remember to change the branch or remote names if you need to.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Once you&#39;ve added that to the config you can run &lt;code&gt;git pull&lt;/code&gt; on the master branch and it&#39;ll do the usual automagical thing and pull the remote master branch changes into the local one!&lt;/p&gt;
+&lt;h4 id=&#34;updated-2008-11-09&#34;&gt;Updated 2008-11-09&lt;/h4&gt;
+&lt;p&gt;See CiarÃƒÂ¡n&#39;s comment below for an all-inclusive command to do the above.&lt;/p&gt;</description></item><item><title>Removing non-existent source from rubygems</title><link>https://caiustheory.com/removing-non-existant-source-from-rubygems/</link><pubDate>Fri, 07 Nov 2008 06:08:28 +0000</pubDate><guid>https://caiustheory.com/removing-non-existant-source-from-rubygems/</guid><description>&lt;p&gt;I just came to move some ruby scripts onto my mac mini, and to do so I needed to install a couple of gems. Now I realised I hadn&#39;t installed or updated rubygems on the machine for a while, so I figured it was best to update &lt;code&gt;gem&lt;/code&gt; before installing the gems I wanted. Easier said than done.&lt;/p&gt;
+&lt;p&gt;At some point in the past I had added &lt;code&gt;http://gems.datamapper.org&lt;/code&gt; as a source to rubygems. Since then the datamapper project has discontinued using this gem source to serve up gems, so I was getting the following output:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem update --system
+Updating installed gems
+Bulk updating Gem source index for: http://gems.rubyforge.org/
+ERROR: While executing gem ... (Gem::RemoteSourceException)
+HTTP Response 404 fetching http://gems.datamapper.org/yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Eeek! I can&#39;t update because the source no longer exists. So I figured I&#39;d remove the source before updating, that should work right? Wrong. It updates the sources before removing the source from the config it would appear.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem sources
+** CURRENT SOURCES ***
+http://gems.rubyforge.org
+http://gems.datamapper.org
+mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org
+Bulk updating Gem source index for: http://gems.rubyforge.org/
+ERROR: While executing gem ... (Gem::RemoteSourceException)
+HTTP Response 404 fetching http://gems.datamapper.org/yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Oh balls. So how do I remove the source without updating it first. I need to update it to remove it, but to remove it I need to update from it. Gotta love catch 22s!&lt;/p&gt;
+&lt;p&gt;I remembered that &lt;code&gt;gem install&lt;/code&gt; has an option not to update sources, &lt;code&gt;--no-update-sources&lt;/code&gt;. So I figured thats gotta work when removing a source as well, but it doesn&#39;t.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org --no-update-sources
+ERROR: While executing gem ... (OptionParser::InvalidOption)
+invalid option: --no-update-sources
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Oh crap. Now what do I do? Take my usual tactic and google for a hint of course! I&#39;d considered trying to find where the gem config was and remove the source by hand, but I figured that wouldn&#39;t be that simple. After hitting a couple of sites that weren&#39;t relevant I ended up &lt;a href=&#34;http://jaigouk.blogspot.com/2008/07/404-fetching-httpgemsdatamapperorgyaml.html&#34;&gt;on the edge of complexity&lt;/a&gt; where he mentions the command &lt;code&gt;nano ~/.gemrc&lt;/code&gt;. Which made me wonder if that file contains the sources.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mm:daemons caius$ cat ~/.gemrc
+---
+:update_sources: true
+:verbose: true
+:bulk_threshold: 1000
+:sources:
+- http://gems.rubyforge.org
+- http://gems.datamapper.org
+:backtrace: false
+:benchmark: false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All I needed to do was remove the &lt;code&gt;- http://gems.datamapper.org&lt;/code&gt; line and &lt;em&gt;poof&lt;/em&gt;, &lt;code&gt;gem&lt;/code&gt; was working again. One quick &lt;code&gt;gem update --system&lt;/code&gt; later and I was upgraded from gem 1.1.1 to 1.3.1 and installing the gems I needed.&lt;/p&gt;</description></item><item><title>Setting up git with rails apps</title><link>https://caiustheory.com/setting-up-git-with-rails-apps/</link><pubDate>Thu, 06 Nov 2008 13:03:02 +0000</pubDate><guid>https://caiustheory.com/setting-up-git-with-rails-apps/</guid><description>
+&lt;p&gt;When I create a new rails app, I&#39;m constantly going back to another project and stealing the &lt;code&gt;.gitignore&lt;/code&gt; file from it to make sure that git doesn&#39;t know about certain files rails either updates frequently, or stores machine-specific data in. The latter is generally just &lt;code&gt;config/database.yml&lt;/code&gt;, because I develop alongside my colleagues at &lt;a href=&#34;http://brightbox.co.uk/&#34; title=&#34;Brightbox - Serious Rails Hosting&#34;&gt;Brightbox&lt;/a&gt; and we deploy via &lt;a href=&#34;http://www.capify.org/&#34;&gt;capistrano&lt;/a&gt;, we always put the &lt;code&gt;database.yml&lt;/code&gt; file in the shared directory on the server, so we each have our own version with our local credentials in it locally. And thus we don&#39;t want it to be tracked by git.&lt;/p&gt;
+&lt;p&gt;Here&#39;s what I&#39;ve collated from various sources over the few weeks I&#39;ve been using git + rails everyday.&lt;/p&gt;
+&lt;h4 id=&#34;gitignore&#34;&gt;.gitignore&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;config/database.yml
+log/*.log
+tmp/*
+# OS X only
+.DS_Store
+**/.DS_Store
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then to make sure &lt;code&gt;log/&lt;/code&gt; and &lt;code&gt;tmp/&lt;/code&gt; are tracked, convention is to add a blank &lt;code&gt;.gitkeep&lt;/code&gt; file in them.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;touch log/.gitkeep
+touch tmp/.gitkeep&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>
+&lt;p&gt;When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em&gt;Rspec&lt;/em&gt; testing framework instead of the built-in &lt;em&gt;Test::Unit&lt;/em&gt; and &lt;em&gt;jQuery&lt;/em&gt; instead of &lt;em&gt;prototype&lt;/em&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://rspec.info/&#34;&gt;Rspec&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/rahoulb/rspec-rails/wikis&#34;&gt;Rspec-rails&lt;/a&gt; &lt;em&gt;(NB: I use &lt;a href=&#34;http://3hv.co.uk&#34;&gt;rahoul&lt;/a&gt;&#39;s fork of rspec-rails)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/aslakhellesoy/cucumber/wikis&#34;&gt;Cucumber&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/brynary/webrat/wikis&#34;&gt;Webrat&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ennerchi.com/projects/jrails&#34;&gt;jRails&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk&#34;&gt;Demeters Revenge&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And here are the commands in the order I run them to create the blank app.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Create the rails app
+cd ~/Sites/apps/
+rails myapp
+cd myapp
+# Setup a git repo
+git init
+# Add all files and make the initial import
+git add .
+git commit -m &amp;quot;Initial Import&amp;quot;
+# Add the plugins as git submodules
+git submodule add git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
+git submodule add git://github.com/rahoulb/rspec-rails.git vendor/plugins/rspec-rails
+git submodule add git://github.com/aslakhellesoy/cucumber.git vendor/plugins/cucumber
+git submodule add git://github.com/brynary/webrat.git vendor/plugins/webrat
+git submodule add git://github.com/caius/demeters_revenge.git vendor/plugins/demeters_revenge
+# Commit the changes
+git ci -am &amp;quot;Adding all needed submodules&amp;quot;
+# Replace TestUnit with rspec
+git rm -r test/
+ruby script/generate rspec
+# Replace stories with cucumber features
+rm -rf stories/
+ruby script/generate cucumber
+# Add the changes to git
+git add .
+git ci -m &amp;quot;Committing initial rspec/cucumber files&amp;quot;
+# Install jRails, we have to install it using script/plugin
+# Remove existing javascript files
+git rm public/javascripts/*
+mkdir public/javascripts
+# Add jrails
+ruby script/plugin install http://ennerchi.googlecode.com/svn/trunk/plugins/jrails
+git add vendor/plugins/jrails/ public/javascripts
+git ci -m &amp;quot;Adding jRails to replace Prototype&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p&gt;
+&lt;h4 id=&#34;updated-2008-11-04&#34;&gt;Updated 2008-11-04&lt;/h4&gt;
+&lt;p&gt;Added demeters revenge and jRails plugins.&lt;/p&gt;
+&lt;h4 id=&#34;update-2008-11-05&#34;&gt;Update 2008-11-05&lt;/h4&gt;
+&lt;p&gt;I&#39;ve also blogged the &lt;a href=&#34;http://swedishcampground.com/setting-up-git-with-rails-apps&#34;&gt;.gitignore&lt;/a&gt; file I use with rails apps as well. Usually add it into my apps before running &lt;code&gt;git init&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Keyboards</title><link>https://caiustheory.com/keyboards/</link><pubDate>Tue, 14 Oct 2008 13:59:01 +0000</pubDate><guid>https://caiustheory.com/keyboards/</guid><description>&lt;p&gt;Back in the day I swapped the keys on my 12&amp;quot; powerbook keyboard around to read &lt;code&gt;macgenius&lt;/code&gt; across the middle row.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2941719496/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3213/2941719496_caf2a6a813_m.jpg&#34; alt=&#34;Powerbook Keyboard&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I unearthed the picture, and figured, why not do it to my apple aluminium keyboard? So I found a &lt;a href=&#34;http://skeltoac.com/2007/10/22/apple-keyboard-aluminum-keycap-removal/&#34;&gt;tutorial&lt;/a&gt; from some other guy that&#39;d done it, and dug out my penknife.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2938651260/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3243/2938651260_915f42d92d_m.jpg&#34; alt=&#34;External Keyboard&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After that I decided to rearrange the macbook internal keyboard as well. First I googled around to make sure lifting the keys was the same as doing it on the external keyboard (which it appeared to be), then I went ahead and rearranged them as well.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2940872039/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3214/2940872039_164ee672ef_m.jpg&#34; alt=&#34;Internal Keyboard -- Macgenius&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So whilst I was wondering what to do about it, my mother emailed me and suggested using &lt;code&gt;ontherails&lt;/code&gt; instead of &lt;code&gt;macgenius&lt;/code&gt;. So I did, and now the top row reads &lt;code&gt;ontherails&lt;/code&gt; on the macbooks&#39; internal keyboard.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2941726222/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3146/2941726222_67b2405a89_m.jpg&#34; alt=&#34;Internal Keyboard -- Ontherails&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All pictures are licenced under &lt;a href=&#34;http://creativecommons.org/licenses/by/2.0/deed.en_GB&#34;&gt;Creative Commons Attribution 2.0 Generic licence&lt;/a&gt; and the above pictures, plus some &lt;em&gt;in progress&lt;/em&gt; shots, are available in my &lt;a href=&#34;http://www.flickr.com/photos/caius/sets/72157608015895484/&#34;&gt;Keyboard Modifications&lt;/a&gt; flickr set.&lt;/p&gt;</description></item><item><title>Alistapart Survey</title><link>https://caiustheory.com/alistapart-survey/</link><pubDate>Tue, 29 Jul 2008 14:47:24 +0000</pubDate><guid>https://caiustheory.com/alistapart-survey/</guid><description>&lt;p&gt;&lt;a href=&#34;http://alistapart.com/articles/survey2008&#34;&gt;&lt;img src=&#34;http://aneventapart.com/webdesignsurvey/templates/ala/images/i-took-the-2008-survey.gif&#34; title=&#34;I took the 2008 alistapart survey -- you should to!&#34; /&gt;&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Another Concise Code Example</title><link>https://caiustheory.com/another-concise-code-example/</link><pubDate>Sat, 26 Apr 2008 15:54:09 +0000</pubDate><guid>https://caiustheory.com/another-concise-code-example/</guid><description>&lt;p&gt;This is just another example showing how I refactor code down to its bare minimum. The reason why I do this so much (and indeed I think why ruby is so easy to read compared to other languages) is because it makes my code more readable and less of a bugger to pick up after a while.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Page&lt;/span&gt;
+&lt;span class=&#34;kp&#34;&gt;attr_accessor&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:parent_id&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;old_parent&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parent?&lt;/span&gt;
+&lt;span class=&#34;no&#34;&gt;Page&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parent_id&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;
+&lt;span class=&#34;kp&#34;&gt;false&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;parent&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Page&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;find&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parent_id&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parent?&lt;/span&gt;
+&lt;span class=&#34;kp&#34;&gt;false&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;old_parent&lt;/code&gt; and &lt;code&gt;parent&lt;/code&gt; return exactly the same, but one is 2 lines compared to 5 and easier to read.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; &lt;a href=&#34;http://ciaranwal.sh/&#34;&gt;Ciaran&lt;/a&gt; pointed out that the Page.parent method would only ever return false. Added the return statement to it to fix the bug.&lt;/p&gt;</description></item><item><title>Command line tricks: Scripting Languages</title><link>https://caiustheory.com/command-line-tricks-scripting-languages/</link><pubDate>Thu, 14 Feb 2008 16:24:27 +0000</pubDate><guid>https://caiustheory.com/command-line-tricks-scripting-languages/</guid><description>
+&lt;p&gt;To search your php.ini file quickly and easily with the option to use regular expressions, I tend to drop back to the &lt;acronym title=&#34;command line interface&#34;&gt;cli&lt;/acronym&gt;. The reason for this is I can easily parse the output of &lt;code&gt;phpinfo()&lt;/code&gt; with &lt;code&gt;grep&lt;/code&gt;, and can do various things with the output, could even pass it to a script if I really wanted to.&lt;/p&gt;
+&lt;p&gt;Here is the line I use to search &lt;code&gt;phpinfo()&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;lt;?php phpinfo() ?&amp;gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; php &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -i &lt;span class=&#34;nv&#34;&gt;$search_string&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It passes the string through the php interpreter and then searches through it with grep.&lt;/p&gt;
+&lt;p&gt;You can also do other nifty things with the shell &amp;amp; php + ruby especially (though I imagine python &amp;amp; perl work in the same way.) For instance I wanted to see if the following ruby would return the number of seconds since the &lt;a href=&#34;http:/en.wikipedia.org/wiki/Unix_Time&#34;&gt;epoch&lt;/a&gt; till now.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Time&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;now&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_i&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now I could fire up a PHP page and do something like the following&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;php: &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;time&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;ruby: &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;sb&#34;&gt;`ruby -e &amp;#39;print Time.now.to_i&amp;#39;`&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;But what if I&#39;ve not got a web server with PHP running on the machine I&#39;m using? Well then I could drop back to the shell and run it through &lt;code&gt;php&lt;/code&gt; using &lt;code&gt;cat&lt;/code&gt; as a way to insert multiple lines, and it would look like the following&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;cat &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;PHP | php
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;lt;?php
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; echo &amp;#34;php: &amp;#34; . time() . &amp;#34;\n&amp;#34;;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; echo &amp;#34;ruby: &amp;#34; . `ruby -e &amp;#39;print Time.now.to_i&amp;#39;` . &amp;#34;\n&amp;#34;;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;PHP&lt;/span&gt;
+php: &lt;span class=&#34;m&#34;&gt;1203004463&lt;/span&gt;
+ruby: &lt;span class=&#34;m&#34;&gt;1203004463&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now this works, but why do I want to remember all that php, and seeing as I have to drop back to the shell to access the ruby statement, why not just let the shell do all the work? So after a few seconds thinking, I came up with this&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;puts &amp;#34;ruby: #{Time.now.to_i}&amp;#34;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;lt;?php echo &amp;#34;PHP: &amp;#34; . time() . &amp;#34;\n&amp;#34; ?&amp;gt;&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; php&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This runs the ruby code through &lt;code&gt;ruby&lt;/code&gt; and the php code through &lt;code&gt;php&lt;/code&gt; without dropping back to the shell from within a language interpreter :)&lt;/p&gt;
+&lt;h3 id=&#34;update&#34;&gt;Update:&lt;/h3&gt;
+&lt;p&gt;Fangel pointed out &lt;code&gt;php -r&lt;/code&gt; is the equivilent of &lt;code&gt;ruby -e&lt;/code&gt; so the final commands could just be:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;puts &amp;#34;ruby: #{Time.now.to_i}&amp;#34;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;php -r &lt;span class=&#34;s1&#34;&gt;&amp;#39;echo &amp;#34;PHP: &amp;#34;.time().&amp;#34;\n&amp;#34;;&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Refactoring code logically</title><link>https://caiustheory.com/refactoring-code-logically/</link><pubDate>Tue, 12 Feb 2008 12:28:38 +0000</pubDate><guid>https://caiustheory.com/refactoring-code-logically/</guid><description>&lt;p&gt;And now an example of how I write my ruby code and get it down to the bare, readable, minimum code needed. This is real life code taken from a website I&#39;m building, but I&#39;ve changed the objects to a blog post because more people will relate to that easier.&lt;/p&gt;
+&lt;p&gt;The show object has an id passed in using the &lt;code&gt;params&lt;/code&gt; Hash, I want to check if that post exists in the database first. If it does, then render the page, and if it doesn&#39;t return a 404 error page.&lt;/p&gt;
+&lt;p&gt;So I start off by writing this in &lt;em&gt;longhand&lt;/em&gt; ruby, I&#39;m using the &lt;a href=&#34;http://merbivore.com/&#34;&gt;merb&lt;/a&gt; framework with &lt;a href=&#34;http://datamapper.com/&#34;&gt;DataMapper&lt;/a&gt; ORM by the way.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
+&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now whilst theres nothing wrong with this code, it just doesn&#39;t look right to me. There is a big if/else statement in there whilst I&#39;m sure there doesn&#39;t need to be.&lt;/p&gt;
+&lt;p&gt;Now I know if I return at any point in a ruby method, it exits the method at that point. So the first thing to is to refactor the &lt;code&gt;if&lt;/code&gt; test to remove a line of code. I shall assign &lt;code&gt;@post&lt;/code&gt; to the result of the DB as the actual if statement&#39;s test.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So thats reading slightly better, and also is a line less of code. Now I wonder if I can use a &lt;code&gt;return true&lt;/code&gt; in there to stop me having to explicitly state an &lt;code&gt;else&lt;/code&gt; clause.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now the eagerest amongst you will be wondering what the advantage of that code is. It doesn&#39;t appear any more readable (slightly less in fact as you have to figure out its an implicit else) and is exactly the same amount of lines as the previous example. But what if we change the &lt;code&gt;if&lt;/code&gt; to an &lt;code&gt;if !&lt;/code&gt; and flip the code logic around?&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - not found&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now a raise will stop the code executing, and in the real application you would in fact just redirect to your 404 error page. The problem now is the &lt;code&gt;if !&lt;/code&gt; looks ugly and isn&#39;t easily readable.&lt;/p&gt;
+&lt;p&gt;All &lt;code&gt;unless&lt;/code&gt; does is &lt;code&gt;if !&lt;/code&gt;, that is, if the inverse of the result of the test statement is true, then invoke the block given to it. A quick example for you:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# without unless&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;logged_in?&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Please login.&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# using unless&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;unless&lt;/span&gt; &lt;span class=&#34;vi&#34;&gt;@user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;logged_in?&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Please login.&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now whilst &lt;code&gt;if !&lt;/code&gt; doesn&#39;t seem that bad compared to &lt;code&gt;unless&lt;/code&gt;, the readablility of the code increases. It reads more as a flow of logic, and is quicker for the human brain to walk through (my brain anyway!)&lt;/p&gt;
+&lt;p&gt;So using unless we get 4 lines of code that is easily readable.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;unless&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now what if we go one step further and use the unless shorthand way of testing and exectuting one line of code?&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;unless&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And that is generally how I write my code logically. Of course for something simple like this I&#39;d probably jump in at the last block having refactored it in my head first, but for more complex things I tend to write them exlicitly and then refactor them down whilst maintaining readability of my code.&lt;/p&gt;</description></item><item><title>Use datamapper sessions with merb &amp; datamapper</title><link>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</link><pubDate>Tue, 05 Feb 2008 20:27:31 +0000</pubDate><guid>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</guid><description>
+&lt;h3 id=&#34;issue&#34;&gt;Issue&lt;/h3&gt;
+&lt;p&gt;Can&#39;t use merb sessions with datamapper &amp;amp; mysql, get back an error about needing an id on the text column or something (I had the error a couple of days ago.)&lt;/p&gt;
+&lt;h3 id=&#34;solution&#34;&gt;Solution&lt;/h3&gt;
+&lt;p&gt;I suggest grabbing merb_datamapper svn source to fix this in. To do so make sure you have subversion installed on your machine (I&#39;m assuming a Unix based machine here.)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Checkout the source&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;svn co http://svn.devjavu.com/merb/plugins/merb_datamapper
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open up the affected file in your favourite editor &lt;em&gt;(I use TextMate)&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd merb_datamapper
+mate lib/merb/sessions/data_mapper_session.rb
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Find line 25 that contains&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;`property :session_id, :text, :lazy =&amp;gt; false, :key =&amp;gt; true`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and remove &lt;code&gt;:text, :lazy =&amp;gt; false&lt;/code&gt; to replace it with &lt;code&gt;:string&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;`property :session_id, :string, :key =&amp;gt; true`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Save and close the file, thats the editing done. Now to install the gem.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Build the gem&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rake gem
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Install the gem&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo gem install pkg/merb_datamapper-0.5.gem
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;And you&#39;re away with the fix installed. Now just run &lt;code&gt;merb&lt;/code&gt; to create your sessions table in the db. Hope this helped!&lt;/p&gt;</description></item><item><title>Why do I love Ruby?</title><link>https://caiustheory.com/why-do-i-love-ruby/</link><pubDate>Wed, 30 Jan 2008 14:15:24 +0000</pubDate><guid>https://caiustheory.com/why-do-i-love-ruby/</guid><description>
+&lt;p&gt;So mother (who can&#39;t program) just posed me the question&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Why is Ruby your favourite programming language?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Me being a show off jumped straight into &lt;a href=&#34;http://macromates.com/&#34;&gt;TextMate&lt;/a&gt; and banged out some code in real time to show her. First up, a quick little one-liner of Ruby code to output a String:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;Hello World&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So she goes, &amp;quot;Sure, but whats so brilliant about that?&amp;quot; So I just decide to reverse the string, have it output in reverse order:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reverse&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;dlroW olleH&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then the next question comes, &amp;quot;So what makes that so much easier than in other languages?&amp;quot; Well now I was thinking on the spot about which other language I can bang out a quick example in without having to look up too much information. PHP seems the logical choice, being the language I know best behind Ruby.&lt;/p&gt;
+&lt;p&gt;Thinking about how to do it in PHP, I can&#39;t think of a function to reverse the content of a string, but I know that &lt;code&gt;array_reverse()&lt;/code&gt; exists, so I just split it into an array and reverse that array. Only problem is I can&#39;t remember how to split a string by &lt;code&gt;&amp;quot;&amp;quot;&lt;/code&gt;, I don&#39;t think &lt;code&gt;explode( &amp;quot;&amp;quot;, $var )&lt;/code&gt; does the job. So I quickly jump in and write the following code to test my concern.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;$a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;$b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;explode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$a&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;$c&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;array_reverse&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$b&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;implode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$c&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;
+# =&amp;gt; ERROR
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The reason for the error is because I&#39;ve missed a semi colon off the end of line 2, to this I get the response, &amp;quot;well thats certainly not as nice as ruby.&amp;quot; Just because one little character is missing!&lt;/p&gt;
+&lt;p&gt;So I fix the semi colon and run it again, now I get an error complaining about explode not being able to split by a missing delimiter (the empty string - &lt;code&gt;&amp;quot;&amp;quot;&lt;/code&gt;) So I go hunting through the &lt;a href=&#34;http://php.net/&#34;&gt;php.net&lt;/a&gt; docs and find &lt;code&gt;str_split()&lt;/code&gt;, which does exactly what I want it to.&lt;/p&gt;
+&lt;p&gt;In replacing &lt;code&gt;explode()&lt;/code&gt; with &lt;code&gt;str_split()&lt;/code&gt; and running it via the &lt;code&gt;php&lt;/code&gt; command line binary, I realise that I haven&#39;t got any &lt;code&gt;\n&lt;/code&gt; (newlines) at the end of it, so it doesn&#39;t display nicely in the terminal. I thus update the script to the following and show her the result:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;$a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;$b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;explode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$a&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;$c&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;array_reverse&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$b&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;implode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$c&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;
+# =&amp;gt; &amp;#34;dlroW olleH&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And so she goes away seeing why I prefer Ruby to other languages for &lt;em&gt;most&lt;/em&gt; programming I do. There are things Ruby fails at (and don&#39;t get me started on why rails isn&#39;t going to replace php!) and other places where it succeeds very well.&lt;/p&gt;
+&lt;p&gt;But each to their own, and my own favourite is Ruby!&lt;/p&gt;
+&lt;h3 id=&#34;update&#34;&gt;Update&lt;/h3&gt;
+&lt;p&gt;As pointed out in the comments, if I had looked a bit further I would&#39;ve found &lt;code&gt;strrev()&lt;/code&gt; which does the same as the &lt;code&gt;reverse&lt;/code&gt; method in Ruby. So in fact the final code would be:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reverse&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;vs&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;strrev&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;So it turns out this was a bad way to show why I prefer Ruby to PHP code wise to mother, think I might have to just bite the bullet and write about why I prefer &lt;code&gt;object.method&lt;/code&gt; to &lt;code&gt;method( object )&lt;/code&gt;!&lt;/p&gt;</description></item></channel></rss>

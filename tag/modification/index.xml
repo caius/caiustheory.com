@@ -1,0 +1,159 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>modification on Caius Theory</title><link>https://caiustheory.com/tag/modification/</link><description>Recent content in modification on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 06 Nov 2012 20:46:45 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/modification/index.xml" rel="self" type="application/rss+xml"/><item><title>Mounting Harman Kardon Soundsticks on the wall</title><link>https://caiustheory.com/mounting-harman-kardon-soundsticks-on-the-wall/</link><pubDate>Tue, 06 Nov 2012 20:46:45 +0000</pubDate><guid>https://caiustheory.com/mounting-harman-kardon-soundsticks-on-the-wall/</guid><description>&lt;p&gt;Having recently moved my Soundstick III&#39;s into the front room, I&#39;ve been thinking of a way to wall mount them safely to free up table room. Googling eventually turned up just one person who has previously documented &lt;a href=&#34;http://www.thanatopsic.org/hendrik/article/102/hot-hotdesking-action&#34;&gt;mounting his soundsticks&lt;/a&gt; on the wall, using 22mm plumbing clips (intended for 22mm central heating pipes).&lt;/p&gt;
+&lt;p&gt;A quick scrounge round the local Homebase this afternoon yielded a pack of similar clips, 5x 22mm push clips for £1.99. Having just fitted the speakers to the wall, they&#39;re nice and secure (providing no-one hangs on them, which they shouldn&#39;t do), fairly neat and simple to fit.&lt;/p&gt;
+&lt;p&gt;I&#39;ve left the subwoofer on the floor under the table, and only mounted the &amp;quot;sticks&amp;quot; (tweeters) on the wall, one each side of the mirror over our dining table. I can then conveniently run the cables to the &amp;quot;sticks&amp;quot; behind the mirror and keep it looking neater.&lt;/p&gt;
+&lt;p&gt;I affixed the clips to the wall, one either side of the mirror with enough space for the speaker to sit without overlapping the mirror. Mostly just held the stick up and guessed at where to put the clip, but it looks ok.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://caius.name/images/wallmount-soundstick-2.jpg&#34;&gt;
+&lt;img src=&#34;http://caius.name/images/wallmount-soundstick-2.jpg&#34; alt=&#34;Speaker clip without speaker in it&#34; width=&#34;320&#34;&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Then I bent the speaker stand backwards behind the stick (don&#39;t worry, it&#39;s on a hinge!) and threaded the cable through the middle of the ring to make it sit flusher against the wall.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://caius.name/images/wallmount-soundstick-1.jpg&#34;&gt;
+&lt;img src=&#34;http://caius.name/images/wallmount-soundstick-1.jpg&#34; alt=&#34;Speaker ring bent behind the unit&#34; height=&#34;320&#34;&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;And then it was just a case of easing the speaker ring into the clip, with the clip at the top of the ring (picture below if you can&#39;t visualise that easily). I think the rings are more like 24-25mm so it takes a bit of easing to get them in there. Once it&#39;s in there&#39;s no play in the clip for it to wiggle out though, even though it&#39;s plastic. I tried not to fatigue the clip arms too much wiggling it in there as well, so as to minimise the chance of it failing over time. (Something to check periodically!)&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://caius.name/images/wallmount-soundstick-4.jpg&#34;&gt;
+&lt;img src=&#34;http://caius.name/images/wallmount-soundstick-4.jpg&#34; alt=&#34;Close up of speaker unit in clip&#34; height=&#34;320&#34;&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Lastly, I just zip tied the cables together behind the mirror, and ran them down vertically from the middle to the floor and plugged them in. Sounds fantastic, and due to being plugged into an &lt;a href=&#34;http://www.apple.com/airportexpress/&#34;&gt;Airport Express&lt;/a&gt;, anything compatible can stream audio through them wirelessly. Fabulous darling!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://caius.name/images/wallmount-soundstick-3.jpg&#34;&gt;
+&lt;img src=&#34;http://caius.name/images/wallmount-soundstick-3.jpg&#34; width=&#34;320&#34;&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;(Click any image for a larger version)&lt;/em&gt;&lt;/p&gt;</description></item><item><title>App Store Hidden Preferences</title><link>https://caiustheory.com/app-store-hidden-preferences/</link><pubDate>Thu, 06 Jan 2011 19:45:49 +0000</pubDate><guid>https://caiustheory.com/app-store-hidden-preferences/</guid><description>&lt;p&gt;&lt;em&gt;See the Update at the end before you get excited :(&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Having just installed 10.6.6 to use the Mac App Store, I was &lt;a href=&#34;http://twitter.com/Caius/status/23096911170899968&#34;&gt;slightly annoyed&lt;/a&gt; that it fills my dock with apps as I install them. I&#39;m a bit strange, in that I use a hidden preference to make the dock uneditable (it stops me accidentally dragging an app off.) But that means I can&#39;t drag off the Mac App Store installed apps either.&lt;/p&gt;
+&lt;p&gt;Had a quick look through &lt;code&gt;/Applications/App Store.app/Contents/MacOS/App Store&lt;/code&gt; with &lt;code&gt;strings&lt;/code&gt; (love that tool) and noted a few strings that looked interesting. (There&#39;s a full list &lt;a href=&#34;https://gist.github.com/768442&#34;&gt;in this gist&lt;/a&gt;.) There wasn&#39;t anything that explicitly stated it stopped it putting anything in the dock, but I did notice an option that stopped it showing &lt;strong&gt;install progress&lt;/strong&gt; in the dock.&lt;/p&gt;
+&lt;p&gt;Yank up a terminal window, bash out the following...&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;defaults write com.apple.appstore FRDebugShowInstallProgress -bool NO&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;...head back to the MAS and install another (free) app, and hey presto, it&#39;s leaving my dock alone! Hopefully that&#39;s all I needed to continue using my Dock as I like. (Hidden, and left alone.)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update 2011-01-06:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Seems my joy was short-lived. I&#39;d re-downloaded an app I&#39;d already purchased and it just showed download progress in the MAS app, not in the dock. Installing new applications still shows up in the dock (annoyingly.)&lt;/p&gt;
+&lt;p&gt;I&#39;ve been having a poke through how it all hangs together, and if it&#39;s possible to actually block downloads from the Dock or not. It doesn&#39;t look like there&#39;s a hidden preference to hide new apps from downloading in the dock, you can just disable the progress bars in the dock with prefs. The MAS.app seems to be codenamed &amp;quot;Firenze&amp;quot;, with &lt;a href=&#34;https://gist.github.com/768829&#34;&gt;the &amp;quot;hidden&amp;quot; prefs&lt;/a&gt; being prefixed with &amp;quot;FRDebug&amp;quot;.&lt;/p&gt;
+&lt;p&gt;As I understand it, the App\ Store.app invokes a binary inside &lt;code&gt;/System/Library/PrivateFrameworks/CommerceKit.framework&lt;/code&gt; called &amp;quot;storeagent&amp;quot; to do the actual downloading/talking to the dock. From looking at the &lt;a href=&#34;https://gist.github.com/768837&#34;&gt;class-dump&lt;/a&gt; of storeagent it communicates with the dock to place a new type of DockTile. Interesting sounding methods to (potentially?) swizzle are &lt;code&gt;-[DownloadQueue sendDownloadListToDock]&lt;/code&gt; and &lt;code&gt;-[DownloadQueue tellDockToAddDownload:]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I&#39;ve given up for now, but I reckon it should be possible to create a bundle that swizzles the right methods in storeagent to stop it placing the downloads on the Dock.&lt;/p&gt;</description></item><item><title>Ignore .gitignore in Git</title><link>https://caiustheory.com/ignore-gitignore-in-git/</link><pubDate>Mon, 21 Sep 2009 06:00:00 +0000</pubDate><guid>https://caiustheory.com/ignore-gitignore-in-git/</guid><description>&lt;p&gt;Recently I ran into an issue where I was working on a project which had files I wanted git to ignore, but I didn&#39;t want to commit a &lt;code&gt;.gitignore&lt;/code&gt; file into the project. In case you don&#39;t know, any files matching a pattern in &lt;code&gt;.gitignore&lt;/code&gt; in a git repository are ignored by git. (Unless the file(s) have already been committed, then they need removing from git before they are ignored.)&lt;/p&gt;
+&lt;p&gt;Initially I figured I could just throw the patterns I needed excluded into my global &lt;code&gt;~/.gitignore&lt;/code&gt;, but quickly realised that I needed files matching these patterns to show up in other git repos, so going the global route really wasn&#39;t an option. After some thought I wondered if you could make git ignore &lt;code&gt;.gitignore&lt;/code&gt;, whilst still getting it to ignore files matching the other patterns in the &lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Lets create a new empty repo to test this crazy idea in:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mkdir foo
+$ cd foo
+$ git init
+Initialized empty Git repository in /Volumes/Brutus/Users/caius/foo/.git/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And create a couple of files for us to play with:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ touch bar
+$ touch baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ignore one of the files so we can check other matches are still ignored later on:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;baz&amp;quot; &amp;gt;&amp;gt; .gitignore
+$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+# (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+#
+# .gitignore
+# bar
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ok so far, but we can still see .gitignore in git, so now for the crazy shindig, ignore the ignore file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;.gitignore&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lets see if it worked, or if we can still see our .gitignore:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+# (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+#
+# bar
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And lets just double-check that &lt;code&gt;.gitignore&lt;/code&gt; and &lt;code&gt;baz&lt;/code&gt; still exist on the filesystem:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls -a
+. .. .git .gitignore bar baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Fantastic! Turns out adding &amp;quot;.gitignore&amp;quot; to &lt;code&gt;.gitignore&lt;/code&gt; works perfectly. The file is still parsed by git to ignore everything else too, so it does exactly what I needed in this instance.&lt;/p&gt;</description></item><item><title>Education Network Restrictions</title><link>https://caiustheory.com/education-network-restrictions/</link><pubDate>Fri, 31 Jul 2009 14:14:16 +0000</pubDate><guid>https://caiustheory.com/education-network-restrictions/</guid><description>&lt;p&gt;&lt;em&gt;This is a re-run of an old post I took offline in an old server move and hadn&#39;t re-published.&lt;/em&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Having been on two college systems and various university networks, I&#39;m just amazed at the levels of freedom you have on some, and how locked down others are.&lt;/p&gt;
+&lt;p&gt;Take the first university network I ever used for example. It was pretty much totally open, to the point that I could game quite freely, and the administrator only picked me up because I was logged in as admin and not a normal user. (I didn&#39;t have an account for that machine.)&lt;/p&gt;
+&lt;p&gt;Going from that to my school network was a very big shock as it was moderately filtered through third party filtering software. This meant you couldn&#39;t go on the usual &lt;a href=&#34;http://en.wikipedia.org/wiki/NSFW&#34; title=&#34;Not Safe for Work&#34;&gt;NSFW&lt;/a&gt; stuff, but still had access to other sites that could be seen as bad, such as proxy sites, or IRC java Clients for example.&lt;/p&gt;
+&lt;p&gt;Having moved from my old (slightly crass) college to my new one, its interesting how filtered this one is. You can&#39;t seem to go on a site with &lt;code&gt;proxy&lt;/code&gt; or &lt;code&gt;irc&lt;/code&gt; in the URL, except &lt;em&gt;clean&lt;/em&gt; sites like the &lt;a href=&#34;http://www.bbc.co.uk/&#34; title=&#34;British Broadcasting Corporation&#34;&gt;BBC&lt;/a&gt; or &lt;a href=&#34;http://wikipedia.org/&#34; title=&#34;Wikipedia in English&#34;&gt;Wikipedia&lt;/a&gt;. The Proxy searching only came about through looking for web based IRC solutions.&lt;/p&gt;
+&lt;p&gt;Personally I think the universities have got it right. With all the students they have, they just limit the things they definitely have to, and allow everything else. (Blacklisting technique.) Both colleges seem to do the opposite - block everything until its verified and unblocked. (Whitelisting technique.)&lt;/p&gt;
+&lt;p&gt;The way I see it, the problem with the white listing technique is that people will always find a way around whatever restrictions are in place. For instance, I&#39;m locked out of all of my web based email sites, so I can&#39;t email anyone. Its not the not being able to send that bothers me, its the not being able to save text that I&#39;ve written in college to a website to then retrieve it from home that annoys me.&lt;/p&gt;
+&lt;p&gt;So how did I work around this restriction? Well I remembered that Google had bought &lt;a href=&#34;http://writely.com/&#34; title=&#34;Collaborative Writing on the web&#34;&gt;Writely&lt;/a&gt; at some point recently, so one quick sign in later and I&#39;ve got my own little area where I can save, organise and edit text based files. All I have to do when I get home is login, copy / paste into my email client and hit send.&lt;/p&gt;
+&lt;p&gt;One word that isn&#39;t blocked yet is &lt;code&gt;blog&lt;/code&gt;, so I can still post this, and edit my posts. However, I&#39;m still writing it in &lt;a href=&#34;http://writely.com/&#34; title=&#34;Collaborative Writing on the web&#34;&gt;Writely&lt;/a&gt; and checking my &lt;a href=&#34;http://daringfireball.net/projects/markdown/&#34; title=&#34;Markup HTML without HTML&#34;&gt;markdown&lt;/a&gt; syntax is correct with &lt;a href=&#34;http://daringfireball.net/projects/markdown/dingus/&#34; title=&#34;Preview and Practice MarkDown &amp;amp; SmartyPants&#34;&gt;Dingus&lt;/a&gt;. The writely interface is just that much nicer than notepad.&lt;/p&gt;</description></item><item><title>Capitalise &#34;ringer&#34; on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p&gt;&lt;strong&gt;Backstory:&lt;/strong&gt; Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;quot;ringer&amp;quot; across the top. But when you have headphones plugged in, it says &amp;quot;Headphones&amp;quot;. &lt;em&gt;(Note the capitalisation difference.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Now I&#39;m not usually bothered by stuff like this (honest!) but as soon as I&#39;d noticed the &lt;em&gt;&amp;quot;bug&amp;quot;&lt;/em&gt;, I couldn&#39;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&#39;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code&gt;/System&lt;/code&gt; folder. And I&#39;d be able to change it!&lt;/p&gt;
+&lt;p&gt;Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&#39;s SSH server on and go looking for the setting. To do so I figured I&#39;d just need &lt;code&gt;grep&lt;/code&gt; installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p&gt;
+&lt;p&gt;So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the iPhone
+$ cd /System/Library/
+$ grep -r &amp;quot;ringer&amp;quot; *
+Binary file CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings matches
+Binary file CoreServices/SpringBoard.app/M68AP.plist matches
+Binary file CoreServices/SpringBoard.app/SpringBoard matches
+Binary file Frameworks/CFNetwork.framework/CFNetwork matches
+Binary file Frameworks/CFNetwork.framework/da.lproj/Localizable.strings matches
+Binary file Frameworks/CFNetwork.framework/no.lproj/Localizable.strings matches
+Binary file Frameworks/Foundation.framework/da.lproj/URL.strings matches
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;At which point I stopped the grep search (&lt;code&gt;^C&lt;/code&gt;) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code&gt;SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code&gt;. Making sure to have SSH enabled on your mac, a simple &lt;code&gt;scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code&gt; later and the file is sat in my home folder on my mac.&lt;/p&gt;
+&lt;p&gt;Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&#39;ve found a hint on &lt;a href=&#34;http://macosxhints.com&#34;&gt;MacOSXHints&lt;/a&gt; telling me how to convert from &lt;a href=&#34;http://www.macosxhints.com/article.php?story=20050430105126392&#34;&gt;binary to xml plist format&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the mac
+$ plutil -convert xml1 SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;quot;ringer&amp;quot; and I found the following lines:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;key&amp;gt;&lt;/span&gt;RINGER_VOLUME&lt;span class=&#34;nt&#34;&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;string&amp;gt;&lt;/span&gt;ringer&lt;span class=&#34;nt&#34;&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Change the &amp;quot;ringer&amp;quot; to &amp;quot;Ringer&amp;quot; between the &lt;code&gt;&amp;lt;string&amp;gt;&lt;/code&gt; and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code&gt;.string&lt;/code&gt;. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code&gt;xml1&lt;/code&gt; in the previous command to &lt;code&gt;binary1&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the mac
+$ plutil -convert binary1 SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&#39;ve edited:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the iPhone
+$ cd ~
+$ scp user@mac_name.local:SpringBoard.strings .
+$ cd /System/Library/CoreServices/SpringBoard.app/English.lproj/
+$ mv SpringBoard.strings SpringBoard.strings.bak
+$ cp ~/SpringBoard.strings SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then restart the phone, either in the usual manner or just run &lt;code&gt;reboot&lt;/code&gt; on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;quot;Ringer&amp;quot;!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://caius.name/images/ringer.jpg&#34; alt=&#34;Screenshot of Volume bezel&#34; /&gt;&lt;/p&gt;</description></item><item><title>View Raw Source</title><link>https://caiustheory.com/view-raw-source/</link><pubDate>Sat, 31 Jan 2009 01:54:57 +0000</pubDate><guid>https://caiustheory.com/view-raw-source/</guid><description>
+&lt;p&gt;So I write this blog using &lt;a href=&#34;http://daringfireball.net/projects/markdown/&#34;&gt;Markdown&lt;/a&gt; because I&#39;m a human and writing &lt;code&gt;stuff &amp;lt;strong&amp;gt;with&amp;lt;/strong&amp;gt; tags&lt;/code&gt; is just &lt;strong&gt;WRONG&lt;/strong&gt;. Thankfully, &lt;a href=&#34;http://daringfireball.net/&#34;&gt;Gruber&lt;/a&gt; solved this problem by writing markdown.&lt;/p&gt;
+&lt;p&gt;Now on the &lt;a href=&#34;http://daringfireball.net/projects/markdown/&#34;&gt;markdown page&lt;/a&gt; he says:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The best way to get a feel for Markdown’s formatting syntax is simply to look at a Markdown-formatted document. For example, you can view the Markdown source for the article text on this page here: &lt;a href=&#34;http://daringfireball.net/projects/markdown/index.text&#34;&gt;http://daringfireball.net/projects/markdown/index.text&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;(You can use this ‘.text’ suffix trick to view the Markdown source for the content of each of the pages in this section, e.g. the Syntax and License pages.)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And ever since I noticed that I&#39;ve always read his articles using the &#39;.text&#39; trick. One of the plugins I&#39;ve been meaning to write for &lt;a href=&#34;http://habariproject.org/&#34;&gt;habari&lt;/a&gt; is one that replicates this &#39;.text&#39; behaviour. So tonight I decided to try and write it, started picking through the &lt;a href=&#34;http://wiki.habariproject.org/en/Creating_A_Plugin&#34;&gt;Plugin documentation&lt;/a&gt; in preparation. Got a bit stuck with it as I&#39;ve been out of the habari development loop for a few months, popped into &lt;a href=&#34;irc://irc.freenode.net/#habari&#34;&gt;#habari&lt;/a&gt; and asked if I was thinking along the right lines.&lt;/p&gt;
+&lt;p&gt;Few minutes later &lt;a href=&#34;http://asymptomatic.net/&#34;&gt;Owen&lt;/a&gt; pops up and sends me a link to &lt;a href=&#34;http://svn.habariproject.org/habari-extras/plugins/plaintext/trunk/plaintext.plugin.php&#34;&gt;plaintext.plugin.php&lt;/a&gt;, which does exactly what I was trying to do! Couple of tweaks later (switching it to &#39;.text&#39; instead of &#39;.md&#39;) and its installed and working on this blog. Feel free to view the &lt;a href=&#34;http://caiustheory.com/view-raw-source.text&#34;&gt;raw source&lt;/a&gt; of this post. Or any other post on this site.&lt;/p&gt;
+&lt;h3 id=&#34;updated-2009-01-31&#34;&gt;Updated 2009-01-31&lt;/h3&gt;
+&lt;p&gt;Added to the habari-extras repo as the &lt;a href=&#34;http://svn.habariproject.org/habari-extras/plugins/plaintext/trunk/plaintext.plugin.php&#34;&gt;Plaintext&lt;/a&gt; plugin.&lt;/p&gt;</description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p&gt;I decided to install ubuntu onto my iMac G3&lt;ref&gt;450Mhz G3, 768mb ram, 20GB Hard Drive&lt;/ref&gt; to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em&gt;slightly&lt;/em&gt; outdated and 100% 404.&lt;/p&gt;
+&lt;p&gt;Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;When the screen goes black, drop to the console&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Control - Option - F2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;(if you need to log in use the name ubuntu to log in.)&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo nano /etc/X11/xorg.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Change the frequencies in monitor section as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section “Monitor”
+Identifier “Generic Monitor”
+Option “DPMS”
+HorizSync 60-60
+VertRefresh 43-117
+EndSection
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;After the changes then type &lt;code&gt;control-o&lt;/code&gt;, &lt;code&gt;return&lt;/code&gt; (to accept the filename), then &lt;code&gt;control-x&lt;/code&gt; (save and exit nano)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Restart X by running the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Keyboards</title><link>https://caiustheory.com/keyboards/</link><pubDate>Tue, 14 Oct 2008 13:59:01 +0000</pubDate><guid>https://caiustheory.com/keyboards/</guid><description>&lt;p&gt;Back in the day I swapped the keys on my 12&amp;quot; powerbook keyboard around to read &lt;code&gt;macgenius&lt;/code&gt; across the middle row.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2941719496/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3213/2941719496_caf2a6a813_m.jpg&#34; alt=&#34;Powerbook Keyboard&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I unearthed the picture, and figured, why not do it to my apple aluminium keyboard? So I found a &lt;a href=&#34;http://skeltoac.com/2007/10/22/apple-keyboard-aluminum-keycap-removal/&#34;&gt;tutorial&lt;/a&gt; from some other guy that&#39;d done it, and dug out my penknife.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2938651260/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3243/2938651260_915f42d92d_m.jpg&#34; alt=&#34;External Keyboard&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After that I decided to rearrange the macbook internal keyboard as well. First I googled around to make sure lifting the keys was the same as doing it on the external keyboard (which it appeared to be), then I went ahead and rearranged them as well.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2940872039/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3214/2940872039_164ee672ef_m.jpg&#34; alt=&#34;Internal Keyboard -- Macgenius&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So whilst I was wondering what to do about it, my mother emailed me and suggested using &lt;code&gt;ontherails&lt;/code&gt; instead of &lt;code&gt;macgenius&lt;/code&gt;. So I did, and now the top row reads &lt;code&gt;ontherails&lt;/code&gt; on the macbooks&#39; internal keyboard.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2941726222/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3146/2941726222_67b2405a89_m.jpg&#34; alt=&#34;Internal Keyboard -- Ontherails&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All pictures are licenced under &lt;a href=&#34;http://creativecommons.org/licenses/by/2.0/deed.en_GB&#34;&gt;Creative Commons Attribution 2.0 Generic licence&lt;/a&gt; and the above pictures, plus some &lt;em&gt;in progress&lt;/em&gt; shots, are available in my &lt;a href=&#34;http://www.flickr.com/photos/caius/sets/72157608015895484/&#34;&gt;Keyboard Modifications&lt;/a&gt; flickr set.&lt;/p&gt;</description></item></channel></rss>

@@ -1,0 +1,87 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix on Caius Theory</title><link>https://caiustheory.com/tag/unix/</link><description>Recent content in unix on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 14 Sep 2019 18:10:00 +0100</lastBuildDate><atom:link href="https://caiustheory.com/tag/unix/index.xml" rel="self" type="application/rss+xml"/><item><title>curl --resolve</title><link>https://caiustheory.com/curl-resolve/</link><pubDate>Sat, 14 Sep 2019 18:10:00 +0100</pubDate><guid>https://caiustheory.com/curl-resolve/</guid><description>&lt;p&gt;Sometimes it&#39;s useful to be able to craft a request to one server, using a DNS name that&#39;s either not defined or currently pointed to a different IP. (Migrating webservers, testing a new webserver config out, etc.)&lt;/p&gt;
+&lt;p&gt;Historically for HTTP calls this was easy, just set the &lt;code&gt;Host&lt;/code&gt; header as you make the http request to the IP directly:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; curl -H &amp;quot;Host: caiustheory.com&amp;quot; http://10.200.0.1/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, HTTPS throws a bit of a spanner in the works, if we just try to connect using an overridden &lt;code&gt;Host&lt;/code&gt; header, we get an error back from the server if it&#39;s not configured with a certificate for the IP address:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; $ curl -H &amp;quot;Host: caiustheory.com&amp;quot; https://10.200.0.1/
+curl: (51) SSL: no alternative certificate subject name matches target host name &#39;10.200.0.1&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Usually at this point I&#39;d just start editing &lt;code&gt;/etc/hosts&lt;/code&gt; to add &lt;code&gt;10.200.0.1 caius.name&lt;/code&gt; to it and carry on testing. This is a pain when you&#39;re testing more than one server, or you&#39;re on a machine where you don&#39;t have root access to edit &lt;code&gt;/etc/hosts&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In later versions of curl there&#39;s a solution for this built into the binary, in the form of the &lt;code&gt;--resolve&lt;/code&gt; flag. You can tell it to override the DNS lookup for a specific hostname/port combination. This in turn means that the correct host is forwarded to the server for the correct SSL certificate to be chosen to serve the request based on host.&lt;/p&gt;
+&lt;p&gt;It takes the form &lt;code&gt;--resolve HOST:PORT:IP&lt;/code&gt; where &lt;code&gt;HOST&lt;/code&gt; is the human-friendly host, &lt;code&gt;PORT&lt;/code&gt; is the webserver&#39;s port (convention is 80 for HTTP, 443 for HTTPS) and IP being the destination IP you want to hit. (As opposed to the one in DNS currently.)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ curl --silent --head --resolve caiustheory.com:443:10.200.0.1 https://caiustheory.com | head -n1
+HTTP/2 200
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And voila, you don&#39;t need to fiddle with editing &lt;code&gt;/etc/hosts&lt;/code&gt;. Just use &lt;code&gt;--resolve&lt;/code&gt; to hit a different IP for a given host.&lt;/p&gt;</description></item><item><title>git git git git git</title><link>https://caiustheory.com/git-git-git-git-git/</link><pubDate>Tue, 26 Sep 2017 11:00:23 +0000</pubDate><guid>https://caiustheory.com/git-git-git-git-git/</guid><description>&lt;p&gt;Ever found you&#39;ve accidentally entered too many &lt;code&gt;git&lt;/code&gt;s in your terminal and wondered if there&#39;s a solution to it? I quite often type &lt;code&gt;git&lt;/code&gt; then go away and come back, then type a full &lt;code&gt;git status&lt;/code&gt; after it. This leads to a lovely (annoying) error out the box:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ git git status
+git: &lt;span class=&#34;s1&#34;&gt;&amp;#39;git&amp;#39;&lt;/span&gt; is not a git command. See &lt;span class=&#34;s1&#34;&gt;&amp;#39;git --help&amp;#39;&lt;/span&gt;.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What a git.&lt;/p&gt;
+&lt;p&gt;My initial thought was overriding the &lt;code&gt;git&lt;/code&gt; binary in my &lt;code&gt;$PATH&lt;/code&gt; and having it strip any leading arguments that match &lt;code&gt;git&lt;/code&gt;, so we end up running just the &lt;code&gt;git status&lt;/code&gt; at the end of the arguments. An easier way is to just use &lt;a href=&#34;https://git-scm.com/docs/git-config&#34;&gt;&lt;code&gt;git-config&lt;/code&gt;&lt;/a&gt;&#39;s &lt;code&gt;alias.*&lt;/code&gt; functionality to expand the first argument being &lt;code&gt;git&lt;/code&gt; to a shell command.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;git config --global alias.git &lt;span class=&#34;s1&#34;&gt;&amp;#39;!exec git&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Which adds the following git config to your &lt;code&gt;.gitconfig&lt;/code&gt; file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;k&#34;&gt;[alias]&lt;/span&gt;
+&lt;span class=&#34;na&#34;&gt;git&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;!exec git&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And then you&#39;ll find you can &lt;code&gt;git git&lt;/code&gt; to your heart&#39;s content&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ git sha
+cc9c642663c0b63fba3964297c13ce9b61209313
+$ git git sha
+cc9c642663c0b63fba3964297c13ce9b61209313
+$ git git git git git git git git git git git git git git git git git git git git git git git git git git sha
+cc9c642663c0b63fba3964297c13ce9b61209313&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(&lt;code&gt;git sha&lt;/code&gt; is an alias for &lt;code&gt;git rev-parse HEAD&lt;/code&gt;.)&lt;/p&gt;
+&lt;p&gt;See what other git alias&#39; I have in my &lt;a href=&#34;https://github.com/caius/zshrc/blob/master/dotfiles/gitconfig&#34;&gt;&lt;code&gt;~/.gitconfig&lt;/code&gt;&lt;/a&gt;, and laugh at all the typo corrections I have in there. (Yes, git provides autocorrection if you enable it, but I&#39;m used to these typos working!)&lt;/p&gt;
+&lt;p&gt;Now &lt;code&gt;git&lt;/code&gt; back to doing useful things!&lt;/p&gt;</description></item><item><title>Raspberry Pi 3 as an emergency router</title><link>https://caiustheory.com/raspberry-pi-3-as-an-emergency-router/</link><pubDate>Tue, 09 May 2017 20:55:00 +0000</pubDate><guid>https://caiustheory.com/raspberry-pi-3-as-an-emergency-router/</guid><description>&lt;p&gt;Given a dead router, how do you get back online whilst you wait for the replacement part to arrive? Grab a Raspberry Pi 3 off the shelf, along with a USB to Ethernet adapter and hey presto the internet works again.&lt;/p&gt;
+&lt;p&gt;This is with a fibre modem (FTTC), using PPPoE to connect out. Plug the modem (WAN) into the RPi&#39;s ethernet port, and plug the LAN switch into the USB adapter.&lt;/p&gt;
+&lt;p&gt;First thing is to get the WAN link working, get it talking PPPoE to the ISP. Usually this will be configured in &lt;code&gt;/etc/ppp/pppoe.conf&lt;/code&gt; (depends on your linux distro). (That&#39;ll require your username/password for your ISP usually too.)&lt;/p&gt;
+&lt;p&gt;Get it up &amp;amp; connected, and make sure you can ping the internet from the RPi. Then it&#39;s time to get the LAN working. Give it a static IP in the range you want shared out.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# /etc/network/interfaces
+iface eth0 inet static
+address 192.168.1.1
+netmask 255.255.255.0
+gateway 192.168.1.1
+auto eth1
+iface eth1 inet dhcp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Get a dhcp server running on the LAN connection,&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# /etc/dhcpcd.conf
+interface eth0
+static ip_address=192.168.1.1
+static routers=192.168.1.1
+static domain_name_servers=8.8.8.8,8.8.4.4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then it&#39;s time to handle WAN -&amp;gt; LAN traffic and the reverse. Make sure you have packet forwarding enabled, and then setup the firewall to handle NAT and also keep out undesirable traffic.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sysctl net.ipv4.ip_forward&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -i eth0 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type any -j ACCEPT
+iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+iptables -A INPUT -f -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
+iptables -A INPUT -j DROP&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Hey presto, you have a working emergency router. In testing I found my fibre connection (80/20Mb) was slower than the traffic the RPi could push, so didn&#39;t notice any difference vs my normal router. (Although I did disable a bunch of automated stuff, so there was less contention on the WAN link.)&lt;/p&gt;</description></item><item><title>Compile &amp; run swift files directly</title><link>https://caiustheory.com/compile-run-swift-files-directly/</link><pubDate>Fri, 06 Jun 2014 14:32:18 +0000</pubDate><guid>https://caiustheory.com/compile-run-swift-files-directly/</guid><description>&lt;p&gt;Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.&lt;/p&gt;
+&lt;p&gt;Using the &lt;code&gt;xcrun&lt;/code&gt; binary, we can reach into the current Xcode &lt;code&gt;/bin&lt;/code&gt; folder and run binaries within there. So &lt;code&gt;xcrun swift&lt;/code&gt; lets you run the swift binary to compile files for instance. If you view the help with &lt;code&gt;-h&lt;/code&gt;, there&#39;s a useful flag &lt;code&gt;-i&lt;/code&gt; listed there:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;-i &amp;nbsp;&amp;nbsp; Immediate mode&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Turns out immediate mode means &amp;quot;compile &amp;amp; run&amp;quot; in the same command, which is what we&#39;re after.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cat hello.swift
+println(&amp;quot;Hello World&amp;quot;)
+$ xcrun swift -i hello.swift
+Hello World
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cat hello2.swift
+#!/usr/bin/env xcrun swift -i
+println(&amp;quot;Hello World 2&amp;quot;)
+$ chmod +x hello2.swift
+$ ./hello2.swift
+Hello World 2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!&lt;/p&gt;</description></item></channel></rss>

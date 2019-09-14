@@ -1,0 +1,110 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SmartOS on Caius Theory</title><link>https://caiustheory.com/tag/smartos/</link><description>Recent content in SmartOS on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Mon, 25 Jul 2016 17:59:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/smartos/index.xml" rel="self" type="application/rss+xml"/><item><title>SmartOS Recovery mount /usbkey</title><link>https://caiustheory.com/smartos-recovery-mount-usbkey/</link><pubDate>Mon, 25 Jul 2016 17:59:00 +0000</pubDate><guid>https://caiustheory.com/smartos-recovery-mount-usbkey/</guid><description>&lt;p&gt;Recently I managed to hose a box in a perfectly self-inflicted storm of idiocy. Imagine a SmartOS server with the following issues:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Root password not noted down anywhere&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usbkey/config&lt;/code&gt; edited badly, meaning the network settings are wrong&lt;/li&gt;
+&lt;li&gt;Rebooting the server to apply some other settings&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Needless to say, this caused a tiny issue in the server doing what it&#39;s supposed to. Luckily I had access to a KVM remote console for the box and the following worked.&lt;/p&gt;
+&lt;p&gt;I brought the machine up, choosing the second option for recovery at the grub menu. Waited for a login prompt, then logged in with &lt;code&gt;root&lt;/code&gt;/&lt;code&gt;root&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Realised quite quickly that &lt;code&gt;/usbkey&lt;/code&gt; must be persisted on the &lt;code&gt;zones&lt;/code&gt; zfs pool otherwise the configuration would be lost after shutdown, so imported the correct pool, created a directory to mount into and then mounted the zfs share.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;zpool import zones
+mkdir /usbkey
+mount -F zfs zones/usbkey /usbkey&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Changing hostname in SmartOS Zone</title><link>https://caiustheory.com/changing-hostname-in-smartos-zone/</link><pubDate>Thu, 18 Dec 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/changing-hostname-in-smartos-zone/</guid><description>&lt;p&gt;Given a non-global zone in SmartOS that we want to change the hostname of, we need to make sure to edit the following files to change it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/etc/hosts&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/nodename&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A quick way to do that is with &lt;code&gt;sed&lt;/code&gt; &lt;em&gt;(renaming &amp;quot;fred&amp;quot; to &amp;quot;beth&amp;quot; here)&lt;/em&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sed -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/fred/beth/g&amp;#39;&lt;/span&gt; -i /etc/hosts /etc/nodename&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then shutdown &amp;amp; start the zone &lt;em&gt;(from my testing a restart doesn&#39;t apply it)&lt;/em&gt;.&lt;/p&gt;</description></item><item><title>Changing root password in global zone</title><link>https://caiustheory.com/changing-root-password-in-global-zone/</link><pubDate>Sun, 19 Oct 2014 17:44:20 +0000</pubDate><guid>https://caiustheory.com/changing-root-password-in-global-zone/</guid><description>&lt;p&gt;SmartOS mounts &lt;code&gt;/etc/shadow&lt;/code&gt; from &lt;code&gt;/usbkey/shadow&lt;/code&gt; so we can change the root password for the global zone after install. Here&#39;s how:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Fire up a console or ssh session as root in the global zone&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Check the existing permissions on the file&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls -l /usbkey/shadow
+-r-------- 1 root root 560 Oct 19 16:45 /usbkey/shadow
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Make the file writable&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ chmod 600 /usbkey/shadow
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Fire up &lt;code&gt;vi&lt;/code&gt; to edit the file&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ vi /usbkey/shadow
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Edit the line containing root to change the crypted password. See &lt;a href=&#34;https://us-east.manta.joyent.com/smartosman/public/man4/shadow.4.html&#34;&gt;&lt;code&gt;shadow(4)&lt;/code&gt;&lt;/a&gt; if you need help with the format of &lt;code&gt;/etc/shadow&lt;/code&gt; &amp;amp; use &lt;code&gt;/usr/lib/cryptpass&lt;/code&gt; to generate a hash for the password you desire. &lt;em&gt;(Remember to clean the bash history!)&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Save the file and exit &lt;code&gt;vi&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Make the file readonly again&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ chmod 400 /usbkey/shadow
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Double check permissions are correct on the file again&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls -l /usbkey/shadow
+-r-------- 1 root root 560 Oct 19 16:49 /usbkey/shadow
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Job done. Verify by logging in as root (invoking &lt;code&gt;/usr/bin/login&lt;/code&gt; from an ssh session makes this easy to verify.)&lt;/p&gt;</description></item><item><title>Compiling SmartOS for AMD processors</title><link>https://caiustheory.com/compiling-smartos-for-amd-processors/</link><pubDate>Sun, 28 Sep 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/compiling-smartos-for-amd-processors/</guid><description>&lt;p&gt;There&#39;s a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that&#39;s quite useful for turning it into a better lab server. The main &lt;a href=&#34;http://imgapi.uqcloud.net/builds&#34;&gt;list of so called &amp;quot;eait&amp;quot; builds&lt;/a&gt; was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image &lt;a href=&#34;http://builds.smartos.skylime.net&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The source code for the eait builds is maintained at &lt;a href=&#34;https://github.com/arekinath/smartos-live&#34;&gt;https://github.com/arekinath/smartos-live&lt;/a&gt;, and you can see the patches applied on top of the normal SmartOS master by going to &lt;a href=&#34;https://github.com/arekinath/smartos-live/compare/joyent:master...eait&#34;&gt;https://github.com/arekinath/smartos-live/compare/joyent:master...eait&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So here&#39;s how to use SmartOS to compile a more up to date AMD-friendly Smartos!&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Grab the latest multiarch SmartOS image (which &lt;strong&gt;has&lt;/strong&gt; to be used, or the compile will fail.) The latest at the time of writing was &lt;code&gt;4aec529c-55f9-11e3-868e-a37707fcbe86&lt;/code&gt;, so that&#39;s what I&#39;ll use.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;imgadm import 4aec529c-55f9-11e3-868e-a37707fcbe86
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Spin up a zone for us to build in (the &lt;a href=&#34;http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS&#34;&gt;Building SmartOS on SmartOS&lt;/a&gt; page has extra info about this):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;echo &#39;{
+&amp;quot;alias&amp;quot;: &amp;quot;platform-builder&amp;quot;,
+&amp;quot;brand&amp;quot;: &amp;quot;joyent&amp;quot;,
+&amp;quot;dataset_uuid&amp;quot;: &amp;quot;4aec529c-55f9-11e3-868e-a37707fcbe86&amp;quot;,
+&amp;quot;max_physical_memory&amp;quot;: 32768,
+&amp;quot;quota&amp;quot;: 0,
+&amp;quot;tmpfs&amp;quot;: 8192,
+&amp;quot;fs_allowed&amp;quot;: &amp;quot;ufs,pcfs,tmpfs&amp;quot;,
+&amp;quot;maintain_resolvers&amp;quot;: true,
+&amp;quot;resolvers&amp;quot;: [
+&amp;quot;8.8.8.8&amp;quot;,
+&amp;quot;8.8.4.4&amp;quot;
+],
+&amp;quot;nics&amp;quot;: [
+{
+&amp;quot;nic_tag&amp;quot;: &amp;quot;admin&amp;quot;,
+&amp;quot;ip&amp;quot;: &amp;quot;dhcp&amp;quot;,
+&amp;quot;primary&amp;quot;: true
+}
+],
+&amp;quot;internal_metadata&amp;quot;: {
+&amp;quot;root_pw&amp;quot;: &amp;quot;password&amp;quot;,
+&amp;quot;admin_pw&amp;quot;: &amp;quot;password&amp;quot;
+}
+}&#39; | vmadm create
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Login to the created zone:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;zlogin &amp;lt;uuid from `vmadm create` output&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Update the image to the latest packages, etc:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pkgin -y update &amp;amp;&amp;amp; pkgin -y full-upgrade
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Install a few images we&#39;ll need to compile &amp;amp; package SmartOS:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pkgin install scmgit cdrtools pbzip2
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Grab the source code of the fork containing the patches we want, from &lt;a href=&#34;https://github.com/arekinath/smartos-live&#34;&gt;arekinath/smartos-live&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/arekinath/smartos-live
+cd smartos-live
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Optional&lt;/em&gt;: Edit &lt;code&gt;src/Makefile.defs&lt;/code&gt; and change &lt;code&gt;PARALLEL = -j$(MAX_JOBS)&lt;/code&gt; to &lt;code&gt;PARALLEL = -j8&lt;/code&gt; to do less at once. (Microserver only has a dual core CPU!)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Copy the configure definition into the right place and start configuration:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cp {sample.,}configure.smartos
+./configure
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;(You&#39;ll probably get asked to accept the java license during configuration, so keep half an eye on it)&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once configure has completed (which doesn&#39;t take &lt;em&gt;too&lt;/em&gt; long, 15 minutes or so), start building:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmake world &amp;amp;&amp;amp; gmake live
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once the build is successfully finished, time to package an iso &amp;amp; usb image:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export LC_ALL=C
+tools/build_iso
+tools/build_usb
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hey presto, you&#39;ve a freshly built AMD-friendly SmartOS build to flash to a USB key / put on your netboot server and boot your Microserver from!&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;References&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS&#34;&gt;http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/arekinath/smartos-live&#34;&gt;https://github.com/arekinath/smartos-live&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

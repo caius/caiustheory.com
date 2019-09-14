@@ -1,0 +1,43 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>menubar on Caius Theory</title><link>https://caiustheory.com/tag/menubar/</link><description>Recent content in menubar on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sun, 06 Dec 2009 22:15:37 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/menubar/index.xml" rel="self" type="application/rss+xml"/><item><title>Read Later in a keystroke</title><link>https://caiustheory.com/read-later-in-a-keystroke/</link><pubDate>Sun, 06 Dec 2009 22:15:37 +0000</pubDate><guid>https://caiustheory.com/read-later-in-a-keystroke/</guid><description>&lt;p&gt;I use a wonderful service for saving text to be read later, &lt;a href=&#34;http://instapaper.com/&#34;&gt;instapaper.com&lt;/a&gt;. It&#39;s gotten more wonderful as time has gone on and other applications/service&#39;s have gained the ability to save links/articles/webpages there for me to pick up later.&lt;/p&gt;
+&lt;p&gt;For instance, I&#39;m out and about checking twitter on my iPhone using &lt;a href=&#34;http://atebits.com/tweetie-iphone/&#34;&gt;tweetie&lt;/a&gt; and someone tweets a link. Rather than wait for it to load and having to read it then and there I can just hit &amp;quot;Read Later&amp;quot; and it&#39;s saved in my instapaper account for me to read as and when I choose to. Recently the legendary mac feed reader &lt;a href=&#34;http://www.newsgator.com/INDIVIDUALS/NETNEWSWIRE/&#34;&gt;NetNewsWire&lt;/a&gt; gained this ability too.&lt;/p&gt;
+&lt;p&gt;There&#39;s a few ways to send a feed item to instapaper from within NNW. Firstly you can right-click and click &amp;quot;Send to Instapaper&amp;quot;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2553/4163576297_ee60e26b53_o.jpg&#34; alt=&#34;Send to Instapaper from contextual menu&#34; /&gt;&lt;br /&gt;
+&lt;a href=&#34;http://www.flickr.com/photos/caius/4163576297&#34;&gt;View Original on Flickr&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Secondly there&#39;s a menu item for it in the News menu, which also provides my chosen way of instapapering an item&amp;mdash;the keyboard shortcut! ⌃P &lt;em&gt;(control-P)&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2748/4164341910_476f8ba539_o.jpg&#34; alt=&#34;Send to Instapaper from News menu&#34; /&gt;&lt;br /&gt;
+&lt;a href=&#34;http://www.flickr.com/photos/caius/4164341910&#34;&gt;View Original on Flickr&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So, in NNW I&#39;m happily sending stuff to instapaper with the handy ⌃P shortcut, but that doesn&#39;t exist in the third place I mark things to read later--Safari! Up until now I&#39;ve been using the standard &amp;quot;Read Later&amp;quot; bookmarklet that &lt;a href=&#34;http://instapaper.com/&#34;&gt;instapaper.com&lt;/a&gt; provides, and it&#39;s got a spot on my Bookmarks Bar so I can easily click it.&lt;/p&gt;
+&lt;p&gt;That doesn&#39;t really help with the fact I&#39;m hitting ⌃P in NNW, and it doesn&#39;t work in Safari. Quite often I noticed myself hitting the key combination in Safari and wondering for a split second why it wasn&#39;t sending the item to instapaper. Then the solution hit me!&lt;/p&gt;
+&lt;p&gt;In OS X you can setup (and/or override) menu items with custom key combinations! Why hadn&#39;t I remembered this before. Because the &amp;quot;Read Later&amp;quot; bookmark&lt;em&gt;(let)&lt;/em&gt; is nested under the Bookmarks menu, it &lt;strong&gt;is&lt;/strong&gt; a menu item! A quick trip into the Keyboards Prefpane in System Preferences and a new binding later and voilâ, &amp;quot;Read Later&amp;quot; in Safari is bound to ⌃P and I can use it in both Safari and NNW.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2517/4163642801_a14250da65_o.jpg&#34; alt=&#34;Filling in the form to bind the keyboard shortcut&#34; /&gt;&lt;br /&gt;
+&lt;a href=&#34;http://www.flickr.com/photos/caius/4163642801&#34;&gt;View Original on Flickr&lt;/a&gt;&lt;/p&gt;</description></item><item><title>My Menubar Items</title><link>https://caiustheory.com/my-menubar-items/</link><pubDate>Sun, 06 Dec 2009 12:56:49 +0000</pubDate><guid>https://caiustheory.com/my-menubar-items/</guid><description>&lt;!-- Just for this post --&gt;
+&lt;style&gt;
+ol { list-style-type: lower-alpha; }
+ol ol { list-style-type: decimal; }
+&lt;/style&gt;
+&lt;p&gt;This is a something that occasionally makes the rounds again, I&#39;ve not seen it for a while and I&#39;ve added some new items since I last remember documenting it. Thus, &lt;a href=&#34;http://twitter.com/macarne&#34;&gt;@macarne&lt;/a&gt; &lt;a href=&#34;http://twitter.com/macarne/status/6398125336&#34;&gt;asking&lt;/a&gt; what the app was that gives me stats prompted me to document my current menubar items.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2586/4162170875_1d1a8be4cf.jpg&#34; alt=&#34;annotated-menubar by ©aius, on Flickr&#34; title=&#34;annotated-menubar&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/4162170875/&#34;&gt;View original&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.eidac.de/&#34;&gt;SMCFanControl&lt;/a&gt; - Lets me adjust the minimum speed of my fans.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://atebits.com/tweetie-mac&#34;&gt;Tweetie/mac&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://iscrobbler.sourceforge.net/&#34;&gt;iScrobbler&lt;/a&gt; - Scrobbles tunes iTunes plays&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.realmacsoftware.com/littlesnapper/&#34;&gt;LittleSnapper&lt;/a&gt; &lt;em&gt;(Or more accurately the menubar icon is NanoSnapper, LittleSnapper is the full app.)&lt;/em&gt; Mainly used for screen grabs.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.orange-carb.org/SBM/&#34;&gt;SlimBatteryMonitor&lt;/a&gt; - Takes up less horizontal space than Apple&#39;s menu item.&lt;/li&gt;
+&lt;li&gt;Expresscard menu item - Lets me power off my &lt;a href=&#34;http://www.memoryc.com/storage/solidstatedisk/48gbfilematesolidgoexpresscardultra.html&#34;&gt;Expresscard/34 SSD&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ragingmenace.com/software/menumeters/&#34;&gt;MenuMeters&lt;/a&gt; - An old friend I&#39;ve been using for as long as I can remember running OS X. Set to show (left to right)
+&lt;ol&gt;
+&lt;li&gt;Ram - &lt;strong&gt;U&lt;/strong&gt;sed and &lt;strong&gt;F&lt;/strong&gt;ree totals.&lt;/li&gt;
+&lt;li&gt;Network - Graph + values.&lt;/li&gt;
+&lt;li&gt;CPU - Graph per core. Probably the most useful out of the three.&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;Bluetooth&lt;/li&gt;
+&lt;li&gt;Time Machine&lt;/li&gt;
+&lt;li&gt;Modem - To dial on my Huawei E220 3G stick.&lt;/li&gt;
+&lt;li&gt;Airport&lt;/li&gt;
+&lt;li&gt;Sound&lt;/li&gt;
+&lt;li&gt;Day/Time&lt;/li&gt;
+&lt;li&gt;Fast User Switching - Not sure why I keep this in the menubar, only have one user and I lock my screen with a password protected screensaver.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.viscosityvpn.com/&#34;&gt;Viscosity&lt;/a&gt; - VPN software. Pretty useful.&lt;/li&gt;
+&lt;li&gt;Spotlight! - Occasionally this vanishes when spotlight decides to be a dick and eat ram/cpu reindexing my disk every few hours. Touch wood it hasn&#39;t done it since 10.6.1.&lt;/li&gt;
+&lt;/ol&gt;</description></item></channel></rss>

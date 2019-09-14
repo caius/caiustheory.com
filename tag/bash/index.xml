@@ -1,0 +1,453 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>bash on Caius Theory</title><link>https://caiustheory.com/tag/bash/</link><description>Recent content in bash on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sun, 17 Mar 2019 14:32:30 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/bash/index.xml" rel="self" type="application/rss+xml"/><item><title>Download All Your Gists</title><link>https://caiustheory.com/download-all-your-gists/</link><pubDate>Sun, 17 Mar 2019 14:32:30 +0000</pubDate><guid>https://caiustheory.com/download-all-your-gists/</guid><description>&lt;p&gt;Over time I&#39;ve managed to build up quite the collection of &lt;a href=&#34;https://gist.github.com/&#34;&gt;Gists&lt;/a&gt; over at Github, including secret ones there&#39;s about 1200 currently. Some of these have useful code in, some are just garbage output. I&#39;d quite like a local copy either way, so I can easily search&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; across them.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Install the &lt;code&gt;gist&lt;/code&gt; command from Github&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;brew install gist&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Login to your Github Account through the gist tool (it&#39;ll prompt for your login credentials, then generate you an API Token to allow it future access.)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;gist --login&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Create a folder, go inside it and download all your gists!&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir gist_archive
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gist_archive
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; repo in &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;gist -l &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $1 }&amp;#39;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; git clone &lt;span class=&#34;nv&#34;&gt;$repo&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&amp;gt; /dev/null&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Now you have a snapshot of all your gists. To update them in future, you can run the above for any new gists, and update all the existing ones with:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gist_archive
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; i in */&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git pull --rebase&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now go forth and search out your favourite snippet you saved years ago and forgot about!&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://beyondgrep.com&#34;&gt;ack&lt;/a&gt;, &lt;a href=&#34;https://geoff.greer.fm/ag/&#34;&gt;ag&lt;/a&gt;, &lt;a href=&#34;https://www.freebsd.org/cgi/man.cgi?query=grep&amp;amp;sektion=&amp;amp;n=1&#34;&gt;grep&lt;/a&gt;, &lt;a href=&#34;https://github.com/BurntSushi/ripgrep&#34;&gt;ripgrep&lt;/a&gt;, etc. Pick your flavour.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description></item><item><title>Overcommit git hooks: puppet validate</title><link>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</link><pubDate>Thu, 05 Jul 2018 14:44:41 +0000</pubDate><guid>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</guid><description>&lt;p&gt;Computers are great at automatically checking things, and git has a mechanism for running hooks before events happen. Bosh these two things together and you can have git trigger anything you like before you&#39;re allowed to commit, which in turn means you can sanity check exactly what you&#39;re committing to make sure it meets whatever criteria you have.&lt;/p&gt;
+&lt;p&gt;To make it easy to manage my git hooks in a consistent fashion, I use a tool called &lt;a href=&#34;https://github.com/brigade/overcommit&#34;&gt;overcommit&lt;/a&gt;. This comes with a config file to tell it what you want triggered when, and a bunch of standard plugins to choose from.&lt;/p&gt;
+&lt;p&gt;In a &lt;a href=&#34;https://puppet.com&#34;&gt;puppet&lt;/a&gt; repo for instance, I have it check&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://bundler.io&#34;&gt;bundler&lt;/a&gt; is happy everything&#39;s installed&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://puppet-lint.com&#34;&gt;puppet-lint&lt;/a&gt; is happy with any changed puppet files&lt;/li&gt;
+&lt;li&gt;Any JSON or YAML files involved in the commit have valid syntax&lt;/li&gt;
+&lt;li&gt;Any shell scripts are valid (according to &lt;a href=&#34;https://www.shellcheck.net&#34;&gt;shellcheck&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;There is no trailing whitespace left in files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This usually means something like the following in &lt;code&gt;.overcommit.yml&lt;/code&gt; in the git repo&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;PreCommit&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;BundleCheck&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;JsonSyntax&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;PuppetLint&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;ShellCheck&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;YamlSyntax&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;on_warn&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;fail&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For the most part this works absolutely great. I have on occasion noticed that &lt;a href=&#34;http://puppet-lint.com&#34;&gt;puppet-lint&lt;/a&gt; will let invalid puppet syntax slip through though which is irritating to find after you&#39;ve pushed the changes up to the puppetmaster. The &lt;a href=&#34;https://puppet.com&#34;&gt;puppet&lt;/a&gt; command line tool has a validate subcommand however, so we can hook that into overcommit as a custom hook in the repo.&lt;/p&gt;
+&lt;p&gt;To do this we need to add our custom hook into the right directory, and we&#39;re adding a hook to run before commits, so it goes into &lt;code&gt;.git-hooks/pre_commit&lt;/code&gt;. Lets name it for what it does, validating puppet syntax. So into &lt;code&gt;puppet_validate.rb&lt;/code&gt; we put the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# .git-hooks/pre_commit/puppet_validate.rb&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;Overcommit::Hook::PreCommit&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;PuppetValidate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Base&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;errors&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sx&#34;&gt;%w(puppet parser validate)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:args&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;applicable_files&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:pass&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;success?&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:fail&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;stderr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then we need to tell &lt;a href=&#34;https://github.com/brigade/overcommit&#34;&gt;overcommit&lt;/a&gt; that it needs to run this custom hook as a check whenever we commit, that goes into &lt;code&gt;.overcommit.yml&lt;/code&gt; under the &lt;code&gt;PreCommit&lt;/code&gt; key:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;PreCommit&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;PuppetValidate&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;description&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Validates puppet syntax&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;include&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;**/*.pp&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Hey voila, along with all our other safety checks we&#39;re now checking that any puppet files added or changed in the repo have valid syntax.&lt;/p&gt;</description></item><item><title>Cleaning up locally installed Rubies &amp; Gems</title><link>https://caiustheory.com/cleaning-up-locally-installed-rubies-gems/</link><pubDate>Sun, 12 Nov 2017 11:30:24 +0000</pubDate><guid>https://caiustheory.com/cleaning-up-locally-installed-rubies-gems/</guid><description>&lt;p&gt;Given the following is broadly true:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rubies installed to &lt;code&gt;~/.rubies&lt;/code&gt; (via ruby-install most likely)&lt;/li&gt;
+&lt;li&gt;Gems for each ruby version installed under ~/.gem (via chruby most likely)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;What to do when you want to reclaim some disk space? Delete unused ruby versions of course! Pretty straight forward, look in ~/.rubies for ones you want to remove, then delete them.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls ~/.rubies
+ruby-2.0.0
+ruby-2.1.7
+ruby-2.3.1
+ruby-2.4.1
+$ rm -r ~/.rubies/ruby-{2.0.0,2.1.7}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then the problem is we&#39;re left with artifacts hanging around, namely any gems we installed for ruby 2.0.0 or 2.1.7 are still present under &lt;code&gt;~/.gem&lt;/code&gt; using up disk space. We could go through and find them by hand, or we could get the computer to delete anything under &lt;code&gt;~/.gem&lt;/code&gt; that doesn&#39;t have a corresponding runtime under &lt;code&gt;~/.rubies&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;diff --old-line-format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; --unchanged-line-format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; --new-line-format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.gem/ruby/%L &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ls ~/.rubies &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed -Ee &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/ruby-|-p[0-9]+//g&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ls ~/.gem/ruby&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -pL1 rm -r&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(&lt;code&gt;xargs -pL1&lt;/code&gt; will prompt with each command it wants to run before running it - answer &lt;code&gt;y&lt;/code&gt; to proceed, anything else to prevent it running that command. Lets you see what ruby versions it is removing before it does so.)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls ~/.gem/ruby
+2.0.0
+2.1.7
+2.3.1
+2.4.1
+$ diff --old-line-format= --unchanged-line-format= --new-line-format=$HOME/.gem/ruby/%L \
+&amp;lt;(ls ~/.rubies | sed -Ee &#39;s/ruby-|-p[0-9]+//g&#39;) &amp;lt;(ls ~/.gem/ruby) \
+| xargs -pL1 rm -r
+rm -r /Users/caius/.gem/ruby/2.0.0?...y
+rm -r /Users/caius/.gem/ruby/2.1.7?...y
+$ ls ~/.gem/ruby
+2.3.1
+2.4.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And now revel in your reclaimed disk space. (Hunting other large folders/items on your disk? &lt;a href=&#34;http://dev.yorhel.nl/ncdu&#34;&gt;&lt;code&gt;ncdu&lt;/code&gt;&lt;/a&gt; is a great tool for that.)&lt;/p&gt;</description></item><item><title>Bash script setup</title><link>https://caiustheory.com/bash-script-setup/</link><pubDate>Tue, 09 May 2017 18:23:58 +0000</pubDate><guid>https://caiustheory.com/bash-script-setup/</guid><description>&lt;p&gt;Recently I&#39;ve been writing a bunch of bash scripts for various things. As some up-front safety checks I&#39;ve taken to opening every script with the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[[&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$TRACE&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o xtrace
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o errexit
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o nounset
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o pipefail
+&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -o noclobber&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Other things I&#39;m also trying to be good about doing:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;using &lt;code&gt;readonly&lt;/code&gt; when declaring variables which shouldn&#39;t be mutated&lt;/li&gt;
+&lt;li&gt;Trapping errors using an error function, and cleaning up anything temporary in there&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And some useful reading I ran across in my quest to level up bash-scripts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://redsymbol.net/articles/bash-exit-traps/&#34;&gt;Bash Exit Traps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://redsymbol.net/articles/unofficial-bash-strict-mode/&#34;&gt;Use the unofficial Bash Strict Mode&lt;/a&gt; (Yes, &lt;em&gt;two&lt;/em&gt; posts from &lt;a href=&#34;http://redsymbol.net/&#34;&gt;http://redsymbol.net/&lt;/a&gt;. Well worth reading.)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jvns.ca/blog/2017/03/26/bash-quirks/&#34;&gt;Bash scripting quirks &amp;amp; safety tips&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://wiki.bash-hackers.org/&#34;&gt;Bash hackers wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Geolocation in nginx</title><link>https://caiustheory.com/geolocation-in-nginx/</link><pubDate>Tue, 04 Dec 2012 09:42:00 +0000</pubDate><guid>https://caiustheory.com/geolocation-in-nginx/</guid><description>&lt;p&gt;Sometimes you need to have a rough idea of where your website visitor is located. There&#39;s many ways to geolocate them, but if you just want to go to country level then &lt;a href=&#34;http://dev.maxmind.com/geoip/geolite&#34;&gt;MaxMind have free geo databases&lt;/a&gt; available to help you. When we needed to do this quickly on-the-fly at EmberAds, we came up with the &lt;a href=&#34;https://github.com/emberads/trifle#readme&#34;&gt;trifle&lt;/a&gt; gem, which supports ipv4 and ipv6 lookups.&lt;/p&gt;
+&lt;p&gt;Recently I was searching for something else to do with nginx and ran across &lt;a href=&#34;http://www.ruby-forum.com/topic/125810&#34;&gt;a mailing list thread&lt;/a&gt; about using the maxmind database with nginx&#39;s &lt;a href=&#34;http://wiki.nginx.org/NginxHttpGeoModule&#34;&gt;HTTP Geo module&lt;/a&gt; and do the lookup directly in nginx itself. Finally got a chance to sit down and work out the logistics of doing this. I&#39;ve done this on an ubuntu 12.04 box, with the expected config file layouts that come with ubuntu.&lt;/p&gt;
+&lt;p&gt;Run the following on your server (as someone with write access to nginx config files):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Generate the text file for nginx to import&lt;/span&gt;
+perl &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&amp;lt; &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;zip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;tempfile&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;curl -so &lt;span class=&#34;nv&#34;&gt;$zip&lt;/span&gt; http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; unzip -p &lt;span class=&#34;nv&#34;&gt;$zip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &amp;gt; /etc/nginx/nginx_ip_country.txt
+&lt;span class=&#34;c1&#34;&gt;# Tell nginx to work out the IP country and store in variable&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;geo $IP_COUNTRY {
+&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt; default --;
+&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt; include /etc/nginx/nginx_ip_country.txt;
+&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;}&amp;#39;&lt;/span&gt; &amp;gt; /etc/nginx/conf.d/ip_country.conf&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now go find the http block for the vhost you want to have the header passed to, and assuming it&#39;s passenger, add the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-nginx&#34; data-lang=&#34;nginx&#34;&gt;&lt;span class=&#34;k&#34;&gt;passenger_set_cgi_param&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;HTTP_X_IP_COUNTRY&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$IP_COUNTRY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(If you don&#39;t use passenger, look at the docs for &lt;a href=&#34;http://wiki.nginx.org/HttpProxyModule#proxy_pass_header&#34;&gt;proxy_pass_header&lt;/a&gt; or &lt;a href=&#34;http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header&#34;&gt;fastcgi_pass_header&lt;/a&gt; to see which you&#39;ll require for your setup.)&lt;/p&gt;
+&lt;p&gt;Reload nginx, and behold, &lt;code&gt;request.env[&amp;quot;HTTP_X_IP_COUNTRY&amp;quot;]&lt;/code&gt; (assuming a rack app running under ruby) will be a two letter country code, or &lt;code&gt;&amp;quot;--&amp;quot;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Unfortunately this is IPv4 only currently, there&#39;s a &lt;a href=&#34;http://forum.nginx.org/read.php?29,232648&#34;&gt;thread on the nginx mailing list from November 2012&lt;/a&gt; saying IPv6 support should be coming on the v1.3 branch of nginx, but with no known ETA. So currently for IPv6 support, take a look at &lt;a href=&#34;https://github.com/emberads/trifle#readme&#34;&gt;EmberAds&#39; trifle gem&lt;/a&gt; instead.&lt;/p&gt;</description></item><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p&gt;Dear future Caius searching for this issue,&lt;/p&gt;
+&lt;p&gt;The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is &lt;code&gt;libqt4-dev&lt;/code&gt;. That is, to &lt;code&gt;gem install capybara-webkit&lt;/code&gt;, you need to run &lt;code&gt;aptitude install libqt4-dev&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Yours helpfully,&lt;br /&gt;
+Past Caius&lt;/p&gt;</description></item><item><title>at(1) on OS X</title><link>https://caiustheory.com/at-1-on-os-x/</link><pubDate>Mon, 28 Dec 2009 09:30:30 +0000</pubDate><guid>https://caiustheory.com/at-1-on-os-x/</guid><description>&lt;p&gt;I recently came across the &lt;a href=&#34;http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man1/at.1.html&#34;&gt;&lt;code&gt;at(1)&lt;/code&gt;&lt;/a&gt; command, and wondered why it wasn&#39;t executing jobs I gave it on my machine. Had a poke around the man pages, and discovered in &lt;a href=&#34;http://developer.apple.com/mac/library/documentation/Darwin/Reference/ManPages/man8/atrun.8.html&#34;&gt;&lt;code&gt;atrun(8)&lt;/code&gt;&lt;/a&gt; that by default &lt;code&gt;launchd(8)&lt;/code&gt; has the &lt;code&gt;atrun&lt;/code&gt; entry disabled.&lt;/p&gt;
+&lt;p&gt;To enable it (and have &lt;code&gt;at&lt;/code&gt; jobs fire) you simply need to run the following command once:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.atrun.plist&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Personally I&#39;ve taken to using this to sleep my machine after a custom amount of time, mainly because my alarm clock/sleep timer of choice (&lt;a href=&#34;http://embraceware.com/awaken/&#34;&gt;Awaken&lt;/a&gt;) can&#39;t handle playing &lt;a href=&#34;http://www.spotify.com/&#34;&gt;Spotify&lt;/a&gt; for x minutes and then sleeping the machine. The following command puts the machine to sleep, which (quite effectively) silences spotify.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;osascript -e &amp;#39;tell app \&amp;#34;Finder\&amp;#34; to sleep&amp;#39;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; at &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;:00am&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;See the &lt;a href=&#34;http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man1/at.1.html&#34;&gt;&lt;code&gt;at(1)&lt;/code&gt;&lt;/a&gt; manpage for how to specify the time, but as I&#39;m only ever scheduling it on the same day (usually 20 minutes or so in advance), just passing the time works fine.&lt;/p&gt;</description></item><item><title>Ignore .gitignore in Git</title><link>https://caiustheory.com/ignore-gitignore-in-git/</link><pubDate>Mon, 21 Sep 2009 06:00:00 +0000</pubDate><guid>https://caiustheory.com/ignore-gitignore-in-git/</guid><description>&lt;p&gt;Recently I ran into an issue where I was working on a project which had files I wanted git to ignore, but I didn&#39;t want to commit a &lt;code&gt;.gitignore&lt;/code&gt; file into the project. In case you don&#39;t know, any files matching a pattern in &lt;code&gt;.gitignore&lt;/code&gt; in a git repository are ignored by git. (Unless the file(s) have already been committed, then they need removing from git before they are ignored.)&lt;/p&gt;
+&lt;p&gt;Initially I figured I could just throw the patterns I needed excluded into my global &lt;code&gt;~/.gitignore&lt;/code&gt;, but quickly realised that I needed files matching these patterns to show up in other git repos, so going the global route really wasn&#39;t an option. After some thought I wondered if you could make git ignore &lt;code&gt;.gitignore&lt;/code&gt;, whilst still getting it to ignore files matching the other patterns in the &lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Lets create a new empty repo to test this crazy idea in:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mkdir foo
+$ cd foo
+$ git init
+Initialized empty Git repository in /Volumes/Brutus/Users/caius/foo/.git/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And create a couple of files for us to play with:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ touch bar
+$ touch baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ignore one of the files so we can check other matches are still ignored later on:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;baz&amp;quot; &amp;gt;&amp;gt; .gitignore
+$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+# (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+#
+# .gitignore
+# bar
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ok so far, but we can still see .gitignore in git, so now for the crazy shindig, ignore the ignore file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;.gitignore&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lets see if it worked, or if we can still see our .gitignore:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+# (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+#
+# bar
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And lets just double-check that &lt;code&gt;.gitignore&lt;/code&gt; and &lt;code&gt;baz&lt;/code&gt; still exist on the filesystem:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls -a
+. .. .git .gitignore bar baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Fantastic! Turns out adding &amp;quot;.gitignore&amp;quot; to &lt;code&gt;.gitignore&lt;/code&gt; works perfectly. The file is still parsed by git to ignore everything else too, so it does exactly what I needed in this instance.&lt;/p&gt;</description></item><item><title>Capitalise &#34;ringer&#34; on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p&gt;&lt;strong&gt;Backstory:&lt;/strong&gt; Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;quot;ringer&amp;quot; across the top. But when you have headphones plugged in, it says &amp;quot;Headphones&amp;quot;. &lt;em&gt;(Note the capitalisation difference.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Now I&#39;m not usually bothered by stuff like this (honest!) but as soon as I&#39;d noticed the &lt;em&gt;&amp;quot;bug&amp;quot;&lt;/em&gt;, I couldn&#39;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&#39;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code&gt;/System&lt;/code&gt; folder. And I&#39;d be able to change it!&lt;/p&gt;
+&lt;p&gt;Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&#39;s SSH server on and go looking for the setting. To do so I figured I&#39;d just need &lt;code&gt;grep&lt;/code&gt; installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p&gt;
+&lt;p&gt;So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the iPhone
+$ cd /System/Library/
+$ grep -r &amp;quot;ringer&amp;quot; *
+Binary file CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings matches
+Binary file CoreServices/SpringBoard.app/M68AP.plist matches
+Binary file CoreServices/SpringBoard.app/SpringBoard matches
+Binary file Frameworks/CFNetwork.framework/CFNetwork matches
+Binary file Frameworks/CFNetwork.framework/da.lproj/Localizable.strings matches
+Binary file Frameworks/CFNetwork.framework/no.lproj/Localizable.strings matches
+Binary file Frameworks/Foundation.framework/da.lproj/URL.strings matches
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;At which point I stopped the grep search (&lt;code&gt;^C&lt;/code&gt;) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code&gt;SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code&gt;. Making sure to have SSH enabled on your mac, a simple &lt;code&gt;scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code&gt; later and the file is sat in my home folder on my mac.&lt;/p&gt;
+&lt;p&gt;Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&#39;ve found a hint on &lt;a href=&#34;http://macosxhints.com&#34;&gt;MacOSXHints&lt;/a&gt; telling me how to convert from &lt;a href=&#34;http://www.macosxhints.com/article.php?story=20050430105126392&#34;&gt;binary to xml plist format&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the mac
+$ plutil -convert xml1 SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;quot;ringer&amp;quot; and I found the following lines:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;key&amp;gt;&lt;/span&gt;RINGER_VOLUME&lt;span class=&#34;nt&#34;&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;string&amp;gt;&lt;/span&gt;ringer&lt;span class=&#34;nt&#34;&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Change the &amp;quot;ringer&amp;quot; to &amp;quot;Ringer&amp;quot; between the &lt;code&gt;&amp;lt;string&amp;gt;&lt;/code&gt; and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code&gt;.string&lt;/code&gt;. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code&gt;xml1&lt;/code&gt; in the previous command to &lt;code&gt;binary1&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the mac
+$ plutil -convert binary1 SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&#39;ve edited:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# On the iPhone
+$ cd ~
+$ scp user@mac_name.local:SpringBoard.strings .
+$ cd /System/Library/CoreServices/SpringBoard.app/English.lproj/
+$ mv SpringBoard.strings SpringBoard.strings.bak
+$ cp ~/SpringBoard.strings SpringBoard.strings
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then restart the phone, either in the usual manner or just run &lt;code&gt;reboot&lt;/code&gt; on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;quot;Ringer&amp;quot;!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://caius.name/images/ringer.jpg&#34; alt=&#34;Screenshot of Volume bezel&#34; /&gt;&lt;/p&gt;</description></item><item><title>Automatically Deploying Website From Remote Git Repository</title><link>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</link><pubDate>Sat, 30 May 2009 02:30:40 +0000</pubDate><guid>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</guid><description>
+&lt;p&gt;Before I start, I&#39;ll just quickly run through where I put stuff on my server. Apache logs and config are in the ubuntu default folders: &lt;code&gt;/var/log/apache2&lt;/code&gt; and &lt;code&gt;/etc/apache2/&lt;/code&gt; respectively.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Websites: /home/caius/vhosts/&amp;lt;domain name&amp;gt;/htdocs
+Git Repos: /home/caius/git/&amp;lt;domain name&amp;gt;.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So I have a git repo locally, &lt;code&gt;~/projects/somesite.com/&lt;/code&gt;, and want to deploy it to my webserver. I&#39;ll keep the git repo in &lt;code&gt;~/git/&lt;/code&gt; and set it up so that when I push to the repo &lt;em&gt;(over ssh)&lt;/em&gt; it will automatically checkout the new changes into the website&#39;s htdocs folder.&lt;/p&gt;
+&lt;p&gt;I&#39;m assuming DNS is already setup (or I&#39;ve used &lt;a href=&#34;http://github.com/bjeanes/ghost/tree/master&#34;&gt;ghost&lt;/a&gt; to map it locally.) And that I&#39;ve setup the virtualhost in apache pointing at &lt;code&gt;/home/caius/vhosts/somesite.com/htdocs&lt;/code&gt; and reloaded apache so the config is in place.&lt;/p&gt;
+&lt;h2 id=&#34;remote-machine&#34;&gt;Remote Machine&lt;/h2&gt;
+&lt;p&gt;We create a bare git repo, then point the working tree at the docroot of our website. This means all the git stuff is kept in the &lt;code&gt;somesite.git&lt;/code&gt; folder, but the files themselves are checked out to the website&#39;s folder. Then we setup a post-receive hook to update the worktree folder after new changes have been pushed to the repo.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cd git
+$ mkdir somesite.git
+$ cd somesite.git/
+$ git init --bare
+Initialized empty Git repository in /home/caius/git/somesite.git/
+$ git --bare update-server-info
+$ git config core.worktree /home/caius/vhosts/somesite.com/htdocs
+$ git config core.bare false
+$ git config receive.denycurrentbranch ignore
+$ cat &amp;gt; hooks/post-receive
+#!/bin/sh
+git checkout -f
+^D
+$ chmod +x hooks/post-receive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;local-machine&#34;&gt;Local Machine&lt;/h2&gt;
+&lt;p&gt;And now on the client machine we add the remote repo as a git remote, and then push to it.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git remote add web ssh://myserver/home/caius/git/somesite.git
+$ git push web +master:refs/heads/master
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 229 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To ssh://myserver/home/caius/git/somesite.git
+* [new branch] master -&amp;gt; master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;all-done&#34;&gt;All Done&lt;/h2&gt;
+&lt;p&gt;And now if you go to &lt;em&gt;somesite.com&lt;/em&gt; you&#39;ll see the contents of your git repo there. (&lt;em&gt;somesite.com&lt;/em&gt; is just an example url though, I don&#39;t actually own it!)&lt;/p&gt;
+&lt;h3 id=&#34;helpful-urls&#34;&gt;Helpful URLs&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://toroid.org/ams/git-website-howto&#34;&gt;http://toroid.org/ams/git-website-howto&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.mblondel.org/journal/2008/05/25/git-memo/&#34;&gt;http://www.mblondel.org/journal/2008/05/25/git-memo/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&#34;&gt;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Find shell commands with which</title><link>https://caiustheory.com/find-shell-commands-with-which/</link><pubDate>Sun, 19 Apr 2009 15:02:04 +0000</pubDate><guid>https://caiustheory.com/find-shell-commands-with-which/</guid><description>&lt;p&gt;So I have this command in my $PATH, &lt;code&gt;apachectl&lt;/code&gt;. Because I&#39;m on a mac and I&#39;ve installed apache2 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt;, the command that gets found first is my macports install in &lt;code&gt;/opt&lt;/code&gt;. Up until now I&#39;ve always known that &lt;code&gt;which apachectl&lt;/code&gt; will find that location, but to find any other locations of &lt;code&gt;apachectl&lt;/code&gt; I&#39;d usually use &lt;code&gt;locate&lt;/code&gt; and &lt;code&gt;egrep&lt;/code&gt; together.&lt;/p&gt;
+&lt;p&gt;Here&#39;s my original workflow, lets find the location of the &lt;code&gt;apachectl&lt;/code&gt; being called when I don&#39;t specify a path.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Julius:~ caius$ which apachectl
+/opt/local/apache2/bin/apachectl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Simple enough. Now lets figure out what other locations there&#39;s an &lt;code&gt;apachectl&lt;/code&gt; installed at.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Julius:~ caius$ locate apachectl | egrep &amp;quot;\/apachectl$&amp;quot;
+/opt/local/apache2/bin/apachectl
+/opt/local/var/macports/software/apache2/2.2.11_0+darwin_9/opt/local/apache2/bin/apachectl
+/usr/sbin/apachectl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Right, so now I know where else a command exists in the filesystem called &lt;code&gt;apachectl&lt;/code&gt;, but I don&#39;t know if any of those is in my $PATH, or what order they come in when searching through my $PATH. In this (old) workflow I&#39;d have compared them to my $PATH manually as there&#39;s so few of them.&lt;/p&gt;
+&lt;p&gt;So I noticed &lt;a href=&#34;http://awhitebox.com&#34;&gt;Ali&lt;/a&gt; googling for the &lt;code&gt;which&lt;/code&gt; man page on IRC, and &lt;em&gt;(quite stupidly)&lt;/em&gt; poked fun at him for doing so. I then swallowed my ego and actually followed the link to the man page, and boy was I glad I did. Just shows with even a fairly simple command like &lt;code&gt;which&lt;/code&gt;, you sure don&#39;t know everything!&lt;/p&gt;
+&lt;p&gt;What I discovered was that &lt;code&gt;which&lt;/code&gt; has a single flag you can pass it, &lt;code&gt;-a&lt;/code&gt;. From the &lt;a href=&#34;https://www.freebsd.org/cgi/man.cgi?query=which&amp;amp;format=html&#34;&gt;man page&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-a print all matching pathnames of each argument
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Right. So that &lt;code&gt;locate | grep&lt;/code&gt; command plus manually figuring out what is in my $PATH is really hard work then. &lt;code&gt;which -a&lt;/code&gt; should give us the same results, but a lot faster and with a lot less manual thought.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Julius:~ caius$ which -a apachectl
+/opt/local/apache2/bin/apachectl
+/usr/sbin/apachectl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And hey presto, yet another useful bit of bash knowledge for me, thanks to &lt;a href=&#34;http://awhitebox.com&#34;&gt;Ali&lt;/a&gt; not being afraid to &lt;acronym title=&#34;Read the Fucking Manual&#34;&gt;RTFM&lt;/acronym&gt;!&lt;/p&gt;</description></item><item><title>Migrating Rubygems to Ruby 1.9.x</title><link>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</link><pubDate>Sat, 31 Jan 2009 20:29:57 +0000</pubDate><guid>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</guid><description>&lt;p&gt;So I just installed ruby 1.9.1 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt; and wanted to easily migrate my rubygems across from 1.8 to see which ones would fail to install.&lt;/p&gt;
+&lt;p&gt;Thought about it for a while, then came up with the following bash one-liner to do it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;gem list &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;(&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $1 }&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -L &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; gem1.9 install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;NB:&lt;/strong&gt; Installing Ruby 1.9.1 through macports &lt;code&gt;sudo port install ruby19&lt;/code&gt; means I get &lt;code&gt;ruby1.9&lt;/code&gt;, &lt;code&gt;gem1.9&lt;/code&gt; and &lt;code&gt;rake1.9&lt;/code&gt; installed alongside my usual 1.8 &lt;code&gt;ruby&lt;/code&gt;, &lt;code&gt;gem&lt;/code&gt; and &lt;code&gt;rake&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;That grabs the list of installed gems from &lt;code&gt;gem&lt;/code&gt;, searches for lines containing &amp;quot;(&amp;quot; so it only grabs the gem names, spits out the first section of the line, which is the name of the gem, and finally calls &lt;code&gt;gem1.9 install&lt;/code&gt; for each line via &lt;code&gt;xargs -L 1&lt;/code&gt;. Make sure to run it as root or prefix &lt;code&gt;gem1.9&lt;/code&gt; with &lt;code&gt;sudo&lt;/code&gt;. &lt;em&gt;(Or let it install in your home folder, but I hate that.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;From my quick run of the above snippet, 75% of my gems installed &lt;em&gt;(73 out of 98)&lt;/em&gt; and the other few that failed to install were ones like &lt;a href=&#34;http://github.com/why/hpricot/tree/master&#34;&gt;Hpricot&lt;/a&gt; that require native extensions compiling. You can see the entire list of failures and successes of the gems in &lt;a href=&#34;http://pastie.textmate.org/pastes/376136&#34;&gt;this pastie&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Install Mysql Gem on Leopard</title><link>https://caiustheory.com/install-mysql-gem-on-leopard/</link><pubDate>Wed, 21 Jan 2009 17:09:41 +0000</pubDate><guid>https://caiustheory.com/install-mysql-gem-on-leopard/</guid><description>
+&lt;p&gt;So, I keep having to reinstall mysql5 and rubygems from time to time for various reasons. I always install mysql5 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt; as a dependency for the php5 port (along with various other bits for the LA*P stack).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo port install php5 +mysql5 +pear +readline +sockets +apache2 +sqlite&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Once this is installed then I have &lt;code&gt;mysql&lt;/code&gt; and can setup my databases, etc.&lt;/p&gt;
+&lt;p&gt;Ignoring the rest of the LAMP stack, I then need to connect Ruby to the Mysql I just installed through MacPorts. Its quite simple to do, once you know the right argument to pass to it. The easiest way is to just tell it where the &lt;code&gt;mysql5_conf&lt;/code&gt; file is and let it figure out the rest for itself.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo gem install mysql -- --with-mysql-config&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/local/bin/mysql_config5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Hopefully this will save me 10 minutes of googling next time I need to do this!&lt;/p&gt;
+&lt;h3 id=&#34;update-2009-01-21&#34;&gt;Update 2009-01-21&lt;/h3&gt;
+&lt;p&gt;I&#39;m an idiot and typed the &lt;code&gt;gem install&lt;/code&gt; command by hand, and ended up with &lt;code&gt;--with-mysql-conf&lt;/code&gt; instead of &lt;code&gt;--with-mysql-config&lt;/code&gt;. Updated now.&lt;/p&gt;
+&lt;h3 id=&#34;update-2009-10-19&#34;&gt;Update 2009-10-19&lt;/h3&gt;
+&lt;p&gt;On Snow Leopard I needed to tell rubygems to install the gem as a 64-bit binary. Hattip to &lt;a href=&#34;http://www.schmidp.com/2009/06/14/rubyrails-and-mysql-on-snow-leopard-10a380/comment-page-1/&#34;&gt;Philipp&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo env &lt;span class=&#34;nv&#34;&gt;ARCHFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;-arch x86_64&amp;#34;&lt;/span&gt; gem install mysql -- &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; --with-mysql-config&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/local/bin/mysql_config5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>The Shell Meme</title><link>https://caiustheory.com/the-shell-meme/</link><pubDate>Tue, 30 Dec 2008 18:29:35 +0000</pubDate><guid>https://caiustheory.com/the-shell-meme/</guid><description>&lt;p&gt;I ran across &lt;a href=&#34;http://lstoll.net/2008/04/shell-meme/&#34;&gt;The Shell Meme&lt;/a&gt; on &lt;a href=&#34;http://lstoll.net/&#34;&gt;Lincoln Stoll&#39;s&lt;/a&gt; blog, and figured I&#39;d, uh, &lt;em&gt;borrow&lt;/em&gt; it.&lt;/p&gt;
+&lt;p&gt;Run this command in a new shell:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;history&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ a[$2]++ } END { for(i in a){printf &amp;#34;%5d\t%s\n &amp;#34;,a[i],i} }&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; sort -rn &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; head&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I get this as the output&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;379 git
+221 cd
+181 ssh
+77 sudo
+69 ruby
+66 ls
+34 rake
+33 m
+32 bb
+31 m.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;bb&lt;/code&gt; changes directory straight into my &lt;a href=&#34;http://www.brightbox.co.uk/&#34;&gt;BrightBox&lt;/a&gt; source directory. &lt;code&gt;m&lt;/code&gt; and &lt;code&gt;m.&lt;/code&gt; are &lt;a href=&#34;http://macromates.com/&#34;&gt;TextMate&lt;/a&gt; alias&#39;s to open files or directories in TextMate for editing.&lt;/p&gt;</description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p&gt;I decided to install ubuntu onto my iMac G3&lt;ref&gt;450Mhz G3, 768mb ram, 20GB Hard Drive&lt;/ref&gt; to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em&gt;slightly&lt;/em&gt; outdated and 100% 404.&lt;/p&gt;
+&lt;p&gt;Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;When the screen goes black, drop to the console&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Control - Option - F2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;(if you need to log in use the name ubuntu to log in.)&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo nano /etc/X11/xorg.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Change the frequencies in monitor section as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section “Monitor”
+Identifier “Generic Monitor”
+Option “DPMS”
+HorizSync 60-60
+VertRefresh 43-117
+EndSection
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;After the changes then type &lt;code&gt;control-o&lt;/code&gt;, &lt;code&gt;return&lt;/code&gt; (to accept the filename), then &lt;code&gt;control-x&lt;/code&gt; (save and exit nano)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Restart X by running the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Adding a remote to existing git repo</title><link>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</link><pubDate>Sun, 09 Nov 2008 18:32:55 +0000</pubDate><guid>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</guid><description>
+&lt;p&gt;Usually for me this happens when I have an existing project and I setup a &lt;a href=&#34;http://github.com/&#34;&gt;github&lt;/a&gt; repo for it. As part of the setup for the github project, it gives you the commands to run to add the github repo as a remote to my local git repo.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd existing_git_repo
+git remote add origin git@github.com:caius/foo.git
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The problem then is you&#39;ve added the remote account, but the local master branch isn&#39;t tracking the remote master branch, so when you try and just &lt;code&gt;git pull&lt;/code&gt; it will fail with a message telling you to set the remote refs up.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git pull
+You asked me to pull without telling me which branch you
+want to merge with, and &#39;branch.master.merge&#39; in
+your configuration file does not tell me either. Please
+name which branch you want to merge on the command line and
+try again (e.g. &#39;git pull &amp;lt;repository&amp;gt; &amp;lt;refspec&amp;gt;&#39;).
+See git-pull(1) for details on the refspec.
+If you often merge with the same branch, you may want to
+configure the following variables in your configuration
+file:
+branch.master.remote = &amp;lt;nickname&amp;gt;
+branch.master.merge = &amp;lt;remote-ref&amp;gt;
+remote.&amp;lt;nickname&amp;gt;.url = &amp;lt;url&amp;gt;
+remote.&amp;lt;nickname&amp;gt;.fetch = &amp;lt;refspec&amp;gt;
+See git-config(1) for details.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The answer is to do what it says funnily enough, and add the remote refs tracking to the config file. The easiest way I&#39;ve found of doing this is to edit &lt;code&gt;.git/config&lt;/code&gt; and add the following at the bottom of it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;k&#34;&gt;[branch &amp;#34;master&amp;#34;]&lt;/span&gt;
+&lt;span class=&#34;na&#34;&gt;remote&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;origin
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; merge = refs/heads/master&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Remember to change the branch or remote names if you need to.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Once you&#39;ve added that to the config you can run &lt;code&gt;git pull&lt;/code&gt; on the master branch and it&#39;ll do the usual automagical thing and pull the remote master branch changes into the local one!&lt;/p&gt;
+&lt;h4 id=&#34;updated-2008-11-09&#34;&gt;Updated 2008-11-09&lt;/h4&gt;
+&lt;p&gt;See CiarÃƒÂ¡n&#39;s comment below for an all-inclusive command to do the above.&lt;/p&gt;</description></item><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>
+&lt;p&gt;When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em&gt;Rspec&lt;/em&gt; testing framework instead of the built-in &lt;em&gt;Test::Unit&lt;/em&gt; and &lt;em&gt;jQuery&lt;/em&gt; instead of &lt;em&gt;prototype&lt;/em&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://rspec.info/&#34;&gt;Rspec&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/rahoulb/rspec-rails/wikis&#34;&gt;Rspec-rails&lt;/a&gt; &lt;em&gt;(NB: I use &lt;a href=&#34;http://3hv.co.uk&#34;&gt;rahoul&lt;/a&gt;&#39;s fork of rspec-rails)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/aslakhellesoy/cucumber/wikis&#34;&gt;Cucumber&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/brynary/webrat/wikis&#34;&gt;Webrat&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ennerchi.com/projects/jrails&#34;&gt;jRails&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk&#34;&gt;Demeters Revenge&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And here are the commands in the order I run them to create the blank app.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Create the rails app
+cd ~/Sites/apps/
+rails myapp
+cd myapp
+# Setup a git repo
+git init
+# Add all files and make the initial import
+git add .
+git commit -m &amp;quot;Initial Import&amp;quot;
+# Add the plugins as git submodules
+git submodule add git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
+git submodule add git://github.com/rahoulb/rspec-rails.git vendor/plugins/rspec-rails
+git submodule add git://github.com/aslakhellesoy/cucumber.git vendor/plugins/cucumber
+git submodule add git://github.com/brynary/webrat.git vendor/plugins/webrat
+git submodule add git://github.com/caius/demeters_revenge.git vendor/plugins/demeters_revenge
+# Commit the changes
+git ci -am &amp;quot;Adding all needed submodules&amp;quot;
+# Replace TestUnit with rspec
+git rm -r test/
+ruby script/generate rspec
+# Replace stories with cucumber features
+rm -rf stories/
+ruby script/generate cucumber
+# Add the changes to git
+git add .
+git ci -m &amp;quot;Committing initial rspec/cucumber files&amp;quot;
+# Install jRails, we have to install it using script/plugin
+# Remove existing javascript files
+git rm public/javascripts/*
+mkdir public/javascripts
+# Add jrails
+ruby script/plugin install http://ennerchi.googlecode.com/svn/trunk/plugins/jrails
+git add vendor/plugins/jrails/ public/javascripts
+git ci -m &amp;quot;Adding jRails to replace Prototype&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p&gt;
+&lt;h4 id=&#34;updated-2008-11-04&#34;&gt;Updated 2008-11-04&lt;/h4&gt;
+&lt;p&gt;Added demeters revenge and jRails plugins.&lt;/p&gt;
+&lt;h4 id=&#34;update-2008-11-05&#34;&gt;Update 2008-11-05&lt;/h4&gt;
+&lt;p&gt;I&#39;ve also blogged the &lt;a href=&#34;http://swedishcampground.com/setting-up-git-with-rails-apps&#34;&gt;.gitignore&lt;/a&gt; file I use with rails apps as well. Usually add it into my apps before running &lt;code&gt;git init&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Command line tricks: Scripting Languages</title><link>https://caiustheory.com/command-line-tricks-scripting-languages/</link><pubDate>Thu, 14 Feb 2008 16:24:27 +0000</pubDate><guid>https://caiustheory.com/command-line-tricks-scripting-languages/</guid><description>
+&lt;p&gt;To search your php.ini file quickly and easily with the option to use regular expressions, I tend to drop back to the &lt;acronym title=&#34;command line interface&#34;&gt;cli&lt;/acronym&gt;. The reason for this is I can easily parse the output of &lt;code&gt;phpinfo()&lt;/code&gt; with &lt;code&gt;grep&lt;/code&gt;, and can do various things with the output, could even pass it to a script if I really wanted to.&lt;/p&gt;
+&lt;p&gt;Here is the line I use to search &lt;code&gt;phpinfo()&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;lt;?php phpinfo() ?&amp;gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; php &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -i &lt;span class=&#34;nv&#34;&gt;$search_string&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It passes the string through the php interpreter and then searches through it with grep.&lt;/p&gt;
+&lt;p&gt;You can also do other nifty things with the shell &amp;amp; php + ruby especially (though I imagine python &amp;amp; perl work in the same way.) For instance I wanted to see if the following ruby would return the number of seconds since the &lt;a href=&#34;http:/en.wikipedia.org/wiki/Unix_Time&#34;&gt;epoch&lt;/a&gt; till now.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Time&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;now&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_i&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now I could fire up a PHP page and do something like the following&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;php: &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;time&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;ruby: &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;sb&#34;&gt;`ruby -e &amp;#39;print Time.now.to_i&amp;#39;`&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;But what if I&#39;ve not got a web server with PHP running on the machine I&#39;m using? Well then I could drop back to the shell and run it through &lt;code&gt;php&lt;/code&gt; using &lt;code&gt;cat&lt;/code&gt; as a way to insert multiple lines, and it would look like the following&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;cat &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;PHP | php
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;lt;?php
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; echo &amp;#34;php: &amp;#34; . time() . &amp;#34;\n&amp;#34;;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; echo &amp;#34;ruby: &amp;#34; . `ruby -e &amp;#39;print Time.now.to_i&amp;#39;` . &amp;#34;\n&amp;#34;;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;PHP&lt;/span&gt;
+php: &lt;span class=&#34;m&#34;&gt;1203004463&lt;/span&gt;
+ruby: &lt;span class=&#34;m&#34;&gt;1203004463&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now this works, but why do I want to remember all that php, and seeing as I have to drop back to the shell to access the ruby statement, why not just let the shell do all the work? So after a few seconds thinking, I came up with this&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;puts &amp;#34;ruby: #{Time.now.to_i}&amp;#34;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;lt;?php echo &amp;#34;PHP: &amp;#34; . time() . &amp;#34;\n&amp;#34; ?&amp;gt;&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; php&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This runs the ruby code through &lt;code&gt;ruby&lt;/code&gt; and the php code through &lt;code&gt;php&lt;/code&gt; without dropping back to the shell from within a language interpreter :)&lt;/p&gt;
+&lt;h3 id=&#34;update&#34;&gt;Update:&lt;/h3&gt;
+&lt;p&gt;Fangel pointed out &lt;code&gt;php -r&lt;/code&gt; is the equivilent of &lt;code&gt;ruby -e&lt;/code&gt; so the final commands could just be:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;puts &amp;#34;ruby: #{Time.now.to_i}&amp;#34;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;php -r &lt;span class=&#34;s1&#34;&gt;&amp;#39;echo &amp;#34;PHP: &amp;#34;.time().&amp;#34;\n&amp;#34;;&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>

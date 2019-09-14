@@ -1,0 +1,36 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RPi on Caius Theory</title><link>https://caiustheory.com/tag/rpi/</link><description>Recent content in RPi on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 09 May 2017 20:55:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/rpi/index.xml" rel="self" type="application/rss+xml"/><item><title>Raspberry Pi 3 as an emergency router</title><link>https://caiustheory.com/raspberry-pi-3-as-an-emergency-router/</link><pubDate>Tue, 09 May 2017 20:55:00 +0000</pubDate><guid>https://caiustheory.com/raspberry-pi-3-as-an-emergency-router/</guid><description>&lt;p&gt;Given a dead router, how do you get back online whilst you wait for the replacement part to arrive? Grab a Raspberry Pi 3 off the shelf, along with a USB to Ethernet adapter and hey presto the internet works again.&lt;/p&gt;
+&lt;p&gt;This is with a fibre modem (FTTC), using PPPoE to connect out. Plug the modem (WAN) into the RPi&#39;s ethernet port, and plug the LAN switch into the USB adapter.&lt;/p&gt;
+&lt;p&gt;First thing is to get the WAN link working, get it talking PPPoE to the ISP. Usually this will be configured in &lt;code&gt;/etc/ppp/pppoe.conf&lt;/code&gt; (depends on your linux distro). (That&#39;ll require your username/password for your ISP usually too.)&lt;/p&gt;
+&lt;p&gt;Get it up &amp;amp; connected, and make sure you can ping the internet from the RPi. Then it&#39;s time to get the LAN working. Give it a static IP in the range you want shared out.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# /etc/network/interfaces
+iface eth0 inet static
+address 192.168.1.1
+netmask 255.255.255.0
+gateway 192.168.1.1
+auto eth1
+iface eth1 inet dhcp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Get a dhcp server running on the LAN connection,&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# /etc/dhcpcd.conf
+interface eth0
+static ip_address=192.168.1.1
+static routers=192.168.1.1
+static domain_name_servers=8.8.8.8,8.8.4.4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then it&#39;s time to handle WAN -&amp;gt; LAN traffic and the reverse. Make sure you have packet forwarding enabled, and then setup the firewall to handle NAT and also keep out undesirable traffic.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sysctl net.ipv4.ip_forward&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -i eth0 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type any -j ACCEPT
+iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+iptables -A INPUT -f -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
+iptables -A INPUT -j DROP&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Hey presto, you have a working emergency router. In testing I found my fibre connection (80/20Mb) was slower than the traffic the RPi could push, so didn&#39;t notice any difference vs my normal router. (Although I did disable a bunch of automated stuff, so there was less contention on the WAN link.)&lt;/p&gt;</description></item></channel></rss>

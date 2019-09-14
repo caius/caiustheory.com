@@ -1,0 +1,26 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>github on Caius Theory</title><link>https://caiustheory.com/tag/github/</link><description>Recent content in github on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sun, 17 Mar 2019 14:32:30 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/github/index.xml" rel="self" type="application/rss+xml"/><item><title>Download All Your Gists</title><link>https://caiustheory.com/download-all-your-gists/</link><pubDate>Sun, 17 Mar 2019 14:32:30 +0000</pubDate><guid>https://caiustheory.com/download-all-your-gists/</guid><description>&lt;p&gt;Over time I&#39;ve managed to build up quite the collection of &lt;a href=&#34;https://gist.github.com/&#34;&gt;Gists&lt;/a&gt; over at Github, including secret ones there&#39;s about 1200 currently. Some of these have useful code in, some are just garbage output. I&#39;d quite like a local copy either way, so I can easily search&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; across them.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Install the &lt;code&gt;gist&lt;/code&gt; command from Github&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;brew install gist&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Login to your Github Account through the gist tool (it&#39;ll prompt for your login credentials, then generate you an API Token to allow it future access.)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;gist --login&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Create a folder, go inside it and download all your gists!&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir gist_archive
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gist_archive
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; repo in &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;gist -l &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $1 }&amp;#39;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; git clone &lt;span class=&#34;nv&#34;&gt;$repo&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&amp;gt; /dev/null&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Now you have a snapshot of all your gists. To update them in future, you can run the above for any new gists, and update all the existing ones with:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gist_archive
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; i in */&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git pull --rebase&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now go forth and search out your favourite snippet you saved years ago and forgot about!&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://beyondgrep.com&#34;&gt;ack&lt;/a&gt;, &lt;a href=&#34;https://geoff.greer.fm/ag/&#34;&gt;ag&lt;/a&gt;, &lt;a href=&#34;https://www.freebsd.org/cgi/man.cgi?query=grep&amp;amp;sektion=&amp;amp;n=1&#34;&gt;grep&lt;/a&gt;, &lt;a href=&#34;https://github.com/BurntSushi/ripgrep&#34;&gt;ripgrep&lt;/a&gt;, etc. Pick your flavour.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description></item></channel></rss>

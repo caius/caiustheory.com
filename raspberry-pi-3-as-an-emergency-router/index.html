@@ -1,0 +1,35 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-clacks-overhead content="GNU Terry Pratchett, John Peel, Steve Jobs, Steve Irwin"><title>Raspberry Pi 3 as an emergency router - CaiusTheory</title><link rel=alternate type=application/atom+xml title="Caius Theory" href=https://caiustheory.com/feed.xml><link rel=alternate type=application/json title="Caius Theory" href=https://caiustheory.com/feed.json><link rel=stylesheet href=https://caiustheory.com/css/stylesheet.min.0a05db60ce3fa0e0c5aae6e4d9fdf0549192f7b5b50ffe3fc27a746a25934dc7.css type=text/css media=screen title="no title"><meta property=og:title content="Raspberry Pi 3 as an emergency router"><meta property=og:description content="Given a dead router, how do you get back online whilst you wait for the replacement part to arrive? Grab a Raspberry Pi 3 off the shelf, along with a USB to Ethernet adapter and hey presto the internet works again.
+This is with a fibre modem (FTTC), using PPPoE to connect out. Plug the modem (WAN) into the RPi's ethernet port, and plug the LAN switch into the USB adapter."><meta property=og:type content=article><meta property=og:url content=https://caiustheory.com/raspberry-pi-3-as-an-emergency-router/><meta property=article:published_time content=2017-05-09T20:55:00&#43;00:00><meta property=article:modified_time content=2017-08-07T00:01:15&#43;01:00><meta name=twitter:card content=summary><meta name=twitter:title content="Raspberry Pi 3 as an emergency router"><meta name=twitter:description content="Given a dead router, how do you get back online whilst you wait for the replacement part to arrive? Grab a Raspberry Pi 3 off the shelf, along with a USB to Ethernet adapter and hey presto the internet works again.
+This is with a fibre modem (FTTC), using PPPoE to connect out. Plug the modem (WAN) into the RPi's ethernet port, and plug the LAN switch into the USB adapter."></head><body><header><h1><a href=/>Caius Theory</a></h1><h2>Now with even more cowbell&hellip;</h2></header><main><article><header><h1><a href=https://caiustheory.com/raspberry-pi-3-as-an-emergency-router/>Raspberry Pi 3 as an emergency router</a></h1><time datetime=2017-05-09T20:55:00Z>2017-05-09 20:55:00</time></header><p>Given a dead router, how do you get back online whilst you wait for the replacement part to arrive? Grab a Raspberry Pi 3 off the shelf, along with a USB to Ethernet adapter and hey presto the internet works again.</p><p>This is with a fibre modem (FTTC), using PPPoE to connect out. Plug the modem (WAN) into the RPi's ethernet port, and plug the LAN switch into the USB adapter.</p><p>First thing is to get the WAN link working, get it talking PPPoE to the ISP. Usually this will be configured in <code>/etc/ppp/pppoe.conf</code> (depends on your linux distro). (That'll require your username/password for your ISP usually too.)</p><p>Get it up &amp; connected, and make sure you can ping the internet from the RPi. Then it's time to get the LAN working. Give it a static IP in the range you want shared out.</p><pre><code># /etc/network/interfaces
+iface eth0 inet static
+  address 192.168.1.1
+  netmask 255.255.255.0
+  gateway 192.168.1.1
+
+auto eth1
+iface eth1 inet dhcp
+</code></pre><p>Get a dhcp server running on the LAN connection,</p><pre><code># /etc/dhcpcd.conf
+interface eth0
+static ip_address=192.168.1.1
+static routers=192.168.1.1
+static domain_name_servers=8.8.8.8,8.8.4.4
+</code></pre><p>And then it's time to handle WAN -&gt; LAN traffic and the reverse. Make sure you have packet forwarding enabled, and then setup the firewall to handle NAT and also keep out undesirable traffic.</p><div class=highlight><pre class=chroma><code class=language-shell data-lang=shell>sysctl net.ipv4.ip_forward<span class=o>=</span><span class=m>1</span>
+
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -i eth0 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type any -j ACCEPT
+iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+iptables -A INPUT -f -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
+iptables -A INPUT -j DROP</code></pre></div><p>Hey presto, you have a working emergency router. In testing I found my fibre connection (80/20Mb) was slower than the traffic the RPi could push, so didn't notice any difference vs my normal router. (Although I did disable a bunch of automated stuff, so there was less contention on the WAN link.)</p><footer><p class=tags><strong>Tags:</strong> <a class="button is-link" href=/tag/rpi>RPi</a>, <a class="button is-link" href=/tag/networking>networking</a> and <a class="button is-link" href=/tag/unix>unix</a></p><p class=license>This work is licensed under a <a rel=license href=http://creativecommons.org/licenses/by-sa/4.0/>Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p></footer></article><nav><div class=pagination><ul><li class=previous><a href=https://caiustheory.com/finding-cheap-microserver-g8-memory/>Finding cheap Microserver G8 memory</a></li><li class=next><a href=https://caiustheory.com/wenlock-olympian-triathlon-2017/>Wenlock Olympian Triathlon 2017</a></li></ul><span class=clear></span></div></nav></main><footer><p class=first><a href=https://caiustheory.com/>Archive</a>
+&middot;
+<a href=https://caiustheory.com/feed/>Feed (Atom)</a></p><p class=last>Inspired by <a href=https://code.google.com/archive/p/sp-theme/>sp</a></p><span class=clear></span></footer><script>(function(){if(window.location.hostname.indexOf('localhost')>-1){return;}
+var script=document.createElement('script');window.counter='https://caiustheory.goatcounter.com/count'
+script.async=1;script.src='//static.goatcounter.com/count.min.js';var ins=document.getElementsByTagName('script')[0];ins.parentNode.insertBefore(script,ins)})();</script></body></html>

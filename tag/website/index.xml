@@ -1,0 +1,42 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>website on Caius Theory</title><link>https://caiustheory.com/tag/website/</link><description>Recent content in website on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 30 May 2009 02:30:40 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/website/index.xml" rel="self" type="application/rss+xml"/><item><title>Automatically Deploying Website From Remote Git Repository</title><link>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</link><pubDate>Sat, 30 May 2009 02:30:40 +0000</pubDate><guid>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</guid><description>
+&lt;p&gt;Before I start, I&#39;ll just quickly run through where I put stuff on my server. Apache logs and config are in the ubuntu default folders: &lt;code&gt;/var/log/apache2&lt;/code&gt; and &lt;code&gt;/etc/apache2/&lt;/code&gt; respectively.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Websites: /home/caius/vhosts/&amp;lt;domain name&amp;gt;/htdocs
+Git Repos: /home/caius/git/&amp;lt;domain name&amp;gt;.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So I have a git repo locally, &lt;code&gt;~/projects/somesite.com/&lt;/code&gt;, and want to deploy it to my webserver. I&#39;ll keep the git repo in &lt;code&gt;~/git/&lt;/code&gt; and set it up so that when I push to the repo &lt;em&gt;(over ssh)&lt;/em&gt; it will automatically checkout the new changes into the website&#39;s htdocs folder.&lt;/p&gt;
+&lt;p&gt;I&#39;m assuming DNS is already setup (or I&#39;ve used &lt;a href=&#34;http://github.com/bjeanes/ghost/tree/master&#34;&gt;ghost&lt;/a&gt; to map it locally.) And that I&#39;ve setup the virtualhost in apache pointing at &lt;code&gt;/home/caius/vhosts/somesite.com/htdocs&lt;/code&gt; and reloaded apache so the config is in place.&lt;/p&gt;
+&lt;h2 id=&#34;remote-machine&#34;&gt;Remote Machine&lt;/h2&gt;
+&lt;p&gt;We create a bare git repo, then point the working tree at the docroot of our website. This means all the git stuff is kept in the &lt;code&gt;somesite.git&lt;/code&gt; folder, but the files themselves are checked out to the website&#39;s folder. Then we setup a post-receive hook to update the worktree folder after new changes have been pushed to the repo.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cd git
+$ mkdir somesite.git
+$ cd somesite.git/
+$ git init --bare
+Initialized empty Git repository in /home/caius/git/somesite.git/
+$ git --bare update-server-info
+$ git config core.worktree /home/caius/vhosts/somesite.com/htdocs
+$ git config core.bare false
+$ git config receive.denycurrentbranch ignore
+$ cat &amp;gt; hooks/post-receive
+#!/bin/sh
+git checkout -f
+^D
+$ chmod +x hooks/post-receive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;local-machine&#34;&gt;Local Machine&lt;/h2&gt;
+&lt;p&gt;And now on the client machine we add the remote repo as a git remote, and then push to it.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git remote add web ssh://myserver/home/caius/git/somesite.git
+$ git push web +master:refs/heads/master
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 229 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To ssh://myserver/home/caius/git/somesite.git
+* [new branch] master -&amp;gt; master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;all-done&#34;&gt;All Done&lt;/h2&gt;
+&lt;p&gt;And now if you go to &lt;em&gt;somesite.com&lt;/em&gt; you&#39;ll see the contents of your git repo there. (&lt;em&gt;somesite.com&lt;/em&gt; is just an example url though, I don&#39;t actually own it!)&lt;/p&gt;
+&lt;h3 id=&#34;helpful-urls&#34;&gt;Helpful URLs&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://toroid.org/ams/git-website-howto&#34;&gt;http://toroid.org/ams/git-website-howto&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.mblondel.org/journal/2008/05/25/git-memo/&#34;&gt;http://www.mblondel.org/journal/2008/05/25/git-memo/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&#34;&gt;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

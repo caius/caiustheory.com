@@ -1,0 +1,162 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OS X on Caius Theory</title><link>https://caiustheory.com/tag/os-x/</link><description>Recent content in OS X on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Fri, 16 Sep 2016 10:27:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/os-x/index.xml" rel="self" type="application/rss+xml"/><item><title>Remove OS X Disk Password</title><link>https://caiustheory.com/remove-os-x-disk-password/</link><pubDate>Fri, 16 Sep 2016 10:27:00 +0000</pubDate><guid>https://caiustheory.com/remove-os-x-disk-password/</guid><description>&lt;p&gt;I recently reinstalled a laptop and in doing so setup full disk encryption in a slightly strange fashion. The basic flow I followed was:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Boot into Recovery mode (hold ⌘-R at boot)&lt;/li&gt;
+&lt;li&gt;Erase the internal HD as &lt;code&gt;HFS+ (Journaled, Encrypted)&lt;/code&gt; and set a disk password&lt;/li&gt;
+&lt;li&gt;Install OS X onto the internal disk&lt;/li&gt;
+&lt;li&gt;During setup, use Migration Assistant to copy clone containing previous install data from backup disk&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This worked great in the end, once I&#39;d recompiling various utilities I had installed. (Downside of moving from one CPU arch to another - can&#39;t just copy all compiled binaries over.)&lt;/p&gt;
+&lt;p&gt;However, I failed at step 2 above and entered &amp;quot;password&amp;quot; as my disk password since it was only intended to be temporary. Usually OS X&#39;s full disk encryption (FileVault 2) allows the machine users to unlock the disk, and not a standalone password. Due to the slightly odd way I setup the machine, I had the option of either using the disk password or my user account&#39;s password.&lt;/p&gt;
+&lt;p&gt;Having hunted around trying to find how to change or remove this disk password and leave only my users password, I finally stumbled across the magic incantations in an apple discussion thread asking &lt;a href=&#34;https://discussions.apple.com/thread/5105759?start=0&amp;amp;tstart=0&#34;&gt;How to disable &amp;quot;Disk Password&amp;quot; on boot?&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The magic incantations are as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;List all the passwords that can currently unlock the drive&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Make sure there is a second password listed or removing the disk password will lock you out of the disk&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo fdesetup list -extended
+ESCROW UUID TYPE USER
+28376DDE-B6E1-48BE-A06F-4212067581D6 Disk Passphrase User
+4DBF8CEF-40F7-4F00-902F-A47AA643C656 OS User caius
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Note the UUID of the &amp;quot;Disk Passphrase&amp;quot; entry, and remove that from the list&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo fdesetup remove -uuid 28376DDE-B6E1-48BE-A06F-4212067581D6
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;List the passwords again to make sure the Disk Passphrase entry was removed&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo fdesetup list -extended
+ESCROW UUID TYPE USER
+4DBF8CEF-40F7-4F00-902F-A47AA643C656 OS User caius
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hey presto, only your user is left being able to unlock the disk.&lt;/p&gt;</description></item><item><title>Install Rubinius on OS X</title><link>https://caiustheory.com/install-rubinius-on-os-x/</link><pubDate>Wed, 05 Nov 2014 12:50:16 +0000</pubDate><guid>https://caiustheory.com/install-rubinius-on-os-x/</guid><description>&lt;p&gt;Using &lt;a href=&#34;https://github.com/postmodern/ruby-install/&#34;&gt;ruby-install&lt;/a&gt;, &lt;a href=&#34;http://brew.sh/&#34;&gt;homebrew&lt;/a&gt; building it for use with &lt;a href=&#34;https://github.com/postmodern/chruby/&#34;&gt;chruby&lt;/a&gt;, here&#39;s how I install &lt;a href=&#34;http://rubini.us/&#34;&gt;Rubinius&lt;/a&gt; under Yosemite (works for Mavericks as well.)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Make sure llvm is installed&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ brew install llvm
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Prepend the homebrew-installed llvm tools to your path&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ export PATH=&amp;quot;$(brew --prefix llvm)/bin:$PATH&amp;quot;
+# Or, for ZSH
+$ path=( $(brew --prefix llvm)/bin $path )
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Install rubinius, v2.3.0 at the time of writing&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ruby-install rbx 2.3.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open a fresh shell once that&#39;s built, and you should be able to switch to rbx!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ chruby rbx
+$ ruby -v
+rubinius 2.3.0 (2.1.0 9d61df5d 2014-10-31 3.5.0 JI) [x86_64-darwin14.0.0]
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;em&gt;There is also a homebrew tap for rubinius which should also work instead of the above. I couldn&#39;t get it working on one of my laptops though, which is why I was installing by hand using the above instead. The tap is at &lt;a href=&#34;https://github.com/rubinius/homebrew-apps/&#34;&gt;https://github.com/rubinius/homebrew-apps/&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/brixen/status/529725881498226688&#34;&gt;https://twitter.com/brixen/status/529725881498226688&lt;/a&gt; explains install steps.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Use Readline With Default Ruby on OS X</title><link>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</link><pubDate>Sun, 05 Feb 2012 18:13:20 +0000</pubDate><guid>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</guid><description>&lt;p&gt;OS X Lion comes with ruby 1.8.7-p249 installed, although it&#39;s compiled against libedit rather than libreadline. Whilst libedit is a mostly-compatible replacement for libreadline, I find there&#39;s a couple of settings I&#39;m used to that don&#39;t work in libedit. (Like &lt;code&gt;history-beginning-search-backward&lt;/code&gt;.)&lt;/p&gt;
+&lt;p&gt;Luckily you can grab the source of ruby and compile just the readline extension, and move it into the right place for it to just work. Here&#39;s what&#39;s been working for me:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Install readline using homebrew&lt;/span&gt;
+brew install readline
+&lt;span class=&#34;c1&#34;&gt;# Download the ruby source and check out 1.8.7-p249&lt;/span&gt;
+mkdir ~/tmp &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/tmp
+git clone git://github.com/ruby/ruby
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ruby
+git checkout v1_8_7_249
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ext/readline
+ruby extconf.rb --with-readline-dir&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;brew --prefix readline&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; --disable-libedit
+make&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now you should have &lt;code&gt;readline.bundle&lt;/code&gt; in the current directory, and it should be compiled against your homebrew-installed readline library, rather than libedit that comes with the system. We can quickly double-check that by using &lt;code&gt;otool&lt;/code&gt; to check what the binary is linked against.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ otool -L readline.bundle
+readline.bundle:
+/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/libruby.1.dylib (compatibility version 1.8.0, current version 1.8.7)
+/usr/local/Cellar/readline/6.2.2/lib/libreadline.6.2.dylib (compatibility version 6.0.0, current version 6.2.0)
+/usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
+/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 159.1.0)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And in the output you should see a line listing &amp;quot;libreadline&amp;quot;, and no lines listing &amp;quot;libedit&amp;quot;. Which that shows, we&#39;ve compiled it properly then. Now the bundle is built we need to move it into the right place so it&#39;s loaded when ruby is invoked.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;RL_PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin11.0&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Back up the original bundle, just in cases&lt;/span&gt;
+sudo mv &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle.libedit&amp;#34;&lt;/span&gt;
+sudo mv readline.bundle &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And that&#39;s it. You&#39;ve got a proper compiled-against-readline installed ruby 1.8.7-p249 on 10.7 now.&lt;/p&gt;
+&lt;p&gt;One gotcha I ran into was needing to pass the same arguments to rvm when installing any other version of 1.8.7 on the same machine. Simple enough, just need to remember to do it though.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;CC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;gcc-4.2 rvm install &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.8.7-p357 -C --with-readline-dir&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;brew --prefix readline&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; --disable-libedit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Install GCC-4.2.1 (Apple build 5666.3) with Xcode 4.2</title><link>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</link><pubDate>Sun, 30 Oct 2011 17:36:48 +0000</pubDate><guid>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</guid><description>
+&lt;p&gt;As of Xcode 4.2 Apple have stopped bundling GCC with it, shipping only the (mostly) compatible llvm-gcc binary instead. The suggested fix is to install GCC using the &lt;a href=&#34;https://github.com/kennethreitz/osx-gcc-installer&#34;&gt;osx-gcc-installer&lt;/a&gt; project. However, I wanted to build and install it from source, which apple provides at &lt;a href=&#34;http://opensource.apple.com/&#34;&gt;http://opensource.apple.com/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You should already have installed Xcode 4.2 from the app store, then basically the following steps are to grab the tarball from the &lt;a href=&#34;http://opensource.apple.com/release/developer-tools-41/&#34;&gt;4.1 developer tools source&lt;/a&gt;, unpack &amp;amp; compile it, then install it into the right places.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update 2016-07-03:&lt;/strong&gt; I&#39;d suggest just using homebrew to install this these days:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;brew install homebrew/dupes/apple-gcc42&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;instructions&#34;&gt;Instructions&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Grab and unpack the tarball&lt;/span&gt;
+mkdir ~/tmp &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/tmp
+curl -O http://opensource.apple.com/tarballs/gcc/gcc-5666.3.tar.gz
+tar zxf gcc-5666.3.tar.gz
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gcc-5666.3
+&lt;span class=&#34;c1&#34;&gt;# Setup some stuff it requires&lt;/span&gt;
+mkdir -p build/obj build/dst build/sym
+&lt;span class=&#34;c1&#34;&gt;# And then build it. You should go make a cup of tea or five whilst this runs.&lt;/span&gt;
+gnumake install &lt;span class=&#34;nv&#34;&gt;RC_OS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;macos &lt;span class=&#34;nv&#34;&gt;RC_ARCHS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;i386 x86_64&amp;#39;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TARGETS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;i386 x86_64&amp;#39;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRCROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;OBJROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/obj &lt;span class=&#34;nv&#34;&gt;DSTROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/dst &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SYMROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/sym
+&lt;span class=&#34;c1&#34;&gt;# And finally install it&lt;/span&gt;
+sudo ditto build/dst /&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And now you should have &lt;code&gt;gcc-4.2&lt;/code&gt; in your &lt;code&gt;$PATH&lt;/code&gt;, available to build all the things that &lt;code&gt;llvm-gcc&lt;/code&gt; fails to compile.&lt;/p&gt;</description></item><item><title>&#43;[NSObject load] in MacRuby</title><link>https://caiustheory.com/nsobject-load-in-macruby/</link><pubDate>Sat, 12 Jun 2010 02:11:32 +0000</pubDate><guid>https://caiustheory.com/nsobject-load-in-macruby/</guid><description>
+&lt;p&gt;&lt;em&gt;If you&#39;ve not heard of it, &lt;a href=&#34;http://www.macruby.org/&#34;&gt;MacRuby&lt;/a&gt; is &lt;q&gt;an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.&lt;/q&gt; Basically means you write in Ruby using Objective-C frameworks, and vice versa. It&#39;s pretty damn cool to be honest!&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;what-is-nsobject-load&#34;&gt;What is +[NSObject load]?&lt;/h3&gt;
+&lt;p&gt;From the &lt;a href=&#34;http://developer.apple.com/mac/library/documentation/cocoa/reference/foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load&#34;&gt;documentation&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Invoked whenever a class or category is added to the Objective-C runtime; implement this method to perform class-specific behavior upon loading.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This means when your class is loaded, and implements the &lt;code&gt;load&lt;/code&gt; method, you get a &lt;code&gt;load&lt;/code&gt; message sent to your class. Which means you can start doing stuff as soon as your class is loaded by the runtime.&lt;/p&gt;
+&lt;p&gt;The main place I&#39;ve seen it used (and used it myself) is in &lt;a href=&#34;http://www.culater.net/software/SIMBL/SIMBL.php&#34;&gt;SIMBL&lt;/a&gt; plugins. A SIMBL plugin is an NSBundle that contains code which is loaded (injected) into a running application shortly after said application is launched. It lets you extend (or &amp;quot;fix&amp;quot;) cocoa applications with additional features. So you have this bundle of code, that gets loaded into a running application some point after it starts, and you want to run some code as the bundle is loaded - usually to kick off doing whatever you want to do in the plugin. This is where &lt;code&gt;load&lt;/code&gt; becomes useful.&lt;/p&gt;
+&lt;p&gt;Here&#39;s a quick implementation that just logs to the console:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt; &lt;span class=&#34;k&#34;&gt;@implementation&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MainController&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;NSlog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;@&amp;#34;MainController#load called&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;now-where-does-macruby-come-into-this&#34;&gt;Now where does MacRuby come into this?&lt;/h3&gt;
+&lt;p&gt;Well I came across a need to do the same in ruby, have some code triggered when the class is loaded into the runtime. Tried implementing &lt;code&gt;Class.load&lt;/code&gt; but to no avail. Then remembered MacRuby is just ruby! And I can call any code from within my ruby class definition.&lt;/p&gt;
+&lt;p&gt;For continuity I still call it &lt;code&gt;Class.load&lt;/code&gt;, but then call it as soon as I&#39;ve defined it in the class. Eg:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MainController&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;
+&lt;span class=&#34;no&#34;&gt;NSLog&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;MainController#load called&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;load&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Of course, I&#39;m not sure when the Objective-C method is called, it&#39;s probably after the entire class has been defined rather than as soon as &lt;code&gt;load&lt;/code&gt; has been loaded into the runtime. So you might want to move the &lt;code&gt;self.load&lt;/code&gt; call to just before the closing &lt;code&gt;end&lt;/code&gt;.&lt;/p&gt;</description></item><item><title>iPad? iPerfect (…for me)</title><link>https://caiustheory.com/ipad-iperfect-for-me/</link><pubDate>Wed, 27 Jan 2010 20:56:50 +0000</pubDate><guid>https://caiustheory.com/ipad-iperfect-for-me/</guid><description>
+&lt;p&gt;&lt;em&gt;Google Groups is a pile of fail and hasn&#39;t posted my message in reply to a thread on &lt;a href=&#34;http://geekup.org/&#34;&gt;Geekup&lt;/a&gt; so I&#39;m blogging it instead.&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;On 27 Jan 2010, at 19:53, Steve Richardson wrote:&lt;br /&gt;
+Thoughts?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I&#39;ve been searching for a device to fit between my Macbook Pro and iPhone. I work all day on the MBP, and moving it to then watch video in another room or read twitter/news/mail whilst watching telly, etc is a pain.&lt;/p&gt;
+&lt;p&gt;The iPhone is a great little device on the move, but for trying to multitask at home it&#39;s a bit.. tedious. Even jailbroken and running multiple apps at once it&#39;s still limiting.&lt;/p&gt;
+&lt;p&gt;I&#39;d been looking around at netbooks, but what put me off actually getting one was my previous experience with one. I know I&#39;d want it to run OS X to keep in sync (easily) with my other Apple devices, but hackintoshing one was a bit too much hassle, plus the fact ones to hackintosh cost more than I really wanted to pay for something that wasn&#39;t &lt;em&gt;quite&lt;/em&gt; what I thought I needed.&lt;/p&gt;
+&lt;p&gt;And then.. the iPad. I&#39;ve been sort of keeping up with the rumours (mainly through &lt;a href=&#34;http://daringfireball.net&#34;&gt;Daring Fireball&lt;/a&gt;) and whilst I didn&#39;t get excited about it too much ahead of announcement&lt;sup&gt;1&lt;/sup&gt;, having seen the official video of it it&#39;s pretty much guaranteed that I&#39;m going to get one.&lt;/p&gt;
+&lt;p&gt;Yes, it&#39;s limited (App Store, closed device), but.. I don&#39;t care. Take the iPhone, it&#39;s good enough for doing things on it, even if someone else is in charge of the ecosystem and has a big finger saying yes or no. I (willingly) use iTunes, Mobile Me, all the things that are so wonderfully integrated in the world of Apple, so another device that consumes my media using channels I already know and use is just a massive win for me.&lt;/p&gt;
+&lt;p&gt;All I&#39;m hoping now is that $499 doesn&#39;t equal £499. Hopefully it&#39;ll be £399, still a good £80 above direct exchange rate, but low enough that it&#39;s a no-brainer for me to get one.&lt;/p&gt;
+&lt;p&gt;…And I think this is the first Apple product that I&#39;ve seen announced and actually known from the start &lt;em&gt;why&lt;/em&gt; I&#39;m going to get one, instead of just a knee-jerk &amp;quot;SHINY!!!! WANT!!!&amp;quot; reaction. Uh oh, does that make me an adult?&lt;/p&gt;
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; I miss getting really excited about apple announcements :(&lt;/p&gt;
+&lt;h4 id=&#34;update&#34;&gt;Update&lt;/h4&gt;
+&lt;p&gt;It just got even better. Was lamenting to a &lt;a href=&#34;http://tmertz.com/&#34;&gt;friend&lt;/a&gt; on IM that it&#39;d be so much nicer once you can directly suck photos off a camera/SD card into it. Turns out there&#39;s an adapter for that. See &amp;quot;iPad Camera Connection Kit&amp;quot; at the bottom of &lt;a href=&#34;http://www.apple.com/ipad/specs/&#34;&gt;http://www.apple.com/ipad/specs/&lt;/a&gt; for details.&lt;/p&gt;</description></item><item><title>Filter through command</title><link>https://caiustheory.com/filter-through-command/</link><pubDate>Mon, 14 Sep 2009 22:39:37 +0000</pubDate><guid>https://caiustheory.com/filter-through-command/</guid><description>&lt;p&gt;&lt;em&gt;This is another old post that I&#39;m republishing. Originally published 27th April 2007.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;My text editor &lt;a href=&#34;http://macromates.com/&#34;&gt;TextMate&lt;/a&gt; has a nice feature called &amp;quot;Filter through command&amp;quot; whereby you can filter the current document through a command.&lt;/p&gt;
+&lt;p&gt;Anyway, I&#39;ve never used it before, but today I had a text file with 30 or so url&#39;s in, each on a new line, so I thought I&#39;d test it out. I selected it to input the document &amp;amp; to not replace the output. I then entered the following command, which is a ruby command to take each line that isn&#39;t blank, and run the shell command &lt;code&gt;open $url&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;a = ARGF.read.scan(/\S+/); a.each { |x| `open #{x}` }&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What this does is take ARGF (the document) and read it in line by line, but only the non-whitespace characters (so newlines, space, etc are ignored.) And it assigns it to an array called &lt;code&gt;a&lt;/code&gt;. What I then do is for each item of &lt;code&gt;a&lt;/code&gt;, we run it past the shell command &lt;code&gt;open&lt;/code&gt;, which on OS X if you pass it a URL it just opens that URL in the default browser.&lt;/p&gt;
+&lt;p&gt;My browser is Safari, and its set to open new links in a new tab in the foremost window. So I ran the command, and hey presto, within a few seconds I had all the URL&#39;s loading in seperate tabs in Safari&#39;s foremost window!&lt;/p&gt;
+&lt;p&gt;The power of Unix &lt;em&gt;(OS X)&lt;/em&gt; &amp;amp; TextMate (amongst other tools) just never ceases to amaze me.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I just realised if you change the regex to scan for http://.* then it&#39;ll select all website URLs.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;a = ARGF.read.scan(/^http://.*$/); a.each { |url| `open #{url}` }&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Mac Tips you may not know</title><link>https://caiustheory.com/mac-tips-you-may-not-know/</link><pubDate>Mon, 31 Aug 2009 13:08:48 +0000</pubDate><guid>https://caiustheory.com/mac-tips-you-may-not-know/</guid><description>&lt;p&gt;Here are some mac tips I know and consider &amp;quot;basic&amp;quot; mac knowledge, but no-one else seems to know.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;exposé&lt;/strong&gt; key is on modern mac keyboards, looks like a load of squares on the F3 key.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2318; + Exposé key&lt;/strong&gt; =&amp;gt; Show Desktop&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2303; + Exposé key&lt;/strong&gt; =&amp;gt; Show Application Windows&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Brightness keys&lt;/strong&gt; =&amp;gt; Open Displays prefpane in System Preferences.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Exposé key&lt;/strong&gt; =&amp;gt; Open Exposé &amp;amp; Spaces prefpane in System Preferences.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Dashboard key&lt;/strong&gt; =&amp;gt; Open Exposé &amp;amp; Spaces prefpane in System Preferences.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Keyboard Backlight keys&lt;/strong&gt; =&amp;gt; Open Keyboard prefpane in System Preferences. &lt;em&gt;(Only on laptops with keyboard backlighting.)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Volume keys&lt;/strong&gt; =&amp;gt; Open Sound prefpane in System Preferences.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x21E7; + Volume keys&lt;/strong&gt; =&amp;gt; Adjust the volume with the feedback noise setting toggled. If you normally have feedback &amp;quot;blips&amp;quot;, it&#39;ll be silent. Or vice versa.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2325; + &amp;#x21E7; + Volume keys&lt;/strong&gt; =&amp;gt; Adjust the volume in 1/4 of a usual step.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;#x2303; + Eject key&lt;/strong&gt; =&amp;gt; Shows the Shut Down dialog.&lt;/li&gt;
+&lt;li&gt;In the shut down dialog, hit &lt;em&gt;R&lt;/em&gt; to restart, &lt;em&gt;S&lt;/em&gt; to sleep, &lt;em&gt;&amp;#x238B;&lt;/em&gt; to cancel.&lt;/li&gt;
+&lt;li&gt;(Pretty much) Any dialog that pops up, hitting &lt;em&gt;&amp;#x238B;&lt;/em&gt; will push the &amp;quot;cancel&amp;quot; button.&lt;/li&gt;
+&lt;li&gt;In &amp;quot;Show all windows&amp;quot; or &amp;quot;Show application windows&amp;quot; exposé modes, hit the tab key to cycle through applications.&lt;/li&gt;
+&lt;li&gt;Hit the space bar in exposé to activate &amp;quot;Quick Look&amp;quot; + windows pop up to 100% size as you mouse over them.&lt;/li&gt;
+&lt;li&gt;Hold down &lt;strong&gt;&amp;#x2303; + &amp;#x21E7;&lt;/strong&gt; when mousing over the dock to toggle magnification whilst the keys are down.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;(Alternative title &lt;a href=&#34;http://www.petercooper.co.uk/&#34;&gt;Peter Cooper&lt;/a&gt; suggested, &amp;quot;A miscellany of input device co-ordinations to modulate the response of Apple&#39;s task preview and switching subsystem&amp;quot;)&lt;/em&gt;&lt;/p&gt;</description></item></channel></rss>

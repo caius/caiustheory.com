@@ -1,0 +1,16 @@
+# Install capybara-webkit gem on Ubuntu
+
+  By Caius Durling  
+  <https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/>  
+  2012-03-01T11:01:34Z  
+  Licensed under the Creative Commons Attribution-ShareAlike 4.0 International License <http://creativecommons.org/licenses/by-sa/4.0/>  
+  
+
+
+Dear future Caius searching for this issue,
+
+The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is `libqt4-dev`. That is, to `gem install capybara-webkit`, you need to run `aptitude install libqt4-dev`.
+
+Yours helpfully,  
+Past Caius
+

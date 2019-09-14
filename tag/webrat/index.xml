@@ -1,0 +1,51 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>webrat on Caius Theory</title><link>https://caiustheory.com/tag/webrat/</link><description>Recent content in webrat on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Mon, 03 Nov 2008 06:48:27 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/webrat/index.xml" rel="self" type="application/rss+xml"/><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>
+&lt;p&gt;When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em&gt;Rspec&lt;/em&gt; testing framework instead of the built-in &lt;em&gt;Test::Unit&lt;/em&gt; and &lt;em&gt;jQuery&lt;/em&gt; instead of &lt;em&gt;prototype&lt;/em&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://rspec.info/&#34;&gt;Rspec&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/rahoulb/rspec-rails/wikis&#34;&gt;Rspec-rails&lt;/a&gt; &lt;em&gt;(NB: I use &lt;a href=&#34;http://3hv.co.uk&#34;&gt;rahoul&lt;/a&gt;&#39;s fork of rspec-rails)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/aslakhellesoy/cucumber/wikis&#34;&gt;Cucumber&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://github.com/brynary/webrat/wikis&#34;&gt;Webrat&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ennerchi.com/projects/jrails&#34;&gt;jRails&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk&#34;&gt;Demeters Revenge&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And here are the commands in the order I run them to create the blank app.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Create the rails app
+cd ~/Sites/apps/
+rails myapp
+cd myapp
+# Setup a git repo
+git init
+# Add all files and make the initial import
+git add .
+git commit -m &amp;quot;Initial Import&amp;quot;
+# Add the plugins as git submodules
+git submodule add git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
+git submodule add git://github.com/rahoulb/rspec-rails.git vendor/plugins/rspec-rails
+git submodule add git://github.com/aslakhellesoy/cucumber.git vendor/plugins/cucumber
+git submodule add git://github.com/brynary/webrat.git vendor/plugins/webrat
+git submodule add git://github.com/caius/demeters_revenge.git vendor/plugins/demeters_revenge
+# Commit the changes
+git ci -am &amp;quot;Adding all needed submodules&amp;quot;
+# Replace TestUnit with rspec
+git rm -r test/
+ruby script/generate rspec
+# Replace stories with cucumber features
+rm -rf stories/
+ruby script/generate cucumber
+# Add the changes to git
+git add .
+git ci -m &amp;quot;Committing initial rspec/cucumber files&amp;quot;
+# Install jRails, we have to install it using script/plugin
+# Remove existing javascript files
+git rm public/javascripts/*
+mkdir public/javascripts
+# Add jrails
+ruby script/plugin install http://ennerchi.googlecode.com/svn/trunk/plugins/jrails
+git add vendor/plugins/jrails/ public/javascripts
+git ci -m &amp;quot;Adding jRails to replace Prototype&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p&gt;
+&lt;h4 id=&#34;updated-2008-11-04&#34;&gt;Updated 2008-11-04&lt;/h4&gt;
+&lt;p&gt;Added demeters revenge and jRails plugins.&lt;/p&gt;
+&lt;h4 id=&#34;update-2008-11-05&#34;&gt;Update 2008-11-05&lt;/h4&gt;
+&lt;p&gt;I&#39;ve also blogged the &lt;a href=&#34;http://swedishcampground.com/setting-up-git-with-rails-apps&#34;&gt;.gitignore&lt;/a&gt; file I use with rails apps as well. Usually add it into my apps before running &lt;code&gt;git init&lt;/code&gt;&lt;/p&gt;</description></item></channel></rss>

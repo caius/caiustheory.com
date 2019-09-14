@@ -1,0 +1,57 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>gem on Caius Theory</title><link>https://caiustheory.com/tag/gem/</link><description>Recent content in gem on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 01 Mar 2012 11:01:34 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/gem/index.xml" rel="self" type="application/rss+xml"/><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p&gt;Dear future Caius searching for this issue,&lt;/p&gt;
+&lt;p&gt;The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is &lt;code&gt;libqt4-dev&lt;/code&gt;. That is, to &lt;code&gt;gem install capybara-webkit&lt;/code&gt;, you need to run &lt;code&gt;aptitude install libqt4-dev&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Yours helpfully,&lt;br /&gt;
+Past Caius&lt;/p&gt;</description></item><item><title>Migrating Rubygems to Ruby 1.9.x</title><link>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</link><pubDate>Sat, 31 Jan 2009 20:29:57 +0000</pubDate><guid>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</guid><description>&lt;p&gt;So I just installed ruby 1.9.1 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt; and wanted to easily migrate my rubygems across from 1.8 to see which ones would fail to install.&lt;/p&gt;
+&lt;p&gt;Thought about it for a while, then came up with the following bash one-liner to do it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;gem list &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;(&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $1 }&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -L &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; gem1.9 install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;NB:&lt;/strong&gt; Installing Ruby 1.9.1 through macports &lt;code&gt;sudo port install ruby19&lt;/code&gt; means I get &lt;code&gt;ruby1.9&lt;/code&gt;, &lt;code&gt;gem1.9&lt;/code&gt; and &lt;code&gt;rake1.9&lt;/code&gt; installed alongside my usual 1.8 &lt;code&gt;ruby&lt;/code&gt;, &lt;code&gt;gem&lt;/code&gt; and &lt;code&gt;rake&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;That grabs the list of installed gems from &lt;code&gt;gem&lt;/code&gt;, searches for lines containing &amp;quot;(&amp;quot; so it only grabs the gem names, spits out the first section of the line, which is the name of the gem, and finally calls &lt;code&gt;gem1.9 install&lt;/code&gt; for each line via &lt;code&gt;xargs -L 1&lt;/code&gt;. Make sure to run it as root or prefix &lt;code&gt;gem1.9&lt;/code&gt; with &lt;code&gt;sudo&lt;/code&gt;. &lt;em&gt;(Or let it install in your home folder, but I hate that.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;From my quick run of the above snippet, 75% of my gems installed &lt;em&gt;(73 out of 98)&lt;/em&gt; and the other few that failed to install were ones like &lt;a href=&#34;http://github.com/why/hpricot/tree/master&#34;&gt;Hpricot&lt;/a&gt; that require native extensions compiling. You can see the entire list of failures and successes of the gems in &lt;a href=&#34;http://pastie.textmate.org/pastes/376136&#34;&gt;this pastie&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Install Mysql Gem on Leopard</title><link>https://caiustheory.com/install-mysql-gem-on-leopard/</link><pubDate>Wed, 21 Jan 2009 17:09:41 +0000</pubDate><guid>https://caiustheory.com/install-mysql-gem-on-leopard/</guid><description>
+&lt;p&gt;So, I keep having to reinstall mysql5 and rubygems from time to time for various reasons. I always install mysql5 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt; as a dependency for the php5 port (along with various other bits for the LA*P stack).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo port install php5 +mysql5 +pear +readline +sockets +apache2 +sqlite&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Once this is installed then I have &lt;code&gt;mysql&lt;/code&gt; and can setup my databases, etc.&lt;/p&gt;
+&lt;p&gt;Ignoring the rest of the LAMP stack, I then need to connect Ruby to the Mysql I just installed through MacPorts. Its quite simple to do, once you know the right argument to pass to it. The easiest way is to just tell it where the &lt;code&gt;mysql5_conf&lt;/code&gt; file is and let it figure out the rest for itself.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo gem install mysql -- --with-mysql-config&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/local/bin/mysql_config5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Hopefully this will save me 10 minutes of googling next time I need to do this!&lt;/p&gt;
+&lt;h3 id=&#34;update-2009-01-21&#34;&gt;Update 2009-01-21&lt;/h3&gt;
+&lt;p&gt;I&#39;m an idiot and typed the &lt;code&gt;gem install&lt;/code&gt; command by hand, and ended up with &lt;code&gt;--with-mysql-conf&lt;/code&gt; instead of &lt;code&gt;--with-mysql-config&lt;/code&gt;. Updated now.&lt;/p&gt;
+&lt;h3 id=&#34;update-2009-10-19&#34;&gt;Update 2009-10-19&lt;/h3&gt;
+&lt;p&gt;On Snow Leopard I needed to tell rubygems to install the gem as a 64-bit binary. Hattip to &lt;a href=&#34;http://www.schmidp.com/2009/06/14/rubyrails-and-mysql-on-snow-leopard-10a380/comment-page-1/&#34;&gt;Philipp&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo env &lt;span class=&#34;nv&#34;&gt;ARCHFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;-arch x86_64&amp;#34;&lt;/span&gt; gem install mysql -- &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; --with-mysql-config&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/local/bin/mysql_config5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Removing non-existent source from rubygems</title><link>https://caiustheory.com/removing-non-existant-source-from-rubygems/</link><pubDate>Fri, 07 Nov 2008 06:08:28 +0000</pubDate><guid>https://caiustheory.com/removing-non-existant-source-from-rubygems/</guid><description>&lt;p&gt;I just came to move some ruby scripts onto my mac mini, and to do so I needed to install a couple of gems. Now I realised I hadn&#39;t installed or updated rubygems on the machine for a while, so I figured it was best to update &lt;code&gt;gem&lt;/code&gt; before installing the gems I wanted. Easier said than done.&lt;/p&gt;
+&lt;p&gt;At some point in the past I had added &lt;code&gt;http://gems.datamapper.org&lt;/code&gt; as a source to rubygems. Since then the datamapper project has discontinued using this gem source to serve up gems, so I was getting the following output:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem update --system
+Updating installed gems
+Bulk updating Gem source index for: http://gems.rubyforge.org/
+ERROR: While executing gem ... (Gem::RemoteSourceException)
+HTTP Response 404 fetching http://gems.datamapper.org/yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Eeek! I can&#39;t update because the source no longer exists. So I figured I&#39;d remove the source before updating, that should work right? Wrong. It updates the sources before removing the source from the config it would appear.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem sources
+** CURRENT SOURCES ***
+http://gems.rubyforge.org
+http://gems.datamapper.org
+mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org
+Bulk updating Gem source index for: http://gems.rubyforge.org/
+ERROR: While executing gem ... (Gem::RemoteSourceException)
+HTTP Response 404 fetching http://gems.datamapper.org/yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Oh balls. So how do I remove the source without updating it first. I need to update it to remove it, but to remove it I need to update from it. Gotta love catch 22s!&lt;/p&gt;
+&lt;p&gt;I remembered that &lt;code&gt;gem install&lt;/code&gt; has an option not to update sources, &lt;code&gt;--no-update-sources&lt;/code&gt;. So I figured thats gotta work when removing a source as well, but it doesn&#39;t.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org --no-update-sources
+ERROR: While executing gem ... (OptionParser::InvalidOption)
+invalid option: --no-update-sources
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Oh crap. Now what do I do? Take my usual tactic and google for a hint of course! I&#39;d considered trying to find where the gem config was and remove the source by hand, but I figured that wouldn&#39;t be that simple. After hitting a couple of sites that weren&#39;t relevant I ended up &lt;a href=&#34;http://jaigouk.blogspot.com/2008/07/404-fetching-httpgemsdatamapperorgyaml.html&#34;&gt;on the edge of complexity&lt;/a&gt; where he mentions the command &lt;code&gt;nano ~/.gemrc&lt;/code&gt;. Which made me wonder if that file contains the sources.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mm:daemons caius$ cat ~/.gemrc
+---
+:update_sources: true
+:verbose: true
+:bulk_threshold: 1000
+:sources:
+- http://gems.rubyforge.org
+- http://gems.datamapper.org
+:backtrace: false
+:benchmark: false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All I needed to do was remove the &lt;code&gt;- http://gems.datamapper.org&lt;/code&gt; line and &lt;em&gt;poof&lt;/em&gt;, &lt;code&gt;gem&lt;/code&gt; was working again. One quick &lt;code&gt;gem update --system&lt;/code&gt; later and I was upgraded from gem 1.1.1 to 1.3.1 and installing the gems I needed.&lt;/p&gt;</description></item></channel></rss>

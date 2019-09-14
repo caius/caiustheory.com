@@ -1,0 +1,241 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>git on Caius Theory</title><link>https://caiustheory.com/tag/git/</link><description>Recent content in git on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sun, 17 Mar 2019 14:32:30 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Download All Your Gists</title><link>https://caiustheory.com/download-all-your-gists/</link><pubDate>Sun, 17 Mar 2019 14:32:30 +0000</pubDate><guid>https://caiustheory.com/download-all-your-gists/</guid><description>&lt;p&gt;Over time I&#39;ve managed to build up quite the collection of &lt;a href=&#34;https://gist.github.com/&#34;&gt;Gists&lt;/a&gt; over at Github, including secret ones there&#39;s about 1200 currently. Some of these have useful code in, some are just garbage output. I&#39;d quite like a local copy either way, so I can easily search&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; across them.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Install the &lt;code&gt;gist&lt;/code&gt; command from Github&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;brew install gist&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Login to your Github Account through the gist tool (it&#39;ll prompt for your login credentials, then generate you an API Token to allow it future access.)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;gist --login&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Create a folder, go inside it and download all your gists!&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir gist_archive
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gist_archive
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; repo in &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;gist -l &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $1 }&amp;#39;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; git clone &lt;span class=&#34;nv&#34;&gt;$repo&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&amp;gt; /dev/null&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Now you have a snapshot of all your gists. To update them in future, you can run the above for any new gists, and update all the existing ones with:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gist_archive
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; i in */&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git pull --rebase&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now go forth and search out your favourite snippet you saved years ago and forgot about!&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://beyondgrep.com&#34;&gt;ack&lt;/a&gt;, &lt;a href=&#34;https://geoff.greer.fm/ag/&#34;&gt;ag&lt;/a&gt;, &lt;a href=&#34;https://www.freebsd.org/cgi/man.cgi?query=grep&amp;amp;sektion=&amp;amp;n=1&#34;&gt;grep&lt;/a&gt;, &lt;a href=&#34;https://github.com/BurntSushi/ripgrep&#34;&gt;ripgrep&lt;/a&gt;, etc. Pick your flavour.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description></item><item><title>Prefixing Git Branch With Initials</title><link>https://caiustheory.com/prefixing-git-branch-with-initials/</link><pubDate>Wed, 21 Nov 2018 20:30:40 +0000</pubDate><guid>https://caiustheory.com/prefixing-git-branch-with-initials/</guid><description>&lt;p&gt;Working somewhere where we prefix our branches with the creator&#39;s initials, I sometimes forget to do so.&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; This leads to me having to rename the branch, typing out the whole name again after adding &lt;code&gt;cd/&lt;/code&gt; to the start of it.&lt;/p&gt;
+&lt;p&gt;Computers are meant to solve repetitive problems for us, so let&#39;s put it to work in this case too. My &lt;a href=&#34;https://github.com/caius/BinFiles&#34;&gt;~/bin&lt;/a&gt; contains &lt;a href=&#34;https://github.com/caius/BinFiles/blob/c7c5c6ababd70e65fa4d072bf8392aaa014c607c/git-current-branch&#34;&gt;&lt;code&gt;git current-branch&lt;/code&gt;&lt;/a&gt;, which returns the current branch name.&lt;/p&gt;
+&lt;p&gt;If we hardcode the initials, this becomes a simple command to recall from our history:&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;git branch --move --force cd/&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;git current-branch&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;But computers are supposed to solve all repetitive work, including knowing who I am, right? Correct, my local user account knows my full name, so we can work out my initials from that. Lets lean on the &lt;code&gt;id(1)&lt;/code&gt; command to lookup the user&#39;s details then strip it down to just the initials.&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;id -F
+&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;Caius Durling&amp;#34;&lt;/span&gt;
+id -F &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed -Ee &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/(^| )(.)[^ ]+/\2/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; tr &lt;span class=&#34;s1&#34;&gt;&amp;#39;A-Z&amp;#39;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;a-z&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; cd&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Bingo, we can wrap that into a subshell passed to the branch move command and we&#39;re done in a one-liner.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;git branch --move --force &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;id -F &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed -Ee &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/(^| )(.)[^ ]+/\2/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; tr &lt;span class=&#34;s1&#34;&gt;&amp;#39;A-Z&amp;#39;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;a-z&amp;#39;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;git current-branch&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;I don&#39;t follow that policy for my personal repos, or working on forks of other people&#39;s code. And I&#39;m human, so I forget.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;You can also replace &lt;code&gt;--move --force&lt;/code&gt; with &lt;code&gt;-M&lt;/code&gt;: &lt;code&gt;git branch -M newname&lt;/code&gt;
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;On macOS you can use &lt;code&gt;id -F&lt;/code&gt; to return the full name of the user. Doing this on other platforms is left as an exercise for the reader.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;Yes, this is an incredibly naive way to initialize a name, but it&#39;s good enough for the people I work with. Handling edge cases is left as … you got it, an exercise for the reader.
+&lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description></item><item><title>Overcommit git hooks: puppet validate</title><link>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</link><pubDate>Thu, 05 Jul 2018 14:44:41 +0000</pubDate><guid>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</guid><description>&lt;p&gt;Computers are great at automatically checking things, and git has a mechanism for running hooks before events happen. Bosh these two things together and you can have git trigger anything you like before you&#39;re allowed to commit, which in turn means you can sanity check exactly what you&#39;re committing to make sure it meets whatever criteria you have.&lt;/p&gt;
+&lt;p&gt;To make it easy to manage my git hooks in a consistent fashion, I use a tool called &lt;a href=&#34;https://github.com/brigade/overcommit&#34;&gt;overcommit&lt;/a&gt;. This comes with a config file to tell it what you want triggered when, and a bunch of standard plugins to choose from.&lt;/p&gt;
+&lt;p&gt;In a &lt;a href=&#34;https://puppet.com&#34;&gt;puppet&lt;/a&gt; repo for instance, I have it check&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://bundler.io&#34;&gt;bundler&lt;/a&gt; is happy everything&#39;s installed&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://puppet-lint.com&#34;&gt;puppet-lint&lt;/a&gt; is happy with any changed puppet files&lt;/li&gt;
+&lt;li&gt;Any JSON or YAML files involved in the commit have valid syntax&lt;/li&gt;
+&lt;li&gt;Any shell scripts are valid (according to &lt;a href=&#34;https://www.shellcheck.net&#34;&gt;shellcheck&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;There is no trailing whitespace left in files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This usually means something like the following in &lt;code&gt;.overcommit.yml&lt;/code&gt; in the git repo&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;PreCommit&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;BundleCheck&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;JsonSyntax&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;PuppetLint&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;ShellCheck&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;YamlSyntax&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;on_warn&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;fail&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For the most part this works absolutely great. I have on occasion noticed that &lt;a href=&#34;http://puppet-lint.com&#34;&gt;puppet-lint&lt;/a&gt; will let invalid puppet syntax slip through though which is irritating to find after you&#39;ve pushed the changes up to the puppetmaster. The &lt;a href=&#34;https://puppet.com&#34;&gt;puppet&lt;/a&gt; command line tool has a validate subcommand however, so we can hook that into overcommit as a custom hook in the repo.&lt;/p&gt;
+&lt;p&gt;To do this we need to add our custom hook into the right directory, and we&#39;re adding a hook to run before commits, so it goes into &lt;code&gt;.git-hooks/pre_commit&lt;/code&gt;. Lets name it for what it does, validating puppet syntax. So into &lt;code&gt;puppet_validate.rb&lt;/code&gt; we put the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# .git-hooks/pre_commit/puppet_validate.rb&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;Overcommit::Hook::PreCommit&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;PuppetValidate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Base&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;errors&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sx&#34;&gt;%w(puppet parser validate)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:args&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;applicable_files&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:pass&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;success?&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:fail&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;stderr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then we need to tell &lt;a href=&#34;https://github.com/brigade/overcommit&#34;&gt;overcommit&lt;/a&gt; that it needs to run this custom hook as a check whenever we commit, that goes into &lt;code&gt;.overcommit.yml&lt;/code&gt; under the &lt;code&gt;PreCommit&lt;/code&gt; key:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;PreCommit&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;PuppetValidate&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;description&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Validates puppet syntax&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;include&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;**/*.pp&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Hey voila, along with all our other safety checks we&#39;re now checking that any puppet files added or changed in the repo have valid syntax.&lt;/p&gt;</description></item><item><title>git git git git git</title><link>https://caiustheory.com/git-git-git-git-git/</link><pubDate>Tue, 26 Sep 2017 11:00:23 +0000</pubDate><guid>https://caiustheory.com/git-git-git-git-git/</guid><description>&lt;p&gt;Ever found you&#39;ve accidentally entered too many &lt;code&gt;git&lt;/code&gt;s in your terminal and wondered if there&#39;s a solution to it? I quite often type &lt;code&gt;git&lt;/code&gt; then go away and come back, then type a full &lt;code&gt;git status&lt;/code&gt; after it. This leads to a lovely (annoying) error out the box:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ git git status
+git: &lt;span class=&#34;s1&#34;&gt;&amp;#39;git&amp;#39;&lt;/span&gt; is not a git command. See &lt;span class=&#34;s1&#34;&gt;&amp;#39;git --help&amp;#39;&lt;/span&gt;.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What a git.&lt;/p&gt;
+&lt;p&gt;My initial thought was overriding the &lt;code&gt;git&lt;/code&gt; binary in my &lt;code&gt;$PATH&lt;/code&gt; and having it strip any leading arguments that match &lt;code&gt;git&lt;/code&gt;, so we end up running just the &lt;code&gt;git status&lt;/code&gt; at the end of the arguments. An easier way is to just use &lt;a href=&#34;https://git-scm.com/docs/git-config&#34;&gt;&lt;code&gt;git-config&lt;/code&gt;&lt;/a&gt;&#39;s &lt;code&gt;alias.*&lt;/code&gt; functionality to expand the first argument being &lt;code&gt;git&lt;/code&gt; to a shell command.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;git config --global alias.git &lt;span class=&#34;s1&#34;&gt;&amp;#39;!exec git&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Which adds the following git config to your &lt;code&gt;.gitconfig&lt;/code&gt; file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;k&#34;&gt;[alias]&lt;/span&gt;
+&lt;span class=&#34;na&#34;&gt;git&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;!exec git&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And then you&#39;ll find you can &lt;code&gt;git git&lt;/code&gt; to your heart&#39;s content&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ git sha
+cc9c642663c0b63fba3964297c13ce9b61209313
+$ git git sha
+cc9c642663c0b63fba3964297c13ce9b61209313
+$ git git git git git git git git git git git git git git git git git git git git git git git git git git sha
+cc9c642663c0b63fba3964297c13ce9b61209313&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(&lt;code&gt;git sha&lt;/code&gt; is an alias for &lt;code&gt;git rev-parse HEAD&lt;/code&gt;.)&lt;/p&gt;
+&lt;p&gt;See what other git alias&#39; I have in my &lt;a href=&#34;https://github.com/caius/zshrc/blob/master/dotfiles/gitconfig&#34;&gt;&lt;code&gt;~/.gitconfig&lt;/code&gt;&lt;/a&gt;, and laugh at all the typo corrections I have in there. (Yes, git provides autocorrection if you enable it, but I&#39;m used to these typos working!)&lt;/p&gt;
+&lt;p&gt;Now &lt;code&gt;git&lt;/code&gt; back to doing useful things!&lt;/p&gt;</description></item><item><title>Ignore .gitignore in Git</title><link>https://caiustheory.com/ignore-gitignore-in-git/</link><pubDate>Mon, 21 Sep 2009 06:00:00 +0000</pubDate><guid>https://caiustheory.com/ignore-gitignore-in-git/</guid><description>&lt;p&gt;Recently I ran into an issue where I was working on a project which had files I wanted git to ignore, but I didn&#39;t want to commit a &lt;code&gt;.gitignore&lt;/code&gt; file into the project. In case you don&#39;t know, any files matching a pattern in &lt;code&gt;.gitignore&lt;/code&gt; in a git repository are ignored by git. (Unless the file(s) have already been committed, then they need removing from git before they are ignored.)&lt;/p&gt;
+&lt;p&gt;Initially I figured I could just throw the patterns I needed excluded into my global &lt;code&gt;~/.gitignore&lt;/code&gt;, but quickly realised that I needed files matching these patterns to show up in other git repos, so going the global route really wasn&#39;t an option. After some thought I wondered if you could make git ignore &lt;code&gt;.gitignore&lt;/code&gt;, whilst still getting it to ignore files matching the other patterns in the &lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Lets create a new empty repo to test this crazy idea in:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mkdir foo
+$ cd foo
+$ git init
+Initialized empty Git repository in /Volumes/Brutus/Users/caius/foo/.git/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And create a couple of files for us to play with:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ touch bar
+$ touch baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ignore one of the files so we can check other matches are still ignored later on:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;baz&amp;quot; &amp;gt;&amp;gt; .gitignore
+$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+# (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+#
+# .gitignore
+# bar
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ok so far, but we can still see .gitignore in git, so now for the crazy shindig, ignore the ignore file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;.gitignore&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lets see if it worked, or if we can still see our .gitignore:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+# (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+#
+# bar
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And lets just double-check that &lt;code&gt;.gitignore&lt;/code&gt; and &lt;code&gt;baz&lt;/code&gt; still exist on the filesystem:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls -a
+. .. .git .gitignore bar baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Fantastic! Turns out adding &amp;quot;.gitignore&amp;quot; to &lt;code&gt;.gitignore&lt;/code&gt; works perfectly. The file is still parsed by git to ignore everything else too, so it does exactly what I needed in this instance.&lt;/p&gt;</description></item><item><title>Automatically Deploying Website From Remote Git Repository</title><link>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</link><pubDate>Sat, 30 May 2009 02:30:40 +0000</pubDate><guid>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</guid><description>
+&lt;p&gt;Before I start, I&#39;ll just quickly run through where I put stuff on my server. Apache logs and config are in the ubuntu default folders: &lt;code&gt;/var/log/apache2&lt;/code&gt; and &lt;code&gt;/etc/apache2/&lt;/code&gt; respectively.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Websites: /home/caius/vhosts/&amp;lt;domain name&amp;gt;/htdocs
+Git Repos: /home/caius/git/&amp;lt;domain name&amp;gt;.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So I have a git repo locally, &lt;code&gt;~/projects/somesite.com/&lt;/code&gt;, and want to deploy it to my webserver. I&#39;ll keep the git repo in &lt;code&gt;~/git/&lt;/code&gt; and set it up so that when I push to the repo &lt;em&gt;(over ssh)&lt;/em&gt; it will automatically checkout the new changes into the website&#39;s htdocs folder.&lt;/p&gt;
+&lt;p&gt;I&#39;m assuming DNS is already setup (or I&#39;ve used &lt;a href=&#34;http://github.com/bjeanes/ghost/tree/master&#34;&gt;ghost&lt;/a&gt; to map it locally.) And that I&#39;ve setup the virtualhost in apache pointing at &lt;code&gt;/home/caius/vhosts/somesite.com/htdocs&lt;/code&gt; and reloaded apache so the config is in place.&lt;/p&gt;
+&lt;h2 id=&#34;remote-machine&#34;&gt;Remote Machine&lt;/h2&gt;
+&lt;p&gt;We create a bare git repo, then point the working tree at the docroot of our website. This means all the git stuff is kept in the &lt;code&gt;somesite.git&lt;/code&gt; folder, but the files themselves are checked out to the website&#39;s folder. Then we setup a post-receive hook to update the worktree folder after new changes have been pushed to the repo.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cd git
+$ mkdir somesite.git
+$ cd somesite.git/
+$ git init --bare
+Initialized empty Git repository in /home/caius/git/somesite.git/
+$ git --bare update-server-info
+$ git config core.worktree /home/caius/vhosts/somesite.com/htdocs
+$ git config core.bare false
+$ git config receive.denycurrentbranch ignore
+$ cat &amp;gt; hooks/post-receive
+#!/bin/sh
+git checkout -f
+^D
+$ chmod +x hooks/post-receive
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;local-machine&#34;&gt;Local Machine&lt;/h2&gt;
+&lt;p&gt;And now on the client machine we add the remote repo as a git remote, and then push to it.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git remote add web ssh://myserver/home/caius/git/somesite.git
+$ git push web +master:refs/heads/master
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 229 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To ssh://myserver/home/caius/git/somesite.git
+* [new branch] master -&amp;gt; master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;all-done&#34;&gt;All Done&lt;/h2&gt;
+&lt;p&gt;And now if you go to &lt;em&gt;somesite.com&lt;/em&gt; you&#39;ll see the contents of your git repo there. (&lt;em&gt;somesite.com&lt;/em&gt; is just an example url though, I don&#39;t actually own it!)&lt;/p&gt;
+&lt;h3 id=&#34;helpful-urls&#34;&gt;Helpful URLs&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://toroid.org/ams/git-website-howto&#34;&gt;http://toroid.org/ams/git-website-howto&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.mblondel.org/journal/2008/05/25/git-memo/&#34;&gt;http://www.mblondel.org/journal/2008/05/25/git-memo/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&#34;&gt;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Adding a remote to existing git repo</title><link>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</link><pubDate>Sun, 09 Nov 2008 18:32:55 +0000</pubDate><guid>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</guid><description>
+&lt;p&gt;Usually for me this happens when I have an existing project and I setup a &lt;a href=&#34;http://github.com/&#34;&gt;github&lt;/a&gt; repo for it. As part of the setup for the github project, it gives you the commands to run to add the github repo as a remote to my local git repo.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd existing_git_repo
+git remote add origin git@github.com:caius/foo.git
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The problem then is you&#39;ve added the remote account, but the local master branch isn&#39;t tracking the remote master branch, so when you try and just &lt;code&gt;git pull&lt;/code&gt; it will fail with a message telling you to set the remote refs up.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ git pull
+You asked me to pull without telling me which branch you
+want to merge with, and &#39;branch.master.merge&#39; in
+your configuration file does not tell me either. Please
+name which branch you want to merge on the command line and
+try again (e.g. &#39;git pull &amp;lt;repository&amp;gt; &amp;lt;refspec&amp;gt;&#39;).
+See git-pull(1) for details on the refspec.
+If you often merge with the same branch, you may want to
+configure the following variables in your configuration
+file:
+branch.master.remote = &amp;lt;nickname&amp;gt;
+branch.master.merge = &amp;lt;remote-ref&amp;gt;
+remote.&amp;lt;nickname&amp;gt;.url = &amp;lt;url&amp;gt;
+remote.&amp;lt;nickname&amp;gt;.fetch = &amp;lt;refspec&amp;gt;
+See git-config(1) for details.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The answer is to do what it says funnily enough, and add the remote refs tracking to the config file. The easiest way I&#39;ve found of doing this is to edit &lt;code&gt;.git/config&lt;/code&gt; and add the following at the bottom of it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;k&#34;&gt;[branch &amp;#34;master&amp;#34;]&lt;/span&gt;
+&lt;span class=&#34;na&#34;&gt;remote&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;origin
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; merge = refs/heads/master&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Remember to change the branch or remote names if you need to.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Once you&#39;ve added that to the config you can run &lt;code&gt;git pull&lt;/code&gt; on the master branch and it&#39;ll do the usual automagical thing and pull the remote master branch changes into the local one!&lt;/p&gt;
+&lt;h4 id=&#34;updated-2008-11-09&#34;&gt;Updated 2008-11-09&lt;/h4&gt;
+&lt;p&gt;See CiarÃƒÂ¡n&#39;s comment below for an all-inclusive command to do the above.&lt;/p&gt;</description></item><item><title>Setting up git with rails apps</title><link>https://caiustheory.com/setting-up-git-with-rails-apps/</link><pubDate>Thu, 06 Nov 2008 13:03:02 +0000</pubDate><guid>https://caiustheory.com/setting-up-git-with-rails-apps/</guid><description>
+&lt;p&gt;When I create a new rails app, I&#39;m constantly going back to another project and stealing the &lt;code&gt;.gitignore&lt;/code&gt; file from it to make sure that git doesn&#39;t know about certain files rails either updates frequently, or stores machine-specific data in. The latter is generally just &lt;code&gt;config/database.yml&lt;/code&gt;, because I develop alongside my colleagues at &lt;a href=&#34;http://brightbox.co.uk/&#34; title=&#34;Brightbox - Serious Rails Hosting&#34;&gt;Brightbox&lt;/a&gt; and we deploy via &lt;a href=&#34;http://www.capify.org/&#34;&gt;capistrano&lt;/a&gt;, we always put the &lt;code&gt;database.yml&lt;/code&gt; file in the shared directory on the server, so we each have our own version with our local credentials in it locally. And thus we don&#39;t want it to be tracked by git.&lt;/p&gt;
+&lt;p&gt;Here&#39;s what I&#39;ve collated from various sources over the few weeks I&#39;ve been using git + rails everyday.&lt;/p&gt;
+&lt;h4 id=&#34;gitignore&#34;&gt;.gitignore&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;config/database.yml
+log/*.log
+tmp/*
+# OS X only
+.DS_Store
+**/.DS_Store
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then to make sure &lt;code&gt;log/&lt;/code&gt; and &lt;code&gt;tmp/&lt;/code&gt; are tracked, convention is to add a blank &lt;code&gt;.gitkeep&lt;/code&gt; file in them.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;touch log/.gitkeep
+touch tmp/.gitkeep&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>
