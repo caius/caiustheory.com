@@ -15,9 +15,9 @@ Stop folks sniffing your traffic in a coffee shop. Send it all home instead.
 
 * Firstly generate a key for the router (private key on line one, public key on line two.)
 
-    $ wg genkey | tee /dev/stderr | wg pubkey
-    aOIg6R/TGKc4yM0JKzJZSKrjbfMtAY/Q1tl7nJm6Jl4=
-    wNyNuyVmhPOt24jAMDyJPQFTGQQstMSmTKAFGJgJrwg=
+        $ wg genkey | tee /dev/stderr | wg pubkey
+        aOIg6R/TGKc4yM0JKzJZSKrjbfMtAY/Q1tl7nJm6Jl4=
+        wNyNuyVmhPOt24jAMDyJPQFTGQQstMSmTKAFGJgJrwg=
 
 * Bring up the wireguard interface on the router, using the private key we just generated
 
