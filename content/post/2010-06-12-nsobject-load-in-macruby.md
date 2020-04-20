@@ -11,7 +11,7 @@ tag:
   - "code"
   - "apple"
   - "objective-c"
-  - "ruby1.9"
+  - "ruby19"
   - "os x"
   - "mac"
   - "objc"

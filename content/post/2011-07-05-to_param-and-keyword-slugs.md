@@ -14,7 +14,7 @@ tag:
   - "fix"
   - "habari"
   - "rails"
-  - "ruby1.9"
+  - "ruby19"
   - "security"
   - "validation"
   - "tips"

@@ -15,7 +15,7 @@ tag:
   - "rubygems"
   - "macports"
   - "installing"
-  - "ruby1.9"
+  - "ruby19"
 ---
 
 So I just installed ruby 1.9.1 through [MacPorts][] and wanted to easily migrate my rubygems across from 1.8 to see which ones would fail to install.

@@ -6,7 +6,7 @@ tag:
   - "geek"
   - "ruby"
   - "code"
-  - "ruby1.9"
+  - "ruby19"
   - "hack"
 ---
 

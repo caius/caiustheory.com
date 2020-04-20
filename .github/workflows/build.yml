@@ -11,12 +11,14 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
 
       - name: Setup Hugo
-        uses: docker://peaceiris/gh-pages:v2.4.0
+        uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.55.6'
+          hugo-version: '0.69.0'
 
       - name: Build
         run: hugo --gc --minify --cleanDestinationDir
