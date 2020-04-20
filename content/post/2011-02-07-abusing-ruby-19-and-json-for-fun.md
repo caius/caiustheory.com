@@ -10,7 +10,7 @@ tag:
   - "ruby"
   - "code"
   - "rubygems"
-  - "ruby1.9"
+  - "ruby19"
   - "javascript"
   - "tips"
   - "json"
