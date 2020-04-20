@@ -1,38 +1,37 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>picture on Caius Theory</title><link>https://caiustheory.com/tag/picture/</link><description>Recent content in picture on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sun, 06 Dec 2009 12:56:49 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/picture/index.xml" rel="self" type="application/rss+xml"/><item><title>My Menubar Items</title><link>https://caiustheory.com/my-menubar-items/</link><pubDate>Sun, 06 Dec 2009 12:56:49 +0000</pubDate><guid>https://caiustheory.com/my-menubar-items/</guid><description>&lt;!-- Just for this post --&gt;
-&lt;style&gt;
-ol { list-style-type: lower-alpha; }
-ol ol { list-style-type: decimal; }
-&lt;/style&gt;
-&lt;p&gt;This is a something that occasionally makes the rounds again, I&#39;ve not seen it for a while and I&#39;ve added some new items since I last remember documenting it. Thus, &lt;a href=&#34;http://twitter.com/macarne&#34;&gt;@macarne&lt;/a&gt; &lt;a href=&#34;http://twitter.com/macarne/status/6398125336&#34;&gt;asking&lt;/a&gt; what the app was that gives me stats prompted me to document my current menubar items.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2586/4162170875_1d1a8be4cf.jpg&#34; alt=&#34;annotated-menubar by ©aius, on Flickr&#34; title=&#34;annotated-menubar&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/4162170875/&#34;&gt;View original&lt;/a&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.eidac.de/&#34;&gt;SMCFanControl&lt;/a&gt; - Lets me adjust the minimum speed of my fans.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://atebits.com/tweetie-mac&#34;&gt;Tweetie/mac&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://iscrobbler.sourceforge.net/&#34;&gt;iScrobbler&lt;/a&gt; - Scrobbles tunes iTunes plays&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.realmacsoftware.com/littlesnapper/&#34;&gt;LittleSnapper&lt;/a&gt; &lt;em&gt;(Or more accurately the menubar icon is NanoSnapper, LittleSnapper is the full app.)&lt;/em&gt; Mainly used for screen grabs.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.orange-carb.org/SBM/&#34;&gt;SlimBatteryMonitor&lt;/a&gt; - Takes up less horizontal space than Apple&#39;s menu item.&lt;/li&gt;
-&lt;li&gt;Expresscard menu item - Lets me power off my &lt;a href=&#34;http://www.memoryc.com/storage/solidstatedisk/48gbfilematesolidgoexpresscardultra.html&#34;&gt;Expresscard/34 SSD&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.ragingmenace.com/software/menumeters/&#34;&gt;MenuMeters&lt;/a&gt; - An old friend I&#39;ve been using for as long as I can remember running OS X. Set to show (left to right)
-&lt;ol&gt;
-&lt;li&gt;Ram - &lt;strong&gt;U&lt;/strong&gt;sed and &lt;strong&gt;F&lt;/strong&gt;ree totals.&lt;/li&gt;
-&lt;li&gt;Network - Graph + values.&lt;/li&gt;
-&lt;li&gt;CPU - Graph per core. Probably the most useful out of the three.&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;Bluetooth&lt;/li&gt;
-&lt;li&gt;Time Machine&lt;/li&gt;
-&lt;li&gt;Modem - To dial on my Huawei E220 3G stick.&lt;/li&gt;
-&lt;li&gt;Airport&lt;/li&gt;
-&lt;li&gt;Sound&lt;/li&gt;
-&lt;li&gt;Day/Time&lt;/li&gt;
-&lt;li&gt;Fast User Switching - Not sure why I keep this in the menubar, only have one user and I lock my screen with a password protected screensaver.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.viscosityvpn.com/&#34;&gt;Viscosity&lt;/a&gt; - VPN software. Pretty useful.&lt;/li&gt;
-&lt;li&gt;Spotlight! - Occasionally this vanishes when spotlight decides to be a dick and eat ram/cpu reindexing my disk every few hours. Touch wood it hasn&#39;t done it since 10.6.1.&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>Capitalise &#34;ringer&#34; on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p&gt;&lt;strong&gt;Backstory:&lt;/strong&gt; Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;quot;ringer&amp;quot; across the top. But when you have headphones plugged in, it says &amp;quot;Headphones&amp;quot;. &lt;em&gt;(Note the capitalisation difference.)&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Now I&#39;m not usually bothered by stuff like this (honest!) but as soon as I&#39;d noticed the &lt;em&gt;&amp;quot;bug&amp;quot;&lt;/em&gt;, I couldn&#39;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&#39;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code&gt;/System&lt;/code&gt; folder. And I&#39;d be able to change it!&lt;/p&gt;
-&lt;p&gt;Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&#39;s SSH server on and go looking for the setting. To do so I figured I&#39;d just need &lt;code&gt;grep&lt;/code&gt; installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p&gt;
-&lt;p&gt;So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the iPhone
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>picture on Caius Theory</title><link>https://caiustheory.com/tag/picture/</link><description>Recent content in picture on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sun, 06 Dec 2009 12:56:49 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/picture/index.xml" rel="self" type="application/rss+xml"/><item><title>My Menubar Items</title><link>https://caiustheory.com/my-menubar-items/</link><pubDate>Sun, 06 Dec 2009 12:56:49 +0000</pubDate><guid>https://caiustheory.com/my-menubar-items/</guid><description>&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>This is a something that occasionally makes the rounds again, I&amp;rsquo;ve not seen it for a while and I&amp;rsquo;ve added some new items since I last remember documenting it. Thus, &lt;a href="http://twitter.com/macarne">@macarne&lt;/a> &lt;a href="http://twitter.com/macarne/status/6398125336">asking&lt;/a> what the app was that gives me stats prompted me to document my current menubar items.&lt;/p>
+&lt;p>&lt;img src="http://farm3.static.flickr.com/2586/4162170875_1d1a8be4cf.jpg" alt="annotated-menubar by ©aius, on Flickr" title="annotated-menubar">&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/4162170875/">View original&lt;/a>&lt;/p>
+&lt;ol>
+&lt;li>&lt;a href="http://www.eidac.de/">SMCFanControl&lt;/a> - Lets me adjust the minimum speed of my fans.&lt;/li>
+&lt;li>&lt;a href="http://atebits.com/tweetie-mac">Tweetie/mac&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://iscrobbler.sourceforge.net/">iScrobbler&lt;/a> - Scrobbles tunes iTunes plays&lt;/li>
+&lt;li>&lt;a href="http://www.realmacsoftware.com/littlesnapper/">LittleSnapper&lt;/a> &lt;em>(Or more accurately the menubar icon is NanoSnapper, LittleSnapper is the full app.)&lt;/em> Mainly used for screen grabs.&lt;/li>
+&lt;li>&lt;a href="http://www.orange-carb.org/SBM/">SlimBatteryMonitor&lt;/a> - Takes up less horizontal space than Apple&amp;rsquo;s menu item.&lt;/li>
+&lt;li>Expresscard menu item - Lets me power off my &lt;a href="http://www.memoryc.com/storage/solidstatedisk/48gbfilematesolidgoexpresscardultra.html">Expresscard/34 SSD&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://www.ragingmenace.com/software/menumeters/">MenuMeters&lt;/a> - An old friend I&amp;rsquo;ve been using for as long as I can remember running OS X. Set to show (left to right)
+&lt;ol>
+&lt;li>Ram - &lt;strong>U&lt;/strong>sed and &lt;strong>F&lt;/strong>ree totals.&lt;/li>
+&lt;li>Network - Graph + values.&lt;/li>
+&lt;li>CPU - Graph per core. Probably the most useful out of the three.&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Bluetooth&lt;/li>
+&lt;li>Time Machine&lt;/li>
+&lt;li>Modem - To dial on my Huawei E220 3G stick.&lt;/li>
+&lt;li>Airport&lt;/li>
+&lt;li>Sound&lt;/li>
+&lt;li>Day/Time&lt;/li>
+&lt;li>Fast User Switching - Not sure why I keep this in the menubar, only have one user and I lock my screen with a password protected screensaver.&lt;/li>
+&lt;li>&lt;a href="http://www.viscosityvpn.com/">Viscosity&lt;/a> - VPN software. Pretty useful.&lt;/li>
+&lt;li>Spotlight! - Occasionally this vanishes when spotlight decides to be a dick and eat ram/cpu reindexing my disk every few hours. Touch wood it hasn&amp;rsquo;t done it since 10.6.1.&lt;/li>
+&lt;/ol></description></item><item><title>Capitalise "ringer" on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p>&lt;strong>Backstory:&lt;/strong> Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;ldquo;ringer&amp;rdquo; across the top. But when you have headphones plugged in, it says &amp;ldquo;Headphones&amp;rdquo;. &lt;em>(Note the capitalisation difference.)&lt;/em>&lt;/p>
+&lt;p>Now I&amp;rsquo;m not usually bothered by stuff like this (honest!) but as soon as I&amp;rsquo;d noticed the &lt;em>&amp;ldquo;bug&amp;rdquo;&lt;/em>, I couldn&amp;rsquo;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&amp;rsquo;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code>/System&lt;/code> folder. And I&amp;rsquo;d be able to change it!&lt;/p>
+&lt;p>Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&amp;rsquo;s SSH server on and go looking for the setting. To do so I figured I&amp;rsquo;d just need &lt;code>grep&lt;/code> installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p>
+&lt;p>So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p>
+&lt;pre>&lt;code># On the iPhone
 $ cd /System/Library/
 $ grep -r &amp;quot;ringer&amp;quot; *
 Binary file CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings matches
@@ -42,36 +41,35 @@ Binary file Frameworks/CFNetwork.framework/CFNetwork matches
 Binary file Frameworks/CFNetwork.framework/da.lproj/Localizable.strings matches
 Binary file Frameworks/CFNetwork.framework/no.lproj/Localizable.strings matches
 Binary file Frameworks/Foundation.framework/da.lproj/URL.strings matches
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;At which point I stopped the grep search (&lt;code&gt;^C&lt;/code&gt;) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code&gt;SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code&gt;. Making sure to have SSH enabled on your mac, a simple &lt;code&gt;scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code&gt; later and the file is sat in my home folder on my mac.&lt;/p&gt;
-&lt;p&gt;Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&#39;ve found a hint on &lt;a href=&#34;http://macosxhints.com&#34;&gt;MacOSXHints&lt;/a&gt; telling me how to convert from &lt;a href=&#34;http://www.macosxhints.com/article.php?story=20050430105126392&#34;&gt;binary to xml plist format&lt;/a&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the mac
+&lt;/code>&lt;/pre>
+&lt;p>At which point I stopped the grep search (&lt;code>^C&lt;/code>) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code>SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code>. Making sure to have SSH enabled on your mac, a simple &lt;code>scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code> later and the file is sat in my home folder on my mac.&lt;/p>
+&lt;p>Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&amp;rsquo;ve found a hint on &lt;a href="http://macosxhints.com">MacOSXHints&lt;/a> telling me how to convert from &lt;a href="http://www.macosxhints.com/article.php?story=20050430105126392">binary to xml plist format&lt;/a>.&lt;/p>
+&lt;pre>&lt;code># On the mac
 $ plutil -convert xml1 SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;quot;ringer&amp;quot; and I found the following lines:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;key&amp;gt;&lt;/span&gt;RINGER_VOLUME&lt;span class=&#34;nt&#34;&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
-&lt;span class=&#34;nt&#34;&gt;&amp;lt;string&amp;gt;&lt;/span&gt;ringer&lt;span class=&#34;nt&#34;&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Change the &amp;quot;ringer&amp;quot; to &amp;quot;Ringer&amp;quot; between the &lt;code&gt;&amp;lt;string&amp;gt;&lt;/code&gt; and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code&gt;.string&lt;/code&gt;. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code&gt;xml1&lt;/code&gt; in the previous command to &lt;code&gt;binary1&lt;/code&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the mac
+&lt;/code>&lt;/pre>
+&lt;p>Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;ldquo;ringer&amp;rdquo; and I found the following lines:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>RINGER_VOLUME&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>ringer&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Change the &amp;ldquo;ringer&amp;rdquo; to &amp;ldquo;Ringer&amp;rdquo; between the &lt;code>&amp;lt;string&amp;gt;&lt;/code> and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code>.string&lt;/code>. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code>xml1&lt;/code> in the previous command to &lt;code>binary1&lt;/code>.&lt;/p>
+&lt;pre>&lt;code># On the mac
 $ plutil -convert binary1 SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&#39;ve edited:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the iPhone
+&lt;/code>&lt;/pre>
+&lt;p>And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&amp;rsquo;ve edited:&lt;/p>
+&lt;pre>&lt;code># On the iPhone
 $ cd ~
 $ scp user@mac_name.local:SpringBoard.strings .
 $ cd /System/Library/CoreServices/SpringBoard.app/English.lproj/
 $ mv SpringBoard.strings SpringBoard.strings.bak
 $ cp ~/SpringBoard.strings SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And then restart the phone, either in the usual manner or just run &lt;code&gt;reboot&lt;/code&gt; on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;quot;Ringer&amp;quot;!&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://caius.name/images/ringer.jpg&#34; alt=&#34;Screenshot of Volume bezel&#34; /&gt;&lt;/p&gt;</description></item><item><title>Quick Picture of Yourself</title><link>https://caiustheory.com/quick-picture-of-yourself/</link><pubDate>Tue, 16 Dec 2008 18:12:53 +0000</pubDate><guid>https://caiustheory.com/quick-picture-of-yourself/</guid><description>
-&lt;p&gt;Theres a meme going round the &lt;a href=&#34;http://www.google.com/search?q=Take+a+picture+of+yourself+right+now&#34;&gt;blogosphere&lt;/a&gt;/&lt;a href=&#34;http://search.twitter.com/search?q=Take+a+picture+of+yourself+right+now&#34;&gt;twitterverse&lt;/a&gt; recently, so I figured I&#39;d jump on it because there aren&#39;t any pictures of me on this blog yet. And there aren&#39;t that many in my &lt;a href=&#34;http://flickr.com/photos/caius/&#34;&gt;flickr&lt;/a&gt; photostream either actually.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://caius.name/images/qs/Me.png&#34; alt=&#34;Picture of Caius&#34; title=&#34;Caius Durling&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;&lt;a href=&#34;http://caius.name/images/qs/Me.png&#34;&gt;Fullsize Picture&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&#34;instructions&#34;&gt;Instructions&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Take a picture of yourself right now.&lt;/li&gt;
-&lt;li&gt;Don’t change your clothes, don’t fix your hair… just take a picture.&lt;/li&gt;
-&lt;li&gt;Post that picture with NO editing.&lt;/li&gt;
-&lt;li&gt;Post these instructions with your picture.&lt;/li&gt;
-&lt;/ol&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>And then restart the phone, either in the usual manner or just run &lt;code>reboot&lt;/code> on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;ldquo;Ringer&amp;rdquo;!&lt;/p>
+&lt;p>&lt;img src="http://caius.name/images/ringer.jpg" alt="Screenshot of Volume bezel">&lt;/p></description></item><item><title>Quick Picture of Yourself</title><link>https://caiustheory.com/quick-picture-of-yourself/</link><pubDate>Tue, 16 Dec 2008 18:12:53 +0000</pubDate><guid>https://caiustheory.com/quick-picture-of-yourself/</guid><description>&lt;p>Theres a meme going round the &lt;a href="http://www.google.com/search?q=Take+a+picture+of+yourself+right+now">blogosphere&lt;/a>/&lt;a href="http://search.twitter.com/search?q=Take+a+picture+of+yourself+right+now">twitterverse&lt;/a> recently, so I figured I&amp;rsquo;d jump on it because there aren&amp;rsquo;t any pictures of me on this blog yet. And there aren&amp;rsquo;t that many in my &lt;a href="http://flickr.com/photos/caius/">flickr&lt;/a> photostream either actually.&lt;/p>
+&lt;p>&lt;img src="http://caius.name/images/qs/Me.png" alt="Picture of Caius" title="Caius Durling">&lt;/p>
+&lt;p>&lt;em>&lt;a href="http://caius.name/images/qs/Me.png">Fullsize Picture&lt;/a>&lt;/em>&lt;/p>
+&lt;h2 id="instructions">Instructions&lt;/h2>
+&lt;ol>
+&lt;li>Take a picture of yourself right now.&lt;/li>
+&lt;li>Don’t change your clothes, don’t fix your hair… just take a picture.&lt;/li>
+&lt;li>Post that picture with NO editing.&lt;/li>
+&lt;li>Post these instructions with your picture.&lt;/li>
+&lt;/ol></description></item></channel></rss>

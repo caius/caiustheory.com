@@ -1,13 +1,13 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>catch 22 on Caius Theory</title><link>https://caiustheory.com/tag/catch-22/</link><description>Recent content in catch 22 on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Fri, 07 Nov 2008 06:08:28 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/catch-22/index.xml" rel="self" type="application/rss+xml"/><item><title>Removing non-existent source from rubygems</title><link>https://caiustheory.com/removing-non-existant-source-from-rubygems/</link><pubDate>Fri, 07 Nov 2008 06:08:28 +0000</pubDate><guid>https://caiustheory.com/removing-non-existant-source-from-rubygems/</guid><description>&lt;p&gt;I just came to move some ruby scripts onto my mac mini, and to do so I needed to install a couple of gems. Now I realised I hadn&#39;t installed or updated rubygems on the machine for a while, so I figured it was best to update &lt;code&gt;gem&lt;/code&gt; before installing the gems I wanted. Easier said than done.&lt;/p&gt;
-&lt;p&gt;At some point in the past I had added &lt;code&gt;http://gems.datamapper.org&lt;/code&gt; as a source to rubygems. Since then the datamapper project has discontinued using this gem source to serve up gems, so I was getting the following output:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem update --system
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>catch 22 on Caius Theory</title><link>https://caiustheory.com/tag/catch-22/</link><description>Recent content in catch 22 on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Fri, 07 Nov 2008 06:08:28 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/catch-22/index.xml" rel="self" type="application/rss+xml"/><item><title>Removing non-existent source from rubygems</title><link>https://caiustheory.com/removing-non-existant-source-from-rubygems/</link><pubDate>Fri, 07 Nov 2008 06:08:28 +0000</pubDate><guid>https://caiustheory.com/removing-non-existant-source-from-rubygems/</guid><description>&lt;p>I just came to move some ruby scripts onto my mac mini, and to do so I needed to install a couple of gems. Now I realised I hadn&amp;rsquo;t installed or updated rubygems on the machine for a while, so I figured it was best to update &lt;code>gem&lt;/code> before installing the gems I wanted. Easier said than done.&lt;/p>
+&lt;p>At some point in the past I had added &lt;code>http://gems.datamapper.org&lt;/code> as a source to rubygems. Since then the datamapper project has discontinued using this gem source to serve up gems, so I was getting the following output:&lt;/p>
+&lt;pre>&lt;code>mm:daemons caius$ sudo gem update --system
 Updating installed gems
 Bulk updating Gem source index for: http://gems.rubyforge.org/
 ERROR: While executing gem ... (Gem::RemoteSourceException)
 HTTP Response 404 fetching http://gems.datamapper.org/yaml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Eeek! I can&#39;t update because the source no longer exists. So I figured I&#39;d remove the source before updating, that should work right? Wrong. It updates the sources before removing the source from the config it would appear.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem sources
+&lt;/code>&lt;/pre>
+&lt;p>Eeek! I can&amp;rsquo;t update because the source no longer exists. So I figured I&amp;rsquo;d remove the source before updating, that should work right? Wrong. It updates the sources before removing the source from the config it would appear.&lt;/p>
+&lt;pre>&lt;code>mm:daemons caius$ sudo gem sources
 ** CURRENT SOURCES ***
 http://gems.rubyforge.org
 http://gems.datamapper.org
@@ -15,15 +15,15 @@ mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org
 Bulk updating Gem source index for: http://gems.rubyforge.org/
 ERROR: While executing gem ... (Gem::RemoteSourceException)
 HTTP Response 404 fetching http://gems.datamapper.org/yaml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Oh balls. So how do I remove the source without updating it first. I need to update it to remove it, but to remove it I need to update from it. Gotta love catch 22s!&lt;/p&gt;
-&lt;p&gt;I remembered that &lt;code&gt;gem install&lt;/code&gt; has an option not to update sources, &lt;code&gt;--no-update-sources&lt;/code&gt;. So I figured thats gotta work when removing a source as well, but it doesn&#39;t.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org --no-update-sources
+&lt;/code>&lt;/pre>
+&lt;p>Oh balls. So how do I remove the source without updating it first. I need to update it to remove it, but to remove it I need to update from it. Gotta love catch 22s!&lt;/p>
+&lt;p>I remembered that &lt;code>gem install&lt;/code> has an option not to update sources, &lt;code>--no-update-sources&lt;/code>. So I figured thats gotta work when removing a source as well, but it doesn&amp;rsquo;t.&lt;/p>
+&lt;pre>&lt;code>mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org --no-update-sources
 ERROR: While executing gem ... (OptionParser::InvalidOption)
 invalid option: --no-update-sources
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Oh crap. Now what do I do? Take my usual tactic and google for a hint of course! I&#39;d considered trying to find where the gem config was and remove the source by hand, but I figured that wouldn&#39;t be that simple. After hitting a couple of sites that weren&#39;t relevant I ended up &lt;a href=&#34;http://jaigouk.blogspot.com/2008/07/404-fetching-httpgemsdatamapperorgyaml.html&#34;&gt;on the edge of complexity&lt;/a&gt; where he mentions the command &lt;code&gt;nano ~/.gemrc&lt;/code&gt;. Which made me wonder if that file contains the sources.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mm:daemons caius$ cat ~/.gemrc
+&lt;/code>&lt;/pre>
+&lt;p>Oh crap. Now what do I do? Take my usual tactic and google for a hint of course! I&amp;rsquo;d considered trying to find where the gem config was and remove the source by hand, but I figured that wouldn&amp;rsquo;t be that simple. After hitting a couple of sites that weren&amp;rsquo;t relevant I ended up &lt;a href="http://jaigouk.blogspot.com/2008/07/404-fetching-httpgemsdatamapperorgyaml.html">on the edge of complexity&lt;/a> where he mentions the command &lt;code>nano ~/.gemrc&lt;/code>. Which made me wonder if that file contains the sources.&lt;/p>
+&lt;pre>&lt;code>mm:daemons caius$ cat ~/.gemrc
 ---
 :update_sources: true
 :verbose: true
@@ -33,5 +33,5 @@ invalid option: --no-update-sources
 - http://gems.datamapper.org
 :backtrace: false
 :benchmark: false
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;All I needed to do was remove the &lt;code&gt;- http://gems.datamapper.org&lt;/code&gt; line and &lt;em&gt;poof&lt;/em&gt;, &lt;code&gt;gem&lt;/code&gt; was working again. One quick &lt;code&gt;gem update --system&lt;/code&gt; later and I was upgraded from gem 1.1.1 to 1.3.1 and installing the gems I needed.&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>All I needed to do was remove the &lt;code>- http://gems.datamapper.org&lt;/code> line and &lt;em>poof&lt;/em>, &lt;code>gem&lt;/code> was working again. One quick &lt;code>gem update --system&lt;/code> later and I was upgraded from gem 1.1.1 to 1.3.1 and installing the gems I needed.&lt;/p></description></item></channel></rss>

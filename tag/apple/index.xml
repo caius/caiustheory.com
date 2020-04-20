@@ -1,292 +1,288 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>apple on Caius Theory</title><link>https://caiustheory.com/tag/apple/</link><description>Recent content in apple on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Fri, 16 Sep 2016 10:27:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/apple/index.xml" rel="self" type="application/rss+xml"/><item><title>Remove OS X Disk Password</title><link>https://caiustheory.com/remove-os-x-disk-password/</link><pubDate>Fri, 16 Sep 2016 10:27:00 +0000</pubDate><guid>https://caiustheory.com/remove-os-x-disk-password/</guid><description>&lt;p&gt;I recently reinstalled a laptop and in doing so setup full disk encryption in a slightly strange fashion. The basic flow I followed was:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Boot into Recovery mode (hold ⌘-R at boot)&lt;/li&gt;
-&lt;li&gt;Erase the internal HD as &lt;code&gt;HFS+ (Journaled, Encrypted)&lt;/code&gt; and set a disk password&lt;/li&gt;
-&lt;li&gt;Install OS X onto the internal disk&lt;/li&gt;
-&lt;li&gt;During setup, use Migration Assistant to copy clone containing previous install data from backup disk&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;This worked great in the end, once I&#39;d recompiling various utilities I had installed. (Downside of moving from one CPU arch to another - can&#39;t just copy all compiled binaries over.)&lt;/p&gt;
-&lt;p&gt;However, I failed at step 2 above and entered &amp;quot;password&amp;quot; as my disk password since it was only intended to be temporary. Usually OS X&#39;s full disk encryption (FileVault 2) allows the machine users to unlock the disk, and not a standalone password. Due to the slightly odd way I setup the machine, I had the option of either using the disk password or my user account&#39;s password.&lt;/p&gt;
-&lt;p&gt;Having hunted around trying to find how to change or remove this disk password and leave only my users password, I finally stumbled across the magic incantations in an apple discussion thread asking &lt;a href=&#34;https://discussions.apple.com/thread/5105759?start=0&amp;amp;tstart=0&#34;&gt;How to disable &amp;quot;Disk Password&amp;quot; on boot?&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The magic incantations are as follows:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;List all the passwords that can currently unlock the drive&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Make sure there is a second password listed or removing the disk password will lock you out of the disk&lt;/strong&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo fdesetup list -extended
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>apple on Caius Theory</title><link>https://caiustheory.com/tag/apple/</link><description>Recent content in apple on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Fri, 16 Sep 2016 10:27:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/apple/index.xml" rel="self" type="application/rss+xml"/><item><title>Remove OS X Disk Password</title><link>https://caiustheory.com/remove-os-x-disk-password/</link><pubDate>Fri, 16 Sep 2016 10:27:00 +0000</pubDate><guid>https://caiustheory.com/remove-os-x-disk-password/</guid><description>&lt;p>I recently reinstalled a laptop and in doing so setup full disk encryption in a slightly strange fashion. The basic flow I followed was:&lt;/p>
+&lt;ol>
+&lt;li>Boot into Recovery mode (hold ⌘-R at boot)&lt;/li>
+&lt;li>Erase the internal HD as &lt;code>HFS+ (Journaled, Encrypted)&lt;/code> and set a disk password&lt;/li>
+&lt;li>Install OS X onto the internal disk&lt;/li>
+&lt;li>During setup, use Migration Assistant to copy clone containing previous install data from backup disk&lt;/li>
+&lt;/ol>
+&lt;p>This worked great in the end, once I&amp;rsquo;d recompiling various utilities I had installed. (Downside of moving from one CPU arch to another - can&amp;rsquo;t just copy all compiled binaries over.)&lt;/p>
+&lt;p>However, I failed at step 2 above and entered &amp;ldquo;password&amp;rdquo; as my disk password since it was only intended to be temporary. Usually OS X&amp;rsquo;s full disk encryption (FileVault 2) allows the machine users to unlock the disk, and not a standalone password. Due to the slightly odd way I setup the machine, I had the option of either using the disk password or my user account&amp;rsquo;s password.&lt;/p>
+&lt;p>Having hunted around trying to find how to change or remove this disk password and leave only my users password, I finally stumbled across the magic incantations in an apple discussion thread asking &lt;a href="https://discussions.apple.com/thread/5105759?start=0&amp;amp;tstart=0">How to disable &amp;ldquo;Disk Password&amp;rdquo; on boot?&lt;/a>.&lt;/p>
+&lt;p>The magic incantations are as follows:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>List all the passwords that can currently unlock the drive&lt;/p>
+&lt;p>&lt;strong>Make sure there is a second password listed or removing the disk password will lock you out of the disk&lt;/strong>.&lt;/p>
+&lt;pre>&lt;code> $ sudo fdesetup list -extended
 ESCROW UUID TYPE USER
 28376DDE-B6E1-48BE-A06F-4212067581D6 Disk Passphrase User
 4DBF8CEF-40F7-4F00-902F-A47AA643C656 OS User caius
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Note the UUID of the &amp;quot;Disk Passphrase&amp;quot; entry, and remove that from the list&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo fdesetup remove -uuid 28376DDE-B6E1-48BE-A06F-4212067581D6
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;List the passwords again to make sure the Disk Passphrase entry was removed&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo fdesetup list -extended
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Note the UUID of the &amp;ldquo;Disk Passphrase&amp;rdquo; entry, and remove that from the list&lt;/p>
+&lt;pre>&lt;code> sudo fdesetup remove -uuid 28376DDE-B6E1-48BE-A06F-4212067581D6
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>List the passwords again to make sure the Disk Passphrase entry was removed&lt;/p>
+&lt;pre>&lt;code> $ sudo fdesetup list -extended
 ESCROW UUID TYPE USER
 4DBF8CEF-40F7-4F00-902F-A47AA643C656 OS User caius
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Hey presto, only your user is left being able to unlock the disk.&lt;/p&gt;</description></item><item><title>Solve volume down button not working on iPhone 5</title><link>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</link><pubDate>Tue, 01 Jul 2014 11:31:39 +0000</pubDate><guid>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</guid><description>&lt;p&gt;I noticed this morning that my volume down button (-) wasn&#39;t working on my iPhone 5 running iOS 7. Pushing the physical button in didn&#39;t change the volume. The volume up button increased the volume successfully still.&lt;/p&gt;
-&lt;p&gt;As is my normal first step debugging iPhone weirdness, I rebooted the phone by turning it off, leaving it off for a few seconds, then booting it back up with the power button. Once powered off and on in this way, the volume down key still didn&#39;t decrease the volume.&lt;/p&gt;
-&lt;p&gt;Fearing a physical button issue at this point, I turned to google for suggestions on what else to try. Running across &lt;a href=&#34;https://discussions.apple.com/thread/4894152&#34;&gt;this thread&lt;/a&gt; on Apple&#39;s discussion forums, I tried out the solution in there.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Open &amp;quot;Settings&amp;quot;&lt;/li&gt;
-&lt;li&gt;Scroll down and tap on &amp;quot;General&amp;quot;&lt;/li&gt;
-&lt;li&gt;Tap on &amp;quot;Accessibility&amp;quot;&lt;/li&gt;
-&lt;li&gt;Scroll down to the bottom and tap on &amp;quot;AssistiveTouch&amp;quot;&lt;/li&gt;
-&lt;li&gt;Tap the toggle for AssistiveTouch to turn it on, and you should see a little icon appear on screen (white circle contained in a dark grey rounded square)&lt;/li&gt;
-&lt;li&gt;Tap the AssistiveTouch icon (was in the top left corner on screen for me)&lt;/li&gt;
-&lt;li&gt;Tap on &amp;quot;Device&amp;quot;&lt;/li&gt;
-&lt;li&gt;Tap &amp;quot;Volume Down&amp;quot; a bunch of times and you should see the volume being turned down&lt;/li&gt;
-&lt;li&gt;Tap outside the AssistiveTouch dialog to close it&lt;/li&gt;
-&lt;li&gt;Try pushing the physical Volume Down button&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;In my case, following these steps made my physical volume down button start working again. Makes me wonder if the solution author on the apple discussion thread is right, in that this is a software issue and forcing a volume down action through the on-screen interface makes it remember that there&#39;s a physical button to respond to as well.&lt;/p&gt;
-&lt;p&gt;Either way, I can stop deafening myself whenever I receive a notification now!&lt;/p&gt;</description></item><item><title>Compile &amp; run swift files directly</title><link>https://caiustheory.com/compile-run-swift-files-directly/</link><pubDate>Fri, 06 Jun 2014 14:32:18 +0000</pubDate><guid>https://caiustheory.com/compile-run-swift-files-directly/</guid><description>&lt;p&gt;Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.&lt;/p&gt;
-&lt;p&gt;Using the &lt;code&gt;xcrun&lt;/code&gt; binary, we can reach into the current Xcode &lt;code&gt;/bin&lt;/code&gt; folder and run binaries within there. So &lt;code&gt;xcrun swift&lt;/code&gt; lets you run the swift binary to compile files for instance. If you view the help with &lt;code&gt;-h&lt;/code&gt;, there&#39;s a useful flag &lt;code&gt;-i&lt;/code&gt; listed there:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;-i &amp;nbsp;&amp;nbsp; Immediate mode&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Turns out immediate mode means &amp;quot;compile &amp;amp; run&amp;quot; in the same command, which is what we&#39;re after.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ cat hello.swift
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;p>Hey presto, only your user is left being able to unlock the disk.&lt;/p></description></item><item><title>Solve volume down button not working on iPhone 5</title><link>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</link><pubDate>Tue, 01 Jul 2014 11:31:39 +0000</pubDate><guid>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</guid><description>&lt;p>I noticed this morning that my volume down button (-) wasn&amp;rsquo;t working on my iPhone 5 running iOS 7. Pushing the physical button in didn&amp;rsquo;t change the volume. The volume up button increased the volume successfully still.&lt;/p>
+&lt;p>As is my normal first step debugging iPhone weirdness, I rebooted the phone by turning it off, leaving it off for a few seconds, then booting it back up with the power button. Once powered off and on in this way, the volume down key still didn&amp;rsquo;t decrease the volume.&lt;/p>
+&lt;p>Fearing a physical button issue at this point, I turned to google for suggestions on what else to try. Running across &lt;a href="https://discussions.apple.com/thread/4894152">this thread&lt;/a> on Apple&amp;rsquo;s discussion forums, I tried out the solution in there.&lt;/p>
+&lt;ol>
+&lt;li>Open &amp;ldquo;Settings&amp;rdquo;&lt;/li>
+&lt;li>Scroll down and tap on &amp;ldquo;General&amp;rdquo;&lt;/li>
+&lt;li>Tap on &amp;ldquo;Accessibility&amp;rdquo;&lt;/li>
+&lt;li>Scroll down to the bottom and tap on &amp;ldquo;AssistiveTouch&amp;rdquo;&lt;/li>
+&lt;li>Tap the toggle for AssistiveTouch to turn it on, and you should see a little icon appear on screen (white circle contained in a dark grey rounded square)&lt;/li>
+&lt;li>Tap the AssistiveTouch icon (was in the top left corner on screen for me)&lt;/li>
+&lt;li>Tap on &amp;ldquo;Device&amp;rdquo;&lt;/li>
+&lt;li>Tap &amp;ldquo;Volume Down&amp;rdquo; a bunch of times and you should see the volume being turned down&lt;/li>
+&lt;li>Tap outside the AssistiveTouch dialog to close it&lt;/li>
+&lt;li>Try pushing the physical Volume Down button&lt;/li>
+&lt;/ol>
+&lt;p>In my case, following these steps made my physical volume down button start working again. Makes me wonder if the solution author on the apple discussion thread is right, in that this is a software issue and forcing a volume down action through the on-screen interface makes it remember that there&amp;rsquo;s a physical button to respond to as well.&lt;/p>
+&lt;p>Either way, I can stop deafening myself whenever I receive a notification now!&lt;/p></description></item><item><title>Compile &amp; run swift files directly</title><link>https://caiustheory.com/compile-run-swift-files-directly/</link><pubDate>Fri, 06 Jun 2014 14:32:18 +0000</pubDate><guid>https://caiustheory.com/compile-run-swift-files-directly/</guid><description>&lt;p>Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.&lt;/p>
+&lt;p>Using the &lt;code>xcrun&lt;/code> binary, we can reach into the current Xcode &lt;code>/bin&lt;/code> folder and run binaries within there. So &lt;code>xcrun swift&lt;/code> lets you run the swift binary to compile files for instance. If you view the help with &lt;code>-h&lt;/code>, there&amp;rsquo;s a useful flag &lt;code>-i&lt;/code> listed there:&lt;/p>
+&lt;blockquote>
+&lt;p>-i    Immediate mode&lt;/p>
+&lt;/blockquote>
+&lt;p>Turns out immediate mode means &amp;ldquo;compile &amp;amp; run&amp;rdquo; in the same command, which is what we&amp;rsquo;re after.&lt;/p>
+&lt;pre>&lt;code>$ cat hello.swift
 println(&amp;quot;Hello World&amp;quot;)
 $ xcrun swift -i hello.swift
 Hello World
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ cat hello2.swift
+&lt;/code>&lt;/pre>
+&lt;p>Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!&lt;/p>
+&lt;pre>&lt;code>$ cat hello2.swift
 #!/usr/bin/env xcrun swift -i
 println(&amp;quot;Hello World 2&amp;quot;)
 $ chmod +x hello2.swift
 $ ./hello2.swift
 Hello World 2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!&lt;/p&gt;</description></item><item><title>Rename Google Drive folder on Mac</title><link>https://caiustheory.com/rename-google-drive-folder-on-mac/</link><pubDate>Thu, 06 Mar 2014 15:49:22 +0000</pubDate><guid>https://caiustheory.com/rename-google-drive-folder-on-mac/</guid><description>&lt;ol&gt;
-&lt;li&gt;Quit Google Drive app&lt;/li&gt;
-&lt;li&gt;Rename &lt;code&gt;~/Google Drive/&lt;/code&gt; to whatever you want&lt;/li&gt;
-&lt;li&gt;Open Google Drive and wait for it to complain the folder is missing&lt;/li&gt;
-&lt;li&gt;Click the menu item and click the warning item&lt;/li&gt;
-&lt;li&gt;Click &amp;quot;Locate Folder..&amp;quot; button on the right in window that pops up&lt;/li&gt;
-&lt;li&gt;Find your renamed folder and hit OK&lt;/li&gt;
-&lt;li&gt;There is no step seven&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>Add to iCloud Reading List programmatically</title><link>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</link><pubDate>Mon, 16 Dec 2013 22:26:31 +0000</pubDate><guid>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</guid><description>&lt;p&gt;One piece of a larger puzzle I&#39;m trying to solve currently, was how to add a given URL to my Apple &amp;quot;&lt;a href=&#34;http://www.apple.com/uk/safari/#icloud&#34;&gt;Reading List&lt;/a&gt;&amp;quot; that is stored in iCloud and synced across all my OS X and iOS devices. More specifically, I wanted to add URLs to the list from my mac running Mavericks (10.9). I had a quick look at the Cocoa APIs and couldn&#39;t see anything in OS X to do this. (iOS has an API to do it from Cocoa-land it seems though.)&lt;/p&gt;
-&lt;p&gt;I figured &lt;a href=&#34;http://www.apple.com/uk/safari/&#34;&gt;Safari.app&lt;/a&gt; was the key to getting this done on OS X, given it has the ability itself to add the current page to the reading list, either via a keyboard command, a menu item, or a button in the address bar. One quick mental leap later, and I was wondering if the engineers at Apple had been nice enough to expose that via Applescript for me to take advantage of.&lt;/p&gt;
-&lt;p&gt;One quick stop in &amp;quot;Script Editor.app&amp;quot; later, and I had the Applescript dictionary open for Safari.app. Lo and behold, there is rather handily an Applescript command called &amp;quot;add reading list item&amp;quot;, which does &lt;strong&gt;exactly&lt;/strong&gt; what I want. It has a few different options you can call it with, depending on whether you want Safari to go populate the title &amp;amp; preview text, or if you want to specify it yourself at save-time.&lt;/p&gt;
-&lt;p&gt;As I want to be able to call this from multiple runtimes, I&#39;ve chosen to save it as an executable, which leans on &lt;a href=&#34;https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/osascript.1.html&#34;&gt;&lt;code&gt;osascript&lt;/code&gt;&lt;/a&gt; to run the actual Applescript. And here it is:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-applescript&#34; data-lang=&#34;applescript&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env osascript&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;run&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;argv&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;count&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;argv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;tell&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;app&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Safari&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;add&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;reading&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;list&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;item&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;item&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;argv&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as &lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;run&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Save it as whatever you want (eg. &lt;code&gt;add_to_reading_list&lt;/code&gt;), make it executable (&lt;code&gt;chmod +x add_to_reading_list&lt;/code&gt;), and then run it with the URL you want saving as the first argument.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ add_to_reading_list &amp;quot;http://caius.name/&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!&lt;/p></description></item><item><title>Rename Google Drive folder on Mac</title><link>https://caiustheory.com/rename-google-drive-folder-on-mac/</link><pubDate>Thu, 06 Mar 2014 15:49:22 +0000</pubDate><guid>https://caiustheory.com/rename-google-drive-folder-on-mac/</guid><description>&lt;ol>
+&lt;li>Quit Google Drive app&lt;/li>
+&lt;li>Rename &lt;code>~/Google Drive/&lt;/code> to whatever you want&lt;/li>
+&lt;li>Open Google Drive and wait for it to complain the folder is missing&lt;/li>
+&lt;li>Click the menu item and click the warning item&lt;/li>
+&lt;li>Click &amp;ldquo;Locate Folder..&amp;rdquo; button on the right in window that pops up&lt;/li>
+&lt;li>Find your renamed folder and hit OK&lt;/li>
+&lt;li>There is no step seven&lt;/li>
+&lt;/ol></description></item><item><title>Add to iCloud Reading List programmatically</title><link>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</link><pubDate>Mon, 16 Dec 2013 22:26:31 +0000</pubDate><guid>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</guid><description>&lt;p>One piece of a larger puzzle I&amp;rsquo;m trying to solve currently, was how to add a given URL to my Apple &amp;ldquo;&lt;a href="http://www.apple.com/uk/safari/#icloud">Reading List&lt;/a>&amp;rdquo; that is stored in iCloud and synced across all my OS X and iOS devices. More specifically, I wanted to add URLs to the list from my mac running Mavericks (10.9). I had a quick look at the Cocoa APIs and couldn&amp;rsquo;t see anything in OS X to do this. (iOS has an API to do it from Cocoa-land it seems though.)&lt;/p>
+&lt;p>I figured &lt;a href="http://www.apple.com/uk/safari/">Safari.app&lt;/a> was the key to getting this done on OS X, given it has the ability itself to add the current page to the reading list, either via a keyboard command, a menu item, or a button in the address bar. One quick mental leap later, and I was wondering if the engineers at Apple had been nice enough to expose that via Applescript for me to take advantage of.&lt;/p>
+&lt;p>One quick stop in &amp;ldquo;Script Editor.app&amp;rdquo; later, and I had the Applescript dictionary open for Safari.app. Lo and behold, there is rather handily an Applescript command called &amp;ldquo;add reading list item&amp;rdquo;, which does &lt;strong>exactly&lt;/strong> what I want. It has a few different options you can call it with, depending on whether you want Safari to go populate the title &amp;amp; preview text, or if you want to specify it yourself at save-time.&lt;/p>
+&lt;p>As I want to be able to call this from multiple runtimes, I&amp;rsquo;ve chosen to save it as an executable, which leans on &lt;a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/osascript.1.html">&lt;code>osascript&lt;/code>&lt;/a> to run the actual Applescript. And here it is:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-applescript" data-lang="applescript">&lt;span class="c">#!/usr/bin/env osascript&lt;/span>
+&lt;span class="k">on&lt;/span> &lt;span class="nb">run&lt;/span> &lt;span class="nv">argv&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">count&lt;/span> &lt;span class="k">of&lt;/span> &lt;span class="nv">argv&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="k">tell&lt;/span> &lt;span class="nv">app&lt;/span> &lt;span class="s2">&amp;#34;Safari&amp;#34;&lt;/span> &lt;span class="k">to&lt;/span> &lt;span class="nv">add&lt;/span> &lt;span class="nv">reading&lt;/span> &lt;span class="nv">list&lt;/span> &lt;span class="nb">item&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">item&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="k">of&lt;/span> &lt;span class="nv">argv&lt;/span> &lt;span class="k">as &lt;/span>&lt;span class="nc">text&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">end&lt;/span> &lt;span class="k">if&lt;/span>
+&lt;span class="k">end&lt;/span> &lt;span class="nb">run&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Save it as whatever you want (eg. &lt;code>add_to_reading_list&lt;/code>), make it executable (&lt;code>chmod +x add_to_reading_list&lt;/code>), and then run it with the URL you want saving as the first argument.&lt;/p>
+&lt;pre>&lt;code>$ add_to_reading_list &amp;quot;http://caius.name/&amp;quot;
 $ add_to_reading_list &amp;quot;http://google.com/&amp;quot;
 # … etc …
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;(Adding support for specifying preview text and title is left as an exercise for the reader!)&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Have fun reading later!&lt;/p&gt;</description></item><item><title>Mounting Harman Kardon Soundsticks on the wall</title><link>https://caiustheory.com/mounting-harman-kardon-soundsticks-on-the-wall/</link><pubDate>Tue, 06 Nov 2012 20:46:45 +0000</pubDate><guid>https://caiustheory.com/mounting-harman-kardon-soundsticks-on-the-wall/</guid><description>&lt;p&gt;Having recently moved my Soundstick III&#39;s into the front room, I&#39;ve been thinking of a way to wall mount them safely to free up table room. Googling eventually turned up just one person who has previously documented &lt;a href=&#34;http://www.thanatopsic.org/hendrik/article/102/hot-hotdesking-action&#34;&gt;mounting his soundsticks&lt;/a&gt; on the wall, using 22mm plumbing clips (intended for 22mm central heating pipes).&lt;/p&gt;
-&lt;p&gt;A quick scrounge round the local Homebase this afternoon yielded a pack of similar clips, 5x 22mm push clips for £1.99. Having just fitted the speakers to the wall, they&#39;re nice and secure (providing no-one hangs on them, which they shouldn&#39;t do), fairly neat and simple to fit.&lt;/p&gt;
-&lt;p&gt;I&#39;ve left the subwoofer on the floor under the table, and only mounted the &amp;quot;sticks&amp;quot; (tweeters) on the wall, one each side of the mirror over our dining table. I can then conveniently run the cables to the &amp;quot;sticks&amp;quot; behind the mirror and keep it looking neater.&lt;/p&gt;
-&lt;p&gt;I affixed the clips to the wall, one either side of the mirror with enough space for the speaker to sit without overlapping the mirror. Mostly just held the stick up and guessed at where to put the clip, but it looks ok.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://caius.name/images/wallmount-soundstick-2.jpg&#34;&gt;
-&lt;img src=&#34;http://caius.name/images/wallmount-soundstick-2.jpg&#34; alt=&#34;Speaker clip without speaker in it&#34; width=&#34;320&#34;&gt;
-&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Then I bent the speaker stand backwards behind the stick (don&#39;t worry, it&#39;s on a hinge!) and threaded the cable through the middle of the ring to make it sit flusher against the wall.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://caius.name/images/wallmount-soundstick-1.jpg&#34;&gt;
-&lt;img src=&#34;http://caius.name/images/wallmount-soundstick-1.jpg&#34; alt=&#34;Speaker ring bent behind the unit&#34; height=&#34;320&#34;&gt;
-&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;And then it was just a case of easing the speaker ring into the clip, with the clip at the top of the ring (picture below if you can&#39;t visualise that easily). I think the rings are more like 24-25mm so it takes a bit of easing to get them in there. Once it&#39;s in there&#39;s no play in the clip for it to wiggle out though, even though it&#39;s plastic. I tried not to fatigue the clip arms too much wiggling it in there as well, so as to minimise the chance of it failing over time. (Something to check periodically!)&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://caius.name/images/wallmount-soundstick-4.jpg&#34;&gt;
-&lt;img src=&#34;http://caius.name/images/wallmount-soundstick-4.jpg&#34; alt=&#34;Close up of speaker unit in clip&#34; height=&#34;320&#34;&gt;
-&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Lastly, I just zip tied the cables together behind the mirror, and ran them down vertically from the middle to the floor and plugged them in. Sounds fantastic, and due to being plugged into an &lt;a href=&#34;http://www.apple.com/airportexpress/&#34;&gt;Airport Express&lt;/a&gt;, anything compatible can stream audio through them wirelessly. Fabulous darling!&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://caius.name/images/wallmount-soundstick-3.jpg&#34;&gt;
-&lt;img src=&#34;http://caius.name/images/wallmount-soundstick-3.jpg&#34; width=&#34;320&#34;&gt;
-&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;(Click any image for a larger version)&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Use Readline With Default Ruby on OS X</title><link>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</link><pubDate>Sun, 05 Feb 2012 18:13:20 +0000</pubDate><guid>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</guid><description>&lt;p&gt;OS X Lion comes with ruby 1.8.7-p249 installed, although it&#39;s compiled against libedit rather than libreadline. Whilst libedit is a mostly-compatible replacement for libreadline, I find there&#39;s a couple of settings I&#39;m used to that don&#39;t work in libedit. (Like &lt;code&gt;history-beginning-search-backward&lt;/code&gt;.)&lt;/p&gt;
-&lt;p&gt;Luckily you can grab the source of ruby and compile just the readline extension, and move it into the right place for it to just work. Here&#39;s what&#39;s been working for me:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Install readline using homebrew&lt;/span&gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>(Adding support for specifying preview text and title is left as an exercise for the reader!)&lt;/em>&lt;/p>
+&lt;p>Have fun reading later!&lt;/p></description></item><item><title>Mounting Harman Kardon Soundsticks on the wall</title><link>https://caiustheory.com/mounting-harman-kardon-soundsticks-on-the-wall/</link><pubDate>Tue, 06 Nov 2012 20:46:45 +0000</pubDate><guid>https://caiustheory.com/mounting-harman-kardon-soundsticks-on-the-wall/</guid><description>&lt;p>Having recently moved my Soundstick III&amp;rsquo;s into the front room, I&amp;rsquo;ve been thinking of a way to wall mount them safely to free up table room. Googling eventually turned up just one person who has previously documented &lt;a href="http://www.thanatopsic.org/hendrik/article/102/hot-hotdesking-action">mounting his soundsticks&lt;/a> on the wall, using 22mm plumbing clips (intended for 22mm central heating pipes).&lt;/p>
+&lt;p>A quick scrounge round the local Homebase this afternoon yielded a pack of similar clips, 5x 22mm push clips for £1.99. Having just fitted the speakers to the wall, they&amp;rsquo;re nice and secure (providing no-one hangs on them, which they shouldn&amp;rsquo;t do), fairly neat and simple to fit.&lt;/p>
+&lt;p>I&amp;rsquo;ve left the subwoofer on the floor under the table, and only mounted the &amp;ldquo;sticks&amp;rdquo; (tweeters) on the wall, one each side of the mirror over our dining table. I can then conveniently run the cables to the &amp;ldquo;sticks&amp;rdquo; behind the mirror and keep it looking neater.&lt;/p>
+&lt;p>I affixed the clips to the wall, one either side of the mirror with enough space for the speaker to sit without overlapping the mirror. Mostly just held the stick up and guessed at where to put the clip, but it looks ok.&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Then I bent the speaker stand backwards behind the stick (don&amp;rsquo;t worry, it&amp;rsquo;s on a hinge!) and threaded the cable through the middle of the ring to make it sit flusher against the wall.&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>And then it was just a case of easing the speaker ring into the clip, with the clip at the top of the ring (picture below if you can&amp;rsquo;t visualise that easily). I think the rings are more like 24-25mm so it takes a bit of easing to get them in there. Once it&amp;rsquo;s in there&amp;rsquo;s no play in the clip for it to wiggle out though, even though it&amp;rsquo;s plastic. I tried not to fatigue the clip arms too much wiggling it in there as well, so as to minimise the chance of it failing over time. (Something to check periodically!)&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Lastly, I just zip tied the cables together behind the mirror, and ran them down vertically from the middle to the floor and plugged them in. Sounds fantastic, and due to being plugged into an &lt;a href="http://www.apple.com/airportexpress/">Airport Express&lt;/a>, anything compatible can stream audio through them wirelessly. Fabulous darling!&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;em>(Click any image for a larger version)&lt;/em>&lt;/p></description></item><item><title>Use Readline With Default Ruby on OS X</title><link>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</link><pubDate>Sun, 05 Feb 2012 18:13:20 +0000</pubDate><guid>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</guid><description>&lt;p>OS X Lion comes with ruby 1.8.7-p249 installed, although it&amp;rsquo;s compiled against libedit rather than libreadline. Whilst libedit is a mostly-compatible replacement for libreadline, I find there&amp;rsquo;s a couple of settings I&amp;rsquo;m used to that don&amp;rsquo;t work in libedit. (Like &lt;code>history-beginning-search-backward&lt;/code>.)&lt;/p>
+&lt;p>Luckily you can grab the source of ruby and compile just the readline extension, and move it into the right place for it to just work. Here&amp;rsquo;s what&amp;rsquo;s been working for me:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># Install readline using homebrew&lt;/span>
 brew install readline
-&lt;span class=&#34;c1&#34;&gt;# Download the ruby source and check out 1.8.7-p249&lt;/span&gt;
-mkdir ~/tmp &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/tmp
+&lt;span class="c1"># Download the ruby source and check out 1.8.7-p249&lt;/span>
+mkdir ~/tmp &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">cd&lt;/span> ~/tmp
 git clone git://github.com/ruby/ruby
-&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ruby
+&lt;span class="nb">cd&lt;/span> ruby
 git checkout v1_8_7_249
-&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ext/readline
-ruby extconf.rb --with-readline-dir&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;brew --prefix readline&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; --disable-libedit
-make&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now you should have &lt;code&gt;readline.bundle&lt;/code&gt; in the current directory, and it should be compiled against your homebrew-installed readline library, rather than libedit that comes with the system. We can quickly double-check that by using &lt;code&gt;otool&lt;/code&gt; to check what the binary is linked against.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ otool -L readline.bundle
+&lt;span class="nb">cd&lt;/span> ext/readline
+ruby extconf.rb --with-readline-dir&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>brew --prefix readline&lt;span class="k">)&lt;/span> --disable-libedit
+make
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now you should have &lt;code>readline.bundle&lt;/code> in the current directory, and it should be compiled against your homebrew-installed readline library, rather than libedit that comes with the system. We can quickly double-check that by using &lt;code>otool&lt;/code> to check what the binary is linked against.&lt;/p>
+&lt;pre>&lt;code>$ otool -L readline.bundle
 readline.bundle:
 /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/libruby.1.dylib (compatibility version 1.8.0, current version 1.8.7)
 /usr/local/Cellar/readline/6.2.2/lib/libreadline.6.2.dylib (compatibility version 6.0.0, current version 6.2.0)
 /usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
 /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 159.1.0)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And in the output you should see a line listing &amp;quot;libreadline&amp;quot;, and no lines listing &amp;quot;libedit&amp;quot;. Which that shows, we&#39;ve compiled it properly then. Now the bundle is built we need to move it into the right place so it&#39;s loaded when ruby is invoked.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;RL_PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin11.0&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# Back up the original bundle, just in cases&lt;/span&gt;
-sudo mv &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle.libedit&amp;#34;&lt;/span&gt;
-sudo mv readline.bundle &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And that&#39;s it. You&#39;ve got a proper compiled-against-readline installed ruby 1.8.7-p249 on 10.7 now.&lt;/p&gt;
-&lt;p&gt;One gotcha I ran into was needing to pass the same arguments to rvm when installing any other version of 1.8.7 on the same machine. Simple enough, just need to remember to do it though.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;CC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;gcc-4.2 rvm install &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.8.7-p357 -C --with-readline-dir&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;brew --prefix readline&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; --disable-libedit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Install GCC-4.2.1 (Apple build 5666.3) with Xcode 4.2</title><link>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</link><pubDate>Sun, 30 Oct 2011 17:36:48 +0000</pubDate><guid>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</guid><description>
-&lt;p&gt;As of Xcode 4.2 Apple have stopped bundling GCC with it, shipping only the (mostly) compatible llvm-gcc binary instead. The suggested fix is to install GCC using the &lt;a href=&#34;https://github.com/kennethreitz/osx-gcc-installer&#34;&gt;osx-gcc-installer&lt;/a&gt; project. However, I wanted to build and install it from source, which apple provides at &lt;a href=&#34;http://opensource.apple.com/&#34;&gt;http://opensource.apple.com/&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You should already have installed Xcode 4.2 from the app store, then basically the following steps are to grab the tarball from the &lt;a href=&#34;http://opensource.apple.com/release/developer-tools-41/&#34;&gt;4.1 developer tools source&lt;/a&gt;, unpack &amp;amp; compile it, then install it into the right places.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Update 2016-07-03:&lt;/strong&gt; I&#39;d suggest just using homebrew to install this these days:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;brew install homebrew/dupes/apple-gcc42&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&#34;instructions&#34;&gt;Instructions&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Grab and unpack the tarball&lt;/span&gt;
-mkdir ~/tmp &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/tmp
+&lt;/code>&lt;/pre>
+&lt;p>And in the output you should see a line listing &amp;ldquo;libreadline&amp;rdquo;, and no lines listing &amp;ldquo;libedit&amp;rdquo;. Which that shows, we&amp;rsquo;ve compiled it properly then. Now the bundle is built we need to move it into the right place so it&amp;rsquo;s loaded when ruby is invoked.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nv">RL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin11.0&amp;#34;&lt;/span>
+&lt;span class="c1"># Back up the original bundle, just in cases&lt;/span>
+sudo mv &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle.libedit&amp;#34;&lt;/span>
+sudo mv readline.bundle &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And that&amp;rsquo;s it. You&amp;rsquo;ve got a proper compiled-against-readline installed ruby 1.8.7-p249 on 10.7 now.&lt;/p>
+&lt;p>One gotcha I ran into was needing to pass the same arguments to rvm when installing any other version of 1.8.7 on the same machine. Simple enough, just need to remember to do it though.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nv">CC&lt;/span>&lt;span class="o">=&lt;/span>gcc-4.2 rvm install 1.8.7-p357 -C --with-readline-dir&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>brew --prefix readline&lt;span class="k">)&lt;/span> --disable-libedit
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Install GCC-4.2.1 (Apple build 5666.3) with Xcode 4.2</title><link>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</link><pubDate>Sun, 30 Oct 2011 17:36:48 +0000</pubDate><guid>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</guid><description>&lt;p>As of Xcode 4.2 Apple have stopped bundling GCC with it, shipping only the (mostly) compatible llvm-gcc binary instead. The suggested fix is to install GCC using the &lt;a href="https://github.com/kennethreitz/osx-gcc-installer">osx-gcc-installer&lt;/a> project. However, I wanted to build and install it from source, which apple provides at &lt;a href="http://opensource.apple.com/">http://opensource.apple.com/&lt;/a>.&lt;/p>
+&lt;p>You should already have installed Xcode 4.2 from the app store, then basically the following steps are to grab the tarball from the &lt;a href="http://opensource.apple.com/release/developer-tools-41/">4.1 developer tools source&lt;/a>, unpack &amp;amp; compile it, then install it into the right places.&lt;/p>
+&lt;p>&lt;strong>Update 2016-07-03:&lt;/strong> I&amp;rsquo;d suggest just using homebrew to install this these days:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">brew install homebrew/dupes/apple-gcc42
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="instructions">Instructions&lt;/h2>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># Grab and unpack the tarball&lt;/span>
+mkdir ~/tmp &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">cd&lt;/span> ~/tmp
 curl -O http://opensource.apple.com/tarballs/gcc/gcc-5666.3.tar.gz
 tar zxf gcc-5666.3.tar.gz
-&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gcc-5666.3
-&lt;span class=&#34;c1&#34;&gt;# Setup some stuff it requires&lt;/span&gt;
+&lt;span class="nb">cd&lt;/span> gcc-5666.3
+&lt;span class="c1"># Setup some stuff it requires&lt;/span>
 mkdir -p build/obj build/dst build/sym
-&lt;span class=&#34;c1&#34;&gt;# And then build it. You should go make a cup of tea or five whilst this runs.&lt;/span&gt;
-gnumake install &lt;span class=&#34;nv&#34;&gt;RC_OS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;macos &lt;span class=&#34;nv&#34;&gt;RC_ARCHS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;i386 x86_64&amp;#39;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TARGETS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;i386 x86_64&amp;#39;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRCROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;OBJROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/obj &lt;span class=&#34;nv&#34;&gt;DSTROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/dst &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SYMROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/sym
-&lt;span class=&#34;c1&#34;&gt;# And finally install it&lt;/span&gt;
-sudo ditto build/dst /&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And now you should have &lt;code&gt;gcc-4.2&lt;/code&gt; in your &lt;code&gt;$PATH&lt;/code&gt;, available to build all the things that &lt;code&gt;llvm-gcc&lt;/code&gt; fails to compile.&lt;/p&gt;</description></item><item><title>App Store Hidden Preferences</title><link>https://caiustheory.com/app-store-hidden-preferences/</link><pubDate>Thu, 06 Jan 2011 19:45:49 +0000</pubDate><guid>https://caiustheory.com/app-store-hidden-preferences/</guid><description>&lt;p&gt;&lt;em&gt;See the Update at the end before you get excited :(&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Having just installed 10.6.6 to use the Mac App Store, I was &lt;a href=&#34;http://twitter.com/Caius/status/23096911170899968&#34;&gt;slightly annoyed&lt;/a&gt; that it fills my dock with apps as I install them. I&#39;m a bit strange, in that I use a hidden preference to make the dock uneditable (it stops me accidentally dragging an app off.) But that means I can&#39;t drag off the Mac App Store installed apps either.&lt;/p&gt;
-&lt;p&gt;Had a quick look through &lt;code&gt;/Applications/App Store.app/Contents/MacOS/App Store&lt;/code&gt; with &lt;code&gt;strings&lt;/code&gt; (love that tool) and noted a few strings that looked interesting. (There&#39;s a full list &lt;a href=&#34;https://gist.github.com/768442&#34;&gt;in this gist&lt;/a&gt;.) There wasn&#39;t anything that explicitly stated it stopped it putting anything in the dock, but I did notice an option that stopped it showing &lt;strong&gt;install progress&lt;/strong&gt; in the dock.&lt;/p&gt;
-&lt;p&gt;Yank up a terminal window, bash out the following...&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;defaults write com.apple.appstore FRDebugShowInstallProgress -bool NO&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;...head back to the MAS and install another (free) app, and hey presto, it&#39;s leaving my dock alone! Hopefully that&#39;s all I needed to continue using my Dock as I like. (Hidden, and left alone.)&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Update 2011-01-06:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Seems my joy was short-lived. I&#39;d re-downloaded an app I&#39;d already purchased and it just showed download progress in the MAS app, not in the dock. Installing new applications still shows up in the dock (annoyingly.)&lt;/p&gt;
-&lt;p&gt;I&#39;ve been having a poke through how it all hangs together, and if it&#39;s possible to actually block downloads from the Dock or not. It doesn&#39;t look like there&#39;s a hidden preference to hide new apps from downloading in the dock, you can just disable the progress bars in the dock with prefs. The MAS.app seems to be codenamed &amp;quot;Firenze&amp;quot;, with &lt;a href=&#34;https://gist.github.com/768829&#34;&gt;the &amp;quot;hidden&amp;quot; prefs&lt;/a&gt; being prefixed with &amp;quot;FRDebug&amp;quot;.&lt;/p&gt;
-&lt;p&gt;As I understand it, the App\ Store.app invokes a binary inside &lt;code&gt;/System/Library/PrivateFrameworks/CommerceKit.framework&lt;/code&gt; called &amp;quot;storeagent&amp;quot; to do the actual downloading/talking to the dock. From looking at the &lt;a href=&#34;https://gist.github.com/768837&#34;&gt;class-dump&lt;/a&gt; of storeagent it communicates with the dock to place a new type of DockTile. Interesting sounding methods to (potentially?) swizzle are &lt;code&gt;-[DownloadQueue sendDownloadListToDock]&lt;/code&gt; and &lt;code&gt;-[DownloadQueue tellDockToAddDownload:]&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;I&#39;ve given up for now, but I reckon it should be possible to create a bundle that swizzles the right methods in storeagent to stop it placing the downloads on the Dock.&lt;/p&gt;</description></item><item><title>Facebook iPhone app Contact Sync isn&#39;t automatic</title><link>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</link><pubDate>Wed, 06 Oct 2010 14:10:06 +0000</pubDate><guid>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</guid><description>&lt;p&gt;There&#39;s an article on the guardian about &lt;a href=&#34;http://www.guardian.co.uk/technology/blog/2010/oct/06/facebook-privacy-phone-numbers-upload&#34;&gt;private phone numbers being uploaded from facebook&lt;/a&gt;, and another over &lt;a href=&#34;http://www.techeye.net/security/facebook-takes-and-stores-data-numbers-from-your-iphone&#34;&gt;techeye.net on the same subject.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Firstly a quote from the techeye article:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Facebook doesn&#39;t warn users that they are uploading their phone&#39;s address book to Facebook.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;And whilst the guardian article never says it happens automatically, it also doesn&#39;t lay it out that you have to &lt;strong&gt;explicitly&lt;/strong&gt; enable that feature, &lt;strong&gt;and&lt;/strong&gt; agree to the facebook app uploading the data.&lt;/p&gt;
-&lt;p&gt;I was pretty sure that facebook wouldn&#39;t be grabbing all your contact information without telling you, if they did at all, and that both articles were just pure scaremongering. So I fired up the facebook iPhone app, headed into my friends list on there, clicked sync and got the following screen:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm5.static.flickr.com/4148/5056619687_973ae660cc_d.jpg&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
-&lt;a href=&#34;http://www.flickr.com/photos/caius/5056619687/&#34;&gt;View Original&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Ok, so according to that text, they&#39;re just pulling down profile images and profile links from facebook and putting them in your address book against your contacts. Seems fairly harmless so far. So I toggled the top switch, to enable Contact Sync, and got the following screen:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm5.static.flickr.com/4145/5056697193_252e954ec3_d.jpg&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
-&lt;a href=&#34;http://www.flickr.com/photos/caius/5056697193/&#34;&gt;View Original&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Reading that, it&#39;s fairly obvious what data facebook are uploading (although a little ambiguous why), and it &lt;strong&gt;certainly&lt;/strong&gt; isn&#39;t happening automatically. As it says, it uploads the &amp;quot;name, email address, phone number&amp;quot; from all your contacts to facebook, and pull down &amp;quot;your friends&#39; profile photos and other info from Facebook&amp;quot;.&lt;/p&gt;
-&lt;p&gt;So whilst facebook &lt;em&gt;are&lt;/em&gt; collecting more data (albeit stored subject to their Privacy Policy), it&#39;s certainly &lt;strong&gt;NOT&lt;/strong&gt; done automatically, and is &lt;strong&gt;very explicit&lt;/strong&gt; about what is being uploaded at the point you enable it.&lt;/p&gt;</description></item><item><title>&#43;[NSObject load] in MacRuby</title><link>https://caiustheory.com/nsobject-load-in-macruby/</link><pubDate>Sat, 12 Jun 2010 02:11:32 +0000</pubDate><guid>https://caiustheory.com/nsobject-load-in-macruby/</guid><description>
-&lt;p&gt;&lt;em&gt;If you&#39;ve not heard of it, &lt;a href=&#34;http://www.macruby.org/&#34;&gt;MacRuby&lt;/a&gt; is &lt;q&gt;an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.&lt;/q&gt; Basically means you write in Ruby using Objective-C frameworks, and vice versa. It&#39;s pretty damn cool to be honest!&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&#34;what-is-nsobject-load&#34;&gt;What is +[NSObject load]?&lt;/h3&gt;
-&lt;p&gt;From the &lt;a href=&#34;http://developer.apple.com/mac/library/documentation/cocoa/reference/foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load&#34;&gt;documentation&lt;/a&gt;:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Invoked whenever a class or category is added to the Objective-C runtime; implement this method to perform class-specific behavior upon loading.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;This means when your class is loaded, and implements the &lt;code&gt;load&lt;/code&gt; method, you get a &lt;code&gt;load&lt;/code&gt; message sent to your class. Which means you can start doing stuff as soon as your class is loaded by the runtime.&lt;/p&gt;
-&lt;p&gt;The main place I&#39;ve seen it used (and used it myself) is in &lt;a href=&#34;http://www.culater.net/software/SIMBL/SIMBL.php&#34;&gt;SIMBL&lt;/a&gt; plugins. A SIMBL plugin is an NSBundle that contains code which is loaded (injected) into a running application shortly after said application is launched. It lets you extend (or &amp;quot;fix&amp;quot;) cocoa applications with additional features. So you have this bundle of code, that gets loaded into a running application some point after it starts, and you want to run some code as the bundle is loaded - usually to kick off doing whatever you want to do in the plugin. This is where &lt;code&gt;load&lt;/code&gt; becomes useful.&lt;/p&gt;
-&lt;p&gt;Here&#39;s a quick implementation that just logs to the console:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt; &lt;span class=&#34;k&#34;&gt;@implementation&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MainController&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSlog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;@&amp;#34;MainController#load called&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;now-where-does-macruby-come-into-this&#34;&gt;Now where does MacRuby come into this?&lt;/h3&gt;
-&lt;p&gt;Well I came across a need to do the same in ruby, have some code triggered when the class is loaded into the runtime. Tried implementing &lt;code&gt;Class.load&lt;/code&gt; but to no avail. Then remembered MacRuby is just ruby! And I can call any code from within my ruby class definition.&lt;/p&gt;
-&lt;p&gt;For continuity I still call it &lt;code&gt;Class.load&lt;/code&gt;, but then call it as soon as I&#39;ve defined it in the class. Eg:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MainController&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;
-&lt;span class=&#34;no&#34;&gt;NSLog&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;MainController#load called&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;load&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Of course, I&#39;m not sure when the Objective-C method is called, it&#39;s probably after the entire class has been defined rather than as soon as &lt;code&gt;load&lt;/code&gt; has been loaded into the runtime. So you might want to move the &lt;code&gt;self.load&lt;/code&gt; call to just before the closing &lt;code&gt;end&lt;/code&gt;.&lt;/p&gt;</description></item><item><title>iPad? iPerfect (…for me)</title><link>https://caiustheory.com/ipad-iperfect-for-me/</link><pubDate>Wed, 27 Jan 2010 20:56:50 +0000</pubDate><guid>https://caiustheory.com/ipad-iperfect-for-me/</guid><description>
-&lt;p&gt;&lt;em&gt;Google Groups is a pile of fail and hasn&#39;t posted my message in reply to a thread on &lt;a href=&#34;http://geekup.org/&#34;&gt;Geekup&lt;/a&gt; so I&#39;m blogging it instead.&lt;/em&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;On 27 Jan 2010, at 19:53, Steve Richardson wrote:&lt;br /&gt;
-Thoughts?&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;I&#39;ve been searching for a device to fit between my Macbook Pro and iPhone. I work all day on the MBP, and moving it to then watch video in another room or read twitter/news/mail whilst watching telly, etc is a pain.&lt;/p&gt;
-&lt;p&gt;The iPhone is a great little device on the move, but for trying to multitask at home it&#39;s a bit.. tedious. Even jailbroken and running multiple apps at once it&#39;s still limiting.&lt;/p&gt;
-&lt;p&gt;I&#39;d been looking around at netbooks, but what put me off actually getting one was my previous experience with one. I know I&#39;d want it to run OS X to keep in sync (easily) with my other Apple devices, but hackintoshing one was a bit too much hassle, plus the fact ones to hackintosh cost more than I really wanted to pay for something that wasn&#39;t &lt;em&gt;quite&lt;/em&gt; what I thought I needed.&lt;/p&gt;
-&lt;p&gt;And then.. the iPad. I&#39;ve been sort of keeping up with the rumours (mainly through &lt;a href=&#34;http://daringfireball.net&#34;&gt;Daring Fireball&lt;/a&gt;) and whilst I didn&#39;t get excited about it too much ahead of announcement&lt;sup&gt;1&lt;/sup&gt;, having seen the official video of it it&#39;s pretty much guaranteed that I&#39;m going to get one.&lt;/p&gt;
-&lt;p&gt;Yes, it&#39;s limited (App Store, closed device), but.. I don&#39;t care. Take the iPhone, it&#39;s good enough for doing things on it, even if someone else is in charge of the ecosystem and has a big finger saying yes or no. I (willingly) use iTunes, Mobile Me, all the things that are so wonderfully integrated in the world of Apple, so another device that consumes my media using channels I already know and use is just a massive win for me.&lt;/p&gt;
-&lt;p&gt;All I&#39;m hoping now is that $499 doesn&#39;t equal £499. Hopefully it&#39;ll be £399, still a good £80 above direct exchange rate, but low enough that it&#39;s a no-brainer for me to get one.&lt;/p&gt;
-&lt;p&gt;…And I think this is the first Apple product that I&#39;ve seen announced and actually known from the start &lt;em&gt;why&lt;/em&gt; I&#39;m going to get one, instead of just a knee-jerk &amp;quot;SHINY!!!! WANT!!!&amp;quot; reaction. Uh oh, does that make me an adult?&lt;/p&gt;
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; I miss getting really excited about apple announcements :(&lt;/p&gt;
-&lt;h4 id=&#34;update&#34;&gt;Update&lt;/h4&gt;
-&lt;p&gt;It just got even better. Was lamenting to a &lt;a href=&#34;http://tmertz.com/&#34;&gt;friend&lt;/a&gt; on IM that it&#39;d be so much nicer once you can directly suck photos off a camera/SD card into it. Turns out there&#39;s an adapter for that. See &amp;quot;iPad Camera Connection Kit&amp;quot; at the bottom of &lt;a href=&#34;http://www.apple.com/ipad/specs/&#34;&gt;http://www.apple.com/ipad/specs/&lt;/a&gt; for details.&lt;/p&gt;</description></item><item><title>Read Later in a keystroke</title><link>https://caiustheory.com/read-later-in-a-keystroke/</link><pubDate>Sun, 06 Dec 2009 22:15:37 +0000</pubDate><guid>https://caiustheory.com/read-later-in-a-keystroke/</guid><description>&lt;p&gt;I use a wonderful service for saving text to be read later, &lt;a href=&#34;http://instapaper.com/&#34;&gt;instapaper.com&lt;/a&gt;. It&#39;s gotten more wonderful as time has gone on and other applications/service&#39;s have gained the ability to save links/articles/webpages there for me to pick up later.&lt;/p&gt;
-&lt;p&gt;For instance, I&#39;m out and about checking twitter on my iPhone using &lt;a href=&#34;http://atebits.com/tweetie-iphone/&#34;&gt;tweetie&lt;/a&gt; and someone tweets a link. Rather than wait for it to load and having to read it then and there I can just hit &amp;quot;Read Later&amp;quot; and it&#39;s saved in my instapaper account for me to read as and when I choose to. Recently the legendary mac feed reader &lt;a href=&#34;http://www.newsgator.com/INDIVIDUALS/NETNEWSWIRE/&#34;&gt;NetNewsWire&lt;/a&gt; gained this ability too.&lt;/p&gt;
-&lt;p&gt;There&#39;s a few ways to send a feed item to instapaper from within NNW. Firstly you can right-click and click &amp;quot;Send to Instapaper&amp;quot;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2553/4163576297_ee60e26b53_o.jpg&#34; alt=&#34;Send to Instapaper from contextual menu&#34; /&gt;&lt;br /&gt;
-&lt;a href=&#34;http://www.flickr.com/photos/caius/4163576297&#34;&gt;View Original on Flickr&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Secondly there&#39;s a menu item for it in the News menu, which also provides my chosen way of instapapering an item&amp;mdash;the keyboard shortcut! ⌃P &lt;em&gt;(control-P)&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2748/4164341910_476f8ba539_o.jpg&#34; alt=&#34;Send to Instapaper from News menu&#34; /&gt;&lt;br /&gt;
-&lt;a href=&#34;http://www.flickr.com/photos/caius/4164341910&#34;&gt;View Original on Flickr&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;So, in NNW I&#39;m happily sending stuff to instapaper with the handy ⌃P shortcut, but that doesn&#39;t exist in the third place I mark things to read later--Safari! Up until now I&#39;ve been using the standard &amp;quot;Read Later&amp;quot; bookmarklet that &lt;a href=&#34;http://instapaper.com/&#34;&gt;instapaper.com&lt;/a&gt; provides, and it&#39;s got a spot on my Bookmarks Bar so I can easily click it.&lt;/p&gt;
-&lt;p&gt;That doesn&#39;t really help with the fact I&#39;m hitting ⌃P in NNW, and it doesn&#39;t work in Safari. Quite often I noticed myself hitting the key combination in Safari and wondering for a split second why it wasn&#39;t sending the item to instapaper. Then the solution hit me!&lt;/p&gt;
-&lt;p&gt;In OS X you can setup (and/or override) menu items with custom key combinations! Why hadn&#39;t I remembered this before. Because the &amp;quot;Read Later&amp;quot; bookmark&lt;em&gt;(let)&lt;/em&gt; is nested under the Bookmarks menu, it &lt;strong&gt;is&lt;/strong&gt; a menu item! A quick trip into the Keyboards Prefpane in System Preferences and a new binding later and voilâ, &amp;quot;Read Later&amp;quot; in Safari is bound to ⌃P and I can use it in both Safari and NNW.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2517/4163642801_a14250da65_o.jpg&#34; alt=&#34;Filling in the form to bind the keyboard shortcut&#34; /&gt;&lt;br /&gt;
-&lt;a href=&#34;http://www.flickr.com/photos/caius/4163642801&#34;&gt;View Original on Flickr&lt;/a&gt;&lt;/p&gt;</description></item><item><title>My Menubar Items</title><link>https://caiustheory.com/my-menubar-items/</link><pubDate>Sun, 06 Dec 2009 12:56:49 +0000</pubDate><guid>https://caiustheory.com/my-menubar-items/</guid><description>&lt;!-- Just for this post --&gt;
-&lt;style&gt;
-ol { list-style-type: lower-alpha; }
-ol ol { list-style-type: decimal; }
-&lt;/style&gt;
-&lt;p&gt;This is a something that occasionally makes the rounds again, I&#39;ve not seen it for a while and I&#39;ve added some new items since I last remember documenting it. Thus, &lt;a href=&#34;http://twitter.com/macarne&#34;&gt;@macarne&lt;/a&gt; &lt;a href=&#34;http://twitter.com/macarne/status/6398125336&#34;&gt;asking&lt;/a&gt; what the app was that gives me stats prompted me to document my current menubar items.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2586/4162170875_1d1a8be4cf.jpg&#34; alt=&#34;annotated-menubar by ©aius, on Flickr&#34; title=&#34;annotated-menubar&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/4162170875/&#34;&gt;View original&lt;/a&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.eidac.de/&#34;&gt;SMCFanControl&lt;/a&gt; - Lets me adjust the minimum speed of my fans.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://atebits.com/tweetie-mac&#34;&gt;Tweetie/mac&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://iscrobbler.sourceforge.net/&#34;&gt;iScrobbler&lt;/a&gt; - Scrobbles tunes iTunes plays&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.realmacsoftware.com/littlesnapper/&#34;&gt;LittleSnapper&lt;/a&gt; &lt;em&gt;(Or more accurately the menubar icon is NanoSnapper, LittleSnapper is the full app.)&lt;/em&gt; Mainly used for screen grabs.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.orange-carb.org/SBM/&#34;&gt;SlimBatteryMonitor&lt;/a&gt; - Takes up less horizontal space than Apple&#39;s menu item.&lt;/li&gt;
-&lt;li&gt;Expresscard menu item - Lets me power off my &lt;a href=&#34;http://www.memoryc.com/storage/solidstatedisk/48gbfilematesolidgoexpresscardultra.html&#34;&gt;Expresscard/34 SSD&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.ragingmenace.com/software/menumeters/&#34;&gt;MenuMeters&lt;/a&gt; - An old friend I&#39;ve been using for as long as I can remember running OS X. Set to show (left to right)
-&lt;ol&gt;
-&lt;li&gt;Ram - &lt;strong&gt;U&lt;/strong&gt;sed and &lt;strong&gt;F&lt;/strong&gt;ree totals.&lt;/li&gt;
-&lt;li&gt;Network - Graph + values.&lt;/li&gt;
-&lt;li&gt;CPU - Graph per core. Probably the most useful out of the three.&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;Bluetooth&lt;/li&gt;
-&lt;li&gt;Time Machine&lt;/li&gt;
-&lt;li&gt;Modem - To dial on my Huawei E220 3G stick.&lt;/li&gt;
-&lt;li&gt;Airport&lt;/li&gt;
-&lt;li&gt;Sound&lt;/li&gt;
-&lt;li&gt;Day/Time&lt;/li&gt;
-&lt;li&gt;Fast User Switching - Not sure why I keep this in the menubar, only have one user and I lock my screen with a password protected screensaver.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.viscosityvpn.com/&#34;&gt;Viscosity&lt;/a&gt; - VPN software. Pretty useful.&lt;/li&gt;
-&lt;li&gt;Spotlight! - Occasionally this vanishes when spotlight decides to be a dick and eat ram/cpu reindexing my disk every few hours. Touch wood it hasn&#39;t done it since 10.6.1.&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>Filter through command</title><link>https://caiustheory.com/filter-through-command/</link><pubDate>Mon, 14 Sep 2009 22:39:37 +0000</pubDate><guid>https://caiustheory.com/filter-through-command/</guid><description>&lt;p&gt;&lt;em&gt;This is another old post that I&#39;m republishing. Originally published 27th April 2007.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;My text editor &lt;a href=&#34;http://macromates.com/&#34;&gt;TextMate&lt;/a&gt; has a nice feature called &amp;quot;Filter through command&amp;quot; whereby you can filter the current document through a command.&lt;/p&gt;
-&lt;p&gt;Anyway, I&#39;ve never used it before, but today I had a text file with 30 or so url&#39;s in, each on a new line, so I thought I&#39;d test it out. I selected it to input the document &amp;amp; to not replace the output. I then entered the following command, which is a ruby command to take each line that isn&#39;t blank, and run the shell command &lt;code&gt;open $url&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;a = ARGF.read.scan(/\S+/); a.each { |x| `open #{x}` }&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;What this does is take ARGF (the document) and read it in line by line, but only the non-whitespace characters (so newlines, space, etc are ignored.) And it assigns it to an array called &lt;code&gt;a&lt;/code&gt;. What I then do is for each item of &lt;code&gt;a&lt;/code&gt;, we run it past the shell command &lt;code&gt;open&lt;/code&gt;, which on OS X if you pass it a URL it just opens that URL in the default browser.&lt;/p&gt;
-&lt;p&gt;My browser is Safari, and its set to open new links in a new tab in the foremost window. So I ran the command, and hey presto, within a few seconds I had all the URL&#39;s loading in seperate tabs in Safari&#39;s foremost window!&lt;/p&gt;
-&lt;p&gt;The power of Unix &lt;em&gt;(OS X)&lt;/em&gt; &amp;amp; TextMate (amongst other tools) just never ceases to amaze me.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;I just realised if you change the regex to scan for http://.* then it&#39;ll select all website URLs.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;a = ARGF.read.scan(/^http://.*$/); a.each { |url| `open #{url}` }&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Mac Tips you may not know</title><link>https://caiustheory.com/mac-tips-you-may-not-know/</link><pubDate>Mon, 31 Aug 2009 13:08:48 +0000</pubDate><guid>https://caiustheory.com/mac-tips-you-may-not-know/</guid><description>&lt;p&gt;Here are some mac tips I know and consider &amp;quot;basic&amp;quot; mac knowledge, but no-one else seems to know.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;exposé&lt;/strong&gt; key is on modern mac keyboards, looks like a load of squares on the F3 key.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2318; + Exposé key&lt;/strong&gt; =&amp;gt; Show Desktop&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2303; + Exposé key&lt;/strong&gt; =&amp;gt; Show Application Windows&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Brightness keys&lt;/strong&gt; =&amp;gt; Open Displays prefpane in System Preferences.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Exposé key&lt;/strong&gt; =&amp;gt; Open Exposé &amp;amp; Spaces prefpane in System Preferences.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Dashboard key&lt;/strong&gt; =&amp;gt; Open Exposé &amp;amp; Spaces prefpane in System Preferences.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Keyboard Backlight keys&lt;/strong&gt; =&amp;gt; Open Keyboard prefpane in System Preferences. &lt;em&gt;(Only on laptops with keyboard backlighting.)&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2325; + Volume keys&lt;/strong&gt; =&amp;gt; Open Sound prefpane in System Preferences.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x21E7; + Volume keys&lt;/strong&gt; =&amp;gt; Adjust the volume with the feedback noise setting toggled. If you normally have feedback &amp;quot;blips&amp;quot;, it&#39;ll be silent. Or vice versa.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2325; + &amp;#x21E7; + Volume keys&lt;/strong&gt; =&amp;gt; Adjust the volume in 1/4 of a usual step.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&amp;#x2303; + Eject key&lt;/strong&gt; =&amp;gt; Shows the Shut Down dialog.&lt;/li&gt;
-&lt;li&gt;In the shut down dialog, hit &lt;em&gt;R&lt;/em&gt; to restart, &lt;em&gt;S&lt;/em&gt; to sleep, &lt;em&gt;&amp;#x238B;&lt;/em&gt; to cancel.&lt;/li&gt;
-&lt;li&gt;(Pretty much) Any dialog that pops up, hitting &lt;em&gt;&amp;#x238B;&lt;/em&gt; will push the &amp;quot;cancel&amp;quot; button.&lt;/li&gt;
-&lt;li&gt;In &amp;quot;Show all windows&amp;quot; or &amp;quot;Show application windows&amp;quot; exposé modes, hit the tab key to cycle through applications.&lt;/li&gt;
-&lt;li&gt;Hit the space bar in exposé to activate &amp;quot;Quick Look&amp;quot; + windows pop up to 100% size as you mouse over them.&lt;/li&gt;
-&lt;li&gt;Hold down &lt;strong&gt;&amp;#x2303; + &amp;#x21E7;&lt;/strong&gt; when mousing over the dock to toggle magnification whilst the keys are down.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;(Alternative title &lt;a href=&#34;http://www.petercooper.co.uk/&#34;&gt;Peter Cooper&lt;/a&gt; suggested, &amp;quot;A miscellany of input device co-ordinations to modulate the response of Apple&#39;s task preview and switching subsystem&amp;quot;)&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Capitalise &#34;ringer&#34; on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p&gt;&lt;strong&gt;Backstory:&lt;/strong&gt; Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;quot;ringer&amp;quot; across the top. But when you have headphones plugged in, it says &amp;quot;Headphones&amp;quot;. &lt;em&gt;(Note the capitalisation difference.)&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Now I&#39;m not usually bothered by stuff like this (honest!) but as soon as I&#39;d noticed the &lt;em&gt;&amp;quot;bug&amp;quot;&lt;/em&gt;, I couldn&#39;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&#39;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code&gt;/System&lt;/code&gt; folder. And I&#39;d be able to change it!&lt;/p&gt;
-&lt;p&gt;Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&#39;s SSH server on and go looking for the setting. To do so I figured I&#39;d just need &lt;code&gt;grep&lt;/code&gt; installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p&gt;
-&lt;p&gt;So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the iPhone
+&lt;span class="c1"># And then build it. You should go make a cup of tea or five whilst this runs.&lt;/span>
+gnumake install &lt;span class="nv">RC_OS&lt;/span>&lt;span class="o">=&lt;/span>macos &lt;span class="nv">RC_ARCHS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;i386 x86_64&amp;#39;&lt;/span> &lt;span class="nv">TARGETS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;i386 x86_64&amp;#39;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &lt;span class="nv">SRCROOT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span> &lt;span class="nv">OBJROOT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/build/obj &lt;span class="nv">DSTROOT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/build/dst &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &lt;span class="nv">SYMROOT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/build/sym
+&lt;span class="c1"># And finally install it&lt;/span>
+sudo ditto build/dst /
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And now you should have &lt;code>gcc-4.2&lt;/code> in your &lt;code>$PATH&lt;/code>, available to build all the things that &lt;code>llvm-gcc&lt;/code> fails to compile.&lt;/p></description></item><item><title>App Store Hidden Preferences</title><link>https://caiustheory.com/app-store-hidden-preferences/</link><pubDate>Thu, 06 Jan 2011 19:45:49 +0000</pubDate><guid>https://caiustheory.com/app-store-hidden-preferences/</guid><description>&lt;p>&lt;em>See the Update at the end before you get excited :(&lt;/em>&lt;/p>
+&lt;p>Having just installed 10.6.6 to use the Mac App Store, I was &lt;a href="http://twitter.com/Caius/status/23096911170899968">slightly annoyed&lt;/a> that it fills my dock with apps as I install them. I&amp;rsquo;m a bit strange, in that I use a hidden preference to make the dock uneditable (it stops me accidentally dragging an app off.) But that means I can&amp;rsquo;t drag off the Mac App Store installed apps either.&lt;/p>
+&lt;p>Had a quick look through &lt;code>/Applications/App Store.app/Contents/MacOS/App Store&lt;/code> with &lt;code>strings&lt;/code> (love that tool) and noted a few strings that looked interesting. (There&amp;rsquo;s a full list &lt;a href="https://gist.github.com/768442">in this gist&lt;/a>.) There wasn&amp;rsquo;t anything that explicitly stated it stopped it putting anything in the dock, but I did notice an option that stopped it showing &lt;strong>install progress&lt;/strong> in the dock.&lt;/p>
+&lt;p>Yank up a terminal window, bash out the following&amp;hellip;&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">defaults write com.apple.appstore FRDebugShowInstallProgress -bool NO
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;hellip;head back to the MAS and install another (free) app, and hey presto, it&amp;rsquo;s leaving my dock alone! Hopefully that&amp;rsquo;s all I needed to continue using my Dock as I like. (Hidden, and left alone.)&lt;/p>
+&lt;p>&lt;strong>Update 2011-01-06:&lt;/strong>&lt;/p>
+&lt;p>Seems my joy was short-lived. I&amp;rsquo;d re-downloaded an app I&amp;rsquo;d already purchased and it just showed download progress in the MAS app, not in the dock. Installing new applications still shows up in the dock (annoyingly.)&lt;/p>
+&lt;p>I&amp;rsquo;ve been having a poke through how it all hangs together, and if it&amp;rsquo;s possible to actually block downloads from the Dock or not. It doesn&amp;rsquo;t look like there&amp;rsquo;s a hidden preference to hide new apps from downloading in the dock, you can just disable the progress bars in the dock with prefs. The MAS.app seems to be codenamed &amp;ldquo;Firenze&amp;rdquo;, with &lt;a href="https://gist.github.com/768829">the &amp;ldquo;hidden&amp;rdquo; prefs&lt;/a> being prefixed with &amp;ldquo;FRDebug&amp;rdquo;.&lt;/p>
+&lt;p>As I understand it, the App\ Store.app invokes a binary inside &lt;code>/System/Library/PrivateFrameworks/CommerceKit.framework&lt;/code> called &amp;ldquo;storeagent&amp;rdquo; to do the actual downloading/talking to the dock. From looking at the &lt;a href="https://gist.github.com/768837">class-dump&lt;/a> of storeagent it communicates with the dock to place a new type of DockTile. Interesting sounding methods to (potentially?) swizzle are &lt;code>-[DownloadQueue sendDownloadListToDock]&lt;/code> and &lt;code>-[DownloadQueue tellDockToAddDownload:]&lt;/code>.&lt;/p>
+&lt;p>I&amp;rsquo;ve given up for now, but I reckon it should be possible to create a bundle that swizzles the right methods in storeagent to stop it placing the downloads on the Dock.&lt;/p></description></item><item><title>Facebook iPhone app Contact Sync isn't automatic</title><link>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</link><pubDate>Wed, 06 Oct 2010 14:10:06 +0000</pubDate><guid>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</guid><description>&lt;p>There&amp;rsquo;s an article on the guardian about &lt;a href="http://www.guardian.co.uk/technology/blog/2010/oct/06/facebook-privacy-phone-numbers-upload">private phone numbers being uploaded from facebook&lt;/a>, and another over &lt;a href="http://www.techeye.net/security/facebook-takes-and-stores-data-numbers-from-your-iphone">techeye.net on the same subject.&lt;/a>&lt;/p>
+&lt;p>Firstly a quote from the techeye article:&lt;/p>
+&lt;blockquote>
+&lt;p>Facebook doesn&amp;rsquo;t warn users that they are uploading their phone&amp;rsquo;s address book to Facebook.&lt;/p>
+&lt;/blockquote>
+&lt;p>And whilst the guardian article never says it happens automatically, it also doesn&amp;rsquo;t lay it out that you have to &lt;strong>explicitly&lt;/strong> enable that feature, &lt;strong>and&lt;/strong> agree to the facebook app uploading the data.&lt;/p>
+&lt;p>I was pretty sure that facebook wouldn&amp;rsquo;t be grabbing all your contact information without telling you, if they did at all, and that both articles were just pure scaremongering. So I fired up the facebook iPhone app, headed into my friends list on there, clicked sync and got the following screen:&lt;/p>
+&lt;p>&lt;img src="http://farm5.static.flickr.com/4148/5056619687_973ae660cc_d.jpg" alt="">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/5056619687/">View Original&lt;/a>&lt;/p>
+&lt;p>Ok, so according to that text, they&amp;rsquo;re just pulling down profile images and profile links from facebook and putting them in your address book against your contacts. Seems fairly harmless so far. So I toggled the top switch, to enable Contact Sync, and got the following screen:&lt;/p>
+&lt;p>&lt;img src="http://farm5.static.flickr.com/4145/5056697193_252e954ec3_d.jpg" alt="">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/5056697193/">View Original&lt;/a>&lt;/p>
+&lt;p>Reading that, it&amp;rsquo;s fairly obvious what data facebook are uploading (although a little ambiguous why), and it &lt;strong>certainly&lt;/strong> isn&amp;rsquo;t happening automatically. As it says, it uploads the &amp;ldquo;name, email address, phone number&amp;rdquo; from all your contacts to facebook, and pull down &amp;ldquo;your friends&amp;rsquo; profile photos and other info from Facebook&amp;rdquo;.&lt;/p>
+&lt;p>So whilst facebook &lt;em>are&lt;/em> collecting more data (albeit stored subject to their Privacy Policy), it&amp;rsquo;s certainly &lt;strong>NOT&lt;/strong> done automatically, and is &lt;strong>very explicit&lt;/strong> about what is being uploaded at the point you enable it.&lt;/p></description></item><item><title>+[NSObject load] in MacRuby</title><link>https://caiustheory.com/nsobject-load-in-macruby/</link><pubDate>Sat, 12 Jun 2010 02:11:32 +0000</pubDate><guid>https://caiustheory.com/nsobject-load-in-macruby/</guid><description>&lt;p>&lt;em>If you&amp;rsquo;ve not heard of it, &lt;a href="http://www.macruby.org/">MacRuby&lt;/a> is &lt;!-- raw HTML omitted -->an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.&lt;!-- raw HTML omitted --> Basically means you write in Ruby using Objective-C frameworks, and vice versa. It&amp;rsquo;s pretty damn cool to be honest!&lt;/em>&lt;/p>
+&lt;h3 id="what-is-nsobject-load">What is +[NSObject load]?&lt;/h3>
+&lt;p>From the &lt;a href="http://developer.apple.com/mac/library/documentation/cocoa/reference/foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load">documentation&lt;/a>:&lt;/p>
+&lt;blockquote>
+&lt;p>Invoked whenever a class or category is added to the Objective-C runtime; implement this method to perform class-specific behavior upon loading.&lt;/p>
+&lt;/blockquote>
+&lt;p>This means when your class is loaded, and implements the &lt;code>load&lt;/code> method, you get a &lt;code>load&lt;/code> message sent to your class. Which means you can start doing stuff as soon as your class is loaded by the runtime.&lt;/p>
+&lt;p>The main place I&amp;rsquo;ve seen it used (and used it myself) is in &lt;a href="http://www.culater.net/software/SIMBL/SIMBL.php">SIMBL&lt;/a> plugins. A SIMBL plugin is an NSBundle that contains code which is loaded (injected) into a running application shortly after said application is launched. It lets you extend (or &amp;ldquo;fix&amp;rdquo;) cocoa applications with additional features. So you have this bundle of code, that gets loaded into a running application some point after it starts, and you want to run some code as the bundle is loaded - usually to kick off doing whatever you want to do in the plugin. This is where &lt;code>load&lt;/code> becomes useful.&lt;/p>
+&lt;p>Here&amp;rsquo;s a quick implementation that just logs to the console:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-objc" data-lang="objc"> &lt;span class="k">@implementation&lt;/span> &lt;span class="nc">MainController&lt;/span>
+&lt;span class="o">+&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">load&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="n">NSlog&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">@&amp;#34;MainController#load called&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="now-where-does-macruby-come-into-this">Now where does MacRuby come into this?&lt;/h3>
+&lt;p>Well I came across a need to do the same in ruby, have some code triggered when the class is loaded into the runtime. Tried implementing &lt;code>Class.load&lt;/code> but to no avail. Then remembered MacRuby is just ruby! And I can call any code from within my ruby class definition.&lt;/p>
+&lt;p>For continuity I still call it &lt;code>Class.load&lt;/code>, but then call it as soon as I&amp;rsquo;ve defined it in the class. Eg:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">class&lt;/span> &lt;span class="nc">MainController&lt;/span>
+&lt;span class="k">def&lt;/span> &lt;span class="nc">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="nf">load&lt;/span>
+&lt;span class="no">NSLog&lt;/span> &lt;span class="s2">&amp;#34;MainController#load called&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="nb">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">load&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Of course, I&amp;rsquo;m not sure when the Objective-C method is called, it&amp;rsquo;s probably after the entire class has been defined rather than as soon as &lt;code>load&lt;/code> has been loaded into the runtime. So you might want to move the &lt;code>self.load&lt;/code> call to just before the closing &lt;code>end&lt;/code>.&lt;/p></description></item><item><title>iPad? iPerfect (…for me)</title><link>https://caiustheory.com/ipad-iperfect-for-me/</link><pubDate>Wed, 27 Jan 2010 20:56:50 +0000</pubDate><guid>https://caiustheory.com/ipad-iperfect-for-me/</guid><description>&lt;p>&lt;em>Google Groups is a pile of fail and hasn&amp;rsquo;t posted my message in reply to a thread on &lt;a href="http://geekup.org/">Geekup&lt;/a> so I&amp;rsquo;m blogging it instead.&lt;/em>&lt;/p>
+&lt;blockquote>
+&lt;p>On 27 Jan 2010, at 19:53, Steve Richardson wrote:&lt;br>
+Thoughts?&lt;/p>
+&lt;/blockquote>
+&lt;p>I&amp;rsquo;ve been searching for a device to fit between my Macbook Pro and iPhone. I work all day on the MBP, and moving it to then watch video in another room or read twitter/news/mail whilst watching telly, etc is a pain.&lt;/p>
+&lt;p>The iPhone is a great little device on the move, but for trying to multitask at home it&amp;rsquo;s a bit.. tedious. Even jailbroken and running multiple apps at once it&amp;rsquo;s still limiting.&lt;/p>
+&lt;p>I&amp;rsquo;d been looking around at netbooks, but what put me off actually getting one was my previous experience with one. I know I&amp;rsquo;d want it to run OS X to keep in sync (easily) with my other Apple devices, but hackintoshing one was a bit too much hassle, plus the fact ones to hackintosh cost more than I really wanted to pay for something that wasn&amp;rsquo;t &lt;em>quite&lt;/em> what I thought I needed.&lt;/p>
+&lt;p>And then.. the iPad. I&amp;rsquo;ve been sort of keeping up with the rumours (mainly through &lt;a href="http://daringfireball.net">Daring Fireball&lt;/a>) and whilst I didn&amp;rsquo;t get excited about it too much ahead of announcement&lt;!-- raw HTML omitted -->1&lt;!-- raw HTML omitted -->, having seen the official video of it it&amp;rsquo;s pretty much guaranteed that I&amp;rsquo;m going to get one.&lt;/p>
+&lt;p>Yes, it&amp;rsquo;s limited (App Store, closed device), but.. I don&amp;rsquo;t care. Take the iPhone, it&amp;rsquo;s good enough for doing things on it, even if someone else is in charge of the ecosystem and has a big finger saying yes or no. I (willingly) use iTunes, Mobile Me, all the things that are so wonderfully integrated in the world of Apple, so another device that consumes my media using channels I already know and use is just a massive win for me.&lt;/p>
+&lt;p>All I&amp;rsquo;m hoping now is that $499 doesn&amp;rsquo;t equal £499. Hopefully it&amp;rsquo;ll be £399, still a good £80 above direct exchange rate, but low enough that it&amp;rsquo;s a no-brainer for me to get one.&lt;/p>
+&lt;p>…And I think this is the first Apple product that I&amp;rsquo;ve seen announced and actually known from the start &lt;em>why&lt;/em> I&amp;rsquo;m going to get one, instead of just a knee-jerk &amp;ldquo;SHINY!!!! WANT!!!&amp;rdquo; reaction. Uh oh, does that make me an adult?&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->1&lt;!-- raw HTML omitted --> I miss getting really excited about apple announcements :(&lt;/p>
+&lt;h4 id="update">Update&lt;/h4>
+&lt;p>It just got even better. Was lamenting to a &lt;a href="http://tmertz.com/">friend&lt;/a> on IM that it&amp;rsquo;d be so much nicer once you can directly suck photos off a camera/SD card into it. Turns out there&amp;rsquo;s an adapter for that. See &amp;ldquo;iPad Camera Connection Kit&amp;rdquo; at the bottom of &lt;a href="http://www.apple.com/ipad/specs/">http://www.apple.com/ipad/specs/&lt;/a> for details.&lt;/p></description></item><item><title>Read Later in a keystroke</title><link>https://caiustheory.com/read-later-in-a-keystroke/</link><pubDate>Sun, 06 Dec 2009 22:15:37 +0000</pubDate><guid>https://caiustheory.com/read-later-in-a-keystroke/</guid><description>&lt;p>I use a wonderful service for saving text to be read later, &lt;a href="http://instapaper.com/">instapaper.com&lt;/a>. It&amp;rsquo;s gotten more wonderful as time has gone on and other applications/service&amp;rsquo;s have gained the ability to save links/articles/webpages there for me to pick up later.&lt;/p>
+&lt;p>For instance, I&amp;rsquo;m out and about checking twitter on my iPhone using &lt;a href="http://atebits.com/tweetie-iphone/">tweetie&lt;/a> and someone tweets a link. Rather than wait for it to load and having to read it then and there I can just hit &amp;ldquo;Read Later&amp;rdquo; and it&amp;rsquo;s saved in my instapaper account for me to read as and when I choose to. Recently the legendary mac feed reader &lt;a href="http://www.newsgator.com/INDIVIDUALS/NETNEWSWIRE/">NetNewsWire&lt;/a> gained this ability too.&lt;/p>
+&lt;p>There&amp;rsquo;s a few ways to send a feed item to instapaper from within NNW. Firstly you can right-click and click &amp;ldquo;Send to Instapaper&amp;rdquo;.&lt;/p>
+&lt;p>&lt;img src="http://farm3.static.flickr.com/2553/4163576297_ee60e26b53_o.jpg" alt="Send to Instapaper from contextual menu">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/4163576297">View Original on Flickr&lt;/a>&lt;/p>
+&lt;p>Secondly there&amp;rsquo;s a menu item for it in the News menu, which also provides my chosen way of instapapering an item—the keyboard shortcut! ⌃P &lt;em>(control-P)&lt;/em>.&lt;/p>
+&lt;p>&lt;img src="http://farm3.static.flickr.com/2748/4164341910_476f8ba539_o.jpg" alt="Send to Instapaper from News menu">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/4164341910">View Original on Flickr&lt;/a>&lt;/p>
+&lt;p>So, in NNW I&amp;rsquo;m happily sending stuff to instapaper with the handy ⌃P shortcut, but that doesn&amp;rsquo;t exist in the third place I mark things to read later&amp;ndash;Safari! Up until now I&amp;rsquo;ve been using the standard &amp;ldquo;Read Later&amp;rdquo; bookmarklet that &lt;a href="http://instapaper.com/">instapaper.com&lt;/a> provides, and it&amp;rsquo;s got a spot on my Bookmarks Bar so I can easily click it.&lt;/p>
+&lt;p>That doesn&amp;rsquo;t really help with the fact I&amp;rsquo;m hitting ⌃P in NNW, and it doesn&amp;rsquo;t work in Safari. Quite often I noticed myself hitting the key combination in Safari and wondering for a split second why it wasn&amp;rsquo;t sending the item to instapaper. Then the solution hit me!&lt;/p>
+&lt;p>In OS X you can setup (and/or override) menu items with custom key combinations! Why hadn&amp;rsquo;t I remembered this before. Because the &amp;ldquo;Read Later&amp;rdquo; bookmark*(let)* is nested under the Bookmarks menu, it **is** a menu item! A quick trip into the Keyboards Prefpane in System Preferences and a new binding later and voilâ, &amp;ldquo;Read Later&amp;rdquo; in Safari is bound to ⌃P and I can use it in both Safari and NNW.&lt;/p>
+&lt;p>&lt;img src="http://farm3.static.flickr.com/2517/4163642801_a14250da65_o.jpg" alt="Filling in the form to bind the keyboard shortcut">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/4163642801">View Original on Flickr&lt;/a>&lt;/p></description></item><item><title>My Menubar Items</title><link>https://caiustheory.com/my-menubar-items/</link><pubDate>Sun, 06 Dec 2009 12:56:49 +0000</pubDate><guid>https://caiustheory.com/my-menubar-items/</guid><description>&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>This is a something that occasionally makes the rounds again, I&amp;rsquo;ve not seen it for a while and I&amp;rsquo;ve added some new items since I last remember documenting it. Thus, &lt;a href="http://twitter.com/macarne">@macarne&lt;/a> &lt;a href="http://twitter.com/macarne/status/6398125336">asking&lt;/a> what the app was that gives me stats prompted me to document my current menubar items.&lt;/p>
+&lt;p>&lt;img src="http://farm3.static.flickr.com/2586/4162170875_1d1a8be4cf.jpg" alt="annotated-menubar by ©aius, on Flickr" title="annotated-menubar">&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/4162170875/">View original&lt;/a>&lt;/p>
+&lt;ol>
+&lt;li>&lt;a href="http://www.eidac.de/">SMCFanControl&lt;/a> - Lets me adjust the minimum speed of my fans.&lt;/li>
+&lt;li>&lt;a href="http://atebits.com/tweetie-mac">Tweetie/mac&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://iscrobbler.sourceforge.net/">iScrobbler&lt;/a> - Scrobbles tunes iTunes plays&lt;/li>
+&lt;li>&lt;a href="http://www.realmacsoftware.com/littlesnapper/">LittleSnapper&lt;/a> &lt;em>(Or more accurately the menubar icon is NanoSnapper, LittleSnapper is the full app.)&lt;/em> Mainly used for screen grabs.&lt;/li>
+&lt;li>&lt;a href="http://www.orange-carb.org/SBM/">SlimBatteryMonitor&lt;/a> - Takes up less horizontal space than Apple&amp;rsquo;s menu item.&lt;/li>
+&lt;li>Expresscard menu item - Lets me power off my &lt;a href="http://www.memoryc.com/storage/solidstatedisk/48gbfilematesolidgoexpresscardultra.html">Expresscard/34 SSD&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://www.ragingmenace.com/software/menumeters/">MenuMeters&lt;/a> - An old friend I&amp;rsquo;ve been using for as long as I can remember running OS X. Set to show (left to right)
+&lt;ol>
+&lt;li>Ram - &lt;strong>U&lt;/strong>sed and &lt;strong>F&lt;/strong>ree totals.&lt;/li>
+&lt;li>Network - Graph + values.&lt;/li>
+&lt;li>CPU - Graph per core. Probably the most useful out of the three.&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Bluetooth&lt;/li>
+&lt;li>Time Machine&lt;/li>
+&lt;li>Modem - To dial on my Huawei E220 3G stick.&lt;/li>
+&lt;li>Airport&lt;/li>
+&lt;li>Sound&lt;/li>
+&lt;li>Day/Time&lt;/li>
+&lt;li>Fast User Switching - Not sure why I keep this in the menubar, only have one user and I lock my screen with a password protected screensaver.&lt;/li>
+&lt;li>&lt;a href="http://www.viscosityvpn.com/">Viscosity&lt;/a> - VPN software. Pretty useful.&lt;/li>
+&lt;li>Spotlight! - Occasionally this vanishes when spotlight decides to be a dick and eat ram/cpu reindexing my disk every few hours. Touch wood it hasn&amp;rsquo;t done it since 10.6.1.&lt;/li>
+&lt;/ol></description></item><item><title>Filter through command</title><link>https://caiustheory.com/filter-through-command/</link><pubDate>Mon, 14 Sep 2009 22:39:37 +0000</pubDate><guid>https://caiustheory.com/filter-through-command/</guid><description>&lt;p>&lt;em>This is another old post that I&amp;rsquo;m republishing. Originally published 27th April 2007.&lt;/em>&lt;/p>
+&lt;p>My text editor &lt;a href="http://macromates.com/">TextMate&lt;/a> has a nice feature called &amp;ldquo;Filter through command&amp;rdquo; whereby you can filter the current document through a command.&lt;/p>
+&lt;p>Anyway, I&amp;rsquo;ve never used it before, but today I had a text file with 30 or so url&amp;rsquo;s in, each on a new line, so I thought I&amp;rsquo;d test it out. I selected it to input the document &amp;amp; to not replace the output. I then entered the following command, which is a ruby command to take each line that isn&amp;rsquo;t blank, and run the shell command &lt;code>open $url&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">ruby -e &lt;span class="s1">&amp;#39;a = ARGF.read.scan(/\S+/); a.each { |x| `open #{x}` }&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>What this does is take ARGF (the document) and read it in line by line, but only the non-whitespace characters (so newlines, space, etc are ignored.) And it assigns it to an array called &lt;code>a&lt;/code>. What I then do is for each item of &lt;code>a&lt;/code>, we run it past the shell command &lt;code>open&lt;/code>, which on OS X if you pass it a URL it just opens that URL in the default browser.&lt;/p>
+&lt;p>My browser is Safari, and its set to open new links in a new tab in the foremost window. So I ran the command, and hey presto, within a few seconds I had all the URL&amp;rsquo;s loading in seperate tabs in Safari&amp;rsquo;s foremost window!&lt;/p>
+&lt;p>The power of Unix &lt;em>(OS X)&lt;/em> &amp;amp; TextMate (amongst other tools) just never ceases to amaze me.&lt;/p>
+&lt;p>&lt;strong>Update&lt;/strong>&lt;/p>
+&lt;p>I just realised if you change the regex to scan for http://.* then it&amp;rsquo;ll select all website URLs.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">ruby -e &lt;span class="s1">&amp;#39;a = ARGF.read.scan(/^http://.*$/); a.each { |url| `open #{url}` }&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Mac Tips you may not know</title><link>https://caiustheory.com/mac-tips-you-may-not-know/</link><pubDate>Mon, 31 Aug 2009 13:08:48 +0000</pubDate><guid>https://caiustheory.com/mac-tips-you-may-not-know/</guid><description>&lt;p>Here are some mac tips I know and consider &amp;ldquo;basic&amp;rdquo; mac knowledge, but no-one else seems to know.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>exposé&lt;/strong> key is on modern mac keyboards, looks like a load of squares on the F3 key.&lt;/li>
+&lt;li>&lt;strong>⌘ + Exposé key&lt;/strong> =&amp;gt; Show Desktop&lt;/li>
+&lt;li>&lt;strong>⌃ + Exposé key&lt;/strong> =&amp;gt; Show Application Windows&lt;/li>
+&lt;li>&lt;strong>⌥ + Brightness keys&lt;/strong> =&amp;gt; Open Displays prefpane in System Preferences.&lt;/li>
+&lt;li>&lt;strong>⌥ + Exposé key&lt;/strong> =&amp;gt; Open Exposé &amp;amp; Spaces prefpane in System Preferences.&lt;/li>
+&lt;li>&lt;strong>⌥ + Dashboard key&lt;/strong> =&amp;gt; Open Exposé &amp;amp; Spaces prefpane in System Preferences.&lt;/li>
+&lt;li>&lt;strong>⌥ + Keyboard Backlight keys&lt;/strong> =&amp;gt; Open Keyboard prefpane in System Preferences. &lt;em>(Only on laptops with keyboard backlighting.)&lt;/em>&lt;/li>
+&lt;li>&lt;strong>⌥ + Volume keys&lt;/strong> =&amp;gt; Open Sound prefpane in System Preferences.&lt;/li>
+&lt;li>&lt;strong>⇧ + Volume keys&lt;/strong> =&amp;gt; Adjust the volume with the feedback noise setting toggled. If you normally have feedback &amp;ldquo;blips&amp;rdquo;, it&amp;rsquo;ll be silent. Or vice versa.&lt;/li>
+&lt;li>&lt;strong>⌥ + ⇧ + Volume keys&lt;/strong> =&amp;gt; Adjust the volume in 1/4 of a usual step.&lt;/li>
+&lt;li>&lt;strong>⌃ + Eject key&lt;/strong> =&amp;gt; Shows the Shut Down dialog.&lt;/li>
+&lt;li>In the shut down dialog, hit &lt;em>R&lt;/em> to restart, &lt;em>S&lt;/em> to sleep, &lt;em>⎋&lt;/em> to cancel.&lt;/li>
+&lt;li>(Pretty much) Any dialog that pops up, hitting &lt;em>⎋&lt;/em> will push the &amp;ldquo;cancel&amp;rdquo; button.&lt;/li>
+&lt;li>In &amp;ldquo;Show all windows&amp;rdquo; or &amp;ldquo;Show application windows&amp;rdquo; exposé modes, hit the tab key to cycle through applications.&lt;/li>
+&lt;li>Hit the space bar in exposé to activate &amp;ldquo;Quick Look&amp;rdquo; + windows pop up to 100% size as you mouse over them.&lt;/li>
+&lt;li>Hold down &lt;strong>⌃ + ⇧&lt;/strong> when mousing over the dock to toggle magnification whilst the keys are down.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>(Alternative title &lt;a href="http://www.petercooper.co.uk/">Peter Cooper&lt;/a> suggested, &amp;ldquo;A miscellany of input device co-ordinations to modulate the response of Apple&amp;rsquo;s task preview and switching subsystem&amp;rdquo;)&lt;/em>&lt;/p></description></item><item><title>Capitalise "ringer" on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p>&lt;strong>Backstory:&lt;/strong> Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;ldquo;ringer&amp;rdquo; across the top. But when you have headphones plugged in, it says &amp;ldquo;Headphones&amp;rdquo;. &lt;em>(Note the capitalisation difference.)&lt;/em>&lt;/p>
+&lt;p>Now I&amp;rsquo;m not usually bothered by stuff like this (honest!) but as soon as I&amp;rsquo;d noticed the &lt;em>&amp;ldquo;bug&amp;rdquo;&lt;/em>, I couldn&amp;rsquo;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&amp;rsquo;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code>/System&lt;/code> folder. And I&amp;rsquo;d be able to change it!&lt;/p>
+&lt;p>Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&amp;rsquo;s SSH server on and go looking for the setting. To do so I figured I&amp;rsquo;d just need &lt;code>grep&lt;/code> installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p>
+&lt;p>So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p>
+&lt;pre>&lt;code># On the iPhone
 $ cd /System/Library/
 $ grep -r &amp;quot;ringer&amp;quot; *
 Binary file CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings matches
@@ -296,33 +292,32 @@ Binary file Frameworks/CFNetwork.framework/CFNetwork matches
 Binary file Frameworks/CFNetwork.framework/da.lproj/Localizable.strings matches
 Binary file Frameworks/CFNetwork.framework/no.lproj/Localizable.strings matches
 Binary file Frameworks/Foundation.framework/da.lproj/URL.strings matches
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;At which point I stopped the grep search (&lt;code&gt;^C&lt;/code&gt;) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code&gt;SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code&gt;. Making sure to have SSH enabled on your mac, a simple &lt;code&gt;scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code&gt; later and the file is sat in my home folder on my mac.&lt;/p&gt;
-&lt;p&gt;Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&#39;ve found a hint on &lt;a href=&#34;http://macosxhints.com&#34;&gt;MacOSXHints&lt;/a&gt; telling me how to convert from &lt;a href=&#34;http://www.macosxhints.com/article.php?story=20050430105126392&#34;&gt;binary to xml plist format&lt;/a&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the mac
+&lt;/code>&lt;/pre>
+&lt;p>At which point I stopped the grep search (&lt;code>^C&lt;/code>) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code>SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code>. Making sure to have SSH enabled on your mac, a simple &lt;code>scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code> later and the file is sat in my home folder on my mac.&lt;/p>
+&lt;p>Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&amp;rsquo;ve found a hint on &lt;a href="http://macosxhints.com">MacOSXHints&lt;/a> telling me how to convert from &lt;a href="http://www.macosxhints.com/article.php?story=20050430105126392">binary to xml plist format&lt;/a>.&lt;/p>
+&lt;pre>&lt;code># On the mac
 $ plutil -convert xml1 SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;quot;ringer&amp;quot; and I found the following lines:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;key&amp;gt;&lt;/span&gt;RINGER_VOLUME&lt;span class=&#34;nt&#34;&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
-&lt;span class=&#34;nt&#34;&gt;&amp;lt;string&amp;gt;&lt;/span&gt;ringer&lt;span class=&#34;nt&#34;&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Change the &amp;quot;ringer&amp;quot; to &amp;quot;Ringer&amp;quot; between the &lt;code&gt;&amp;lt;string&amp;gt;&lt;/code&gt; and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code&gt;.string&lt;/code&gt;. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code&gt;xml1&lt;/code&gt; in the previous command to &lt;code&gt;binary1&lt;/code&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the mac
+&lt;/code>&lt;/pre>
+&lt;p>Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;ldquo;ringer&amp;rdquo; and I found the following lines:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>RINGER_VOLUME&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>ringer&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Change the &amp;ldquo;ringer&amp;rdquo; to &amp;ldquo;Ringer&amp;rdquo; between the &lt;code>&amp;lt;string&amp;gt;&lt;/code> and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code>.string&lt;/code>. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code>xml1&lt;/code> in the previous command to &lt;code>binary1&lt;/code>.&lt;/p>
+&lt;pre>&lt;code># On the mac
 $ plutil -convert binary1 SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&#39;ve edited:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the iPhone
+&lt;/code>&lt;/pre>
+&lt;p>And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&amp;rsquo;ve edited:&lt;/p>
+&lt;pre>&lt;code># On the iPhone
 $ cd ~
 $ scp user@mac_name.local:SpringBoard.strings .
 $ cd /System/Library/CoreServices/SpringBoard.app/English.lproj/
 $ mv SpringBoard.strings SpringBoard.strings.bak
 $ cp ~/SpringBoard.strings SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And then restart the phone, either in the usual manner or just run &lt;code&gt;reboot&lt;/code&gt; on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;quot;Ringer&amp;quot;!&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://caius.name/images/ringer.jpg&#34; alt=&#34;Screenshot of Volume bezel&#34; /&gt;&lt;/p&gt;</description></item><item><title>Safari 4 Hidden Preferences</title><link>https://caiustheory.com/safari-4-hidden-preferences/</link><pubDate>Tue, 24 Feb 2009 16:11:05 +0000</pubDate><guid>https://caiustheory.com/safari-4-hidden-preferences/</guid><description>
-&lt;p&gt;&lt;strong&gt;Updated 2009-06-09:&lt;/strong&gt; This post is for the Safari 4 &lt;strong&gt;beta&lt;/strong&gt; and will not work with the new Safari 4 released yesterday at the WWDC keynote. I&#39;ve had a look through that release and can&#39;t see any way to revert the address bar, etc sorry.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;Having a quick poke through the new Safari binary yields the following strings:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ strings /Applications/Safari.app/Contents/MacOS/Safari | grep DebugSafari4
+&lt;/code>&lt;/pre>
+&lt;p>And then restart the phone, either in the usual manner or just run &lt;code>reboot&lt;/code> on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;ldquo;Ringer&amp;rdquo;!&lt;/p>
+&lt;p>&lt;img src="http://caius.name/images/ringer.jpg" alt="Screenshot of Volume bezel">&lt;/p></description></item><item><title>Safari 4 Hidden Preferences</title><link>https://caiustheory.com/safari-4-hidden-preferences/</link><pubDate>Tue, 24 Feb 2009 16:11:05 +0000</pubDate><guid>https://caiustheory.com/safari-4-hidden-preferences/</guid><description>&lt;p>&lt;strong>Updated 2009-06-09:&lt;/strong> This post is for the Safari 4 &lt;strong>beta&lt;/strong> and will not work with the new Safari 4 released yesterday at the WWDC keynote. I&amp;rsquo;ve had a look through that release and can&amp;rsquo;t see any way to revert the address bar, etc sorry.&lt;/p>
+&lt;hr>
+&lt;p>Having a quick poke through the new Safari binary yields the following strings:&lt;/p>
+&lt;pre>&lt;code>$ strings /Applications/Safari.app/Contents/MacOS/Safari | grep DebugSafari4
 DebugSafari4TabBarIsOnTop
 DebugSafari4IncludeToolbarRedesign
 DebugSafari4IncludeFancyURLCompletionList
@@ -331,67 +326,75 @@ DebugSafari4LoadProgressStyle
 DebugSafari4IncludeFlowViewInBookmarksView
 DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot
 DebugSafari4IncludeTopSites
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;NB: Run these commands in Terminal.app and then you need to restart Safari for them to take effect.&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&#34;debugsafari4tabbarisontop&#34;&gt;DebugSafari4TabBarIsOnTop&lt;/h3&gt;
-&lt;p&gt;This moves the tab bar back where you expect it to be:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4TabBarIsOnTop -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includetoolbarredesign-and-debugsafari4loadprogressstyle&#34;&gt;DebugSafari4IncludeToolbarRedesign and DebugSafari4LoadProgressStyle&lt;/h3&gt;
-&lt;p&gt;When both set to NO it restores the blue loading bar behind the URL. &lt;em&gt;Also puts a page loading spinner in the tab itself, which looks odd with the new tabs.&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeToolbarRedesign -bool NO
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>NB: Run these commands in Terminal.app and then you need to restart Safari for them to take effect.&lt;/em>&lt;/p>
+&lt;h3 id="debugsafari4tabbarisontop">DebugSafari4TabBarIsOnTop&lt;/h3>
+&lt;p>This moves the tab bar back where you expect it to be:&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4TabBarIsOnTop -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includetoolbarredesign-and-debugsafari4loadprogressstyle">DebugSafari4IncludeToolbarRedesign and DebugSafari4LoadProgressStyle&lt;/h3>
+&lt;p>When both set to NO it restores the blue loading bar behind the URL. &lt;em>Also puts a page loading spinner in the tab itself, which looks odd with the new tabs.&lt;/em>&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeToolbarRedesign -bool NO
 $ defaults write com.apple.Safari DebugSafari4LoadProgressStyle -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includefancyurlcompletionlist&#34;&gt;DebugSafari4IncludeFancyURLCompletionList&lt;/h3&gt;
-&lt;p&gt;Switches off the new URL autocomplete menu and goes back to the original one.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeFancyURLCompletionList -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includegooglesuggest&#34;&gt;DebugSafari4IncludeGoogleSuggest&lt;/h3&gt;
-&lt;p&gt;Turns off the new Google suggest menu.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeGoogleSuggest -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includeflowviewinbookmarksview&#34;&gt;DebugSafari4IncludeFlowViewInBookmarksView&lt;/h3&gt;
-&lt;p&gt;Removes CoverFlow from the Bookmarks view entirely. (&lt;a href=&#34;http://twitter.com/iacas/status/1245800183&#34;&gt;Credit&lt;/a&gt; to &lt;a href=&#34;http://nslog.com/&#34;&gt;Erik&lt;/a&gt;)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeFlowViewInBookmarksView -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4topsiteszoomtopageanimationdimssnapshot&#34;&gt;DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot&lt;/h3&gt;
-&lt;p&gt;Disables the dimming when you click on a Top Site and it scales the screenshot up to fill the screen.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includetopsites&#34;&gt;DebugSafari4IncludeTopSites&lt;/h3&gt;
-&lt;p&gt;Disables Top Sites feature completely.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeTopSites -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;undoing-changes&#34;&gt;Undoing changes&lt;/h2&gt;
-&lt;p&gt;Just run the defaults command with the &lt;code&gt;delete&lt;/code&gt; flag for the appropriate key you wish to delete.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults delete com.apple.Safari &amp;lt;key&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;NB: Don&#39;t include the &lt;code&gt;-bool NO&lt;/code&gt; at the end, it just requires the key (eg: &amp;quot;DebugSafari4IncludeGoogleSuggest&amp;quot;)&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&#34;update-2009-02-26&#34;&gt;Update 2009-02-26&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;http://swedishcampground.com/safari-4-hidden-preferences#comment-3265&#34;&gt;Jools points out in the comments&lt;/a&gt; how to reset the recent searches in the google search box.&lt;/p&gt;
-&lt;h3 id=&#34;update-2009-05-26&#34;&gt;Update 2009-05-26&lt;/h3&gt;
-&lt;p&gt;Lowell&#39;s kindly created a Mac OS X application to edit these settings without using Terminal. &lt;a href=&#34;http://github.com/cocoastep/tweaky&#34;&gt;http://github.com/cocoastep/tweaky&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;update-2010-11-18&#34;&gt;Update 2010-11-18&lt;/h3&gt;
-&lt;p&gt;Patric has kindly &lt;a href=&#34;http://www.movavi.com/opensource/safari-4-hidden-preferences-be&#34;&gt;translated this post into Belorussian&lt;/a&gt; and posted it on his site.&lt;/p&gt;</description></item><item><title>Fix Mail.app crashing after 10.5.6 upgrade</title><link>https://caiustheory.com/fix-mailapp-crashing-after-1056-upgrade/</link><pubDate>Wed, 17 Dec 2008 13:58:04 +0000</pubDate><guid>https://caiustheory.com/fix-mailapp-crashing-after-1056-upgrade/</guid><description>&lt;p&gt;When you upgrade to Mac OS 10.5.6, Mail.app might start crashing a few seconds after starting due to the GPG Bundle.&lt;/p&gt;
-&lt;p&gt;The solution is to grab the updated version of the &lt;a href=&#34;http://www.sente.ch/software/GPGMail/English.lproj/GPGMail.html&#34;&gt;GPG bundle&lt;/a&gt; – &lt;a href=&#34;http://www.sente.ch/pub/beta/GPGMail_d55_Leopard.dmg&#34;&gt;GPGMail_d55_Leopard.dmg&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p&gt;I decided to install ubuntu onto my iMac G3&lt;ref&gt;450Mhz G3, 768mb ram, 20GB Hard Drive&lt;/ref&gt; to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em&gt;slightly&lt;/em&gt; outdated and 100% 404.&lt;/p&gt;
-&lt;p&gt;Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;When the screen goes black, drop to the console&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Control - Option - F2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;(if you need to log in use the name ubuntu to log in.)&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo nano /etc/X11/xorg.conf
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Change the frequencies in monitor section as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Section “Monitor”
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includefancyurlcompletionlist">DebugSafari4IncludeFancyURLCompletionList&lt;/h3>
+&lt;p>Switches off the new URL autocomplete menu and goes back to the original one.&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeFancyURLCompletionList -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includegooglesuggest">DebugSafari4IncludeGoogleSuggest&lt;/h3>
+&lt;p>Turns off the new Google suggest menu.&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeGoogleSuggest -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includeflowviewinbookmarksview">DebugSafari4IncludeFlowViewInBookmarksView&lt;/h3>
+&lt;p>Removes CoverFlow from the Bookmarks view entirely. (&lt;a href="http://twitter.com/iacas/status/1245800183">Credit&lt;/a> to &lt;a href="http://nslog.com/">Erik&lt;/a>)&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeFlowViewInBookmarksView -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4topsiteszoomtopageanimationdimssnapshot">DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot&lt;/h3>
+&lt;p>Disables the dimming when you click on a Top Site and it scales the screenshot up to fill the screen.&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includetopsites">DebugSafari4IncludeTopSites&lt;/h3>
+&lt;p>Disables Top Sites feature completely.&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeTopSites -bool NO
+&lt;/code>&lt;/pre>
+&lt;h2 id="undoing-changes">Undoing changes&lt;/h2>
+&lt;p>Just run the defaults command with the &lt;code>delete&lt;/code> flag for the appropriate key you wish to delete.&lt;/p>
+&lt;pre>&lt;code>$ defaults delete com.apple.Safari &amp;lt;key&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>NB: Don&amp;rsquo;t include the &lt;code>-bool NO&lt;/code> at the end, it just requires the key (eg: &amp;ldquo;DebugSafari4IncludeGoogleSuggest&amp;rdquo;)&lt;/em>&lt;/p>
+&lt;h3 id="update-2009-02-26">Update 2009-02-26&lt;/h3>
+&lt;p>&lt;a href="http://swedishcampground.com/safari-4-hidden-preferences#comment-3265">Jools points out in the comments&lt;/a> how to reset the recent searches in the google search box.&lt;/p>
+&lt;h3 id="update-2009-05-26">Update 2009-05-26&lt;/h3>
+&lt;p>Lowell&amp;rsquo;s kindly created a Mac OS X application to edit these settings without using Terminal. &lt;a href="http://github.com/cocoastep/tweaky">http://github.com/cocoastep/tweaky&lt;/a>&lt;/p>
+&lt;h3 id="update-2010-11-18">Update 2010-11-18&lt;/h3>
+&lt;p>Patric has kindly &lt;a href="http://www.movavi.com/opensource/safari-4-hidden-preferences-be">translated this post into Belorussian&lt;/a> and posted it on his site.&lt;/p></description></item><item><title>Fix Mail.app crashing after 10.5.6 upgrade</title><link>https://caiustheory.com/fix-mailapp-crashing-after-1056-upgrade/</link><pubDate>Wed, 17 Dec 2008 13:58:04 +0000</pubDate><guid>https://caiustheory.com/fix-mailapp-crashing-after-1056-upgrade/</guid><description>&lt;p>When you upgrade to Mac OS 10.5.6, Mail.app might start crashing a few seconds after starting due to the GPG Bundle.&lt;/p>
+&lt;p>The solution is to grab the updated version of the &lt;a href="http://www.sente.ch/software/GPGMail/English.lproj/GPGMail.html">GPG bundle&lt;/a> – &lt;a href="http://www.sente.ch/pub/beta/GPGMail_d55_Leopard.dmg">GPGMail_d55_Leopard.dmg&lt;/a>&lt;/p></description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p>I decided to install ubuntu onto my iMac G3&lt;!-- raw HTML omitted -->450Mhz G3, 768mb ram, 20GB Hard Drive&lt;!-- raw HTML omitted --> to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em>slightly&lt;/em> outdated and 100% 404.&lt;/p>
+&lt;p>Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>When the screen goes black, drop to the console&lt;/p>
+&lt;pre>&lt;code> Control - Option - F2
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>(if you need to log in use the name ubuntu to log in.)&lt;/em>&lt;/p>
+&lt;pre>&lt;code> $ sudo nano /etc/X11/xorg.conf
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Change the frequencies in monitor section as follows:&lt;/p>
+&lt;pre>&lt;code> Section “Monitor”
 Identifier “Generic Monitor”
 Option “DPMS”
 HorizSync 60-60
 VertRefresh 43-117
 EndSection
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;After the changes then type &lt;code&gt;control-o&lt;/code&gt;, &lt;code&gt;return&lt;/code&gt; (to accept the filename), then &lt;code&gt;control-x&lt;/code&gt; (save and exit nano)&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Restart X by running the following:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>After the changes then type &lt;code>control-o&lt;/code>, &lt;code>return&lt;/code> (to accept the filename), then &lt;code>control-x&lt;/code> (save and exit nano)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Restart X by running the following:&lt;/p>
+&lt;pre>&lt;code> sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

@@ -1,20 +1,20 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>shebang on Caius Theory</title><link>https://caiustheory.com/tag/shebang/</link><description>Recent content in shebang on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Fri, 06 Jun 2014 14:32:18 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/shebang/index.xml" rel="self" type="application/rss+xml"/><item><title>Compile &amp; run swift files directly</title><link>https://caiustheory.com/compile-run-swift-files-directly/</link><pubDate>Fri, 06 Jun 2014 14:32:18 +0000</pubDate><guid>https://caiustheory.com/compile-run-swift-files-directly/</guid><description>&lt;p&gt;Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.&lt;/p&gt;
-&lt;p&gt;Using the &lt;code&gt;xcrun&lt;/code&gt; binary, we can reach into the current Xcode &lt;code&gt;/bin&lt;/code&gt; folder and run binaries within there. So &lt;code&gt;xcrun swift&lt;/code&gt; lets you run the swift binary to compile files for instance. If you view the help with &lt;code&gt;-h&lt;/code&gt;, there&#39;s a useful flag &lt;code&gt;-i&lt;/code&gt; listed there:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;-i &amp;nbsp;&amp;nbsp; Immediate mode&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Turns out immediate mode means &amp;quot;compile &amp;amp; run&amp;quot; in the same command, which is what we&#39;re after.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ cat hello.swift
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>shebang on Caius Theory</title><link>https://caiustheory.com/tag/shebang/</link><description>Recent content in shebang on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Fri, 06 Jun 2014 14:32:18 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/shebang/index.xml" rel="self" type="application/rss+xml"/><item><title>Compile &amp; run swift files directly</title><link>https://caiustheory.com/compile-run-swift-files-directly/</link><pubDate>Fri, 06 Jun 2014 14:32:18 +0000</pubDate><guid>https://caiustheory.com/compile-run-swift-files-directly/</guid><description>&lt;p>Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.&lt;/p>
+&lt;p>Using the &lt;code>xcrun&lt;/code> binary, we can reach into the current Xcode &lt;code>/bin&lt;/code> folder and run binaries within there. So &lt;code>xcrun swift&lt;/code> lets you run the swift binary to compile files for instance. If you view the help with &lt;code>-h&lt;/code>, there&amp;rsquo;s a useful flag &lt;code>-i&lt;/code> listed there:&lt;/p>
+&lt;blockquote>
+&lt;p>-i    Immediate mode&lt;/p>
+&lt;/blockquote>
+&lt;p>Turns out immediate mode means &amp;ldquo;compile &amp;amp; run&amp;rdquo; in the same command, which is what we&amp;rsquo;re after.&lt;/p>
+&lt;pre>&lt;code>$ cat hello.swift
 println(&amp;quot;Hello World&amp;quot;)
 $ xcrun swift -i hello.swift
 Hello World
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ cat hello2.swift
+&lt;/code>&lt;/pre>
+&lt;p>Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!&lt;/p>
+&lt;pre>&lt;code>$ cat hello2.swift
 #!/usr/bin/env xcrun swift -i
 println(&amp;quot;Hello World 2&amp;quot;)
 $ chmod +x hello2.swift
 $ ./hello2.swift
 Hello World 2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!&lt;/p></description></item></channel></rss>

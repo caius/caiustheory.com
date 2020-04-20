@@ -1,39 +1,37 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>objective-c on Caius Theory</title><link>https://caiustheory.com/tag/objective-c/</link><description>Recent content in objective-c on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 12 Jun 2010 02:11:32 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/objective-c/index.xml" rel="self" type="application/rss+xml"/><item><title>&#43;[NSObject load] in MacRuby</title><link>https://caiustheory.com/nsobject-load-in-macruby/</link><pubDate>Sat, 12 Jun 2010 02:11:32 +0000</pubDate><guid>https://caiustheory.com/nsobject-load-in-macruby/</guid><description>
-&lt;p&gt;&lt;em&gt;If you&#39;ve not heard of it, &lt;a href=&#34;http://www.macruby.org/&#34;&gt;MacRuby&lt;/a&gt; is &lt;q&gt;an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.&lt;/q&gt; Basically means you write in Ruby using Objective-C frameworks, and vice versa. It&#39;s pretty damn cool to be honest!&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&#34;what-is-nsobject-load&#34;&gt;What is +[NSObject load]?&lt;/h3&gt;
-&lt;p&gt;From the &lt;a href=&#34;http://developer.apple.com/mac/library/documentation/cocoa/reference/foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load&#34;&gt;documentation&lt;/a&gt;:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Invoked whenever a class or category is added to the Objective-C runtime; implement this method to perform class-specific behavior upon loading.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;This means when your class is loaded, and implements the &lt;code&gt;load&lt;/code&gt; method, you get a &lt;code&gt;load&lt;/code&gt; message sent to your class. Which means you can start doing stuff as soon as your class is loaded by the runtime.&lt;/p&gt;
-&lt;p&gt;The main place I&#39;ve seen it used (and used it myself) is in &lt;a href=&#34;http://www.culater.net/software/SIMBL/SIMBL.php&#34;&gt;SIMBL&lt;/a&gt; plugins. A SIMBL plugin is an NSBundle that contains code which is loaded (injected) into a running application shortly after said application is launched. It lets you extend (or &amp;quot;fix&amp;quot;) cocoa applications with additional features. So you have this bundle of code, that gets loaded into a running application some point after it starts, and you want to run some code as the bundle is loaded - usually to kick off doing whatever you want to do in the plugin. This is where &lt;code&gt;load&lt;/code&gt; becomes useful.&lt;/p&gt;
-&lt;p&gt;Here&#39;s a quick implementation that just logs to the console:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt; &lt;span class=&#34;k&#34;&gt;@implementation&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MainController&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSlog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;@&amp;#34;MainController#load called&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;now-where-does-macruby-come-into-this&#34;&gt;Now where does MacRuby come into this?&lt;/h3&gt;
-&lt;p&gt;Well I came across a need to do the same in ruby, have some code triggered when the class is loaded into the runtime. Tried implementing &lt;code&gt;Class.load&lt;/code&gt; but to no avail. Then remembered MacRuby is just ruby! And I can call any code from within my ruby class definition.&lt;/p&gt;
-&lt;p&gt;For continuity I still call it &lt;code&gt;Class.load&lt;/code&gt;, but then call it as soon as I&#39;ve defined it in the class. Eg:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MainController&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;
-&lt;span class=&#34;no&#34;&gt;NSLog&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;MainController#load called&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;load&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Of course, I&#39;m not sure when the Objective-C method is called, it&#39;s probably after the entire class has been defined rather than as soon as &lt;code&gt;load&lt;/code&gt; has been loaded into the runtime. So you might want to move the &lt;code&gt;self.load&lt;/code&gt; call to just before the closing &lt;code&gt;end&lt;/code&gt;.&lt;/p&gt;</description></item><item><title>Read standard input using Objective-C</title><link>https://caiustheory.com/read-standard-input-using-objective-c/</link><pubDate>Sun, 06 Dec 2009 11:50:08 +0000</pubDate><guid>https://caiustheory.com/read-standard-input-using-objective-c/</guid><description>&lt;p&gt;On a couple of occasions now I&#39;ve wanted to read from &lt;code&gt;STDIN&lt;/code&gt; into an Objective-C command line tool, and both times I&#39;ve had to hunt quite a bit to find the answer because nothing shows up in google for the search terms I used. &amp;quot;Objective-c read from stdin&amp;quot; and &amp;quot;objc read stdin&amp;quot; both turn up results ranging from using &lt;code&gt;NSInputStream&lt;/code&gt; to dropping some C++ in there.&lt;/p&gt;
-&lt;p&gt;The answer is quite simple really, just use &lt;code&gt;NSFileHandle&lt;/code&gt;. More specifically &lt;code&gt;+[NSFileHandle fileHandleWithStandardInput]&lt;/code&gt;. You can then read all data currently in &lt;code&gt;STDIN&lt;/code&gt;, monitor it for new data and anything else you can do with a normal &lt;code&gt;NSFileHandle&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;And here&#39;s some example code, reads all data from &lt;code&gt;STDIN&lt;/code&gt; and stores it into an NSString:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt;&lt;span class=&#34;n&#34;&gt;NSFileHandle&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;input&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSFileHandle&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fileHandleWithStandardInput&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSData&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputData&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSData&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;dataWithData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;input&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;readDataToEndOfFile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]];&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSString&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;alloc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;nl&#34;&gt;initWithData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputData&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;encoding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSUTF8StringEncoding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;I&#39;m using this in GarbageCollected apps, memory management without GC is left as an exercise to the user.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Safari 4 Hidden Preferences</title><link>https://caiustheory.com/safari-4-hidden-preferences/</link><pubDate>Tue, 24 Feb 2009 16:11:05 +0000</pubDate><guid>https://caiustheory.com/safari-4-hidden-preferences/</guid><description>
-&lt;p&gt;&lt;strong&gt;Updated 2009-06-09:&lt;/strong&gt; This post is for the Safari 4 &lt;strong&gt;beta&lt;/strong&gt; and will not work with the new Safari 4 released yesterday at the WWDC keynote. I&#39;ve had a look through that release and can&#39;t see any way to revert the address bar, etc sorry.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;Having a quick poke through the new Safari binary yields the following strings:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ strings /Applications/Safari.app/Contents/MacOS/Safari | grep DebugSafari4
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>objective-c on Caius Theory</title><link>https://caiustheory.com/tag/objective-c/</link><description>Recent content in objective-c on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 12 Jun 2010 02:11:32 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/objective-c/index.xml" rel="self" type="application/rss+xml"/><item><title>+[NSObject load] in MacRuby</title><link>https://caiustheory.com/nsobject-load-in-macruby/</link><pubDate>Sat, 12 Jun 2010 02:11:32 +0000</pubDate><guid>https://caiustheory.com/nsobject-load-in-macruby/</guid><description>&lt;p>&lt;em>If you&amp;rsquo;ve not heard of it, &lt;a href="http://www.macruby.org/">MacRuby&lt;/a> is &lt;!-- raw HTML omitted -->an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.&lt;!-- raw HTML omitted --> Basically means you write in Ruby using Objective-C frameworks, and vice versa. It&amp;rsquo;s pretty damn cool to be honest!&lt;/em>&lt;/p>
+&lt;h3 id="what-is-nsobject-load">What is +[NSObject load]?&lt;/h3>
+&lt;p>From the &lt;a href="http://developer.apple.com/mac/library/documentation/cocoa/reference/foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load">documentation&lt;/a>:&lt;/p>
+&lt;blockquote>
+&lt;p>Invoked whenever a class or category is added to the Objective-C runtime; implement this method to perform class-specific behavior upon loading.&lt;/p>
+&lt;/blockquote>
+&lt;p>This means when your class is loaded, and implements the &lt;code>load&lt;/code> method, you get a &lt;code>load&lt;/code> message sent to your class. Which means you can start doing stuff as soon as your class is loaded by the runtime.&lt;/p>
+&lt;p>The main place I&amp;rsquo;ve seen it used (and used it myself) is in &lt;a href="http://www.culater.net/software/SIMBL/SIMBL.php">SIMBL&lt;/a> plugins. A SIMBL plugin is an NSBundle that contains code which is loaded (injected) into a running application shortly after said application is launched. It lets you extend (or &amp;ldquo;fix&amp;rdquo;) cocoa applications with additional features. So you have this bundle of code, that gets loaded into a running application some point after it starts, and you want to run some code as the bundle is loaded - usually to kick off doing whatever you want to do in the plugin. This is where &lt;code>load&lt;/code> becomes useful.&lt;/p>
+&lt;p>Here&amp;rsquo;s a quick implementation that just logs to the console:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-objc" data-lang="objc"> &lt;span class="k">@implementation&lt;/span> &lt;span class="nc">MainController&lt;/span>
+&lt;span class="o">+&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">load&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="n">NSlog&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">@&amp;#34;MainController#load called&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="now-where-does-macruby-come-into-this">Now where does MacRuby come into this?&lt;/h3>
+&lt;p>Well I came across a need to do the same in ruby, have some code triggered when the class is loaded into the runtime. Tried implementing &lt;code>Class.load&lt;/code> but to no avail. Then remembered MacRuby is just ruby! And I can call any code from within my ruby class definition.&lt;/p>
+&lt;p>For continuity I still call it &lt;code>Class.load&lt;/code>, but then call it as soon as I&amp;rsquo;ve defined it in the class. Eg:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">class&lt;/span> &lt;span class="nc">MainController&lt;/span>
+&lt;span class="k">def&lt;/span> &lt;span class="nc">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="nf">load&lt;/span>
+&lt;span class="no">NSLog&lt;/span> &lt;span class="s2">&amp;#34;MainController#load called&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="nb">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">load&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Of course, I&amp;rsquo;m not sure when the Objective-C method is called, it&amp;rsquo;s probably after the entire class has been defined rather than as soon as &lt;code>load&lt;/code> has been loaded into the runtime. So you might want to move the &lt;code>self.load&lt;/code> call to just before the closing &lt;code>end&lt;/code>.&lt;/p></description></item><item><title>Read standard input using Objective-C</title><link>https://caiustheory.com/read-standard-input-using-objective-c/</link><pubDate>Sun, 06 Dec 2009 11:50:08 +0000</pubDate><guid>https://caiustheory.com/read-standard-input-using-objective-c/</guid><description>&lt;p>On a couple of occasions now I&amp;rsquo;ve wanted to read from &lt;code>STDIN&lt;/code> into an Objective-C command line tool, and both times I&amp;rsquo;ve had to hunt quite a bit to find the answer because nothing shows up in google for the search terms I used. &amp;ldquo;Objective-c read from stdin&amp;rdquo; and &amp;ldquo;objc read stdin&amp;rdquo; both turn up results ranging from using &lt;code>NSInputStream&lt;/code> to dropping some C++ in there.&lt;/p>
+&lt;p>The answer is quite simple really, just use &lt;code>NSFileHandle&lt;/code>. More specifically &lt;code>+[NSFileHandle fileHandleWithStandardInput]&lt;/code>. You can then read all data currently in &lt;code>STDIN&lt;/code>, monitor it for new data and anything else you can do with a normal &lt;code>NSFileHandle&lt;/code>.&lt;/p>
+&lt;p>And here&amp;rsquo;s some example code, reads all data from &lt;code>STDIN&lt;/code> and stores it into an NSString:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-objc" data-lang="objc">&lt;span class="n">NSFileHandle&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">input&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">NSFileHandle&lt;/span> &lt;span class="n">fileHandleWithStandardInput&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;span class="n">NSData&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">inputData&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">NSData&lt;/span> &lt;span class="nl">dataWithData&lt;/span>&lt;span class="p">:[&lt;/span>&lt;span class="n">input&lt;/span> &lt;span class="n">readDataToEndOfFile&lt;/span>&lt;span class="p">]];&lt;/span>
+&lt;span class="n">NSString&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">inputString&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="n">NSString&lt;/span> &lt;span class="n">alloc&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;span class="nl">initWithData&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">inputData&lt;/span> &lt;span class="nl">encoding&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">NSUTF8StringEncoding&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>I&amp;rsquo;m using this in GarbageCollected apps, memory management without GC is left as an exercise to the user.&lt;/em>&lt;/p></description></item><item><title>Safari 4 Hidden Preferences</title><link>https://caiustheory.com/safari-4-hidden-preferences/</link><pubDate>Tue, 24 Feb 2009 16:11:05 +0000</pubDate><guid>https://caiustheory.com/safari-4-hidden-preferences/</guid><description>&lt;p>&lt;strong>Updated 2009-06-09:&lt;/strong> This post is for the Safari 4 &lt;strong>beta&lt;/strong> and will not work with the new Safari 4 released yesterday at the WWDC keynote. I&amp;rsquo;ve had a look through that release and can&amp;rsquo;t see any way to revert the address bar, etc sorry.&lt;/p>
+&lt;hr>
+&lt;p>Having a quick poke through the new Safari binary yields the following strings:&lt;/p>
+&lt;pre>&lt;code>$ strings /Applications/Safari.app/Contents/MacOS/Safari | grep DebugSafari4
 DebugSafari4TabBarIsOnTop
 DebugSafari4IncludeToolbarRedesign
 DebugSafari4IncludeFancyURLCompletionList
@@ -42,79 +40,79 @@ DebugSafari4LoadProgressStyle
 DebugSafari4IncludeFlowViewInBookmarksView
 DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot
 DebugSafari4IncludeTopSites
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;NB: Run these commands in Terminal.app and then you need to restart Safari for them to take effect.&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&#34;debugsafari4tabbarisontop&#34;&gt;DebugSafari4TabBarIsOnTop&lt;/h3&gt;
-&lt;p&gt;This moves the tab bar back where you expect it to be:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4TabBarIsOnTop -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includetoolbarredesign-and-debugsafari4loadprogressstyle&#34;&gt;DebugSafari4IncludeToolbarRedesign and DebugSafari4LoadProgressStyle&lt;/h3&gt;
-&lt;p&gt;When both set to NO it restores the blue loading bar behind the URL. &lt;em&gt;Also puts a page loading spinner in the tab itself, which looks odd with the new tabs.&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeToolbarRedesign -bool NO
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>NB: Run these commands in Terminal.app and then you need to restart Safari for them to take effect.&lt;/em>&lt;/p>
+&lt;h3 id="debugsafari4tabbarisontop">DebugSafari4TabBarIsOnTop&lt;/h3>
+&lt;p>This moves the tab bar back where you expect it to be:&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4TabBarIsOnTop -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includetoolbarredesign-and-debugsafari4loadprogressstyle">DebugSafari4IncludeToolbarRedesign and DebugSafari4LoadProgressStyle&lt;/h3>
+&lt;p>When both set to NO it restores the blue loading bar behind the URL. &lt;em>Also puts a page loading spinner in the tab itself, which looks odd with the new tabs.&lt;/em>&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeToolbarRedesign -bool NO
 $ defaults write com.apple.Safari DebugSafari4LoadProgressStyle -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includefancyurlcompletionlist&#34;&gt;DebugSafari4IncludeFancyURLCompletionList&lt;/h3&gt;
-&lt;p&gt;Switches off the new URL autocomplete menu and goes back to the original one.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeFancyURLCompletionList -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includegooglesuggest&#34;&gt;DebugSafari4IncludeGoogleSuggest&lt;/h3&gt;
-&lt;p&gt;Turns off the new Google suggest menu.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeGoogleSuggest -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includeflowviewinbookmarksview&#34;&gt;DebugSafari4IncludeFlowViewInBookmarksView&lt;/h3&gt;
-&lt;p&gt;Removes CoverFlow from the Bookmarks view entirely. (&lt;a href=&#34;http://twitter.com/iacas/status/1245800183&#34;&gt;Credit&lt;/a&gt; to &lt;a href=&#34;http://nslog.com/&#34;&gt;Erik&lt;/a&gt;)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeFlowViewInBookmarksView -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4topsiteszoomtopageanimationdimssnapshot&#34;&gt;DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot&lt;/h3&gt;
-&lt;p&gt;Disables the dimming when you click on a Top Site and it scales the screenshot up to fill the screen.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;debugsafari4includetopsites&#34;&gt;DebugSafari4IncludeTopSites&lt;/h3&gt;
-&lt;p&gt;Disables Top Sites feature completely.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults write com.apple.Safari DebugSafari4IncludeTopSites -bool NO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;undoing-changes&#34;&gt;Undoing changes&lt;/h2&gt;
-&lt;p&gt;Just run the defaults command with the &lt;code&gt;delete&lt;/code&gt; flag for the appropriate key you wish to delete.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ defaults delete com.apple.Safari &amp;lt;key&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;NB: Don&#39;t include the &lt;code&gt;-bool NO&lt;/code&gt; at the end, it just requires the key (eg: &amp;quot;DebugSafari4IncludeGoogleSuggest&amp;quot;)&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&#34;update-2009-02-26&#34;&gt;Update 2009-02-26&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;http://swedishcampground.com/safari-4-hidden-preferences#comment-3265&#34;&gt;Jools points out in the comments&lt;/a&gt; how to reset the recent searches in the google search box.&lt;/p&gt;
-&lt;h3 id=&#34;update-2009-05-26&#34;&gt;Update 2009-05-26&lt;/h3&gt;
-&lt;p&gt;Lowell&#39;s kindly created a Mac OS X application to edit these settings without using Terminal. &lt;a href=&#34;http://github.com/cocoastep/tweaky&#34;&gt;http://github.com/cocoastep/tweaky&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;update-2010-11-18&#34;&gt;Update 2010-11-18&lt;/h3&gt;
-&lt;p&gt;Patric has kindly &lt;a href=&#34;http://www.movavi.com/opensource/safari-4-hidden-preferences-be&#34;&gt;translated this post into Belorussian&lt;/a&gt; and posted it on his site.&lt;/p&gt;</description></item><item><title>Merry Testing</title><link>https://caiustheory.com/merry-testing/</link><pubDate>Thu, 25 Dec 2008 15:01:54 +0000</pubDate><guid>https://caiustheory.com/merry-testing/</guid><description>
-&lt;p&gt;Just a few examples of the same test written in a few languages. Its testing setting the date on an object that is created in the tests&#39; setup method already. These fall under the unit testing, rather than full-stack testing.&lt;/p&gt;
-&lt;h3 id=&#34;testing-in-objc-with-ocunit-http-www-sente-ch-software-ocunit&#34;&gt;Testing in ObjC with &lt;a href=&#34;http://www.sente.ch/software/ocunit/&#34;&gt;OCUnit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// Add a date and time
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;testSettingDate&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSDate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;STAssertNoThrow&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;setDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;@&amp;#34;Shouldn&amp;#39;t raise an exception&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;// And it should match when pulled out as well
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;STAssertEqualObjects&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s&#34;&gt;@&amp;#34;%@ should match %@&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-ruby-using-rspec-http-rspec-info&#34;&gt;Testing in Ruby using &lt;a href=&#34;http://rspec.info/&#34;&gt;RSpec&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;it&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;should set the date successfully&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# And it should match when pulled out as well&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;should&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-ruby-using-test-unit-http-www-ruby-doc-org-stdlib-libdoc-test-unit-rdoc-classes-test-unit-html&#34;&gt;Testing in Ruby using &lt;a href=&#34;http://www.ruby-doc.org/stdlib/libdoc/test/unit/rdoc/classes/Test/Unit.html&#34;&gt;Test::Unit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;test_setting_date&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# And it should match when pulled out as well&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;assert_equal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-php-using-phpunit-http-phpun-it&#34;&gt;Testing in PHP using &lt;a href=&#34;http://phpun.it/&#34;&gt;PHPUnit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;function testSettingDate()
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includefancyurlcompletionlist">DebugSafari4IncludeFancyURLCompletionList&lt;/h3>
+&lt;p>Switches off the new URL autocomplete menu and goes back to the original one.&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeFancyURLCompletionList -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includegooglesuggest">DebugSafari4IncludeGoogleSuggest&lt;/h3>
+&lt;p>Turns off the new Google suggest menu.&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeGoogleSuggest -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includeflowviewinbookmarksview">DebugSafari4IncludeFlowViewInBookmarksView&lt;/h3>
+&lt;p>Removes CoverFlow from the Bookmarks view entirely. (&lt;a href="http://twitter.com/iacas/status/1245800183">Credit&lt;/a> to &lt;a href="http://nslog.com/">Erik&lt;/a>)&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeFlowViewInBookmarksView -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4topsiteszoomtopageanimationdimssnapshot">DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot&lt;/h3>
+&lt;p>Disables the dimming when you click on a Top Site and it scales the screenshot up to fill the screen.&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4TopSitesZoomToPageAnimationDimsSnapshot -bool NO
+&lt;/code>&lt;/pre>
+&lt;h3 id="debugsafari4includetopsites">DebugSafari4IncludeTopSites&lt;/h3>
+&lt;p>Disables Top Sites feature completely.&lt;/p>
+&lt;pre>&lt;code>$ defaults write com.apple.Safari DebugSafari4IncludeTopSites -bool NO
+&lt;/code>&lt;/pre>
+&lt;h2 id="undoing-changes">Undoing changes&lt;/h2>
+&lt;p>Just run the defaults command with the &lt;code>delete&lt;/code> flag for the appropriate key you wish to delete.&lt;/p>
+&lt;pre>&lt;code>$ defaults delete com.apple.Safari &amp;lt;key&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>NB: Don&amp;rsquo;t include the &lt;code>-bool NO&lt;/code> at the end, it just requires the key (eg: &amp;ldquo;DebugSafari4IncludeGoogleSuggest&amp;rdquo;)&lt;/em>&lt;/p>
+&lt;h3 id="update-2009-02-26">Update 2009-02-26&lt;/h3>
+&lt;p>&lt;a href="http://swedishcampground.com/safari-4-hidden-preferences#comment-3265">Jools points out in the comments&lt;/a> how to reset the recent searches in the google search box.&lt;/p>
+&lt;h3 id="update-2009-05-26">Update 2009-05-26&lt;/h3>
+&lt;p>Lowell&amp;rsquo;s kindly created a Mac OS X application to edit these settings without using Terminal. &lt;a href="http://github.com/cocoastep/tweaky">http://github.com/cocoastep/tweaky&lt;/a>&lt;/p>
+&lt;h3 id="update-2010-11-18">Update 2010-11-18&lt;/h3>
+&lt;p>Patric has kindly &lt;a href="http://www.movavi.com/opensource/safari-4-hidden-preferences-be">translated this post into Belorussian&lt;/a> and posted it on his site.&lt;/p></description></item><item><title>Merry Testing</title><link>https://caiustheory.com/merry-testing/</link><pubDate>Thu, 25 Dec 2008 15:01:54 +0000</pubDate><guid>https://caiustheory.com/merry-testing/</guid><description>&lt;p>Just a few examples of the same test written in a few languages. Its testing setting the date on an object that is created in the tests&amp;rsquo; setup method already. These fall under the unit testing, rather than full-stack testing.&lt;/p>
+&lt;h3 id="testing-in-objc-with-ocunithttpwwwsentechsoftwareocunit">Testing in ObjC with &lt;a href="http://www.sente.ch/software/ocunit/">OCUnit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-objc" data-lang="objc">&lt;span class="c1">// Add a date and time
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">-&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="nf">testSettingDate&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="n">NSDate&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">theDate&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">NSDate&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;span class="n">STAssertNoThrow&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="nl">setDate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">theDate&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="s">@&amp;#34;Shouldn&amp;#39;t raise an exception&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="c1">// And it should match when pulled out as well
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">STAssertEqualObjects&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">theDate&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="s">@&amp;#34;%@ should match %@&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="p">[&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">theDate&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-ruby-using-rspechttprspecinfo">Testing in Ruby using &lt;a href="http://rspec.info/">RSpec&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">it&lt;/span> &lt;span class="s2">&amp;#34;should set the date successfully&amp;#34;&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;span class="n">the_date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">today&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="c1"># And it should match when pulled out as well&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">should&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-ruby-using-testunithttpwwwruby-docorgstdliblibdoctestunitrdocclassestestunithtml">Testing in Ruby using &lt;a href="http://www.ruby-doc.org/stdlib/libdoc/test/unit/rdoc/classes/Test/Unit.html">Test::Unit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">test_setting_date&lt;/span>
+&lt;span class="n">the_date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">today&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="c1"># And it should match when pulled out as well&lt;/span>
+&lt;span class="n">assert_equal&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">the_date&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-php-using-phpunithttpphpunit">Testing in PHP using &lt;a href="http://phpun.it/">PHPUnit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-php" data-lang="php">function testSettingDate()
 {
 $date = date();
 $calc-&amp;gt;date = $date;
 # And it should match when pulled out as well
 $this-&amp;gt;assertEquals($calc-&amp;gt;date, $date);
-}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>
+}
+&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

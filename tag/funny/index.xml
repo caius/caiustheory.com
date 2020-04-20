@@ -1,183 +1,192 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>funny on Caius Theory</title><link>https://caiustheory.com/tag/funny/</link><description>Recent content in funny on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Wed, 23 Jan 2013 11:07:43 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/funny/index.xml" rel="self" type="application/rss+xml"/><item><title>evil.rb</title><link>https://caiustheory.com/evil-rb/</link><pubDate>Wed, 23 Jan 2013 11:07:43 +0000</pubDate><guid>https://caiustheory.com/evil-rb/</guid><description>
-&lt;p&gt;Here be hax. Don&#39;t &lt;strong&gt;ever&lt;/strong&gt; do these. ;-)&lt;/p&gt;
-&lt;h2 id=&#34;reduce-local-variables-with-instance-eval&#34;&gt;Reduce local variables with instance_eval&lt;/h2&gt;
-&lt;p&gt;Sometimes (usually in a one-liner) I want to do some work with a value without assigning it to a variable. Chucking an &lt;code&gt;#instance_eval&lt;/code&gt; call in there will set &lt;code&gt;self&lt;/code&gt; to the value, which saves having to assign it to a local value. Pretty much only used by me in one-off scripts or cli commands.&lt;/p&gt;
-&lt;h4 id=&#34;good&#34;&gt;Good&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;start_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;end_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;24 Dec 2011&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;23 Jan 2013&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parse&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;start_date&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; to &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;end_date&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; is &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;end_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;start_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_i&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; days&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h4 id=&#34;bad&#34;&gt;Bad&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;24 Dec 2011&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;23 Jan 2013&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parse&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;instance_eval&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; to &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;last&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; is &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;last&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_i&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; days&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;See, way less code! &lt;em&gt;cough, cough&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&#34;bonus-usage-misdirection&#34;&gt;Bonus usage: Misdirection&lt;/h3&gt;
-&lt;p&gt;I also dropped some instance_eval on our campfire bot at &lt;a href=&#34;https://emberads.com/&#34;&gt;EmberAds&lt;/a&gt; to always blame one person, but without the code reading as such.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;sx&#34;&gt;%w{Dom Mel Caius CBetta Baz}&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sample&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;instance_eval&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;#34;(4V5A8F5T=&amp;amp;$`&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unpack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;u&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That does not return one of the array elements as you might think it does from quickly scanning the code…&lt;/p&gt;
-&lt;h2 id=&#34;set-method-local-variables-in-default-arguments&#34;&gt;Set method-local variables in default arguments&lt;/h2&gt;
-&lt;p&gt;You have a method and it takes one argument, which has a default value of &lt;code&gt;nil&lt;/code&gt; specified. You then run into the situation where you need to know if &lt;code&gt;nil&lt;/code&gt; was passed to the method, or if you&#39;re getting the default value of &lt;code&gt;nil&lt;/code&gt;. You could change the default value to something you choose to be the &amp;quot;default value&amp;quot; and unlikely to be passed from elsewhere as the argument&#39;s value, and reset the parameter to &lt;code&gt;nil&lt;/code&gt; after checking it, like this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;output&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:default_value&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:default_value&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;default&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;true&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;#34;name: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inspect&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; -- default: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inspect&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;name: \&amp;#34;caius\&amp;#34; -- default: true&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;fred&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;name: \&amp;#34;fred\&amp;#34; -- default: nil&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That&#39;s quite a lot of code added to the method just to find out if we passed a default value or not. And if we forget to reset the value when it&#39;s &lt;code&gt;:default_value&lt;/code&gt; then we end up leaking that into whatever the method does with that value. We also have the problem that one day the program &lt;em&gt;could&lt;/em&gt; possibly send that &amp;quot;default value&amp;quot; we&#39;ve chosen as the actual parameter, and we&#39;d blindly change it thinking it was set as the default value, not the passed argument.&lt;/p&gt;
-&lt;p&gt;Instead we could (ab)use the power of ruby, and have ruby decide to set &lt;code&gt;default = true&lt;/code&gt; for us when, and only when, the variable is set &lt;em&gt;to&lt;/em&gt; the default value.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;output&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;#34;name: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inspect&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; -- default: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inspect&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;name: \&amp;#34;caius\&amp;#34; -- default: true&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;output&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;fred&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;name: \&amp;#34;fred\&amp;#34; -- default: nil&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;As you can see, the output is identical. Yet we have no extra code &lt;em&gt;inside&lt;/em&gt; the method to figure out if we were given the default value or not. And as a bonus to that, we no longer have to check for a specific value being passed and presume that is actually the default, and not one passed by the program elsewhere.&lt;/p&gt;
-&lt;p&gt;I posted this one in &lt;a href=&#34;https://gist.github.com/1528785&#34;&gt;a gist&lt;/a&gt; a while back (to show &lt;a href=&#34;http://avdi.org/&#34;&gt;Avdi&lt;/a&gt; it looks like), and people came up with some more insane things to do with it, including &lt;a href=&#34;https://gist.github.com/1528785#comment-71861&#34;&gt;returning early&lt;/a&gt;, &lt;a href=&#34;https://gist.github.com/1528785#comment-71862&#34;&gt;raising errors&lt;/a&gt; or even &lt;a href=&#34;https://gist.github.com/1528785#comment-71876&#34;&gt;redefining the current method&lt;/a&gt;, all from the argument list! I&#39;d suggest going to read them, it&#39;s a mixture of OMG HAHA and OMFG NO WAY WHYY?!?!.&lt;/p&gt;
-&lt;h3 id=&#34;don-t-do-this&#34;&gt;Don&#39;t do this.&lt;/h3&gt;
-&lt;p&gt;Don&#39;t do the above. No really, don&#39;t do them. Unless you&#39;re writing a one-off thing. But seriously, don&#39;t do them. :-D&lt;/p&gt;</description></item><item><title>Abusing Ruby 1.9 &amp; JSON for fun</title><link>https://caiustheory.com/abusing-ruby-19-and-json-for-fun/</link><pubDate>Mon, 07 Feb 2011 19:16:58 +0000</pubDate><guid>https://caiustheory.com/abusing-ruby-19-and-json-for-fun/</guid><description>&lt;p&gt;Ever since I found out about the new hash syntax you can use in ruby 1.9, and how similar that syntax is to JSON, I&#39;ve been waiting for someone to realise you can just abuse &lt;code&gt;eval()&lt;/code&gt; for parsing (some) JSON now.&lt;/p&gt;
-&lt;p&gt;For example, lets say we have the following ruby hash, which could be generated by a RESTful api:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;thing&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ss&#34;&gt;:person&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ss&#34;&gt;:name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;caius&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If we pull in the JSON gem and dump that out as a string, we get the following:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;jsonstr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;thing&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_json&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#39;{&amp;#34;person&amp;#34;:{&amp;#34;name&amp;#34;:&amp;#34;caius&amp;#34;}}&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That&#39;s&amp;hellip; not quite what we wanted. It&#39;s not going to turn back into valid ruby as it is. Luckily javascript will parse objects without requiring the attributes to be wrapped in quotes, eg: &lt;code&gt;{some: &amp;quot;attribute&amp;quot;}&lt;/code&gt;. We could build a JSON emitter that does it properly, or we could just run it through a regular expression instead. &lt;em&gt;(Lets also add a space after the colon to aid readability.)&lt;/em&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;jsonstr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;gsub!&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sr&#34;&gt;/&amp;#34;([^&amp;#34;]+)&amp;#34;: /&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;\1: &amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#39;{person: {name: &amp;#34;caius&amp;#34;}}&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Okay, so now we&#39;ve turned a ruby hash into a JSON hash, that can still be parsed by the browser. Here&#39;s a screenshot to prove that:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm6.static.flickr.com/5300/5425314597_43be5824cf_o.jpg&#34; alt=&#34;Valid JSON &#39;thing&#39;&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;As you can see, it parses that into a valid JS object, complete with person and then (nested) name attributes. If we wanted to, &lt;code&gt;thing[&amp;quot;person&amp;quot;][&amp;quot;name&amp;quot;]&lt;/code&gt; or &lt;code&gt;thing.person.name&lt;/code&gt; would access the nested value &amp;quot;caius&amp;quot; just fine.&lt;/p&gt;
-&lt;p&gt;Now then, we&#39;ve proved that is successfully parsed into javascript objects by the browser, generated from a ruby hash. No great shakes there, that&#39;s fairly simple and has worked for ages. Now for my next trick, I&#39;m going to turn that string of JSON back into a ruby hash, all without going anywhere near the JSON gem.&lt;/p&gt;
-&lt;p&gt;Some of you might have guessed what I&#39;m about to do and have started hoping you&#39;ve guessed wrongly — just for the record I don&#39;t condone doing this except for fun and games. The JSON gem is there for a reason ;) With that little disclaimer out the way, here we go!&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;thing2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;eval&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jsonstr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; {:person=&amp;gt;{:name=&amp;gt;&amp;#34;caius&amp;#34;}}&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;thing2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;thing&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Oh snap! We just turned javascript objects back into valid ruby objects, in one simple method call. And we&#39;d be able to access the &amp;quot;caius&amp;quot; value by calling &lt;code&gt;thing2[:person][:name]&lt;/code&gt;, or creating OpenStructs from the hashes and calling &lt;code&gt;thing2.person.name&lt;/code&gt;. Which is uncannily like the JS!&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Updated 2011-02-07&lt;/strong&gt;: &lt;a href=&#34;http://jens.ayton.se/&#34;&gt;Jens Ayton&lt;/a&gt; pointed out unquoted keys aren&#39;t strictly valid JSON, which is correct. Amended to say they&#39;re parsed as javascript objects instead, with no mention of it being valid JSON.&lt;/p&gt;</description></item><item><title>This is my Compiler</title><link>https://caiustheory.com/this-is-my-compiler/</link><pubDate>Fri, 30 Jan 2009 12:18:56 +0000</pubDate><guid>https://caiustheory.com/this-is-my-compiler/</guid><description>&lt;p&gt;As some friday fun in &lt;a href=&#34;http://twitter.com/geekupirc&#34;&gt;#geekup&lt;/a&gt; we ended up converting the &lt;a href=&#34;http://usmilitary.about.com/od/marines/l/blriflecreed.htm&#34;&gt;US Marines Creed&lt;/a&gt; to a geekier version.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;This is my compiler.&lt;br /&gt;
-There are many like it, but this one is MINE.&lt;br /&gt;
-My compiler is my best friend. It is my life.&lt;br /&gt;
-I must master it as I must master my life.&lt;br /&gt;
-My compiler without me is useless. Without my compiler, I am useless.&lt;br /&gt;
-I must run my compiler true.&lt;br /&gt;
-I must run faster than my bug who is trying to kill me.&lt;br /&gt;
-I must squash him before he squashes me. I will...&lt;br /&gt;
-My compiler and myself know that what counts in war is not the warnings we squash,&lt;br /&gt;
-the builds we create, nor the optimisations we make.&lt;br /&gt;
-We know it is the build errors fixed that count. We will fix...&lt;br /&gt;
-My compiler is human, even as I, because it is my life.&lt;br /&gt;
-Thus, I will learn it as a brother.&lt;br /&gt;
-I will learn its weaknesses, its strengths, its output, its code,&lt;br /&gt;
-its quirks, and its errors.&lt;br /&gt;
-I will ever guard it against the ravages of virii and disk failures.&lt;br /&gt;
-I will keep my compiler clean and ready, even as I am clean and ready.&lt;br /&gt;
-We will become part of each other. We will...&lt;br /&gt;
-Before Assembler I swear this creed.&lt;br /&gt;
-My compiler and myself are the defenders of good code.&lt;br /&gt;
-We are the masters of our bugs.&lt;br /&gt;
-We are the saviors of our code.&lt;br /&gt;
-So be it, until code is compiling and there are no bugs, but compiled code.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;And then &lt;a href=&#34;http://jamx.org/&#34;&gt;jamx&lt;/a&gt; jumped in with the &lt;a href=&#34;http://en.wikipedia.org/wiki/Lord&#39;s_Prayer#English_versions&#34;&gt;Lords Prayer&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Our Compiler, who art in memory. GNU be thy name.&lt;br /&gt;
-Thy source code come, thy will be done.&lt;br /&gt;
-On script as it is in memory.&lt;br /&gt;
-Give us this day our daily data, and forgive us our segfaults as we forgive those who segfault against us.&lt;br /&gt;
-And lead us not into /dev/null but deliver us from M$,&lt;br /&gt;
-for thine is the domain, the cpu and the peeps.&lt;br /&gt;
-for (x=0; x&amp;lt;2; x++){ x=0; }&lt;br /&gt;
-Amen&lt;/p&gt;
-&lt;/blockquote&gt;</description></item><item><title>When work just feels right</title><link>https://caiustheory.com/when-work-just-feels-right/</link><pubDate>Fri, 21 Nov 2008 11:51:08 +0000</pubDate><guid>https://caiustheory.com/when-work-just-feels-right/</guid><description>&lt;p&gt;Much like &lt;a href=&#34;http://www.3hv.co.uk/&#34; title=&#34;3hv&#34;&gt;Rahoul&#39;s&lt;/a&gt; post on &lt;a href=&#34;http://www.3hv.co.uk/blog/2008/10/16/working-for-brightbox/&#34; title=&#34;Working for Brightbox&#34;&gt;knowing you&#39;re on the right path&lt;/a&gt;, I had that moment this morning whilst we were discussing a future feature for our control panel.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;john&lt;/strong&gt;: will I be able to superpoke our customers?&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: is that in the spec?&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: &amp;quot;John made server10 a zombie&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server10 zombified server9&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: &amp;quot;David has poked server19 19234 times&amp;quot;&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: server16 messaged David &amp;quot;My disk is filling up and I have files I need to put somewhere, please help!&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;Rahoul ended his friendship with server15&amp;quot;&lt;br /&gt;
-&lt;strong&gt;David&lt;/strong&gt;: &amp;quot;server02 is now married to server05&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Rahoul&lt;/strong&gt;: server10 has sent you 12 videos of a fat man eating a cake&lt;br /&gt;
-&lt;strong&gt;David&lt;/strong&gt;: server11 joined the group &amp;quot;KVM ftw&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server16 threw a sheep at server15&amp;quot;&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: server03 joined the group &amp;quot;Centos sucks!&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server15 sent an emergency broadcast: physical movement detected&amp;quot;&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: storage03 has logged off&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;x13 flew to the moon 0 times&amp;quot;&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: disk5 in storage02 is now a zombie&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: disk4 in storage02 is now a zombie&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: disk3 in storage02 is now a zombie&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: disk2 in storage02 is now a zombie&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: storage02 was sold on ebay by Jeremy&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;john was sold on brightbox marketplace by storage5&amp;quot;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;em&gt;(In case you don&#39;t know, I work for &lt;a href=&#34;http://www.brightbox.co.uk/&#34;&gt;Brightbox&lt;/a&gt;.)&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Keyboards</title><link>https://caiustheory.com/keyboards/</link><pubDate>Tue, 14 Oct 2008 13:59:01 +0000</pubDate><guid>https://caiustheory.com/keyboards/</guid><description>&lt;p&gt;Back in the day I swapped the keys on my 12&amp;quot; powerbook keyboard around to read &lt;code&gt;macgenius&lt;/code&gt; across the middle row.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2941719496/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3213/2941719496_caf2a6a813_m.jpg&#34; alt=&#34;Powerbook Keyboard&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;I unearthed the picture, and figured, why not do it to my apple aluminium keyboard? So I found a &lt;a href=&#34;http://skeltoac.com/2007/10/22/apple-keyboard-aluminum-keycap-removal/&#34;&gt;tutorial&lt;/a&gt; from some other guy that&#39;d done it, and dug out my penknife.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2938651260/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3243/2938651260_915f42d92d_m.jpg&#34; alt=&#34;External Keyboard&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After that I decided to rearrange the macbook internal keyboard as well. First I googled around to make sure lifting the keys was the same as doing it on the external keyboard (which it appeared to be), then I went ahead and rearranged them as well.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2940872039/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3214/2940872039_164ee672ef_m.jpg&#34; alt=&#34;Internal Keyboard -- Macgenius&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;So whilst I was wondering what to do about it, my mother emailed me and suggested using &lt;code&gt;ontherails&lt;/code&gt; instead of &lt;code&gt;macgenius&lt;/code&gt;. So I did, and now the top row reads &lt;code&gt;ontherails&lt;/code&gt; on the macbooks&#39; internal keyboard.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2941726222/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3146/2941726222_67b2405a89_m.jpg&#34; alt=&#34;Internal Keyboard -- Ontherails&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;All pictures are licenced under &lt;a href=&#34;http://creativecommons.org/licenses/by/2.0/deed.en_GB&#34;&gt;Creative Commons Attribution 2.0 Generic licence&lt;/a&gt; and the above pictures, plus some &lt;em&gt;in progress&lt;/em&gt; shots, are available in my &lt;a href=&#34;http://www.flickr.com/photos/caius/sets/72157608015895484/&#34;&gt;Keyboard Modifications&lt;/a&gt; flickr set.&lt;/p&gt;</description></item><item><title>OS X User has a virus</title><link>https://caiustheory.com/os-x-user-has-a-virus/</link><pubDate>Wed, 02 Jan 2008 01:15:15 +0000</pubDate><guid>https://caiustheory.com/os-x-user-has-a-virus/</guid><description>&lt;p&gt;No not my computer, me. I&#39;ve managed to pickup an &lt;acronym title=&#34;Common Cold&#34;&gt;acute coryza&lt;/acronym&gt; virus. It causes &lt;code&gt;/dev/random&lt;/code&gt; to constantly pass data to &lt;code&gt;/Volumes/nose&lt;/code&gt;. I don&#39;t think I got this from reading email, but I&#39;m pretty sure it was a windows user who passed it to me.&lt;/p&gt;
-&lt;p&gt;If I flush my partitions to disk every now and then I can get by with a clean &lt;code&gt;/Volumes/nose&lt;/code&gt; for a while before &lt;code&gt;/dev/random&lt;/code&gt; starts clogging it up again.&lt;/p&gt;</description></item><item><title>dSLR Quote</title><link>https://caiustheory.com/dslr-quote/</link><pubDate>Mon, 31 Dec 2007 17:25:25 +0000</pubDate><guid>https://caiustheory.com/dslr-quote/</guid><description>&lt;p&gt;I was just talking to &lt;a href=&#34;http://keihatsu.org/&#34;&gt;Nadim&lt;/a&gt; about him getting a new camera and then this happened:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Nadim: &lt;a href=&#34;http://cyraq.deviantart.com/art/Above-the-Clouds-72170767&#34;&gt;http://cyraq.deviantart.com/art/Above-the-Clouds-72170767&lt;/a&gt;&lt;br /&gt;
-Nadim: Did you see that?&lt;br /&gt;
-Nadim: Taken couple of weeks ago&lt;br /&gt;
-Caius: woa&lt;br /&gt;
-Caius: and you need a new camera because? :P&lt;br /&gt;
-Nadim: I have wet dreams about DSLR&#39;s&lt;/p&gt;
-&lt;/blockquote&gt;</description></item><item><title>Quote to see the new year in</title><link>https://caiustheory.com/quote-to-see-the-new-year-in/</link><pubDate>Mon, 31 Dec 2007 17:11:11 +0000</pubDate><guid>https://caiustheory.com/quote-to-see-the-new-year-in/</guid><description>&lt;p&gt;So I&#39;m a geek, as my friends are gradually realising more and more. Anyway, I twitter a lot, and occasionally write quotes that need to be saved elsewhere. And what generally makes tweets funnier are other people replying to them.&lt;/p&gt;
-&lt;p&gt;A little background information. This had just taken place in #habari (a chat room.)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;h0bbel&amp;gt; ringmaster: i&#39;ll show you my winky
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>funny on Caius Theory</title><link>https://caiustheory.com/tag/funny/</link><description>Recent content in funny on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Wed, 23 Jan 2013 11:07:43 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/funny/index.xml" rel="self" type="application/rss+xml"/><item><title>evil.rb</title><link>https://caiustheory.com/evil-rb/</link><pubDate>Wed, 23 Jan 2013 11:07:43 +0000</pubDate><guid>https://caiustheory.com/evil-rb/</guid><description>&lt;p>Here be hax. Don&amp;rsquo;t &lt;strong>ever&lt;/strong> do these. ;-)&lt;/p>
+&lt;h2 id="reduce-local-variables-with-instance_eval">Reduce local variables with instance_eval&lt;/h2>
+&lt;p>Sometimes (usually in a one-liner) I want to do some work with a value without assigning it to a variable. Chucking an &lt;code>#instance_eval&lt;/code> call in there will set &lt;code>self&lt;/code> to the value, which saves having to assign it to a local value. Pretty much only used by me in one-off scripts or cli commands.&lt;/p>
+&lt;h4 id="good">Good&lt;/h4>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">start_date&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">end_date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;24 Dec 2011&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;23 Jan 2013&amp;#34;&lt;/span>&lt;span class="o">].&lt;/span>&lt;span class="n">map&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="o">|&lt;/span> &lt;span class="no">Date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="nb">puts&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="n">start_date&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> to &lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="n">end_date&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> is &lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">end_date&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_date&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> days&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="bad">Bad&lt;/h4>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="nb">puts&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;24 Dec 2011&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;23 Jan 2013&amp;#34;&lt;/span>&lt;span class="o">].&lt;/span>&lt;span class="n">map&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="o">|&lt;/span> &lt;span class="no">Date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="o">.&lt;/span>&lt;span class="n">instance_eval&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="n">first&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> to &lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="n">last&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> is &lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">last&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">first&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_i&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> days&amp;#34;&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>See, way less code! &lt;em>cough, cough&lt;/em>&lt;/p>
+&lt;h3 id="bonus-usage-misdirection">Bonus usage: Misdirection&lt;/h3>
+&lt;p>I also dropped some instance_eval on our campfire bot at &lt;a href="https://emberads.com/">EmberAds&lt;/a> to always blame one person, but without the code reading as such.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="sx">%w{Dom Mel Caius CBetta Baz}&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sample&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">instance_eval&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;span class="s2">&amp;#34;(4V5A8F5T=&amp;amp;$`&amp;#34;&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">unpack&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;u&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>That does not return one of the array elements as you might think it does from quickly scanning the code…&lt;/p>
+&lt;h2 id="set-method-local-variables-in-default-arguments">Set method-local variables in default arguments&lt;/h2>
+&lt;p>You have a method and it takes one argument, which has a default value of &lt;code>nil&lt;/code> specified. You then run into the situation where you need to know if &lt;code>nil&lt;/code> was passed to the method, or if you&amp;rsquo;re getting the default value of &lt;code>nil&lt;/code>. You could change the default value to something you choose to be the &amp;ldquo;default value&amp;rdquo; and unlikely to be passed from elsewhere as the argument&amp;rsquo;s value, and reset the parameter to &lt;code>nil&lt;/code> after checking it, like this:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">output&lt;/span> &lt;span class="nb">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="ss">:default_value&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="nb">name&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="ss">:default_value&lt;/span>
+&lt;span class="nb">name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;caius&amp;#34;&lt;/span>
+&lt;span class="n">default&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kp">true&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="s2">&amp;#34;name: &lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="nb">name&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">inspect&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> -- default: &lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="n">default&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">inspect&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="n">output&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="c1"># =&amp;gt; &amp;#34;name: \&amp;#34;caius\&amp;#34; -- default: true&amp;#34;&lt;/span>
+&lt;span class="n">output&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;fred&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1"># =&amp;gt; &amp;#34;name: \&amp;#34;fred\&amp;#34; -- default: nil&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>That&amp;rsquo;s quite a lot of code added to the method just to find out if we passed a default value or not. And if we forget to reset the value when it&amp;rsquo;s &lt;code>:default_value&lt;/code> then we end up leaking that into whatever the method does with that value. We also have the problem that one day the program &lt;em>could&lt;/em> possibly send that &amp;ldquo;default value&amp;rdquo; we&amp;rsquo;ve chosen as the actual parameter, and we&amp;rsquo;d blindly change it thinking it was set as the default value, not the passed argument.&lt;/p>
+&lt;p>Instead we could (ab)use the power of ruby, and have ruby decide to set &lt;code>default = true&lt;/code> for us when, and only when, the variable is set &lt;em>to&lt;/em> the default value.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">output&lt;/span> &lt;span class="nb">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">default&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kp">true&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="s2">&amp;#34;caius&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="s2">&amp;#34;name: &lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="nb">name&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">inspect&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> -- default: &lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="n">default&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">inspect&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="n">output&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="c1"># =&amp;gt; &amp;#34;name: \&amp;#34;caius\&amp;#34; -- default: true&amp;#34;&lt;/span>
+&lt;span class="n">output&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;fred&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1"># =&amp;gt; &amp;#34;name: \&amp;#34;fred\&amp;#34; -- default: nil&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As you can see, the output is identical. Yet we have no extra code &lt;em>inside&lt;/em> the method to figure out if we were given the default value or not. And as a bonus to that, we no longer have to check for a specific value being passed and presume that is actually the default, and not one passed by the program elsewhere.&lt;/p>
+&lt;p>I posted this one in &lt;a href="https://gist.github.com/1528785">a gist&lt;/a> a while back (to show &lt;a href="http://avdi.org/">Avdi&lt;/a> it looks like), and people came up with some more insane things to do with it, including &lt;a href="https://gist.github.com/1528785#comment-71861">returning early&lt;/a>, &lt;a href="https://gist.github.com/1528785#comment-71862">raising errors&lt;/a> or even &lt;a href="https://gist.github.com/1528785#comment-71876">redefining the current method&lt;/a>, all from the argument list! I&amp;rsquo;d suggest going to read them, it&amp;rsquo;s a mixture of OMG HAHA and OMFG NO WAY WHYY?!?!.&lt;/p>
+&lt;h3 id="dont-do-this">Don&amp;rsquo;t do this.&lt;/h3>
+&lt;p>Don&amp;rsquo;t do the above. No really, don&amp;rsquo;t do them. Unless you&amp;rsquo;re writing a one-off thing. But seriously, don&amp;rsquo;t do them. :-D&lt;/p></description></item><item><title>Abusing Ruby 1.9 &amp; JSON for fun</title><link>https://caiustheory.com/abusing-ruby-19-and-json-for-fun/</link><pubDate>Mon, 07 Feb 2011 19:16:58 +0000</pubDate><guid>https://caiustheory.com/abusing-ruby-19-and-json-for-fun/</guid><description>&lt;p>Ever since I found out about the new hash syntax you can use in ruby 1.9, and how similar that syntax is to JSON, I&amp;rsquo;ve been waiting for someone to realise you can just abuse &lt;code>eval()&lt;/code> for parsing (some) JSON now.&lt;/p>
+&lt;p>For example, lets say we have the following ruby hash, which could be generated by a RESTful api:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">thing&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="ss">:person&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="ss">:name&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="s2">&amp;#34;caius&amp;#34;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If we pull in the JSON gem and dump that out as a string, we get the following:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">jsonstr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">thing&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_json&lt;/span>
+&lt;span class="c1"># =&amp;gt; &amp;#39;{&amp;#34;person&amp;#34;:{&amp;#34;name&amp;#34;:&amp;#34;caius&amp;#34;}}&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>That&amp;rsquo;s… not quite what we wanted. It&amp;rsquo;s not going to turn back into valid ruby as it is. Luckily javascript will parse objects without requiring the attributes to be wrapped in quotes, eg: &lt;code>{some: &amp;quot;attribute&amp;quot;}&lt;/code>. We could build a JSON emitter that does it properly, or we could just run it through a regular expression instead. &lt;em>(Lets also add a space after the colon to aid readability.)&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">jsonstr&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">gsub!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sr">/&amp;#34;([^&amp;#34;]+)&amp;#34;: /&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;\1: &amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="c1"># =&amp;gt; &amp;#39;{person: {name: &amp;#34;caius&amp;#34;}}&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Okay, so now we&amp;rsquo;ve turned a ruby hash into a JSON hash, that can still be parsed by the browser. Here&amp;rsquo;s a screenshot to prove that:&lt;/p>
+&lt;p>&lt;img src="http://farm6.static.flickr.com/5300/5425314597_43be5824cf_o.jpg" alt="Valid JSON &amp;lsquo;thing&amp;rsquo;">&lt;/p>
+&lt;p>As you can see, it parses that into a valid JS object, complete with person and then (nested) name attributes. If we wanted to, &lt;code>thing[&amp;quot;person&amp;quot;][&amp;quot;name&amp;quot;]&lt;/code> or &lt;code>thing.person.name&lt;/code> would access the nested value &amp;ldquo;caius&amp;rdquo; just fine.&lt;/p>
+&lt;p>Now then, we&amp;rsquo;ve proved that is successfully parsed into javascript objects by the browser, generated from a ruby hash. No great shakes there, that&amp;rsquo;s fairly simple and has worked for ages. Now for my next trick, I&amp;rsquo;m going to turn that string of JSON back into a ruby hash, all without going anywhere near the JSON gem.&lt;/p>
+&lt;p>Some of you might have guessed what I&amp;rsquo;m about to do and have started hoping you&amp;rsquo;ve guessed wrongly — just for the record I don&amp;rsquo;t condone doing this except for fun and games. The JSON gem is there for a reason ;) With that little disclaimer out the way, here we go!&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">thing2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">eval&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">jsonstr&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="c1"># =&amp;gt; {:person=&amp;gt;{:name=&amp;gt;&amp;#34;caius&amp;#34;}}&lt;/span>
+&lt;span class="n">thing2&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">thing&lt;/span>
+&lt;span class="c1"># =&amp;gt; true&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Oh snap! We just turned javascript objects back into valid ruby objects, in one simple method call. And we&amp;rsquo;d be able to access the &amp;ldquo;caius&amp;rdquo; value by calling &lt;code>thing2[:person][:name]&lt;/code>, or creating OpenStructs from the hashes and calling &lt;code>thing2.person.name&lt;/code>. Which is uncannily like the JS!&lt;/p>
+&lt;p>&lt;strong>Updated 2011-02-07&lt;/strong>: &lt;a href="http://jens.ayton.se/">Jens Ayton&lt;/a> pointed out unquoted keys aren&amp;rsquo;t strictly valid JSON, which is correct. Amended to say they&amp;rsquo;re parsed as javascript objects instead, with no mention of it being valid JSON.&lt;/p></description></item><item><title>This is my Compiler</title><link>https://caiustheory.com/this-is-my-compiler/</link><pubDate>Fri, 30 Jan 2009 12:18:56 +0000</pubDate><guid>https://caiustheory.com/this-is-my-compiler/</guid><description>&lt;p>As some friday fun in &lt;a href="http://twitter.com/geekupirc">#geekup&lt;/a> we ended up converting the &lt;a href="http://usmilitary.about.com/od/marines/l/blriflecreed.htm">US Marines Creed&lt;/a> to a geekier version.&lt;/p>
+&lt;blockquote>
+&lt;p>This is my compiler.&lt;br>
+There are many like it, but this one is MINE.&lt;br>
+My compiler is my best friend. It is my life.&lt;br>
+I must master it as I must master my life.&lt;br>
+My compiler without me is useless. Without my compiler, I am useless.&lt;br>
+I must run my compiler true.&lt;br>
+I must run faster than my bug who is trying to kill me.&lt;br>
+I must squash him before he squashes me. I will&amp;hellip;&lt;br>
+My compiler and myself know that what counts in war is not the warnings we squash,&lt;br>
+the builds we create, nor the optimisations we make.&lt;br>
+We know it is the build errors fixed that count. We will fix&amp;hellip;&lt;br>
+My compiler is human, even as I, because it is my life.&lt;br>
+Thus, I will learn it as a brother.&lt;br>
+I will learn its weaknesses, its strengths, its output, its code,&lt;br>
+its quirks, and its errors.&lt;br>
+I will ever guard it against the ravages of virii and disk failures.&lt;br>
+I will keep my compiler clean and ready, even as I am clean and ready.&lt;br>
+We will become part of each other. We will&amp;hellip;&lt;br>
+Before Assembler I swear this creed.&lt;br>
+My compiler and myself are the defenders of good code.&lt;br>
+We are the masters of our bugs.&lt;br>
+We are the saviors of our code.&lt;br>
+So be it, until code is compiling and there are no bugs, but compiled code.&lt;/p>
+&lt;/blockquote>
+&lt;p>And then &lt;a href="http://jamx.org/">jamx&lt;/a> jumped in with the &lt;a href="http://en.wikipedia.org/wiki/Lord's_Prayer#English_versions">Lords Prayer&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>Our Compiler, who art in memory. GNU be thy name.&lt;br>
+Thy source code come, thy will be done.&lt;br>
+On script as it is in memory.&lt;br>
+Give us this day our daily data, and forgive us our segfaults as we forgive those who segfault against us.&lt;br>
+And lead us not into /dev/null but deliver us from M$,&lt;br>
+for thine is the domain, the cpu and the peeps.&lt;br>
+for (x=0; x&amp;lt;2; x++){ x=0; }&lt;br>
+Amen&lt;/p>
+&lt;/blockquote></description></item><item><title>When work just feels right</title><link>https://caiustheory.com/when-work-just-feels-right/</link><pubDate>Fri, 21 Nov 2008 11:51:08 +0000</pubDate><guid>https://caiustheory.com/when-work-just-feels-right/</guid><description>&lt;p>Much like &lt;a href="http://www.3hv.co.uk/" title="3hv">Rahoul&amp;rsquo;s&lt;/a> post on &lt;a href="http://www.3hv.co.uk/blog/2008/10/16/working-for-brightbox/" title="Working for Brightbox">knowing you&amp;rsquo;re on the right path&lt;/a>, I had that moment this morning whilst we were discussing a future feature for our control panel.&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>john&lt;/strong>: will I be able to superpoke our customers?&lt;br>
+&lt;strong>john&lt;/strong>: is that in the spec?&lt;br>
+&lt;strong>Jeremy&lt;/strong>: &amp;ldquo;John made server10 a zombie&amp;rdquo;&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;server10 zombified server9&amp;rdquo;&lt;br>
+&lt;strong>Jeremy&lt;/strong>: &amp;ldquo;David has poked server19 19234 times&amp;rdquo;&lt;br>
+&lt;strong>john&lt;/strong>: server16 messaged David &amp;ldquo;My disk is filling up and I have files I need to put somewhere, please help!&amp;rdquo;&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;Rahoul ended his friendship with server15&amp;rdquo;&lt;br>
+&lt;strong>David&lt;/strong>: &amp;ldquo;server02 is now married to server05&amp;rdquo;&lt;br>
+&lt;strong>Rahoul&lt;/strong>: server10 has sent you 12 videos of a fat man eating a cake&lt;br>
+&lt;strong>David&lt;/strong>: server11 joined the group &amp;ldquo;KVM ftw&amp;rdquo;&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;server16 threw a sheep at server15&amp;rdquo;&lt;br>
+&lt;strong>john&lt;/strong>: server03 joined the group &amp;ldquo;Centos sucks!&amp;rdquo;&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;server15 sent an emergency broadcast: physical movement detected&amp;rdquo;&lt;br>
+&lt;strong>john&lt;/strong>: storage03 has logged off&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;x13 flew to the moon 0 times&amp;rdquo;&lt;br>
+&lt;strong>john&lt;/strong>: disk5 in storage02 is now a zombie&lt;br>
+&lt;strong>Jeremy&lt;/strong>: disk4 in storage02 is now a zombie&lt;br>
+&lt;strong>Jeremy&lt;/strong>: disk3 in storage02 is now a zombie&lt;br>
+&lt;strong>Jeremy&lt;/strong>: disk2 in storage02 is now a zombie&lt;br>
+&lt;strong>john&lt;/strong>: storage02 was sold on ebay by Jeremy&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;john was sold on brightbox marketplace by storage5&amp;rdquo;&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;em>(In case you don&amp;rsquo;t know, I work for &lt;a href="http://www.brightbox.co.uk/">Brightbox&lt;/a>.)&lt;/em>&lt;/p></description></item><item><title>Keyboards</title><link>https://caiustheory.com/keyboards/</link><pubDate>Tue, 14 Oct 2008 13:59:01 +0000</pubDate><guid>https://caiustheory.com/keyboards/</guid><description>&lt;p>Back in the day I swapped the keys on my 12&amp;rdquo; powerbook keyboard around to read &lt;code>macgenius&lt;/code> across the middle row.&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/2941719496/">&lt;img src="http://farm4.static.flickr.com/3213/2941719496_caf2a6a813_m.jpg" alt="Powerbook Keyboard">&lt;/a>&lt;/p>
+&lt;p>I unearthed the picture, and figured, why not do it to my apple aluminium keyboard? So I found a &lt;a href="http://skeltoac.com/2007/10/22/apple-keyboard-aluminum-keycap-removal/">tutorial&lt;/a> from some other guy that&amp;rsquo;d done it, and dug out my penknife.&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/2938651260/">&lt;img src="http://farm4.static.flickr.com/3243/2938651260_915f42d92d_m.jpg" alt="External Keyboard">&lt;/a>&lt;/p>
+&lt;p>After that I decided to rearrange the macbook internal keyboard as well. First I googled around to make sure lifting the keys was the same as doing it on the external keyboard (which it appeared to be), then I went ahead and rearranged them as well.&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/2940872039/">&lt;img src="http://farm4.static.flickr.com/3214/2940872039_164ee672ef_m.jpg" alt="Internal Keyboard &amp;ndash; Macgenius">&lt;/a>&lt;/p>
+&lt;p>So whilst I was wondering what to do about it, my mother emailed me and suggested using &lt;code>ontherails&lt;/code> instead of &lt;code>macgenius&lt;/code>. So I did, and now the top row reads &lt;code>ontherails&lt;/code> on the macbooks&amp;rsquo; internal keyboard.&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/2941726222/">&lt;img src="http://farm4.static.flickr.com/3146/2941726222_67b2405a89_m.jpg" alt="Internal Keyboard &amp;ndash; Ontherails">&lt;/a>&lt;/p>
+&lt;p>All pictures are licenced under &lt;a href="http://creativecommons.org/licenses/by/2.0/deed.en_GB">Creative Commons Attribution 2.0 Generic licence&lt;/a> and the above pictures, plus some &lt;em>in progress&lt;/em> shots, are available in my &lt;a href="http://www.flickr.com/photos/caius/sets/72157608015895484/">Keyboard Modifications&lt;/a> flickr set.&lt;/p></description></item><item><title>OS X User has a virus</title><link>https://caiustheory.com/os-x-user-has-a-virus/</link><pubDate>Wed, 02 Jan 2008 01:15:15 +0000</pubDate><guid>https://caiustheory.com/os-x-user-has-a-virus/</guid><description>&lt;p>No not my computer, me. I&amp;rsquo;ve managed to pickup an &lt;!-- raw HTML omitted -->acute coryza&lt;!-- raw HTML omitted --> virus. It causes &lt;code>/dev/random&lt;/code> to constantly pass data to &lt;code>/Volumes/nose&lt;/code>. I don&amp;rsquo;t think I got this from reading email, but I&amp;rsquo;m pretty sure it was a windows user who passed it to me.&lt;/p>
+&lt;p>If I flush my partitions to disk every now and then I can get by with a clean &lt;code>/Volumes/nose&lt;/code> for a while before &lt;code>/dev/random&lt;/code> starts clogging it up again.&lt;/p></description></item><item><title>dSLR Quote</title><link>https://caiustheory.com/dslr-quote/</link><pubDate>Mon, 31 Dec 2007 17:25:25 +0000</pubDate><guid>https://caiustheory.com/dslr-quote/</guid><description>&lt;p>I was just talking to &lt;a href="http://keihatsu.org/">Nadim&lt;/a> about him getting a new camera and then this happened:&lt;/p>
+&lt;blockquote>
+&lt;p>Nadim: &lt;a href="http://cyraq.deviantart.com/art/Above-the-Clouds-72170767">http://cyraq.deviantart.com/art/Above-the-Clouds-72170767&lt;/a>&lt;br>
+Nadim: Did you see that?&lt;br>
+Nadim: Taken couple of weeks ago&lt;br>
+Caius: woa&lt;br>
+Caius: and you need a new camera because? :P&lt;br>
+Nadim: I have wet dreams about DSLR&amp;rsquo;s&lt;/p>
+&lt;/blockquote></description></item><item><title>Quote to see the new year in</title><link>https://caiustheory.com/quote-to-see-the-new-year-in/</link><pubDate>Mon, 31 Dec 2007 17:11:11 +0000</pubDate><guid>https://caiustheory.com/quote-to-see-the-new-year-in/</guid><description>&lt;p>So I&amp;rsquo;m a geek, as my friends are gradually realising more and more. Anyway, I twitter a lot, and occasionally write quotes that need to be saved elsewhere. And what generally makes tweets funnier are other people replying to them.&lt;/p>
+&lt;p>A little background information. This had just taken place in #habari (a chat room.)&lt;/p>
+&lt;pre>&lt;code>&amp;lt;h0bbel&amp;gt; ringmaster: i'll show you my winky
 * ringmaster runs.
 &amp;lt;h0bbel&amp;gt; as jmullan has seen it
 &amp;lt;h0bbel&amp;gt; i think
-&amp;lt;jmullan&amp;gt; no, I didn&#39;t look
+&amp;lt;jmullan&amp;gt; no, I didn't look
 &amp;lt;ringmaster&amp;gt; 0_o
 &amp;lt;h0bbel&amp;gt; i was kinda drunk at the time
 &amp;lt;h0bbel&amp;gt; lol
 &amp;lt;jmullan&amp;gt; we were playing &amp;quot;lightsabers&amp;quot; while peeing
 &amp;lt;jmullan&amp;gt; not &amp;quot;swords&amp;quot;
 &amp;lt;jmullan&amp;gt; I had the yellow saber, h0bbel had the green one
-&amp;lt;jmullan&amp;gt; I&#39;m not sure how that worked
-&amp;lt;h0bbel&amp;gt; you said you didn&#39;t look!
+&amp;lt;jmullan&amp;gt; I'm not sure how that worked
+&amp;lt;h0bbel&amp;gt; you said you didn't look!
 &amp;lt;h0bbel&amp;gt; How did you know it was green?
-&amp;lt;jmullan&amp;gt; I just saw the beam, not the handle, if you know what I&#39;m saying
+&amp;lt;jmullan&amp;gt; I just saw the beam, not the handle, if you know what I'm saying
 &amp;lt;h0bbel&amp;gt; ehehe
 &amp;lt;Caius&amp;gt; xD
 &amp;lt;ringmaster&amp;gt; This is all somewhat disturbing.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So in order&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;man, #habari just wouldn&#39;t be the same without the semi-homosexual discussions every now and then&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Formatting some SQL queries for a fellow dev&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/h0bbel/statuses/549895502&#34;&gt;h0bbel&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;http://twitter.com/caius/st...&lt;/a&gt; is realy quoteworthy ;-)&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/tmertz/statuses/549899752&#34;&gt;Mertz&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;@&lt;a href=&#34;http://twitter.com/caius&#34;&gt;caius&lt;/a&gt;, wtf are you doing? put down the computer, take five steps back and go find a new years celebration.&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549903292&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;@&lt;a href=&#34;http://twitter.com/tmertz&#34;&gt;tmertz&lt;/a&gt; just hanging in #habari whilst editing some SQL queries @&lt;a href=&#34;http://twitter.com/h0bbel&#34;&gt;h0bbel&lt;/a&gt; wrote waiting for 1900GMT to go round my mates and get drunk&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;And on the back of that, I&#39;d just like to say have a very merry new years eve and just follow your desires onwards in life!&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>So in order&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>man, #habari just wouldn&amp;rsquo;t be the same without the semi-homosexual discussions every now and then&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>Formatting some SQL queries for a fellow dev&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/h0bbel/statuses/549895502">h0bbel&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">http://twitter.com/caius/st&amp;hellip;&lt;/a> is realy quoteworthy ;-)&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/tmertz/statuses/549899752">Mertz&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>@&lt;a href="http://twitter.com/caius">caius&lt;/a>, wtf are you doing? put down the computer, take five steps back and go find a new years celebration.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549903292">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>@&lt;a href="http://twitter.com/tmertz">tmertz&lt;/a> just hanging in #habari whilst editing some SQL queries @&lt;a href="http://twitter.com/h0bbel">h0bbel&lt;/a> wrote waiting for 1900GMT to go round my mates and get drunk&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul>
+&lt;p>And on the back of that, I&amp;rsquo;d just like to say have a very merry new years eve and just follow your desires onwards in life!&lt;/p></description></item></channel></rss>

@@ -1,42 +1,50 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ubuntu on Caius Theory</title><link>https://caiustheory.com/tag/ubuntu/</link><description>Recent content in ubuntu on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 04 Dec 2012 09:42:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>Geolocation in nginx</title><link>https://caiustheory.com/geolocation-in-nginx/</link><pubDate>Tue, 04 Dec 2012 09:42:00 +0000</pubDate><guid>https://caiustheory.com/geolocation-in-nginx/</guid><description>&lt;p&gt;Sometimes you need to have a rough idea of where your website visitor is located. There&#39;s many ways to geolocate them, but if you just want to go to country level then &lt;a href=&#34;http://dev.maxmind.com/geoip/geolite&#34;&gt;MaxMind have free geo databases&lt;/a&gt; available to help you. When we needed to do this quickly on-the-fly at EmberAds, we came up with the &lt;a href=&#34;https://github.com/emberads/trifle#readme&#34;&gt;trifle&lt;/a&gt; gem, which supports ipv4 and ipv6 lookups.&lt;/p&gt;
-&lt;p&gt;Recently I was searching for something else to do with nginx and ran across &lt;a href=&#34;http://www.ruby-forum.com/topic/125810&#34;&gt;a mailing list thread&lt;/a&gt; about using the maxmind database with nginx&#39;s &lt;a href=&#34;http://wiki.nginx.org/NginxHttpGeoModule&#34;&gt;HTTP Geo module&lt;/a&gt; and do the lookup directly in nginx itself. Finally got a chance to sit down and work out the logistics of doing this. I&#39;ve done this on an ubuntu 12.04 box, with the expected config file layouts that come with ubuntu.&lt;/p&gt;
-&lt;p&gt;Run the following on your server (as someone with write access to nginx config files):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Generate the text file for nginx to import&lt;/span&gt;
-perl &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&amp;lt; &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;zip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;tempfile&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;curl -so &lt;span class=&#34;nv&#34;&gt;$zip&lt;/span&gt; http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; unzip -p &lt;span class=&#34;nv&#34;&gt;$zip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &amp;gt; /etc/nginx/nginx_ip_country.txt
-&lt;span class=&#34;c1&#34;&gt;# Tell nginx to work out the IP country and store in variable&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;geo $IP_COUNTRY {
-&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt; default --;
-&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt; include /etc/nginx/nginx_ip_country.txt;
-&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;}&amp;#39;&lt;/span&gt; &amp;gt; /etc/nginx/conf.d/ip_country.conf&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now go find the http block for the vhost you want to have the header passed to, and assuming it&#39;s passenger, add the following:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-nginx&#34; data-lang=&#34;nginx&#34;&gt;&lt;span class=&#34;k&#34;&gt;passenger_set_cgi_param&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;HTTP_X_IP_COUNTRY&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$IP_COUNTRY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;(If you don&#39;t use passenger, look at the docs for &lt;a href=&#34;http://wiki.nginx.org/HttpProxyModule#proxy_pass_header&#34;&gt;proxy_pass_header&lt;/a&gt; or &lt;a href=&#34;http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header&#34;&gt;fastcgi_pass_header&lt;/a&gt; to see which you&#39;ll require for your setup.)&lt;/p&gt;
-&lt;p&gt;Reload nginx, and behold, &lt;code&gt;request.env[&amp;quot;HTTP_X_IP_COUNTRY&amp;quot;]&lt;/code&gt; (assuming a rack app running under ruby) will be a two letter country code, or &lt;code&gt;&amp;quot;--&amp;quot;&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Unfortunately this is IPv4 only currently, there&#39;s a &lt;a href=&#34;http://forum.nginx.org/read.php?29,232648&#34;&gt;thread on the nginx mailing list from November 2012&lt;/a&gt; saying IPv6 support should be coming on the v1.3 branch of nginx, but with no known ETA. So currently for IPv6 support, take a look at &lt;a href=&#34;https://github.com/emberads/trifle#readme&#34;&gt;EmberAds&#39; trifle gem&lt;/a&gt; instead.&lt;/p&gt;</description></item><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p&gt;Dear future Caius searching for this issue,&lt;/p&gt;
-&lt;p&gt;The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is &lt;code&gt;libqt4-dev&lt;/code&gt;. That is, to &lt;code&gt;gem install capybara-webkit&lt;/code&gt;, you need to run &lt;code&gt;aptitude install libqt4-dev&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Yours helpfully,&lt;br /&gt;
-Past Caius&lt;/p&gt;</description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p&gt;I decided to install ubuntu onto my iMac G3&lt;ref&gt;450Mhz G3, 768mb ram, 20GB Hard Drive&lt;/ref&gt; to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em&gt;slightly&lt;/em&gt; outdated and 100% 404.&lt;/p&gt;
-&lt;p&gt;Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;When the screen goes black, drop to the console&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Control - Option - F2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;(if you need to log in use the name ubuntu to log in.)&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo nano /etc/X11/xorg.conf
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Change the frequencies in monitor section as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Section “Monitor”
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ubuntu on Caius Theory</title><link>https://caiustheory.com/tag/ubuntu/</link><description>Recent content in ubuntu on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 04 Dec 2012 09:42:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>Geolocation in nginx</title><link>https://caiustheory.com/geolocation-in-nginx/</link><pubDate>Tue, 04 Dec 2012 09:42:00 +0000</pubDate><guid>https://caiustheory.com/geolocation-in-nginx/</guid><description>&lt;p>Sometimes you need to have a rough idea of where your website visitor is located. There&amp;rsquo;s many ways to geolocate them, but if you just want to go to country level then &lt;a href="http://dev.maxmind.com/geoip/geolite">MaxMind have free geo databases&lt;/a> available to help you. When we needed to do this quickly on-the-fly at EmberAds, we came up with the &lt;a href="https://github.com/emberads/trifle#readme">trifle&lt;/a> gem, which supports ipv4 and ipv6 lookups.&lt;/p>
+&lt;p>Recently I was searching for something else to do with nginx and ran across &lt;a href="http://www.ruby-forum.com/topic/125810">a mailing list thread&lt;/a> about using the maxmind database with nginx&amp;rsquo;s &lt;a href="http://wiki.nginx.org/NginxHttpGeoModule">HTTP Geo module&lt;/a> and do the lookup directly in nginx itself. Finally got a chance to sit down and work out the logistics of doing this. I&amp;rsquo;ve done this on an ubuntu 12.04 box, with the expected config file layouts that come with ubuntu.&lt;/p>
+&lt;p>Run the following on your server (as someone with write access to nginx config files):&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># Generate the text file for nginx to import&lt;/span>
+perl &amp;lt;&lt;span class="o">(&lt;/span>curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl&lt;span class="o">)&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>&amp;lt; &amp;lt;&lt;span class="o">(&lt;/span>&lt;span class="nv">zip&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>tempfile&lt;span class="k">)&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>curl -so &lt;span class="nv">$zip&lt;/span> http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span> unzip -p &lt;span class="nv">$zip&lt;/span>&lt;span class="o">)&lt;/span> &amp;gt; /etc/nginx/nginx_ip_country.txt
+&lt;span class="c1"># Tell nginx to work out the IP country and store in variable&lt;/span>
+&lt;span class="nb">echo&lt;/span> &lt;span class="s1">&amp;#39;geo $IP_COUNTRY {
+&lt;/span>&lt;span class="s1"> default --;
+&lt;/span>&lt;span class="s1"> include /etc/nginx/nginx_ip_country.txt;
+&lt;/span>&lt;span class="s1">}&amp;#39;&lt;/span> &amp;gt; /etc/nginx/conf.d/ip_country.conf
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now go find the http block for the vhost you want to have the header passed to, and assuming it&amp;rsquo;s passenger, add the following:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="k">passenger_set_cgi_param&lt;/span> &lt;span class="s">HTTP_X_IP_COUNTRY&lt;/span> &lt;span class="nv">$IP_COUNTRY&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>(If you don&amp;rsquo;t use passenger, look at the docs for &lt;a href="http://wiki.nginx.org/HttpProxyModule#proxy_pass_header">proxy_pass_header&lt;/a> or &lt;a href="http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header">fastcgi_pass_header&lt;/a> to see which you&amp;rsquo;ll require for your setup.)&lt;/p>
+&lt;p>Reload nginx, and behold, &lt;code>request.env[&amp;quot;HTTP_X_IP_COUNTRY&amp;quot;]&lt;/code> (assuming a rack app running under ruby) will be a two letter country code, or &lt;code>&amp;quot;--&amp;quot;&lt;/code>.&lt;/p>
+&lt;p>Unfortunately this is IPv4 only currently, there&amp;rsquo;s a &lt;a href="http://forum.nginx.org/read.php?29,232648">thread on the nginx mailing list from November 2012&lt;/a> saying IPv6 support should be coming on the v1.3 branch of nginx, but with no known ETA. So currently for IPv6 support, take a look at &lt;a href="https://github.com/emberads/trifle#readme">EmberAds&amp;rsquo; trifle gem&lt;/a> instead.&lt;/p></description></item><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p>Dear future Caius searching for this issue,&lt;/p>
+&lt;p>The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is &lt;code>libqt4-dev&lt;/code>. That is, to &lt;code>gem install capybara-webkit&lt;/code>, you need to run &lt;code>aptitude install libqt4-dev&lt;/code>.&lt;/p>
+&lt;p>Yours helpfully,&lt;br>
+Past Caius&lt;/p></description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p>I decided to install ubuntu onto my iMac G3&lt;!-- raw HTML omitted -->450Mhz G3, 768mb ram, 20GB Hard Drive&lt;!-- raw HTML omitted --> to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em>slightly&lt;/em> outdated and 100% 404.&lt;/p>
+&lt;p>Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>When the screen goes black, drop to the console&lt;/p>
+&lt;pre>&lt;code> Control - Option - F2
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>(if you need to log in use the name ubuntu to log in.)&lt;/em>&lt;/p>
+&lt;pre>&lt;code> $ sudo nano /etc/X11/xorg.conf
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Change the frequencies in monitor section as follows:&lt;/p>
+&lt;pre>&lt;code> Section “Monitor”
 Identifier “Generic Monitor”
 Option “DPMS”
 HorizSync 60-60
 VertRefresh 43-117
 EndSection
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;After the changes then type &lt;code&gt;control-o&lt;/code&gt;, &lt;code&gt;return&lt;/code&gt; (to accept the filename), then &lt;code&gt;control-x&lt;/code&gt; (save and exit nano)&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Restart X by running the following:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>After the changes then type &lt;code>control-o&lt;/code>, &lt;code>return&lt;/code> (to accept the filename), then &lt;code>control-x&lt;/code> (save and exit nano)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Restart X by running the following:&lt;/p>
+&lt;pre>&lt;code> sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

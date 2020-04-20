@@ -1,47 +1,47 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>overcommit on Caius Theory</title><link>https://caiustheory.com/tag/overcommit/</link><description>Recent content in overcommit on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 05 Jul 2018 14:44:41 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/overcommit/index.xml" rel="self" type="application/rss+xml"/><item><title>Overcommit git hooks: puppet validate</title><link>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</link><pubDate>Thu, 05 Jul 2018 14:44:41 +0000</pubDate><guid>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</guid><description>&lt;p&gt;Computers are great at automatically checking things, and git has a mechanism for running hooks before events happen. Bosh these two things together and you can have git trigger anything you like before you&#39;re allowed to commit, which in turn means you can sanity check exactly what you&#39;re committing to make sure it meets whatever criteria you have.&lt;/p&gt;
-&lt;p&gt;To make it easy to manage my git hooks in a consistent fashion, I use a tool called &lt;a href=&#34;https://github.com/brigade/overcommit&#34;&gt;overcommit&lt;/a&gt;. This comes with a config file to tell it what you want triggered when, and a bunch of standard plugins to choose from.&lt;/p&gt;
-&lt;p&gt;In a &lt;a href=&#34;https://puppet.com&#34;&gt;puppet&lt;/a&gt; repo for instance, I have it check&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://bundler.io&#34;&gt;bundler&lt;/a&gt; is happy everything&#39;s installed&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://puppet-lint.com&#34;&gt;puppet-lint&lt;/a&gt; is happy with any changed puppet files&lt;/li&gt;
-&lt;li&gt;Any JSON or YAML files involved in the commit have valid syntax&lt;/li&gt;
-&lt;li&gt;Any shell scripts are valid (according to &lt;a href=&#34;https://www.shellcheck.net&#34;&gt;shellcheck&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;There is no trailing whitespace left in files&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This usually means something like the following in &lt;code&gt;.overcommit.yml&lt;/code&gt; in the git repo&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;PreCommit&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;BundleCheck&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;JsonSyntax&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;PuppetLint&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;ShellCheck&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;YamlSyntax&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;on_warn&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;fail&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For the most part this works absolutely great. I have on occasion noticed that &lt;a href=&#34;http://puppet-lint.com&#34;&gt;puppet-lint&lt;/a&gt; will let invalid puppet syntax slip through though which is irritating to find after you&#39;ve pushed the changes up to the puppetmaster. The &lt;a href=&#34;https://puppet.com&#34;&gt;puppet&lt;/a&gt; command line tool has a validate subcommand however, so we can hook that into overcommit as a custom hook in the repo.&lt;/p&gt;
-&lt;p&gt;To do this we need to add our custom hook into the right directory, and we&#39;re adding a hook to run before commits, so it goes into &lt;code&gt;.git-hooks/pre_commit&lt;/code&gt;. Lets name it for what it does, validating puppet syntax. So into &lt;code&gt;puppet_validate.rb&lt;/code&gt; we put the following:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# .git-hooks/pre_commit/puppet_validate.rb&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;Overcommit::Hook::PreCommit&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;PuppetValidate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Base&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;errors&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sx&#34;&gt;%w(puppet parser validate)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:args&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;applicable_files&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:pass&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;success?&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:fail&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;stderr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then we need to tell &lt;a href=&#34;https://github.com/brigade/overcommit&#34;&gt;overcommit&lt;/a&gt; that it needs to run this custom hook as a check whenever we commit, that goes into &lt;code&gt;.overcommit.yml&lt;/code&gt; under the &lt;code&gt;PreCommit&lt;/code&gt; key:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;PreCommit&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;PuppetValidate&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;description&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Validates puppet syntax&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;include&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;**/*.pp&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Hey voila, along with all our other safety checks we&#39;re now checking that any puppet files added or changed in the repo have valid syntax.&lt;/p&gt;</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>overcommit on Caius Theory</title><link>https://caiustheory.com/tag/overcommit/</link><description>Recent content in overcommit on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 05 Jul 2018 14:44:41 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/overcommit/index.xml" rel="self" type="application/rss+xml"/><item><title>Overcommit git hooks: puppet validate</title><link>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</link><pubDate>Thu, 05 Jul 2018 14:44:41 +0000</pubDate><guid>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</guid><description>&lt;p>Computers are great at automatically checking things, and git has a mechanism for running hooks before events happen. Bosh these two things together and you can have git trigger anything you like before you&amp;rsquo;re allowed to commit, which in turn means you can sanity check exactly what you&amp;rsquo;re committing to make sure it meets whatever criteria you have.&lt;/p>
+&lt;p>To make it easy to manage my git hooks in a consistent fashion, I use a tool called &lt;a href="https://github.com/brigade/overcommit">overcommit&lt;/a>. This comes with a config file to tell it what you want triggered when, and a bunch of standard plugins to choose from.&lt;/p>
+&lt;p>In a &lt;a href="https://puppet.com">puppet&lt;/a> repo for instance, I have it check&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://bundler.io">bundler&lt;/a> is happy everything&amp;rsquo;s installed&lt;/li>
+&lt;li>&lt;a href="http://puppet-lint.com">puppet-lint&lt;/a> is happy with any changed puppet files&lt;/li>
+&lt;li>Any JSON or YAML files involved in the commit have valid syntax&lt;/li>
+&lt;li>Any shell scripts are valid (according to &lt;a href="https://www.shellcheck.net">shellcheck&lt;/a>)&lt;/li>
+&lt;li>There is no trailing whitespace left in files&lt;/li>
+&lt;/ul>
+&lt;p>This usually means something like the following in &lt;code>.overcommit.yml&lt;/code> in the git repo&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">PreCommit&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">BundleCheck&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">JsonSyntax&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">PuppetLint&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">ShellCheck&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">YamlSyntax&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on_warn&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>fail&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>For the most part this works absolutely great. I have on occasion noticed that &lt;a href="http://puppet-lint.com">puppet-lint&lt;/a> will let invalid puppet syntax slip through though which is irritating to find after you&amp;rsquo;ve pushed the changes up to the puppetmaster. The &lt;a href="https://puppet.com">puppet&lt;/a> command line tool has a validate subcommand however, so we can hook that into overcommit as a custom hook in the repo.&lt;/p>
+&lt;p>To do this we need to add our custom hook into the right directory, and we&amp;rsquo;re adding a hook to run before commits, so it goes into &lt;code>.git-hooks/pre_commit&lt;/code>. Lets name it for what it does, validating puppet syntax. So into &lt;code>puppet_validate.rb&lt;/code> we put the following:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="c1"># .git-hooks/pre_commit/puppet_validate.rb&lt;/span>
+&lt;span class="k">module&lt;/span> &lt;span class="nn">Overcommit::Hook::PreCommit&lt;/span>
+&lt;span class="k">class&lt;/span> &lt;span class="nc">PuppetValidate&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="no">Base&lt;/span>
+&lt;span class="k">def&lt;/span> &lt;span class="nf">run&lt;/span>
+&lt;span class="n">errors&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[]&lt;/span>
+&lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sx">%w(puppet parser validate)&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:args&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="n">applicable_files&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="ss">:pass&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">success?&lt;/span>
+&lt;span class="o">[&lt;/span>&lt;span class="ss">:fail&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">stderr&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then we need to tell &lt;a href="https://github.com/brigade/overcommit">overcommit&lt;/a> that it needs to run this custom hook as a check whenever we commit, that goes into &lt;code>.overcommit.yml&lt;/code> under the &lt;code>PreCommit&lt;/code> key:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">PreCommit&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">PuppetValidate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Validates puppet syntax&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">include&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;**/*.pp&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hey voila, along with all our other safety checks we&amp;rsquo;re now checking that any puppet files added or changed in the repo have valid syntax.&lt;/p></description></item></channel></rss>

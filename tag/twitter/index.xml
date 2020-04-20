@@ -1,55 +1,65 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>twitter on Caius Theory</title><link>https://caiustheory.com/tag/twitter/</link><description>Recent content in twitter on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 22 Oct 2011 12:05:39 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/twitter/index.xml" rel="self" type="application/rss+xml"/><item><title>TweetSavr</title><link>https://caiustheory.com/tweetsavr/</link><pubDate>Sat, 22 Oct 2011 12:05:39 +0000</pubDate><guid>https://caiustheory.com/tweetsavr/</guid><description>&lt;p&gt;I&#39;ve had a dream for a while. A simple webapp that takes the last tweet in a conversation and outputs that conversation in chronological order on a page you can link to forevermore. Occasionally I&#39;ll google to see if anything new&#39;s turned up, but they all seem to do far more, require the start and end tweets or are covered in ads.&lt;/p&gt;
-&lt;p&gt;So one friday evening I just built it. It&#39;s called &lt;a href=&#34;http://tweetsavr.com/&#34;&gt;TweetSavr&lt;/a&gt;. It&#39;s very simple—to the point the error page is just a standard 500 server error page currently. It fetches, caches and displays a conversation, given just the last tweet in said conversation.&lt;/p&gt;
-&lt;p&gt;KISS extends to the interface as well, I&#39;m quite a fan of &lt;a href=&#34;http://jerz.setonhill.edu/writing/etext/url-hacking.htm&#34;&gt;URL hacking&lt;/a&gt; to use webapps, so TweetSavr works on that basis as well. The homepage sort of has some help telling you how to use it, but you basically take the (old-twitter) URL of the last tweet and paste it after tweetsavr.com in the address bar. Eg, &lt;a href=&#34;http://tweetsavr.com/http://twitter.com/ElizabethN/status/19766711653765120&#34;&gt;http://tweetsavr.com/http://twitter.com/ElizabethN/status/19766711653765120&lt;/a&gt;. It&#39;ll then redirect you through to the actual page for that conversation. You can also put just the status id on the end of the URL, &lt;a href=&#34;http://tweetsavr.com/19766711653765120&#34;&gt;http://tweetsavr.com/19766711653765120&lt;/a&gt; and hey presto, it loads.&lt;/p&gt;
-&lt;p&gt;The caching layer is moderately rudimentary, after fetching a tweet that isn&#39;t in the cache it writes out a hash of data for that tweet into a yaml file. And when looking up a tweet it checks to see if that file exists, reading it in from disk if it is. Bonus side-effect is it builds up a corpus of tweets as yaml files on disk.&lt;/p&gt;
-&lt;p&gt;It lives on the internet at &lt;a href=&#34;http://tweetsavr.com/&#34;&gt;http://tweetsavr.com/&lt;/a&gt; and the source is on github at &lt;a href=&#34;http://github.com/caius/tweetsavr&#34;&gt;http://github.com/caius/tweetsavr&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Side note: isn&#39;t it wonderful what we can create given just a few hours, a server somewhere in the cloud, and an idea? Never ceases to amaze me what can be built in just a short amount of time, even the dead simple things.&lt;/p&gt;</description></item><item><title>UK Parking</title><link>https://caiustheory.com/uk-parking/</link><pubDate>Sat, 12 Jan 2008 12:35:01 +0000</pubDate><guid>https://caiustheory.com/uk-parking/</guid><description>&lt;p&gt;So I just saw this in my twitter stream:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&#34;http://twitter.com/peterc/statuses/590099072&#34;&gt;peterc&lt;/a&gt;: Warning UK drivers.. councils get powers on March 31st to give you parking fines for infractions they see on CCTV!&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;This indeed sucks. We&#39;ll see how successful they are at ticketing people and whether anyone abuses the system...&lt;/p&gt;</description></item><item><title>Twitter Statistics</title><link>https://caiustheory.com/twitter-statistics/</link><pubDate>Wed, 02 Jan 2008 07:15:00 +0000</pubDate><guid>https://caiustheory.com/twitter-statistics/</guid><description>&lt;p&gt;&lt;a href=&#34;http://flickr.com/photo_zoom.gne?id=2157771886&amp;amp;size=o&#34;&gt;&lt;img src=&#34;http://farm3.static.flickr.com/2345/2157771886_9e41008ac2_m.jpg&#34; alt=&#34;Twitter Statistics for caius&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://dcortesi.com/2007/12/27/twitter-stats/&#34;&gt;Just&lt;/a&gt; &lt;a href=&#34;http://www.flickr.com/photos/gruber/2156085517/&#34;&gt;joining&lt;/a&gt; &lt;a href=&#34;http://www.randsinrepose.com/archives/2008/01/01/year_in_twitter.html&#34;&gt;the&lt;/a&gt; &lt;a href=&#34;http://kosmar.de/archives/2007/12/29/twitter-statistics/&#34;&gt;band&lt;/a&gt; &lt;a href=&#34;http://blog.nordquist.org/?p=2083&#34;&gt;wagon&lt;/a&gt; in posting up my twitter statistics. The skew towards december being the month I twitter most in is because I enabled twitter sms, and ended up replying/updating a lot more often than I expected.&lt;/p&gt;</description></item><item><title>Quote to see the new year in</title><link>https://caiustheory.com/quote-to-see-the-new-year-in/</link><pubDate>Mon, 31 Dec 2007 17:11:11 +0000</pubDate><guid>https://caiustheory.com/quote-to-see-the-new-year-in/</guid><description>&lt;p&gt;So I&#39;m a geek, as my friends are gradually realising more and more. Anyway, I twitter a lot, and occasionally write quotes that need to be saved elsewhere. And what generally makes tweets funnier are other people replying to them.&lt;/p&gt;
-&lt;p&gt;A little background information. This had just taken place in #habari (a chat room.)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;h0bbel&amp;gt; ringmaster: i&#39;ll show you my winky
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>twitter on Caius Theory</title><link>https://caiustheory.com/tag/twitter/</link><description>Recent content in twitter on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 22 Oct 2011 12:05:39 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/twitter/index.xml" rel="self" type="application/rss+xml"/><item><title>TweetSavr</title><link>https://caiustheory.com/tweetsavr/</link><pubDate>Sat, 22 Oct 2011 12:05:39 +0000</pubDate><guid>https://caiustheory.com/tweetsavr/</guid><description>&lt;p>I&amp;rsquo;ve had a dream for a while. A simple webapp that takes the last tweet in a conversation and outputs that conversation in chronological order on a page you can link to forevermore. Occasionally I&amp;rsquo;ll google to see if anything new&amp;rsquo;s turned up, but they all seem to do far more, require the start and end tweets or are covered in ads.&lt;/p>
+&lt;p>So one friday evening I just built it. It&amp;rsquo;s called &lt;a href="http://tweetsavr.com/">TweetSavr&lt;/a>. It&amp;rsquo;s very simple—to the point the error page is just a standard 500 server error page currently. It fetches, caches and displays a conversation, given just the last tweet in said conversation.&lt;/p>
+&lt;p>KISS extends to the interface as well, I&amp;rsquo;m quite a fan of &lt;a href="http://jerz.setonhill.edu/writing/etext/url-hacking.htm">URL hacking&lt;/a> to use webapps, so TweetSavr works on that basis as well. The homepage sort of has some help telling you how to use it, but you basically take the (old-twitter) URL of the last tweet and paste it after tweetsavr.com in the address bar. Eg, &lt;a href="http://tweetsavr.com/http://twitter.com/ElizabethN/status/19766711653765120">http://tweetsavr.com/http://twitter.com/ElizabethN/status/19766711653765120&lt;/a>. It&amp;rsquo;ll then redirect you through to the actual page for that conversation. You can also put just the status id on the end of the URL, &lt;a href="http://tweetsavr.com/19766711653765120">http://tweetsavr.com/19766711653765120&lt;/a> and hey presto, it loads.&lt;/p>
+&lt;p>The caching layer is moderately rudimentary, after fetching a tweet that isn&amp;rsquo;t in the cache it writes out a hash of data for that tweet into a yaml file. And when looking up a tweet it checks to see if that file exists, reading it in from disk if it is. Bonus side-effect is it builds up a corpus of tweets as yaml files on disk.&lt;/p>
+&lt;p>It lives on the internet at &lt;a href="http://tweetsavr.com/">http://tweetsavr.com/&lt;/a> and the source is on github at &lt;a href="http://github.com/caius/tweetsavr">http://github.com/caius/tweetsavr&lt;/a>&lt;/p>
+&lt;p>Side note: isn&amp;rsquo;t it wonderful what we can create given just a few hours, a server somewhere in the cloud, and an idea? Never ceases to amaze me what can be built in just a short amount of time, even the dead simple things.&lt;/p></description></item><item><title>UK Parking</title><link>https://caiustheory.com/uk-parking/</link><pubDate>Sat, 12 Jan 2008 12:35:01 +0000</pubDate><guid>https://caiustheory.com/uk-parking/</guid><description>&lt;p>So I just saw this in my twitter stream:&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://twitter.com/peterc/statuses/590099072">peterc&lt;/a>: Warning UK drivers.. councils get powers on March 31st to give you parking fines for infractions they see on CCTV!&lt;/p>
+&lt;/blockquote>
+&lt;p>This indeed sucks. We&amp;rsquo;ll see how successful they are at ticketing people and whether anyone abuses the system&amp;hellip;&lt;/p></description></item><item><title>Twitter Statistics</title><link>https://caiustheory.com/twitter-statistics/</link><pubDate>Wed, 02 Jan 2008 07:15:00 +0000</pubDate><guid>https://caiustheory.com/twitter-statistics/</guid><description>&lt;p>&lt;a href="http://flickr.com/photo_zoom.gne?id=2157771886&amp;amp;size=o">&lt;img src="http://farm3.static.flickr.com/2345/2157771886_9e41008ac2_m.jpg" alt="Twitter Statistics for caius">&lt;/a>&lt;/p>
+&lt;p>&lt;a href="http://dcortesi.com/2007/12/27/twitter-stats/">Just&lt;/a> &lt;a href="http://www.flickr.com/photos/gruber/2156085517/">joining&lt;/a> &lt;a href="http://www.randsinrepose.com/archives/2008/01/01/year_in_twitter.html">the&lt;/a> &lt;a href="http://kosmar.de/archives/2007/12/29/twitter-statistics/">band&lt;/a> &lt;a href="http://blog.nordquist.org/?p=2083">wagon&lt;/a> in posting up my twitter statistics. The skew towards december being the month I twitter most in is because I enabled twitter sms, and ended up replying/updating a lot more often than I expected.&lt;/p></description></item><item><title>Quote to see the new year in</title><link>https://caiustheory.com/quote-to-see-the-new-year-in/</link><pubDate>Mon, 31 Dec 2007 17:11:11 +0000</pubDate><guid>https://caiustheory.com/quote-to-see-the-new-year-in/</guid><description>&lt;p>So I&amp;rsquo;m a geek, as my friends are gradually realising more and more. Anyway, I twitter a lot, and occasionally write quotes that need to be saved elsewhere. And what generally makes tweets funnier are other people replying to them.&lt;/p>
+&lt;p>A little background information. This had just taken place in #habari (a chat room.)&lt;/p>
+&lt;pre>&lt;code>&amp;lt;h0bbel&amp;gt; ringmaster: i'll show you my winky
 * ringmaster runs.
 &amp;lt;h0bbel&amp;gt; as jmullan has seen it
 &amp;lt;h0bbel&amp;gt; i think
-&amp;lt;jmullan&amp;gt; no, I didn&#39;t look
+&amp;lt;jmullan&amp;gt; no, I didn't look
 &amp;lt;ringmaster&amp;gt; 0_o
 &amp;lt;h0bbel&amp;gt; i was kinda drunk at the time
 &amp;lt;h0bbel&amp;gt; lol
 &amp;lt;jmullan&amp;gt; we were playing &amp;quot;lightsabers&amp;quot; while peeing
 &amp;lt;jmullan&amp;gt; not &amp;quot;swords&amp;quot;
 &amp;lt;jmullan&amp;gt; I had the yellow saber, h0bbel had the green one
-&amp;lt;jmullan&amp;gt; I&#39;m not sure how that worked
-&amp;lt;h0bbel&amp;gt; you said you didn&#39;t look!
+&amp;lt;jmullan&amp;gt; I'm not sure how that worked
+&amp;lt;h0bbel&amp;gt; you said you didn't look!
 &amp;lt;h0bbel&amp;gt; How did you know it was green?
-&amp;lt;jmullan&amp;gt; I just saw the beam, not the handle, if you know what I&#39;m saying
+&amp;lt;jmullan&amp;gt; I just saw the beam, not the handle, if you know what I'm saying
 &amp;lt;h0bbel&amp;gt; ehehe
 &amp;lt;Caius&amp;gt; xD
 &amp;lt;ringmaster&amp;gt; This is all somewhat disturbing.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So in order&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;man, #habari just wouldn&#39;t be the same without the semi-homosexual discussions every now and then&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Formatting some SQL queries for a fellow dev&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/h0bbel/statuses/549895502&#34;&gt;h0bbel&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;http://twitter.com/caius/st...&lt;/a&gt; is realy quoteworthy ;-)&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/tmertz/statuses/549899752&#34;&gt;Mertz&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;@&lt;a href=&#34;http://twitter.com/caius&#34;&gt;caius&lt;/a&gt;, wtf are you doing? put down the computer, take five steps back and go find a new years celebration.&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549903292&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;@&lt;a href=&#34;http://twitter.com/tmertz&#34;&gt;tmertz&lt;/a&gt; just hanging in #habari whilst editing some SQL queries @&lt;a href=&#34;http://twitter.com/h0bbel&#34;&gt;h0bbel&lt;/a&gt; wrote waiting for 1900GMT to go round my mates and get drunk&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;And on the back of that, I&#39;d just like to say have a very merry new years eve and just follow your desires onwards in life!&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>So in order&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>man, #habari just wouldn&amp;rsquo;t be the same without the semi-homosexual discussions every now and then&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>Formatting some SQL queries for a fellow dev&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/h0bbel/statuses/549895502">h0bbel&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">http://twitter.com/caius/st&amp;hellip;&lt;/a> is realy quoteworthy ;-)&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/tmertz/statuses/549899752">Mertz&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>@&lt;a href="http://twitter.com/caius">caius&lt;/a>, wtf are you doing? put down the computer, take five steps back and go find a new years celebration.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549903292">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>@&lt;a href="http://twitter.com/tmertz">tmertz&lt;/a> just hanging in #habari whilst editing some SQL queries @&lt;a href="http://twitter.com/h0bbel">h0bbel&lt;/a> wrote waiting for 1900GMT to go round my mates and get drunk&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul>
+&lt;p>And on the back of that, I&amp;rsquo;d just like to say have a very merry new years eve and just follow your desires onwards in life!&lt;/p></description></item></channel></rss>

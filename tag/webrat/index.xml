@@ -1,15 +1,14 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>webrat on Caius Theory</title><link>https://caiustheory.com/tag/webrat/</link><description>Recent content in webrat on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Mon, 03 Nov 2008 06:48:27 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/webrat/index.xml" rel="self" type="application/rss+xml"/><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>
-&lt;p&gt;When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em&gt;Rspec&lt;/em&gt; testing framework instead of the built-in &lt;em&gt;Test::Unit&lt;/em&gt; and &lt;em&gt;jQuery&lt;/em&gt; instead of &lt;em&gt;prototype&lt;/em&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://rspec.info/&#34;&gt;Rspec&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/rahoulb/rspec-rails/wikis&#34;&gt;Rspec-rails&lt;/a&gt; &lt;em&gt;(NB: I use &lt;a href=&#34;http://3hv.co.uk&#34;&gt;rahoul&lt;/a&gt;&#39;s fork of rspec-rails)&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/aslakhellesoy/cucumber/wikis&#34;&gt;Cucumber&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/brynary/webrat/wikis&#34;&gt;Webrat&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://ennerchi.com/projects/jrails&#34;&gt;jRails&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk&#34;&gt;Demeters Revenge&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;And here are the commands in the order I run them to create the blank app.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Create the rails app
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>webrat on Caius Theory</title><link>https://caiustheory.com/tag/webrat/</link><description>Recent content in webrat on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Mon, 03 Nov 2008 06:48:27 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/webrat/index.xml" rel="self" type="application/rss+xml"/><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>&lt;p>When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em>Rspec&lt;/em> testing framework instead of the built-in &lt;em>Test::Unit&lt;/em> and &lt;em>jQuery&lt;/em> instead of &lt;em>prototype&lt;/em>.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://rspec.info/">Rspec&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://github.com/rahoulb/rspec-rails/wikis">Rspec-rails&lt;/a> &lt;em>(NB: I use &lt;a href="http://3hv.co.uk">rahoul&lt;/a>&amp;lsquo;s fork of rspec-rails)&lt;/em>&lt;/li>
+&lt;li>&lt;a href="http://github.com/aslakhellesoy/cucumber/wikis">Cucumber&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://github.com/brynary/webrat/wikis">Webrat&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://ennerchi.com/projects/jrails">jRails&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk">Demeters Revenge&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>And here are the commands in the order I run them to create the blank app.&lt;/p>
+&lt;pre>&lt;code># Create the rails app
 cd ~/Sites/apps/
 rails myapp
 cd myapp
@@ -43,9 +42,9 @@ mkdir public/javascripts
 ruby script/plugin install http://ennerchi.googlecode.com/svn/trunk/plugins/jrails
 git add vendor/plugins/jrails/ public/javascripts
 git ci -m &amp;quot;Adding jRails to replace Prototype&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p&gt;
-&lt;h4 id=&#34;updated-2008-11-04&#34;&gt;Updated 2008-11-04&lt;/h4&gt;
-&lt;p&gt;Added demeters revenge and jRails plugins.&lt;/p&gt;
-&lt;h4 id=&#34;update-2008-11-05&#34;&gt;Update 2008-11-05&lt;/h4&gt;
-&lt;p&gt;I&#39;ve also blogged the &lt;a href=&#34;http://swedishcampground.com/setting-up-git-with-rails-apps&#34;&gt;.gitignore&lt;/a&gt; file I use with rails apps as well. Usually add it into my apps before running &lt;code&gt;git init&lt;/code&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p>
+&lt;h4 id="updated-2008-11-04">Updated 2008-11-04&lt;/h4>
+&lt;p>Added demeters revenge and jRails plugins.&lt;/p>
+&lt;h4 id="update-2008-11-05">Update 2008-11-05&lt;/h4>
+&lt;p>I&amp;rsquo;ve also blogged the &lt;a href="http://swedishcampground.com/setting-up-git-with-rails-apps">.gitignore&lt;/a> file I use with rails apps as well. Usually add it into my apps before running &lt;code>git init&lt;/code>&lt;/p></description></item></channel></rss>

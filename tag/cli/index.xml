@@ -1,90 +1,93 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cli on Caius Theory</title><link>https://caiustheory.com/tag/cli/</link><description>Recent content in cli on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 05 Jul 2018 14:44:41 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/cli/index.xml" rel="self" type="application/rss+xml"/><item><title>Overcommit git hooks: puppet validate</title><link>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</link><pubDate>Thu, 05 Jul 2018 14:44:41 +0000</pubDate><guid>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</guid><description>&lt;p&gt;Computers are great at automatically checking things, and git has a mechanism for running hooks before events happen. Bosh these two things together and you can have git trigger anything you like before you&#39;re allowed to commit, which in turn means you can sanity check exactly what you&#39;re committing to make sure it meets whatever criteria you have.&lt;/p&gt;
-&lt;p&gt;To make it easy to manage my git hooks in a consistent fashion, I use a tool called &lt;a href=&#34;https://github.com/brigade/overcommit&#34;&gt;overcommit&lt;/a&gt;. This comes with a config file to tell it what you want triggered when, and a bunch of standard plugins to choose from.&lt;/p&gt;
-&lt;p&gt;In a &lt;a href=&#34;https://puppet.com&#34;&gt;puppet&lt;/a&gt; repo for instance, I have it check&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://bundler.io&#34;&gt;bundler&lt;/a&gt; is happy everything&#39;s installed&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://puppet-lint.com&#34;&gt;puppet-lint&lt;/a&gt; is happy with any changed puppet files&lt;/li&gt;
-&lt;li&gt;Any JSON or YAML files involved in the commit have valid syntax&lt;/li&gt;
-&lt;li&gt;Any shell scripts are valid (according to &lt;a href=&#34;https://www.shellcheck.net&#34;&gt;shellcheck&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;There is no trailing whitespace left in files&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This usually means something like the following in &lt;code&gt;.overcommit.yml&lt;/code&gt; in the git repo&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;PreCommit&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;BundleCheck&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;JsonSyntax&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;PuppetLint&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;ShellCheck&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;YamlSyntax&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;on_warn&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;fail&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For the most part this works absolutely great. I have on occasion noticed that &lt;a href=&#34;http://puppet-lint.com&#34;&gt;puppet-lint&lt;/a&gt; will let invalid puppet syntax slip through though which is irritating to find after you&#39;ve pushed the changes up to the puppetmaster. The &lt;a href=&#34;https://puppet.com&#34;&gt;puppet&lt;/a&gt; command line tool has a validate subcommand however, so we can hook that into overcommit as a custom hook in the repo.&lt;/p&gt;
-&lt;p&gt;To do this we need to add our custom hook into the right directory, and we&#39;re adding a hook to run before commits, so it goes into &lt;code&gt;.git-hooks/pre_commit&lt;/code&gt;. Lets name it for what it does, validating puppet syntax. So into &lt;code&gt;puppet_validate.rb&lt;/code&gt; we put the following:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# .git-hooks/pre_commit/puppet_validate.rb&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;Overcommit::Hook::PreCommit&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;PuppetValidate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Base&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;run&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;errors&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sx&#34;&gt;%w(puppet parser validate)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:args&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;applicable_files&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:pass&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;success?&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:fail&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;stderr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then we need to tell &lt;a href=&#34;https://github.com/brigade/overcommit&#34;&gt;overcommit&lt;/a&gt; that it needs to run this custom hook as a check whenever we commit, that goes into &lt;code&gt;.overcommit.yml&lt;/code&gt; under the &lt;code&gt;PreCommit&lt;/code&gt; key:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;PreCommit&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;PuppetValidate&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;enabled&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;description&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Validates puppet syntax&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;include&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;**/*.pp&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Hey voila, along with all our other safety checks we&#39;re now checking that any puppet files added or changed in the repo have valid syntax.&lt;/p&gt;</description></item><item><title>Cleaning up locally installed Rubies &amp; Gems</title><link>https://caiustheory.com/cleaning-up-locally-installed-rubies-gems/</link><pubDate>Sun, 12 Nov 2017 11:30:24 +0000</pubDate><guid>https://caiustheory.com/cleaning-up-locally-installed-rubies-gems/</guid><description>&lt;p&gt;Given the following is broadly true:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Rubies installed to &lt;code&gt;~/.rubies&lt;/code&gt; (via ruby-install most likely)&lt;/li&gt;
-&lt;li&gt;Gems for each ruby version installed under ~/.gem (via chruby most likely)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;What to do when you want to reclaim some disk space? Delete unused ruby versions of course! Pretty straight forward, look in ~/.rubies for ones you want to remove, then delete them.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ ls ~/.rubies
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cli on Caius Theory</title><link>https://caiustheory.com/tag/cli/</link><description>Recent content in cli on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 05 Jul 2018 14:44:41 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/cli/index.xml" rel="self" type="application/rss+xml"/><item><title>Overcommit git hooks: puppet validate</title><link>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</link><pubDate>Thu, 05 Jul 2018 14:44:41 +0000</pubDate><guid>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</guid><description>&lt;p>Computers are great at automatically checking things, and git has a mechanism for running hooks before events happen. Bosh these two things together and you can have git trigger anything you like before you&amp;rsquo;re allowed to commit, which in turn means you can sanity check exactly what you&amp;rsquo;re committing to make sure it meets whatever criteria you have.&lt;/p>
+&lt;p>To make it easy to manage my git hooks in a consistent fashion, I use a tool called &lt;a href="https://github.com/brigade/overcommit">overcommit&lt;/a>. This comes with a config file to tell it what you want triggered when, and a bunch of standard plugins to choose from.&lt;/p>
+&lt;p>In a &lt;a href="https://puppet.com">puppet&lt;/a> repo for instance, I have it check&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://bundler.io">bundler&lt;/a> is happy everything&amp;rsquo;s installed&lt;/li>
+&lt;li>&lt;a href="http://puppet-lint.com">puppet-lint&lt;/a> is happy with any changed puppet files&lt;/li>
+&lt;li>Any JSON or YAML files involved in the commit have valid syntax&lt;/li>
+&lt;li>Any shell scripts are valid (according to &lt;a href="https://www.shellcheck.net">shellcheck&lt;/a>)&lt;/li>
+&lt;li>There is no trailing whitespace left in files&lt;/li>
+&lt;/ul>
+&lt;p>This usually means something like the following in &lt;code>.overcommit.yml&lt;/code> in the git repo&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">PreCommit&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">BundleCheck&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">JsonSyntax&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">PuppetLint&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">ShellCheck&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">YamlSyntax&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on_warn&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>fail&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>For the most part this works absolutely great. I have on occasion noticed that &lt;a href="http://puppet-lint.com">puppet-lint&lt;/a> will let invalid puppet syntax slip through though which is irritating to find after you&amp;rsquo;ve pushed the changes up to the puppetmaster. The &lt;a href="https://puppet.com">puppet&lt;/a> command line tool has a validate subcommand however, so we can hook that into overcommit as a custom hook in the repo.&lt;/p>
+&lt;p>To do this we need to add our custom hook into the right directory, and we&amp;rsquo;re adding a hook to run before commits, so it goes into &lt;code>.git-hooks/pre_commit&lt;/code>. Lets name it for what it does, validating puppet syntax. So into &lt;code>puppet_validate.rb&lt;/code> we put the following:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="c1"># .git-hooks/pre_commit/puppet_validate.rb&lt;/span>
+&lt;span class="k">module&lt;/span> &lt;span class="nn">Overcommit::Hook::PreCommit&lt;/span>
+&lt;span class="k">class&lt;/span> &lt;span class="nc">PuppetValidate&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="no">Base&lt;/span>
+&lt;span class="k">def&lt;/span> &lt;span class="nf">run&lt;/span>
+&lt;span class="n">errors&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[]&lt;/span>
+&lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sx">%w(puppet parser validate)&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:args&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="n">applicable_files&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="ss">:pass&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">success?&lt;/span>
+&lt;span class="o">[&lt;/span>&lt;span class="ss">:fail&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">stderr&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then we need to tell &lt;a href="https://github.com/brigade/overcommit">overcommit&lt;/a> that it needs to run this custom hook as a check whenever we commit, that goes into &lt;code>.overcommit.yml&lt;/code> under the &lt;code>PreCommit&lt;/code> key:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">PreCommit&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">PuppetValidate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Validates puppet syntax&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">include&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;**/*.pp&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hey voila, along with all our other safety checks we&amp;rsquo;re now checking that any puppet files added or changed in the repo have valid syntax.&lt;/p></description></item><item><title>Cleaning up locally installed Rubies &amp; Gems</title><link>https://caiustheory.com/cleaning-up-locally-installed-rubies-gems/</link><pubDate>Sun, 12 Nov 2017 11:30:24 +0000</pubDate><guid>https://caiustheory.com/cleaning-up-locally-installed-rubies-gems/</guid><description>&lt;p>Given the following is broadly true:&lt;/p>
+&lt;ul>
+&lt;li>Rubies installed to &lt;code>~/.rubies&lt;/code> (via ruby-install most likely)&lt;/li>
+&lt;li>Gems for each ruby version installed under ~/.gem (via chruby most likely)&lt;/li>
+&lt;/ul>
+&lt;p>What to do when you want to reclaim some disk space? Delete unused ruby versions of course! Pretty straight forward, look in ~/.rubies for ones you want to remove, then delete them.&lt;/p>
+&lt;pre>&lt;code>$ ls ~/.rubies
 ruby-2.0.0
 ruby-2.1.7
 ruby-2.3.1
 ruby-2.4.1
 $ rm -r ~/.rubies/ruby-{2.0.0,2.1.7}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then the problem is we&#39;re left with artifacts hanging around, namely any gems we installed for ruby 2.0.0 or 2.1.7 are still present under &lt;code&gt;~/.gem&lt;/code&gt; using up disk space. We could go through and find them by hand, or we could get the computer to delete anything under &lt;code&gt;~/.gem&lt;/code&gt; that doesn&#39;t have a corresponding runtime under &lt;code&gt;~/.rubies&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;diff --old-line-format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; --unchanged-line-format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; --new-line-format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.gem/ruby/%L &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ls ~/.rubies &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed -Ee &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/ruby-|-p[0-9]+//g&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ls ~/.gem/ruby&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -pL1 rm -r&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;(&lt;code&gt;xargs -pL1&lt;/code&gt; will prompt with each command it wants to run before running it - answer &lt;code&gt;y&lt;/code&gt; to proceed, anything else to prevent it running that command. Lets you see what ruby versions it is removing before it does so.)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ ls ~/.gem/ruby
+&lt;/code>&lt;/pre>
+&lt;p>Then the problem is we&amp;rsquo;re left with artifacts hanging around, namely any gems we installed for ruby 2.0.0 or 2.1.7 are still present under &lt;code>~/.gem&lt;/code> using up disk space. We could go through and find them by hand, or we could get the computer to delete anything under &lt;code>~/.gem&lt;/code> that doesn&amp;rsquo;t have a corresponding runtime under &lt;code>~/.rubies&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">diff --old-line-format&lt;span class="o">=&lt;/span> --unchanged-line-format&lt;span class="o">=&lt;/span> --new-line-format&lt;span class="o">=&lt;/span>&lt;span class="nv">$HOME&lt;/span>/.gem/ruby/%L &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &amp;lt;&lt;span class="o">(&lt;/span>ls ~/.rubies &lt;span class="p">|&lt;/span> sed -Ee &lt;span class="s1">&amp;#39;s/ruby-|-p[0-9]+//g&amp;#39;&lt;/span>&lt;span class="o">)&lt;/span> &amp;lt;&lt;span class="o">(&lt;/span>ls ~/.gem/ruby&lt;span class="o">)&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &lt;span class="p">|&lt;/span> xargs -pL1 rm -r
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>(&lt;code>xargs -pL1&lt;/code> will prompt with each command it wants to run before running it - answer &lt;code>y&lt;/code> to proceed, anything else to prevent it running that command. Lets you see what ruby versions it is removing before it does so.)&lt;/p>
+&lt;pre>&lt;code>$ ls ~/.gem/ruby
 2.0.0
 2.1.7
 2.3.1
 2.4.1
 $ diff --old-line-format= --unchanged-line-format= --new-line-format=$HOME/.gem/ruby/%L \
-&amp;lt;(ls ~/.rubies | sed -Ee &#39;s/ruby-|-p[0-9]+//g&#39;) &amp;lt;(ls ~/.gem/ruby) \
+&amp;lt;(ls ~/.rubies | sed -Ee 's/ruby-|-p[0-9]+//g') &amp;lt;(ls ~/.gem/ruby) \
 | xargs -pL1 rm -r
 rm -r /Users/caius/.gem/ruby/2.0.0?...y
 rm -r /Users/caius/.gem/ruby/2.1.7?...y
 $ ls ~/.gem/ruby
 2.3.1
 2.4.1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And now revel in your reclaimed disk space. (Hunting other large folders/items on your disk? &lt;a href=&#34;http://dev.yorhel.nl/ncdu&#34;&gt;&lt;code&gt;ncdu&lt;/code&gt;&lt;/a&gt; is a great tool for that.)&lt;/p&gt;</description></item><item><title>Compiling SmartOS for AMD processors</title><link>https://caiustheory.com/compiling-smartos-for-amd-processors/</link><pubDate>Sun, 28 Sep 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/compiling-smartos-for-amd-processors/</guid><description>&lt;p&gt;There&#39;s a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that&#39;s quite useful for turning it into a better lab server. The main &lt;a href=&#34;http://imgapi.uqcloud.net/builds&#34;&gt;list of so called &amp;quot;eait&amp;quot; builds&lt;/a&gt; was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image &lt;a href=&#34;http://builds.smartos.skylime.net&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The source code for the eait builds is maintained at &lt;a href=&#34;https://github.com/arekinath/smartos-live&#34;&gt;https://github.com/arekinath/smartos-live&lt;/a&gt;, and you can see the patches applied on top of the normal SmartOS master by going to &lt;a href=&#34;https://github.com/arekinath/smartos-live/compare/joyent:master...eait&#34;&gt;https://github.com/arekinath/smartos-live/compare/joyent:master...eait&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;So here&#39;s how to use SmartOS to compile a more up to date AMD-friendly Smartos!&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Grab the latest multiarch SmartOS image (which &lt;strong&gt;has&lt;/strong&gt; to be used, or the compile will fail.) The latest at the time of writing was &lt;code&gt;4aec529c-55f9-11e3-868e-a37707fcbe86&lt;/code&gt;, so that&#39;s what I&#39;ll use.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;imgadm import 4aec529c-55f9-11e3-868e-a37707fcbe86
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Spin up a zone for us to build in (the &lt;a href=&#34;http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS&#34;&gt;Building SmartOS on SmartOS&lt;/a&gt; page has extra info about this):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;echo &#39;{
+&lt;/code>&lt;/pre>
+&lt;p>And now revel in your reclaimed disk space. (Hunting other large folders/items on your disk? &lt;a href="http://dev.yorhel.nl/ncdu">&lt;code>ncdu&lt;/code>&lt;/a> is a great tool for that.)&lt;/p></description></item><item><title>Compiling SmartOS for AMD processors</title><link>https://caiustheory.com/compiling-smartos-for-amd-processors/</link><pubDate>Sun, 28 Sep 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/compiling-smartos-for-amd-processors/</guid><description>&lt;p>There&amp;rsquo;s a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that&amp;rsquo;s quite useful for turning it into a better lab server. The main &lt;a href="http://imgapi.uqcloud.net/builds">list of so called &amp;ldquo;eait&amp;rdquo; builds&lt;/a> was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image &lt;a href="http://builds.smartos.skylime.net">here&lt;/a>.&lt;/p>
+&lt;p>The source code for the eait builds is maintained at &lt;a href="https://github.com/arekinath/smartos-live">https://github.com/arekinath/smartos-live&lt;/a>, and you can see the patches applied on top of the normal SmartOS master by going to &lt;a href="https://github.com/arekinath/smartos-live/compare/joyent:master...eait">https://github.com/arekinath/smartos-live/compare/joyent:master...eait&lt;/a>.&lt;/p>
+&lt;p>So here&amp;rsquo;s how to use SmartOS to compile a more up to date AMD-friendly Smartos!&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Grab the latest multiarch SmartOS image (which &lt;strong>has&lt;/strong> to be used, or the compile will fail.) The latest at the time of writing was &lt;code>4aec529c-55f9-11e3-868e-a37707fcbe86&lt;/code>, so that&amp;rsquo;s what I&amp;rsquo;ll use.&lt;/p>
+&lt;pre>&lt;code> imgadm import 4aec529c-55f9-11e3-868e-a37707fcbe86
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Spin up a zone for us to build in (the &lt;a href="http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS">Building SmartOS on SmartOS&lt;/a> page has extra info about this):&lt;/p>
+&lt;pre>&lt;code> echo '{
 &amp;quot;alias&amp;quot;: &amp;quot;platform-builder&amp;quot;,
 &amp;quot;brand&amp;quot;: &amp;quot;joyent&amp;quot;,
 &amp;quot;dataset_uuid&amp;quot;: &amp;quot;4aec529c-55f9-11e3-868e-a37707fcbe86&amp;quot;,
@@ -108,191 +111,209 @@ $ ls ~/.gem/ruby
 &amp;quot;root_pw&amp;quot;: &amp;quot;password&amp;quot;,
 &amp;quot;admin_pw&amp;quot;: &amp;quot;password&amp;quot;
 }
-}&#39; | vmadm create
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Login to the created zone:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;zlogin &amp;lt;uuid from `vmadm create` output&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Update the image to the latest packages, etc:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;pkgin -y update &amp;amp;&amp;amp; pkgin -y full-upgrade
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Install a few images we&#39;ll need to compile &amp;amp; package SmartOS:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;pkgin install scmgit cdrtools pbzip2
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Grab the source code of the fork containing the patches we want, from &lt;a href=&#34;https://github.com/arekinath/smartos-live&#34;&gt;arekinath/smartos-live&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;git clone https://github.com/arekinath/smartos-live
+}' | vmadm create
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Login to the created zone:&lt;/p>
+&lt;pre>&lt;code> zlogin &amp;lt;uuid from `vmadm create` output&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Update the image to the latest packages, etc:&lt;/p>
+&lt;pre>&lt;code> pkgin -y update &amp;amp;&amp;amp; pkgin -y full-upgrade
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Install a few images we&amp;rsquo;ll need to compile &amp;amp; package SmartOS:&lt;/p>
+&lt;pre>&lt;code> pkgin install scmgit cdrtools pbzip2
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Grab the source code of the fork containing the patches we want, from &lt;a href="https://github.com/arekinath/smartos-live">arekinath/smartos-live&lt;/a>&lt;/p>
+&lt;pre>&lt;code> git clone https://github.com/arekinath/smartos-live
 cd smartos-live
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;em&gt;Optional&lt;/em&gt;: Edit &lt;code&gt;src/Makefile.defs&lt;/code&gt; and change &lt;code&gt;PARALLEL = -j$(MAX_JOBS)&lt;/code&gt; to &lt;code&gt;PARALLEL = -j8&lt;/code&gt; to do less at once. (Microserver only has a dual core CPU!)&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Copy the configure definition into the right place and start configuration:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cp {sample.,}configure.smartos
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>Optional&lt;/em>: Edit &lt;code>src/Makefile.defs&lt;/code> and change &lt;code>PARALLEL = -j$(MAX_JOBS)&lt;/code> to &lt;code>PARALLEL = -j8&lt;/code> to do less at once. (Microserver only has a dual core CPU!)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Copy the configure definition into the right place and start configuration:&lt;/p>
+&lt;pre>&lt;code> cp {sample.,}configure.smartos
 ./configure
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;(You&#39;ll probably get asked to accept the java license during configuration, so keep half an eye on it)&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Once configure has completed (which doesn&#39;t take &lt;em&gt;too&lt;/em&gt; long, 15 minutes or so), start building:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;gmake world &amp;amp;&amp;amp; gmake live
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Once the build is successfully finished, time to package an iso &amp;amp; usb image:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;export LC_ALL=C
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>(You&amp;rsquo;ll probably get asked to accept the java license during configuration, so keep half an eye on it)&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Once configure has completed (which doesn&amp;rsquo;t take &lt;em>too&lt;/em> long, 15 minutes or so), start building:&lt;/p>
+&lt;pre>&lt;code> gmake world &amp;amp;&amp;amp; gmake live
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Once the build is successfully finished, time to package an iso &amp;amp; usb image:&lt;/p>
+&lt;pre>&lt;code>export LC_ALL=C
 tools/build_iso
 tools/build_usb
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Hey presto, you&#39;ve a freshly built AMD-friendly SmartOS build to flash to a USB key / put on your netboot server and boot your Microserver from!&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;strong&gt;References&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS&#34;&gt;http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/arekinath/smartos-live&#34;&gt;https://github.com/arekinath/smartos-live&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Add to iCloud Reading List programmatically</title><link>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</link><pubDate>Mon, 16 Dec 2013 22:26:31 +0000</pubDate><guid>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</guid><description>&lt;p&gt;One piece of a larger puzzle I&#39;m trying to solve currently, was how to add a given URL to my Apple &amp;quot;&lt;a href=&#34;http://www.apple.com/uk/safari/#icloud&#34;&gt;Reading List&lt;/a&gt;&amp;quot; that is stored in iCloud and synced across all my OS X and iOS devices. More specifically, I wanted to add URLs to the list from my mac running Mavericks (10.9). I had a quick look at the Cocoa APIs and couldn&#39;t see anything in OS X to do this. (iOS has an API to do it from Cocoa-land it seems though.)&lt;/p&gt;
-&lt;p&gt;I figured &lt;a href=&#34;http://www.apple.com/uk/safari/&#34;&gt;Safari.app&lt;/a&gt; was the key to getting this done on OS X, given it has the ability itself to add the current page to the reading list, either via a keyboard command, a menu item, or a button in the address bar. One quick mental leap later, and I was wondering if the engineers at Apple had been nice enough to expose that via Applescript for me to take advantage of.&lt;/p&gt;
-&lt;p&gt;One quick stop in &amp;quot;Script Editor.app&amp;quot; later, and I had the Applescript dictionary open for Safari.app. Lo and behold, there is rather handily an Applescript command called &amp;quot;add reading list item&amp;quot;, which does &lt;strong&gt;exactly&lt;/strong&gt; what I want. It has a few different options you can call it with, depending on whether you want Safari to go populate the title &amp;amp; preview text, or if you want to specify it yourself at save-time.&lt;/p&gt;
-&lt;p&gt;As I want to be able to call this from multiple runtimes, I&#39;ve chosen to save it as an executable, which leans on &lt;a href=&#34;https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/osascript.1.html&#34;&gt;&lt;code&gt;osascript&lt;/code&gt;&lt;/a&gt; to run the actual Applescript. And here it is:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-applescript&#34; data-lang=&#34;applescript&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env osascript&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;run&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;argv&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;count&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;argv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;tell&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;app&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Safari&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;add&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;reading&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;list&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;item&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;item&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;argv&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as &lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;run&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Save it as whatever you want (eg. &lt;code&gt;add_to_reading_list&lt;/code&gt;), make it executable (&lt;code&gt;chmod +x add_to_reading_list&lt;/code&gt;), and then run it with the URL you want saving as the first argument.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ add_to_reading_list &amp;quot;http://caius.name/&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;p>Hey presto, you&amp;rsquo;ve a freshly built AMD-friendly SmartOS build to flash to a USB key / put on your netboot server and boot your Microserver from!&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>References&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS">http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/arekinath/smartos-live">https://github.com/arekinath/smartos-live&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Add to iCloud Reading List programmatically</title><link>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</link><pubDate>Mon, 16 Dec 2013 22:26:31 +0000</pubDate><guid>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</guid><description>&lt;p>One piece of a larger puzzle I&amp;rsquo;m trying to solve currently, was how to add a given URL to my Apple &amp;ldquo;&lt;a href="http://www.apple.com/uk/safari/#icloud">Reading List&lt;/a>&amp;rdquo; that is stored in iCloud and synced across all my OS X and iOS devices. More specifically, I wanted to add URLs to the list from my mac running Mavericks (10.9). I had a quick look at the Cocoa APIs and couldn&amp;rsquo;t see anything in OS X to do this. (iOS has an API to do it from Cocoa-land it seems though.)&lt;/p>
+&lt;p>I figured &lt;a href="http://www.apple.com/uk/safari/">Safari.app&lt;/a> was the key to getting this done on OS X, given it has the ability itself to add the current page to the reading list, either via a keyboard command, a menu item, or a button in the address bar. One quick mental leap later, and I was wondering if the engineers at Apple had been nice enough to expose that via Applescript for me to take advantage of.&lt;/p>
+&lt;p>One quick stop in &amp;ldquo;Script Editor.app&amp;rdquo; later, and I had the Applescript dictionary open for Safari.app. Lo and behold, there is rather handily an Applescript command called &amp;ldquo;add reading list item&amp;rdquo;, which does &lt;strong>exactly&lt;/strong> what I want. It has a few different options you can call it with, depending on whether you want Safari to go populate the title &amp;amp; preview text, or if you want to specify it yourself at save-time.&lt;/p>
+&lt;p>As I want to be able to call this from multiple runtimes, I&amp;rsquo;ve chosen to save it as an executable, which leans on &lt;a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/osascript.1.html">&lt;code>osascript&lt;/code>&lt;/a> to run the actual Applescript. And here it is:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-applescript" data-lang="applescript">&lt;span class="c">#!/usr/bin/env osascript&lt;/span>
+&lt;span class="k">on&lt;/span> &lt;span class="nb">run&lt;/span> &lt;span class="nv">argv&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">count&lt;/span> &lt;span class="k">of&lt;/span> &lt;span class="nv">argv&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="k">tell&lt;/span> &lt;span class="nv">app&lt;/span> &lt;span class="s2">&amp;#34;Safari&amp;#34;&lt;/span> &lt;span class="k">to&lt;/span> &lt;span class="nv">add&lt;/span> &lt;span class="nv">reading&lt;/span> &lt;span class="nv">list&lt;/span> &lt;span class="nb">item&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">item&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="k">of&lt;/span> &lt;span class="nv">argv&lt;/span> &lt;span class="k">as &lt;/span>&lt;span class="nc">text&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">end&lt;/span> &lt;span class="k">if&lt;/span>
+&lt;span class="k">end&lt;/span> &lt;span class="nb">run&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Save it as whatever you want (eg. &lt;code>add_to_reading_list&lt;/code>), make it executable (&lt;code>chmod +x add_to_reading_list&lt;/code>), and then run it with the URL you want saving as the first argument.&lt;/p>
+&lt;pre>&lt;code>$ add_to_reading_list &amp;quot;http://caius.name/&amp;quot;
 $ add_to_reading_list &amp;quot;http://google.com/&amp;quot;
 # … etc …
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;(Adding support for specifying preview text and title is left as an exercise for the reader!)&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Have fun reading later!&lt;/p&gt;</description></item><item><title>Why I love DATA</title><link>https://caiustheory.com/why-i-love-data/</link><pubDate>Tue, 08 Jan 2013 19:09:42 +0000</pubDate><guid>https://caiustheory.com/why-i-love-data/</guid><description>&lt;p&gt;In a ruby script, there&#39;s a keyword &lt;code&gt;__END__&lt;/code&gt; that for a long time I thought just marked anything after it as a comment. So I used to use it to store snippets and notes about the script that weren&#39;t really needed inline. Then one day I stumbled across the &lt;code&gt;DATA&lt;/code&gt; constant, and wondered what flaming magic it was.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;DATA&lt;/code&gt; is in fact an IO object, that you can read from (or anything else you&#39;d do with an IO object). It contains all the content after &lt;code&gt;__END__&lt;/code&gt; in that ruby script file&lt;a href=&#34;#fn1&#34;&gt;*&lt;/a&gt;. (It only exists when the file contains &lt;code&gt;__END__&lt;/code&gt;, and for the first file ruby invokes though. See &lt;a href=&#34;#fn1&#34;&gt;footnote&lt;/a&gt; for more details.)&lt;/p&gt;
-&lt;p&gt;How can we use this, and why indeed do I love this fickle constant? I mostly use it for quick scripts where I need to process text data, rather than piping to STDIN.&lt;/p&gt;
-&lt;p&gt;Given a list of URLs that I want to open in my web browser and look at, I could do the following for instance:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;no&#34;&gt;DATA&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;each_line&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:chomp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;each&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;
-&lt;span class=&#34;sb&#34;&gt;`open &amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;#{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;&amp;#34;`&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;cp&#34;&gt;__END__
-&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;http://google.com/
-&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;http://yahoo.com/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;which upon running (on a mac) would open all the URLs listed in DATA in my default web browser. (For bonus points, use &lt;a href=&#34;https://github.com/copiousfreetime/launchy#readme&#34;&gt;Launchy&lt;/a&gt; for cross-platform compatibility.) Really handy &amp;amp; quick/simple when you&#39;ve got 500+ URLs to open at once to go through. (I once had a job that required me to do this daily. Fun.)&lt;/p&gt;
-&lt;p&gt;Or given a bunch of CSV data that you just want one column for, you could reach for &lt;code&gt;cut&lt;/code&gt; or &lt;code&gt;awk&lt;/code&gt; in the terminal, but ruby has a really good CSV library which I trust and know how to use already. Why not just use that &amp;amp; &lt;code&gt;DATA&lt;/code&gt; to pull out the field you want?&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;csv&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;no&#34;&gt;CSV&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parse&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;DATA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;headers&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;each&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;row&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;row&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;kName&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;cp&#34;&gt;__END__
-&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;kId,kName,kURL
-&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;1,Google UK,http://google.co.uk
-&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;2,&amp;#34;Yahoo, UK&amp;#34;,http://yahoo.co.uk&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; Google UK&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# &amp;gt;&amp;gt; Yahoo, UK&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I find when the data I want to munge is already in my clipboard, and I can run ruby scripts directly from text editors without having to save a file, it saves having to write the data out to a file, have ruby read it back in, etc just to do something with the data. I can just write the script reading from &lt;code&gt;DATA&lt;/code&gt;, paste the data in and run it. Which also lets me run it iteratively and build up a slightly more complex script that I don&#39;t want to keep. Then do what I need with the output and close the file without saving it.&lt;/p&gt;
-&lt;p&gt;&lt;span id=&#34;fn1&#34;&gt;*&lt;/span&gt; technically DATA is an IO handler to read &lt;code&gt;__FILE__&lt;/code&gt;, which has been wound forward to the start of the first line after &lt;code&gt;__END__&lt;/code&gt; in the file. And it only exists for the first ruby file to be invoked by the interpreter.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;cat &amp;gt; tmp/data.rb &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;RUBY
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;p DATA.read
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;__END__
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;data.rb
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;RUBY&lt;/span&gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>(Adding support for specifying preview text and title is left as an exercise for the reader!)&lt;/em>&lt;/p>
+&lt;p>Have fun reading later!&lt;/p></description></item><item><title>Why I love DATA</title><link>https://caiustheory.com/why-i-love-data/</link><pubDate>Tue, 08 Jan 2013 19:09:42 +0000</pubDate><guid>https://caiustheory.com/why-i-love-data/</guid><description>&lt;p>In a ruby script, there&amp;rsquo;s a keyword &lt;code>__END__&lt;/code> that for a long time I thought just marked anything after it as a comment. So I used to use it to store snippets and notes about the script that weren&amp;rsquo;t really needed inline. Then one day I stumbled across the &lt;code>DATA&lt;/code> constant, and wondered what flaming magic it was.&lt;/p>
+&lt;p>&lt;code>DATA&lt;/code> is in fact an IO object, that you can read from (or anything else you&amp;rsquo;d do with an IO object). It contains all the content after &lt;code>__END__&lt;/code> in that ruby script file&lt;!-- raw HTML omitted -->*&lt;!-- raw HTML omitted -->. (It only exists when the file contains &lt;code>__END__&lt;/code>, and for the first file ruby invokes though. See &lt;!-- raw HTML omitted -->footnote&lt;!-- raw HTML omitted --> for more details.)&lt;/p>
+&lt;p>How can we use this, and why indeed do I love this fickle constant? I mostly use it for quick scripts where I need to process text data, rather than piping to STDIN.&lt;/p>
+&lt;p>Given a list of URLs that I want to open in my web browser and look at, I could do the following for instance:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="no">DATA&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">each_line&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">map&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="ss">:chomp&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">each&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">url&lt;/span>&lt;span class="o">|&lt;/span>
+&lt;span class="sb">`open &amp;#34;&lt;/span>&lt;span class="si">#{&lt;/span>&lt;span class="n">url&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">&amp;#34;`&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="cp">__END__
+&lt;/span>&lt;span class="cp">http://google.com/
+&lt;/span>&lt;span class="cp">http://yahoo.com/
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>which upon running (on a mac) would open all the URLs listed in DATA in my default web browser. (For bonus points, use &lt;a href="https://github.com/copiousfreetime/launchy#readme">Launchy&lt;/a> for cross-platform compatibility.) Really handy &amp;amp; quick/simple when you&amp;rsquo;ve got 500+ URLs to open at once to go through. (I once had a job that required me to do this daily. Fun.)&lt;/p>
+&lt;p>Or given a bunch of CSV data that you just want one column for, you could reach for &lt;code>cut&lt;/code> or &lt;code>awk&lt;/code> in the terminal, but ruby has a really good CSV library which I trust and know how to use already. Why not just use that &amp;amp; &lt;code>DATA&lt;/code> to pull out the field you want?&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="nb">require&lt;/span> &lt;span class="s2">&amp;#34;csv&amp;#34;&lt;/span>
+&lt;span class="no">CSV&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="no">DATA&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">headers&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kp">true&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">each&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">row&lt;/span>&lt;span class="o">|&lt;/span>
+&lt;span class="nb">puts&lt;/span> &lt;span class="n">row&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;kName&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="cp">__END__
+&lt;/span>&lt;span class="cp">kId,kName,kURL
+&lt;/span>&lt;span class="cp">1,Google UK,http://google.co.uk
+&lt;/span>&lt;span class="cp">2,&amp;#34;Yahoo, UK&amp;#34;,http://yahoo.co.uk
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="c1"># &amp;gt;&amp;gt; Google UK&lt;/span>
+&lt;span class="c1"># &amp;gt;&amp;gt; Yahoo, UK&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I find when the data I want to munge is already in my clipboard, and I can run ruby scripts directly from text editors without having to save a file, it saves having to write the data out to a file, have ruby read it back in, etc just to do something with the data. I can just write the script reading from &lt;code>DATA&lt;/code>, paste the data in and run it. Which also lets me run it iteratively and build up a slightly more complex script that I don&amp;rsquo;t want to keep. Then do what I need with the output and close the file without saving it.&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->*&lt;!-- raw HTML omitted --> technically DATA is an IO handler to read &lt;code>__FILE__&lt;/code>, which has been wound forward to the start of the first line after &lt;code>__END__&lt;/code> in the file. And it only exists for the first ruby file to be invoked by the interpreter.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">cat &amp;gt; tmp/data.rb &lt;span class="s">&amp;lt;&amp;lt;RUBY
+&lt;/span>&lt;span class="s">p DATA.read
+&lt;/span>&lt;span class="s">__END__
+&lt;/span>&lt;span class="s">data.rb
+&lt;/span>&lt;span class="s">RUBY&lt;/span>
 ruby tmp/data.rb
-&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; &amp;#34;data.rb\n&amp;#34;&lt;/span&gt;
-cat &amp;gt; tmp/data-require.rb &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;RUBY
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;require &amp;#34;./tmp/data&amp;#34;
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;RUBY&lt;/span&gt;
+&lt;span class="c1"># =&amp;gt; &amp;#34;data.rb\n&amp;#34;&lt;/span>
+cat &amp;gt; tmp/data-require.rb &lt;span class="s">&amp;lt;&amp;lt;RUBY
+&lt;/span>&lt;span class="s">require &amp;#34;./tmp/data&amp;#34;
+&lt;/span>&lt;span class="s">RUBY&lt;/span>
 ruby tmp/data-require.rb
-&lt;span class=&#34;c1&#34;&gt;# =&amp;gt; /Users/caius/tmp/data.rb:1:in `&amp;lt;top (required)&amp;gt;&amp;#39;: uninitialized constant DATA (NameError)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And because it&#39;s a file handle pointing at the current file, you can rewind it and read the entire ruby script into itself…&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ ruby tmp/readself.rb
+&lt;span class="c1"># =&amp;gt; /Users/caius/tmp/data.rb:1:in `&amp;lt;top (required)&amp;gt;&amp;#39;: uninitialized constant DATA (NameError)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And because it&amp;rsquo;s a file handle pointing at the current file, you can rewind it and read the entire ruby script into itself…&lt;/p>
+&lt;pre>&lt;code>$ ruby tmp/readself.rb
 DATA.rewind
 print DATA.read
 __END__
 something goes here
-&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>Geolocation in nginx</title><link>https://caiustheory.com/geolocation-in-nginx/</link><pubDate>Tue, 04 Dec 2012 09:42:00 +0000</pubDate><guid>https://caiustheory.com/geolocation-in-nginx/</guid><description>&lt;p&gt;Sometimes you need to have a rough idea of where your website visitor is located. There&#39;s many ways to geolocate them, but if you just want to go to country level then &lt;a href=&#34;http://dev.maxmind.com/geoip/geolite&#34;&gt;MaxMind have free geo databases&lt;/a&gt; available to help you. When we needed to do this quickly on-the-fly at EmberAds, we came up with the &lt;a href=&#34;https://github.com/emberads/trifle#readme&#34;&gt;trifle&lt;/a&gt; gem, which supports ipv4 and ipv6 lookups.&lt;/p&gt;
-&lt;p&gt;Recently I was searching for something else to do with nginx and ran across &lt;a href=&#34;http://www.ruby-forum.com/topic/125810&#34;&gt;a mailing list thread&lt;/a&gt; about using the maxmind database with nginx&#39;s &lt;a href=&#34;http://wiki.nginx.org/NginxHttpGeoModule&#34;&gt;HTTP Geo module&lt;/a&gt; and do the lookup directly in nginx itself. Finally got a chance to sit down and work out the logistics of doing this. I&#39;ve done this on an ubuntu 12.04 box, with the expected config file layouts that come with ubuntu.&lt;/p&gt;
-&lt;p&gt;Run the following on your server (as someone with write access to nginx config files):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Generate the text file for nginx to import&lt;/span&gt;
-perl &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&amp;lt; &amp;lt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;zip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;tempfile&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;curl -so &lt;span class=&#34;nv&#34;&gt;$zip&lt;/span&gt; http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; unzip -p &lt;span class=&#34;nv&#34;&gt;$zip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &amp;gt; /etc/nginx/nginx_ip_country.txt
-&lt;span class=&#34;c1&#34;&gt;# Tell nginx to work out the IP country and store in variable&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;geo $IP_COUNTRY {
-&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt; default --;
-&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt; include /etc/nginx/nginx_ip_country.txt;
-&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;}&amp;#39;&lt;/span&gt; &amp;gt; /etc/nginx/conf.d/ip_country.conf&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now go find the http block for the vhost you want to have the header passed to, and assuming it&#39;s passenger, add the following:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-nginx&#34; data-lang=&#34;nginx&#34;&gt;&lt;span class=&#34;k&#34;&gt;passenger_set_cgi_param&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;HTTP_X_IP_COUNTRY&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$IP_COUNTRY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;(If you don&#39;t use passenger, look at the docs for &lt;a href=&#34;http://wiki.nginx.org/HttpProxyModule#proxy_pass_header&#34;&gt;proxy_pass_header&lt;/a&gt; or &lt;a href=&#34;http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header&#34;&gt;fastcgi_pass_header&lt;/a&gt; to see which you&#39;ll require for your setup.)&lt;/p&gt;
-&lt;p&gt;Reload nginx, and behold, &lt;code&gt;request.env[&amp;quot;HTTP_X_IP_COUNTRY&amp;quot;]&lt;/code&gt; (assuming a rack app running under ruby) will be a two letter country code, or &lt;code&gt;&amp;quot;--&amp;quot;&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Unfortunately this is IPv4 only currently, there&#39;s a &lt;a href=&#34;http://forum.nginx.org/read.php?29,232648&#34;&gt;thread on the nginx mailing list from November 2012&lt;/a&gt; saying IPv6 support should be coming on the v1.3 branch of nginx, but with no known ETA. So currently for IPv6 support, take a look at &lt;a href=&#34;https://github.com/emberads/trifle#readme&#34;&gt;EmberAds&#39; trifle gem&lt;/a&gt; instead.&lt;/p&gt;</description></item><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p&gt;Dear future Caius searching for this issue,&lt;/p&gt;
-&lt;p&gt;The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is &lt;code&gt;libqt4-dev&lt;/code&gt;. That is, to &lt;code&gt;gem install capybara-webkit&lt;/code&gt;, you need to run &lt;code&gt;aptitude install libqt4-dev&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Yours helpfully,&lt;br /&gt;
-Past Caius&lt;/p&gt;</description></item><item><title>Use Readline With Default Ruby on OS X</title><link>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</link><pubDate>Sun, 05 Feb 2012 18:13:20 +0000</pubDate><guid>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</guid><description>&lt;p&gt;OS X Lion comes with ruby 1.8.7-p249 installed, although it&#39;s compiled against libedit rather than libreadline. Whilst libedit is a mostly-compatible replacement for libreadline, I find there&#39;s a couple of settings I&#39;m used to that don&#39;t work in libedit. (Like &lt;code&gt;history-beginning-search-backward&lt;/code&gt;.)&lt;/p&gt;
-&lt;p&gt;Luckily you can grab the source of ruby and compile just the readline extension, and move it into the right place for it to just work. Here&#39;s what&#39;s been working for me:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Install readline using homebrew&lt;/span&gt;
+&lt;/code>&lt;/pre></description></item><item><title>Geolocation in nginx</title><link>https://caiustheory.com/geolocation-in-nginx/</link><pubDate>Tue, 04 Dec 2012 09:42:00 +0000</pubDate><guid>https://caiustheory.com/geolocation-in-nginx/</guid><description>&lt;p>Sometimes you need to have a rough idea of where your website visitor is located. There&amp;rsquo;s many ways to geolocate them, but if you just want to go to country level then &lt;a href="http://dev.maxmind.com/geoip/geolite">MaxMind have free geo databases&lt;/a> available to help you. When we needed to do this quickly on-the-fly at EmberAds, we came up with the &lt;a href="https://github.com/emberads/trifle#readme">trifle&lt;/a> gem, which supports ipv4 and ipv6 lookups.&lt;/p>
+&lt;p>Recently I was searching for something else to do with nginx and ran across &lt;a href="http://www.ruby-forum.com/topic/125810">a mailing list thread&lt;/a> about using the maxmind database with nginx&amp;rsquo;s &lt;a href="http://wiki.nginx.org/NginxHttpGeoModule">HTTP Geo module&lt;/a> and do the lookup directly in nginx itself. Finally got a chance to sit down and work out the logistics of doing this. I&amp;rsquo;ve done this on an ubuntu 12.04 box, with the expected config file layouts that come with ubuntu.&lt;/p>
+&lt;p>Run the following on your server (as someone with write access to nginx config files):&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># Generate the text file for nginx to import&lt;/span>
+perl &amp;lt;&lt;span class="o">(&lt;/span>curl -s https://raw.github.com/nginx/nginx/master/contrib/geo2nginx.pl&lt;span class="o">)&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>&amp;lt; &amp;lt;&lt;span class="o">(&lt;/span>&lt;span class="nv">zip&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>tempfile&lt;span class="k">)&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>curl -so &lt;span class="nv">$zip&lt;/span> http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span> unzip -p &lt;span class="nv">$zip&lt;/span>&lt;span class="o">)&lt;/span> &amp;gt; /etc/nginx/nginx_ip_country.txt
+&lt;span class="c1"># Tell nginx to work out the IP country and store in variable&lt;/span>
+&lt;span class="nb">echo&lt;/span> &lt;span class="s1">&amp;#39;geo $IP_COUNTRY {
+&lt;/span>&lt;span class="s1"> default --;
+&lt;/span>&lt;span class="s1"> include /etc/nginx/nginx_ip_country.txt;
+&lt;/span>&lt;span class="s1">}&amp;#39;&lt;/span> &amp;gt; /etc/nginx/conf.d/ip_country.conf
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now go find the http block for the vhost you want to have the header passed to, and assuming it&amp;rsquo;s passenger, add the following:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="k">passenger_set_cgi_param&lt;/span> &lt;span class="s">HTTP_X_IP_COUNTRY&lt;/span> &lt;span class="nv">$IP_COUNTRY&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>(If you don&amp;rsquo;t use passenger, look at the docs for &lt;a href="http://wiki.nginx.org/HttpProxyModule#proxy_pass_header">proxy_pass_header&lt;/a> or &lt;a href="http://wiki.nginx.org/HttpFastcgiModule#fastcgi_pass_header">fastcgi_pass_header&lt;/a> to see which you&amp;rsquo;ll require for your setup.)&lt;/p>
+&lt;p>Reload nginx, and behold, &lt;code>request.env[&amp;quot;HTTP_X_IP_COUNTRY&amp;quot;]&lt;/code> (assuming a rack app running under ruby) will be a two letter country code, or &lt;code>&amp;quot;--&amp;quot;&lt;/code>.&lt;/p>
+&lt;p>Unfortunately this is IPv4 only currently, there&amp;rsquo;s a &lt;a href="http://forum.nginx.org/read.php?29,232648">thread on the nginx mailing list from November 2012&lt;/a> saying IPv6 support should be coming on the v1.3 branch of nginx, but with no known ETA. So currently for IPv6 support, take a look at &lt;a href="https://github.com/emberads/trifle#readme">EmberAds&amp;rsquo; trifle gem&lt;/a> instead.&lt;/p></description></item><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p>Dear future Caius searching for this issue,&lt;/p>
+&lt;p>The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is &lt;code>libqt4-dev&lt;/code>. That is, to &lt;code>gem install capybara-webkit&lt;/code>, you need to run &lt;code>aptitude install libqt4-dev&lt;/code>.&lt;/p>
+&lt;p>Yours helpfully,&lt;br>
+Past Caius&lt;/p></description></item><item><title>Use Readline With Default Ruby on OS X</title><link>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</link><pubDate>Sun, 05 Feb 2012 18:13:20 +0000</pubDate><guid>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</guid><description>&lt;p>OS X Lion comes with ruby 1.8.7-p249 installed, although it&amp;rsquo;s compiled against libedit rather than libreadline. Whilst libedit is a mostly-compatible replacement for libreadline, I find there&amp;rsquo;s a couple of settings I&amp;rsquo;m used to that don&amp;rsquo;t work in libedit. (Like &lt;code>history-beginning-search-backward&lt;/code>.)&lt;/p>
+&lt;p>Luckily you can grab the source of ruby and compile just the readline extension, and move it into the right place for it to just work. Here&amp;rsquo;s what&amp;rsquo;s been working for me:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># Install readline using homebrew&lt;/span>
 brew install readline
-&lt;span class=&#34;c1&#34;&gt;# Download the ruby source and check out 1.8.7-p249&lt;/span&gt;
-mkdir ~/tmp &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/tmp
+&lt;span class="c1"># Download the ruby source and check out 1.8.7-p249&lt;/span>
+mkdir ~/tmp &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">cd&lt;/span> ~/tmp
 git clone git://github.com/ruby/ruby
-&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ruby
+&lt;span class="nb">cd&lt;/span> ruby
 git checkout v1_8_7_249
-&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ext/readline
-ruby extconf.rb --with-readline-dir&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;brew --prefix readline&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; --disable-libedit
-make&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now you should have &lt;code&gt;readline.bundle&lt;/code&gt; in the current directory, and it should be compiled against your homebrew-installed readline library, rather than libedit that comes with the system. We can quickly double-check that by using &lt;code&gt;otool&lt;/code&gt; to check what the binary is linked against.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ otool -L readline.bundle
+&lt;span class="nb">cd&lt;/span> ext/readline
+ruby extconf.rb --with-readline-dir&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>brew --prefix readline&lt;span class="k">)&lt;/span> --disable-libedit
+make
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now you should have &lt;code>readline.bundle&lt;/code> in the current directory, and it should be compiled against your homebrew-installed readline library, rather than libedit that comes with the system. We can quickly double-check that by using &lt;code>otool&lt;/code> to check what the binary is linked against.&lt;/p>
+&lt;pre>&lt;code>$ otool -L readline.bundle
 readline.bundle:
 /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/libruby.1.dylib (compatibility version 1.8.0, current version 1.8.7)
 /usr/local/Cellar/readline/6.2.2/lib/libreadline.6.2.dylib (compatibility version 6.0.0, current version 6.2.0)
 /usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
 /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 159.1.0)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And in the output you should see a line listing &amp;quot;libreadline&amp;quot;, and no lines listing &amp;quot;libedit&amp;quot;. Which that shows, we&#39;ve compiled it properly then. Now the bundle is built we need to move it into the right place so it&#39;s loaded when ruby is invoked.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;RL_PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin11.0&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# Back up the original bundle, just in cases&lt;/span&gt;
-sudo mv &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle.libedit&amp;#34;&lt;/span&gt;
-sudo mv readline.bundle &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$RL_PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/readline.bundle&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And that&#39;s it. You&#39;ve got a proper compiled-against-readline installed ruby 1.8.7-p249 on 10.7 now.&lt;/p&gt;
-&lt;p&gt;One gotcha I ran into was needing to pass the same arguments to rvm when installing any other version of 1.8.7 on the same machine. Simple enough, just need to remember to do it though.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;CC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;gcc-4.2 rvm install &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.8.7-p357 -C --with-readline-dir&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;brew --prefix readline&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; --disable-libedit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Install GCC-4.2.1 (Apple build 5666.3) with Xcode 4.2</title><link>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</link><pubDate>Sun, 30 Oct 2011 17:36:48 +0000</pubDate><guid>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</guid><description>
-&lt;p&gt;As of Xcode 4.2 Apple have stopped bundling GCC with it, shipping only the (mostly) compatible llvm-gcc binary instead. The suggested fix is to install GCC using the &lt;a href=&#34;https://github.com/kennethreitz/osx-gcc-installer&#34;&gt;osx-gcc-installer&lt;/a&gt; project. However, I wanted to build and install it from source, which apple provides at &lt;a href=&#34;http://opensource.apple.com/&#34;&gt;http://opensource.apple.com/&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You should already have installed Xcode 4.2 from the app store, then basically the following steps are to grab the tarball from the &lt;a href=&#34;http://opensource.apple.com/release/developer-tools-41/&#34;&gt;4.1 developer tools source&lt;/a&gt;, unpack &amp;amp; compile it, then install it into the right places.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Update 2016-07-03:&lt;/strong&gt; I&#39;d suggest just using homebrew to install this these days:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;brew install homebrew/dupes/apple-gcc42&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&#34;instructions&#34;&gt;Instructions&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Grab and unpack the tarball&lt;/span&gt;
-mkdir ~/tmp &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/tmp
+&lt;/code>&lt;/pre>
+&lt;p>And in the output you should see a line listing &amp;ldquo;libreadline&amp;rdquo;, and no lines listing &amp;ldquo;libedit&amp;rdquo;. Which that shows, we&amp;rsquo;ve compiled it properly then. Now the bundle is built we need to move it into the right place so it&amp;rsquo;s loaded when ruby is invoked.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nv">RL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin11.0&amp;#34;&lt;/span>
+&lt;span class="c1"># Back up the original bundle, just in cases&lt;/span>
+sudo mv &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle.libedit&amp;#34;&lt;/span>
+sudo mv readline.bundle &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And that&amp;rsquo;s it. You&amp;rsquo;ve got a proper compiled-against-readline installed ruby 1.8.7-p249 on 10.7 now.&lt;/p>
+&lt;p>One gotcha I ran into was needing to pass the same arguments to rvm when installing any other version of 1.8.7 on the same machine. Simple enough, just need to remember to do it though.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nv">CC&lt;/span>&lt;span class="o">=&lt;/span>gcc-4.2 rvm install 1.8.7-p357 -C --with-readline-dir&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>brew --prefix readline&lt;span class="k">)&lt;/span> --disable-libedit
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Install GCC-4.2.1 (Apple build 5666.3) with Xcode 4.2</title><link>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</link><pubDate>Sun, 30 Oct 2011 17:36:48 +0000</pubDate><guid>https://caiustheory.com/install-gcc-421-apple-build-56663-with-xcode-42/</guid><description>&lt;p>As of Xcode 4.2 Apple have stopped bundling GCC with it, shipping only the (mostly) compatible llvm-gcc binary instead. The suggested fix is to install GCC using the &lt;a href="https://github.com/kennethreitz/osx-gcc-installer">osx-gcc-installer&lt;/a> project. However, I wanted to build and install it from source, which apple provides at &lt;a href="http://opensource.apple.com/">http://opensource.apple.com/&lt;/a>.&lt;/p>
+&lt;p>You should already have installed Xcode 4.2 from the app store, then basically the following steps are to grab the tarball from the &lt;a href="http://opensource.apple.com/release/developer-tools-41/">4.1 developer tools source&lt;/a>, unpack &amp;amp; compile it, then install it into the right places.&lt;/p>
+&lt;p>&lt;strong>Update 2016-07-03:&lt;/strong> I&amp;rsquo;d suggest just using homebrew to install this these days:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">brew install homebrew/dupes/apple-gcc42
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="instructions">Instructions&lt;/h2>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># Grab and unpack the tarball&lt;/span>
+mkdir ~/tmp &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">cd&lt;/span> ~/tmp
 curl -O http://opensource.apple.com/tarballs/gcc/gcc-5666.3.tar.gz
 tar zxf gcc-5666.3.tar.gz
-&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; gcc-5666.3
-&lt;span class=&#34;c1&#34;&gt;# Setup some stuff it requires&lt;/span&gt;
+&lt;span class="nb">cd&lt;/span> gcc-5666.3
+&lt;span class="c1"># Setup some stuff it requires&lt;/span>
 mkdir -p build/obj build/dst build/sym
-&lt;span class=&#34;c1&#34;&gt;# And then build it. You should go make a cup of tea or five whilst this runs.&lt;/span&gt;
-gnumake install &lt;span class=&#34;nv&#34;&gt;RC_OS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;macos &lt;span class=&#34;nv&#34;&gt;RC_ARCHS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;i386 x86_64&amp;#39;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TARGETS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;i386 x86_64&amp;#39;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRCROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;OBJROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/obj &lt;span class=&#34;nv&#34;&gt;DSTROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/dst &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SYMROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/build/sym
-&lt;span class=&#34;c1&#34;&gt;# And finally install it&lt;/span&gt;
-sudo ditto build/dst /&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And now you should have &lt;code&gt;gcc-4.2&lt;/code&gt; in your &lt;code&gt;$PATH&lt;/code&gt;, available to build all the things that &lt;code&gt;llvm-gcc&lt;/code&gt; fails to compile.&lt;/p&gt;</description></item><item><title>at(1) on OS X</title><link>https://caiustheory.com/at-1-on-os-x/</link><pubDate>Mon, 28 Dec 2009 09:30:30 +0000</pubDate><guid>https://caiustheory.com/at-1-on-os-x/</guid><description>&lt;p&gt;I recently came across the &lt;a href=&#34;http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man1/at.1.html&#34;&gt;&lt;code&gt;at(1)&lt;/code&gt;&lt;/a&gt; command, and wondered why it wasn&#39;t executing jobs I gave it on my machine. Had a poke around the man pages, and discovered in &lt;a href=&#34;http://developer.apple.com/mac/library/documentation/Darwin/Reference/ManPages/man8/atrun.8.html&#34;&gt;&lt;code&gt;atrun(8)&lt;/code&gt;&lt;/a&gt; that by default &lt;code&gt;launchd(8)&lt;/code&gt; has the &lt;code&gt;atrun&lt;/code&gt; entry disabled.&lt;/p&gt;
-&lt;p&gt;To enable it (and have &lt;code&gt;at&lt;/code&gt; jobs fire) you simply need to run the following command once:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.atrun.plist&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Personally I&#39;ve taken to using this to sleep my machine after a custom amount of time, mainly because my alarm clock/sleep timer of choice (&lt;a href=&#34;http://embraceware.com/awaken/&#34;&gt;Awaken&lt;/a&gt;) can&#39;t handle playing &lt;a href=&#34;http://www.spotify.com/&#34;&gt;Spotify&lt;/a&gt; for x minutes and then sleeping the machine. The following command puts the machine to sleep, which (quite effectively) silences spotify.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;osascript -e &amp;#39;tell app \&amp;#34;Finder\&amp;#34; to sleep&amp;#39;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; at &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;:00am&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;See the &lt;a href=&#34;http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man1/at.1.html&#34;&gt;&lt;code&gt;at(1)&lt;/code&gt;&lt;/a&gt; manpage for how to specify the time, but as I&#39;m only ever scheduling it on the same day (usually 20 minutes or so in advance), just passing the time works fine.&lt;/p&gt;</description></item><item><title>Read standard input using Objective-C</title><link>https://caiustheory.com/read-standard-input-using-objective-c/</link><pubDate>Sun, 06 Dec 2009 11:50:08 +0000</pubDate><guid>https://caiustheory.com/read-standard-input-using-objective-c/</guid><description>&lt;p&gt;On a couple of occasions now I&#39;ve wanted to read from &lt;code&gt;STDIN&lt;/code&gt; into an Objective-C command line tool, and both times I&#39;ve had to hunt quite a bit to find the answer because nothing shows up in google for the search terms I used. &amp;quot;Objective-c read from stdin&amp;quot; and &amp;quot;objc read stdin&amp;quot; both turn up results ranging from using &lt;code&gt;NSInputStream&lt;/code&gt; to dropping some C++ in there.&lt;/p&gt;
-&lt;p&gt;The answer is quite simple really, just use &lt;code&gt;NSFileHandle&lt;/code&gt;. More specifically &lt;code&gt;+[NSFileHandle fileHandleWithStandardInput]&lt;/code&gt;. You can then read all data currently in &lt;code&gt;STDIN&lt;/code&gt;, monitor it for new data and anything else you can do with a normal &lt;code&gt;NSFileHandle&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;And here&#39;s some example code, reads all data from &lt;code&gt;STDIN&lt;/code&gt; and stores it into an NSString:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt;&lt;span class=&#34;n&#34;&gt;NSFileHandle&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;input&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSFileHandle&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fileHandleWithStandardInput&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSData&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputData&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSData&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;dataWithData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;input&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;readDataToEndOfFile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]];&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSString&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;alloc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;nl&#34;&gt;initWithData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;inputData&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;encoding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSUTF8StringEncoding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;I&#39;m using this in GarbageCollected apps, memory management without GC is left as an exercise to the user.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Ignore .gitignore in Git</title><link>https://caiustheory.com/ignore-gitignore-in-git/</link><pubDate>Mon, 21 Sep 2009 06:00:00 +0000</pubDate><guid>https://caiustheory.com/ignore-gitignore-in-git/</guid><description>&lt;p&gt;Recently I ran into an issue where I was working on a project which had files I wanted git to ignore, but I didn&#39;t want to commit a &lt;code&gt;.gitignore&lt;/code&gt; file into the project. In case you don&#39;t know, any files matching a pattern in &lt;code&gt;.gitignore&lt;/code&gt; in a git repository are ignored by git. (Unless the file(s) have already been committed, then they need removing from git before they are ignored.)&lt;/p&gt;
-&lt;p&gt;Initially I figured I could just throw the patterns I needed excluded into my global &lt;code&gt;~/.gitignore&lt;/code&gt;, but quickly realised that I needed files matching these patterns to show up in other git repos, so going the global route really wasn&#39;t an option. After some thought I wondered if you could make git ignore &lt;code&gt;.gitignore&lt;/code&gt;, whilst still getting it to ignore files matching the other patterns in the &lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Lets create a new empty repo to test this crazy idea in:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ mkdir foo
+&lt;span class="c1"># And then build it. You should go make a cup of tea or five whilst this runs.&lt;/span>
+gnumake install &lt;span class="nv">RC_OS&lt;/span>&lt;span class="o">=&lt;/span>macos &lt;span class="nv">RC_ARCHS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;i386 x86_64&amp;#39;&lt;/span> &lt;span class="nv">TARGETS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;i386 x86_64&amp;#39;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &lt;span class="nv">SRCROOT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span> &lt;span class="nv">OBJROOT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/build/obj &lt;span class="nv">DSTROOT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/build/dst &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &lt;span class="nv">SYMROOT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="sb">`&lt;/span>/build/sym
+&lt;span class="c1"># And finally install it&lt;/span>
+sudo ditto build/dst /
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And now you should have &lt;code>gcc-4.2&lt;/code> in your &lt;code>$PATH&lt;/code>, available to build all the things that &lt;code>llvm-gcc&lt;/code> fails to compile.&lt;/p></description></item><item><title>at(1) on OS X</title><link>https://caiustheory.com/at-1-on-os-x/</link><pubDate>Mon, 28 Dec 2009 09:30:30 +0000</pubDate><guid>https://caiustheory.com/at-1-on-os-x/</guid><description>&lt;p>I recently came across the &lt;a href="http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man1/at.1.html">&lt;code>at(1)&lt;/code>&lt;/a> command, and wondered why it wasn&amp;rsquo;t executing jobs I gave it on my machine. Had a poke around the man pages, and discovered in &lt;a href="http://developer.apple.com/mac/library/documentation/Darwin/Reference/ManPages/man8/atrun.8.html">&lt;code>atrun(8)&lt;/code>&lt;/a> that by default &lt;code>launchd(8)&lt;/code> has the &lt;code>atrun&lt;/code> entry disabled.&lt;/p>
+&lt;p>To enable it (and have &lt;code>at&lt;/code> jobs fire) you simply need to run the following command once:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.atrun.plist
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Personally I&amp;rsquo;ve taken to using this to sleep my machine after a custom amount of time, mainly because my alarm clock/sleep timer of choice (&lt;a href="http://embraceware.com/awaken/">Awaken&lt;/a>) can&amp;rsquo;t handle playing &lt;a href="http://www.spotify.com/">Spotify&lt;/a> for x minutes and then sleeping the machine. The following command puts the machine to sleep, which (quite effectively) silences spotify.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;osascript -e &amp;#39;tell app \&amp;#34;Finder\&amp;#34; to sleep&amp;#39;&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> at 1:00am
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>See the &lt;a href="http://developer.apple.com/mac/library/DOCUMENTATION/Darwin/Reference/ManPages/man1/at.1.html">&lt;code>at(1)&lt;/code>&lt;/a> manpage for how to specify the time, but as I&amp;rsquo;m only ever scheduling it on the same day (usually 20 minutes or so in advance), just passing the time works fine.&lt;/p></description></item><item><title>Read standard input using Objective-C</title><link>https://caiustheory.com/read-standard-input-using-objective-c/</link><pubDate>Sun, 06 Dec 2009 11:50:08 +0000</pubDate><guid>https://caiustheory.com/read-standard-input-using-objective-c/</guid><description>&lt;p>On a couple of occasions now I&amp;rsquo;ve wanted to read from &lt;code>STDIN&lt;/code> into an Objective-C command line tool, and both times I&amp;rsquo;ve had to hunt quite a bit to find the answer because nothing shows up in google for the search terms I used. &amp;ldquo;Objective-c read from stdin&amp;rdquo; and &amp;ldquo;objc read stdin&amp;rdquo; both turn up results ranging from using &lt;code>NSInputStream&lt;/code> to dropping some C++ in there.&lt;/p>
+&lt;p>The answer is quite simple really, just use &lt;code>NSFileHandle&lt;/code>. More specifically &lt;code>+[NSFileHandle fileHandleWithStandardInput]&lt;/code>. You can then read all data currently in &lt;code>STDIN&lt;/code>, monitor it for new data and anything else you can do with a normal &lt;code>NSFileHandle&lt;/code>.&lt;/p>
+&lt;p>And here&amp;rsquo;s some example code, reads all data from &lt;code>STDIN&lt;/code> and stores it into an NSString:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-objc" data-lang="objc">&lt;span class="n">NSFileHandle&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">input&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">NSFileHandle&lt;/span> &lt;span class="n">fileHandleWithStandardInput&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;span class="n">NSData&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">inputData&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">NSData&lt;/span> &lt;span class="nl">dataWithData&lt;/span>&lt;span class="p">:[&lt;/span>&lt;span class="n">input&lt;/span> &lt;span class="n">readDataToEndOfFile&lt;/span>&lt;span class="p">]];&lt;/span>
+&lt;span class="n">NSString&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">inputString&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[[&lt;/span>&lt;span class="n">NSString&lt;/span> &lt;span class="n">alloc&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;span class="nl">initWithData&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">inputData&lt;/span> &lt;span class="nl">encoding&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">NSUTF8StringEncoding&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>I&amp;rsquo;m using this in GarbageCollected apps, memory management without GC is left as an exercise to the user.&lt;/em>&lt;/p></description></item><item><title>Ignore .gitignore in Git</title><link>https://caiustheory.com/ignore-gitignore-in-git/</link><pubDate>Mon, 21 Sep 2009 06:00:00 +0000</pubDate><guid>https://caiustheory.com/ignore-gitignore-in-git/</guid><description>&lt;p>Recently I ran into an issue where I was working on a project which had files I wanted git to ignore, but I didn&amp;rsquo;t want to commit a &lt;code>.gitignore&lt;/code> file into the project. In case you don&amp;rsquo;t know, any files matching a pattern in &lt;code>.gitignore&lt;/code> in a git repository are ignored by git. (Unless the file(s) have already been committed, then they need removing from git before they are ignored.)&lt;/p>
+&lt;p>Initially I figured I could just throw the patterns I needed excluded into my global &lt;code>~/.gitignore&lt;/code>, but quickly realised that I needed files matching these patterns to show up in other git repos, so going the global route really wasn&amp;rsquo;t an option. After some thought I wondered if you could make git ignore &lt;code>.gitignore&lt;/code>, whilst still getting it to ignore files matching the other patterns in the &lt;code>.gitignore&lt;/code>.&lt;/p>
+&lt;p>Lets create a new empty repo to test this crazy idea in:&lt;/p>
+&lt;pre>&lt;code>$ mkdir foo
 $ cd foo
 $ git init
 Initialized empty Git repository in /Volumes/Brutus/Users/caius/foo/.git/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And create a couple of files for us to play with:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ touch bar
+&lt;/code>&lt;/pre>
+&lt;p>And create a couple of files for us to play with:&lt;/p>
+&lt;pre>&lt;code>$ touch bar
 $ touch baz
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ignore one of the files so we can check other matches are still ignored later on:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;baz&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/code>&lt;/pre>
+&lt;p>Ignore one of the files so we can check other matches are still ignored later on:&lt;/p>
+&lt;pre>&lt;code>$ echo &amp;quot;baz&amp;quot; &amp;gt;&amp;gt; .gitignore
 $ git status
 # On branch master
 #
@@ -304,12 +325,12 @@ $ git status
 # .gitignore
 # bar
 nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ok so far, but we can still see .gitignore in git, so now for the crazy shindig, ignore the ignore file:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;.gitignore&amp;quot; &amp;gt;&amp;gt; .gitignore
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Lets see if it worked, or if we can still see our .gitignore:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ git status
+&lt;/code>&lt;/pre>
+&lt;p>Ok so far, but we can still see .gitignore in git, so now for the crazy shindig, ignore the ignore file:&lt;/p>
+&lt;pre>&lt;code>$ echo &amp;quot;.gitignore&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/code>&lt;/pre>
+&lt;p>Lets see if it worked, or if we can still see our .gitignore:&lt;/p>
+&lt;pre>&lt;code>$ git status
 # On branch master
 #
 # Initial commit
@@ -319,16 +340,16 @@ nothing added to commit but untracked files present (use &amp;quot;git add&amp;q
 #
 # bar
 nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And lets just double-check that &lt;code&gt;.gitignore&lt;/code&gt; and &lt;code&gt;baz&lt;/code&gt; still exist on the filesystem:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ ls -a
+&lt;/code>&lt;/pre>
+&lt;p>And lets just double-check that &lt;code>.gitignore&lt;/code> and &lt;code>baz&lt;/code> still exist on the filesystem:&lt;/p>
+&lt;pre>&lt;code>$ ls -a
 . .. .git .gitignore bar baz
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Fantastic! Turns out adding &amp;quot;.gitignore&amp;quot; to &lt;code&gt;.gitignore&lt;/code&gt; works perfectly. The file is still parsed by git to ignore everything else too, so it does exactly what I needed in this instance.&lt;/p&gt;</description></item><item><title>Capitalise &#34;ringer&#34; on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p&gt;&lt;strong&gt;Backstory:&lt;/strong&gt; Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;quot;ringer&amp;quot; across the top. But when you have headphones plugged in, it says &amp;quot;Headphones&amp;quot;. &lt;em&gt;(Note the capitalisation difference.)&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Now I&#39;m not usually bothered by stuff like this (honest!) but as soon as I&#39;d noticed the &lt;em&gt;&amp;quot;bug&amp;quot;&lt;/em&gt;, I couldn&#39;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&#39;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code&gt;/System&lt;/code&gt; folder. And I&#39;d be able to change it!&lt;/p&gt;
-&lt;p&gt;Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&#39;s SSH server on and go looking for the setting. To do so I figured I&#39;d just need &lt;code&gt;grep&lt;/code&gt; installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p&gt;
-&lt;p&gt;So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the iPhone
+&lt;/code>&lt;/pre>
+&lt;p>Fantastic! Turns out adding &amp;ldquo;.gitignore&amp;rdquo; to &lt;code>.gitignore&lt;/code> works perfectly. The file is still parsed by git to ignore everything else too, so it does exactly what I needed in this instance.&lt;/p></description></item><item><title>Capitalise "ringer" on the iPhone Volume Bezel</title><link>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</link><pubDate>Sat, 20 Jun 2009 15:44:04 +0000</pubDate><guid>https://caiustheory.com/capitalise-ringer-on-the-iphone-volume-bezel/</guid><description>&lt;p>&lt;strong>Backstory:&lt;/strong> Got myself a first generation iPhone second hand and unlocked it to work on my existing T-Mobile (Official iPhone network in the UK is O2.) Noticed after a week or so of owning it that when you change the volume on the phone, the bezel that comes up says &amp;ldquo;ringer&amp;rdquo; across the top. But when you have headphones plugged in, it says &amp;ldquo;Headphones&amp;rdquo;. &lt;em>(Note the capitalisation difference.)&lt;/em>&lt;/p>
+&lt;p>Now I&amp;rsquo;m not usually bothered by stuff like this (honest!) but as soon as I&amp;rsquo;d noticed the &lt;em>&amp;ldquo;bug&amp;rdquo;&lt;/em>, I couldn&amp;rsquo;t help but think of it everytime I changed the volume, whether I was looking at the screen or not. Seeing as I&amp;rsquo;m running a jailbroken phone, and therefore have SSH access to it, I figured the string would be defined in a .strings file somewhere in the &lt;code>/System&lt;/code> folder. And I&amp;rsquo;d be able to change it!&lt;/p>
+&lt;p>Fast-forward a few months and I install the iPhone OS 3.0 update (jailbroken of course), and finally decide to turn the phone&amp;rsquo;s SSH server on and go looking for the setting. To do so I figured I&amp;rsquo;d just need &lt;code>grep&lt;/code> installed on the phone - I could copy the file itself to my mac and edit it there.&lt;/p>
+&lt;p>So I connect to the phone, have a poke around the filesystem and then start a search to find the correct file:&lt;/p>
+&lt;pre>&lt;code># On the iPhone
 $ cd /System/Library/
 $ grep -r &amp;quot;ringer&amp;quot; *
 Binary file CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings matches
@@ -338,66 +359,65 @@ Binary file Frameworks/CFNetwork.framework/CFNetwork matches
 Binary file Frameworks/CFNetwork.framework/da.lproj/Localizable.strings matches
 Binary file Frameworks/CFNetwork.framework/no.lproj/Localizable.strings matches
 Binary file Frameworks/Foundation.framework/da.lproj/URL.strings matches
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;At which point I stopped the grep search (&lt;code&gt;^C&lt;/code&gt;) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code&gt;SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code&gt;. Making sure to have SSH enabled on your mac, a simple &lt;code&gt;scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code&gt; later and the file is sat in my home folder on my mac.&lt;/p&gt;
-&lt;p&gt;Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&#39;ve found a hint on &lt;a href=&#34;http://macosxhints.com&#34;&gt;MacOSXHints&lt;/a&gt; telling me how to convert from &lt;a href=&#34;http://www.macosxhints.com/article.php?story=20050430105126392&#34;&gt;binary to xml plist format&lt;/a&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the mac
+&lt;/code>&lt;/pre>
+&lt;p>At which point I stopped the grep search (&lt;code>^C&lt;/code>) because I know the home screen of the iPhone is the SpringBoard.app, so I figured it would be in the file &lt;code>SpringBoard.app/English.lproj/SpringBoard.strings&lt;/code>. Making sure to have SSH enabled on your mac, a simple &lt;code>scp CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings user@your_mac.local:&lt;/code> later and the file is sat in my home folder on my mac.&lt;/p>
+&lt;p>Switching to the mac, now I try and open the file with TextMate, only to realise its in binary format. I need it in the nice XML format to edit it, so a quick google later and I&amp;rsquo;ve found a hint on &lt;a href="http://macosxhints.com">MacOSXHints&lt;/a> telling me how to convert from &lt;a href="http://www.macosxhints.com/article.php?story=20050430105126392">binary to xml plist format&lt;/a>.&lt;/p>
+&lt;pre>&lt;code># On the mac
 $ plutil -convert xml1 SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;quot;ringer&amp;quot; and I found the following lines:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;key&amp;gt;&lt;/span&gt;RINGER_VOLUME&lt;span class=&#34;nt&#34;&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
-&lt;span class=&#34;nt&#34;&gt;&amp;lt;string&amp;gt;&lt;/span&gt;ringer&lt;span class=&#34;nt&#34;&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Change the &amp;quot;ringer&amp;quot; to &amp;quot;Ringer&amp;quot; between the &lt;code&gt;&amp;lt;string&amp;gt;&lt;/code&gt; and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code&gt;.string&lt;/code&gt;. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code&gt;xml1&lt;/code&gt; in the previous command to &lt;code&gt;binary1&lt;/code&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the mac
+&lt;/code>&lt;/pre>
+&lt;p>Then opening the file in TextMate was a bit more successful! I can actually understand what its defining now. Search through the file for &amp;ldquo;ringer&amp;rdquo; and I found the following lines:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="nt">&amp;lt;key&amp;gt;&lt;/span>RINGER_VOLUME&lt;span class="nt">&amp;lt;/key&amp;gt;&lt;/span>
+&lt;span class="nt">&amp;lt;string&amp;gt;&lt;/span>ringer&lt;span class="nt">&amp;lt;/string&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Change the &amp;ldquo;ringer&amp;rdquo; to &amp;ldquo;Ringer&amp;rdquo; between the &lt;code>&amp;lt;string&amp;gt;&lt;/code> and my editing work is complete! Yes, it really is that easy to edit an interface string that is defined in a &lt;code>.string&lt;/code>. Now I just need to convert the file back to binary, and copy it back to the phone. Converting back to binary file is one line, just change the &lt;code>xml1&lt;/code> in the previous command to &lt;code>binary1&lt;/code>.&lt;/p>
+&lt;pre>&lt;code># On the mac
 $ plutil -convert binary1 SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&#39;ve edited:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# On the iPhone
+&lt;/code>&lt;/pre>
+&lt;p>And then scp it back to the phone, make a backup of the existing file, and overwrite the existing file with the new one I&amp;rsquo;ve edited:&lt;/p>
+&lt;pre>&lt;code># On the iPhone
 $ cd ~
 $ scp user@mac_name.local:SpringBoard.strings .
 $ cd /System/Library/CoreServices/SpringBoard.app/English.lproj/
 $ mv SpringBoard.strings SpringBoard.strings.bak
 $ cp ~/SpringBoard.strings SpringBoard.strings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And then restart the phone, either in the usual manner or just run &lt;code&gt;reboot&lt;/code&gt; on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;quot;Ringer&amp;quot;!&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://caius.name/images/ringer.jpg&#34; alt=&#34;Screenshot of Volume bezel&#34; /&gt;&lt;/p&gt;</description></item><item><title>Adding XHTML output validation to Cucumber stories</title><link>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</link><pubDate>Tue, 16 Jun 2009 10:19:11 +0000</pubDate><guid>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</guid><description>&lt;p&gt;At the 2009 &lt;a href=&#34;http://barcampleeds.com/&#34;&gt;Barcamp Leeds&lt;/a&gt; I attended a talk by &lt;a href=&#34;http://neilcrosby.com/vcard/&#34;&gt;Neil Crosby&lt;/a&gt; where he talked about automated testing, and about how he felt there was a gap in everything that people were testing. Everyone has unit tests, and people are doing full stack testing too, but no-one (so he feels) does XHTML/CSS/JS validation as part of their automated test suite. And certainly from what I&#39;ve seen on the mainstream Ruby site&#39;s about testing, I agreed with him.&lt;/p&gt;
-&lt;p&gt;So after his talk I had a quick look at his &lt;a href=&#34;http://github.com/NeilCrosby/frontend-test-suite/tree/master&#34;&gt;frontend test suite&lt;/a&gt;, and started wondering where exactly I would fit frontend validation testing into my workflow. Would it be part of my unit tests (RSpec), or part of the full stack tests (Cucumber)? As you&#39;ve probably guessed by the title of this post, its ended up going into my cucumber tests. Since the initial play its been something I&#39;ve mused about occasionally, but not something I&#39;ve actively looked into how to implement as part of my test workflow.&lt;/p&gt;
-&lt;p&gt;Fast-forward a few weeks from &lt;a href=&#34;http://barcampleeds.com/&#34;&gt;Barcamp Leeds&lt;/a&gt; and I see a news article in my feed reader entitled &lt;a href=&#34;http://tenderlovemaking.com/2009/06/12/easy-markup-validation/&#34;&gt;&amp;quot;Easy Markup Validation&amp;quot;&lt;/a&gt; which gets me hopeful someone&#39;s solved this frontend validation thing easily for Rubyists. A quick read through and I&#39;m sold on it and installing the gem. Opened an existing project I&#39;m working on which has a fairly extensive test suite (both unit tests &amp;amp; full stack tests) and tried to slot the validation into my controller unit tests.&lt;/p&gt;
-&lt;p&gt;Problem with doing this is by default RSpec-rails doesn&#39;t generate the views in your controller specs. At that point I realised I was already generating the full page when I was doing a full stack test using &lt;a href=&#34;http://github.com/langalex/culerity/tree/master&#34;&gt;culerity&lt;/a&gt; and &lt;a href=&#34;http://cukes.info/&#34;&gt;cucumber&lt;/a&gt;. So why not just add a cucumber step in my stories to validate the HTML on each page I visit? Mainly because its not enough of a failure for this app to have invalid XHTML markup. Having valid markup would be nice, but I&#39;d rather have it as a separate test to my stories in some way.&lt;/p&gt;
-&lt;p&gt;Currently I just do that by only validating if &lt;code&gt;ENV[&amp;quot;VALIDATION&amp;quot;]&lt;/code&gt; is set to anything, so a normal run of my cucumber stories will just test the app does what its supposed to do. If I run them with &lt;code&gt;VALIDATION=true&lt;/code&gt; then it will check my markup is valid as well.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;features/support/env.rb&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;markup_validity&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ENV&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;VALIDATION&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;features/step_definitions/general_steps.rb&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;no&#34;&gt;Then&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;%r/the page is valid XHTML/&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
-&lt;span class=&#34;vg&#34;&gt;$browser&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;html&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;should&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be_xhtml_strict&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ENV&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;VALIDATION&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;features/logging_in.feature&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cucumber&#34; data-lang=&#34;cucumber&#34;&gt;Feature: Logging in
+&lt;/code>&lt;/pre>
+&lt;p>And then restart the phone, either in the usual manner or just run &lt;code>reboot&lt;/code> on the phone via SSH. Lo and behold once its rebooted and I changed the volume, it read &amp;ldquo;Ringer&amp;rdquo;!&lt;/p>
+&lt;p>&lt;img src="http://caius.name/images/ringer.jpg" alt="Screenshot of Volume bezel">&lt;/p></description></item><item><title>Adding XHTML output validation to Cucumber stories</title><link>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</link><pubDate>Tue, 16 Jun 2009 10:19:11 +0000</pubDate><guid>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</guid><description>&lt;p>At the 2009 &lt;a href="http://barcampleeds.com/">Barcamp Leeds&lt;/a> I attended a talk by &lt;a href="http://neilcrosby.com/vcard/">Neil Crosby&lt;/a> where he talked about automated testing, and about how he felt there was a gap in everything that people were testing. Everyone has unit tests, and people are doing full stack testing too, but no-one (so he feels) does XHTML/CSS/JS validation as part of their automated test suite. And certainly from what I&amp;rsquo;ve seen on the mainstream Ruby site&amp;rsquo;s about testing, I agreed with him.&lt;/p>
+&lt;p>So after his talk I had a quick look at his &lt;a href="http://github.com/NeilCrosby/frontend-test-suite/tree/master">frontend test suite&lt;/a>, and started wondering where exactly I would fit frontend validation testing into my workflow. Would it be part of my unit tests (RSpec), or part of the full stack tests (Cucumber)? As you&amp;rsquo;ve probably guessed by the title of this post, its ended up going into my cucumber tests. Since the initial play its been something I&amp;rsquo;ve mused about occasionally, but not something I&amp;rsquo;ve actively looked into how to implement as part of my test workflow.&lt;/p>
+&lt;p>Fast-forward a few weeks from &lt;a href="http://barcampleeds.com/">Barcamp Leeds&lt;/a> and I see a news article in my feed reader entitled &lt;a href="http://tenderlovemaking.com/2009/06/12/easy-markup-validation/">&amp;ldquo;Easy Markup Validation&amp;rdquo;&lt;/a> which gets me hopeful someone&amp;rsquo;s solved this frontend validation thing easily for Rubyists. A quick read through and I&amp;rsquo;m sold on it and installing the gem. Opened an existing project I&amp;rsquo;m working on which has a fairly extensive test suite (both unit tests &amp;amp; full stack tests) and tried to slot the validation into my controller unit tests.&lt;/p>
+&lt;p>Problem with doing this is by default RSpec-rails doesn&amp;rsquo;t generate the views in your controller specs. At that point I realised I was already generating the full page when I was doing a full stack test using &lt;a href="http://github.com/langalex/culerity/tree/master">culerity&lt;/a> and &lt;a href="http://cukes.info/">cucumber&lt;/a>. So why not just add a cucumber step in my stories to validate the HTML on each page I visit? Mainly because its not enough of a failure for this app to have invalid XHTML markup. Having valid markup would be nice, but I&amp;rsquo;d rather have it as a separate test to my stories in some way.&lt;/p>
+&lt;p>Currently I just do that by only validating if &lt;code>ENV[&amp;quot;VALIDATION&amp;quot;]&lt;/code> is set to anything, so a normal run of my cucumber stories will just test the app does what its supposed to do. If I run them with &lt;code>VALIDATION=true&lt;/code> then it will check my markup is valid as well.&lt;/p>
+&lt;p>&lt;strong>features/support/env.rb&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="nb">require&lt;/span> &lt;span class="s2">&amp;#34;markup_validity&amp;#34;&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="no">ENV&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;VALIDATION&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>features/step_definitions/general_steps.rb&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="no">Then&lt;/span> &lt;span class="s">%r/the page is valid XHTML/&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;span class="vg">$browser&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">should&lt;/span> &lt;span class="n">be_xhtml_strict&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="no">ENV&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;VALIDATION&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>features/logging_in.feature&lt;/strong>&lt;/p>
+&lt;pre>&lt;code class="language-cucumber" data-lang="cucumber">Feature: Logging in
 In order to do stuff
 As a registered user
 I want to login
 Scenario: Successful Login
-Given there is a user called &amp;#34;Caius&amp;#34;
+Given there is a user called &amp;quot;Caius&amp;quot;
 When I goto the homepage
 Then the page is valid XHTML
-When I click on the &amp;#34;Login&amp;#34; link
+When I click on the &amp;quot;Login&amp;quot; link
 Then I am redirected to the login page
 And the page is valid XHTML
 When I enter my login details
-And I click &amp;#34;Login&amp;#34;
+And I click &amp;quot;Login&amp;quot;
 Then I am redirected to my dashboard
-And the page is valid XHTML&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now when I run &lt;code&gt;cucumber features/logging_in.feature&lt;/code&gt;, it doesn&#39;t validate the HTML, it just makes sure that I can login as my user and that I am redirected to the right places. But if I run &lt;code&gt;VALIDATION=true cucumber features/logging_in.feature&lt;/code&gt;, then it &lt;em&gt;does&lt;/em&gt; validate my XHTML on the homepage, the login page and on the user&#39;s dashboard. If it fails validation then it gives you a fairly helpful error message as to what it was expecting and what it found instead.&lt;/p&gt;
-&lt;p&gt;From a quick run against a couple of stories in my app I discovered that I&#39;ve not been wrapping form elements in an enclosing element, so they&#39;ve been quickly fixed and now they validate. Now I realise this gem is only testing XHTML output, and doesn&#39;t include CSS or JS validation, but from a quick peek at the gem&#39;s source it should be fairly easy to add both of those in I think, although again they aren&#39;t major errors for me yet in this app.&lt;/p&gt;</description></item><item><title>Automatically Deploying Website From Remote Git Repository</title><link>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</link><pubDate>Sat, 30 May 2009 02:30:40 +0000</pubDate><guid>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</guid><description>
-&lt;p&gt;Before I start, I&#39;ll just quickly run through where I put stuff on my server. Apache logs and config are in the ubuntu default folders: &lt;code&gt;/var/log/apache2&lt;/code&gt; and &lt;code&gt;/etc/apache2/&lt;/code&gt; respectively.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Websites: /home/caius/vhosts/&amp;lt;domain name&amp;gt;/htdocs
+And the page is valid XHTML
+&lt;/code>&lt;/pre>&lt;p>Now when I run &lt;code>cucumber features/logging_in.feature&lt;/code>, it doesn&amp;rsquo;t validate the HTML, it just makes sure that I can login as my user and that I am redirected to the right places. But if I run &lt;code>VALIDATION=true cucumber features/logging_in.feature&lt;/code>, then it &lt;em>does&lt;/em> validate my XHTML on the homepage, the login page and on the user&amp;rsquo;s dashboard. If it fails validation then it gives you a fairly helpful error message as to what it was expecting and what it found instead.&lt;/p>
+&lt;p>From a quick run against a couple of stories in my app I discovered that I&amp;rsquo;ve not been wrapping form elements in an enclosing element, so they&amp;rsquo;ve been quickly fixed and now they validate. Now I realise this gem is only testing XHTML output, and doesn&amp;rsquo;t include CSS or JS validation, but from a quick peek at the gem&amp;rsquo;s source it should be fairly easy to add both of those in I think, although again they aren&amp;rsquo;t major errors for me yet in this app.&lt;/p></description></item><item><title>Automatically Deploying Website From Remote Git Repository</title><link>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</link><pubDate>Sat, 30 May 2009 02:30:40 +0000</pubDate><guid>https://caiustheory.com/automatically-deploying-website-from-remote-git-repository/</guid><description>&lt;p>Before I start, I&amp;rsquo;ll just quickly run through where I put stuff on my server. Apache logs and config are in the ubuntu default folders: &lt;code>/var/log/apache2&lt;/code> and &lt;code>/etc/apache2/&lt;/code> respectively.&lt;/p>
+&lt;pre>&lt;code>Websites: /home/caius/vhosts/&amp;lt;domain name&amp;gt;/htdocs
 Git Repos: /home/caius/git/&amp;lt;domain name&amp;gt;.git
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So I have a git repo locally, &lt;code&gt;~/projects/somesite.com/&lt;/code&gt;, and want to deploy it to my webserver. I&#39;ll keep the git repo in &lt;code&gt;~/git/&lt;/code&gt; and set it up so that when I push to the repo &lt;em&gt;(over ssh)&lt;/em&gt; it will automatically checkout the new changes into the website&#39;s htdocs folder.&lt;/p&gt;
-&lt;p&gt;I&#39;m assuming DNS is already setup (or I&#39;ve used &lt;a href=&#34;http://github.com/bjeanes/ghost/tree/master&#34;&gt;ghost&lt;/a&gt; to map it locally.) And that I&#39;ve setup the virtualhost in apache pointing at &lt;code&gt;/home/caius/vhosts/somesite.com/htdocs&lt;/code&gt; and reloaded apache so the config is in place.&lt;/p&gt;
-&lt;h2 id=&#34;remote-machine&#34;&gt;Remote Machine&lt;/h2&gt;
-&lt;p&gt;We create a bare git repo, then point the working tree at the docroot of our website. This means all the git stuff is kept in the &lt;code&gt;somesite.git&lt;/code&gt; folder, but the files themselves are checked out to the website&#39;s folder. Then we setup a post-receive hook to update the worktree folder after new changes have been pushed to the repo.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ cd git
+&lt;/code>&lt;/pre>
+&lt;p>So I have a git repo locally, &lt;code>~/projects/somesite.com/&lt;/code>, and want to deploy it to my webserver. I&amp;rsquo;ll keep the git repo in &lt;code>~/git/&lt;/code> and set it up so that when I push to the repo &lt;em>(over ssh)&lt;/em> it will automatically checkout the new changes into the website&amp;rsquo;s htdocs folder.&lt;/p>
+&lt;p>I&amp;rsquo;m assuming DNS is already setup (or I&amp;rsquo;ve used &lt;a href="http://github.com/bjeanes/ghost/tree/master">ghost&lt;/a> to map it locally.) And that I&amp;rsquo;ve setup the virtualhost in apache pointing at &lt;code>/home/caius/vhosts/somesite.com/htdocs&lt;/code> and reloaded apache so the config is in place.&lt;/p>
+&lt;h2 id="remote-machine">Remote Machine&lt;/h2>
+&lt;p>We create a bare git repo, then point the working tree at the docroot of our website. This means all the git stuff is kept in the &lt;code>somesite.git&lt;/code> folder, but the files themselves are checked out to the website&amp;rsquo;s folder. Then we setup a post-receive hook to update the worktree folder after new changes have been pushed to the repo.&lt;/p>
+&lt;pre>&lt;code>$ cd git
 $ mkdir somesite.git
 $ cd somesite.git/
 $ git init --bare
@@ -411,68 +431,68 @@ $ cat &amp;gt; hooks/post-receive
 git checkout -f
 ^D
 $ chmod +x hooks/post-receive
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;local-machine&#34;&gt;Local Machine&lt;/h2&gt;
-&lt;p&gt;And now on the client machine we add the remote repo as a git remote, and then push to it.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ git remote add web ssh://myserver/home/caius/git/somesite.git
+&lt;/code>&lt;/pre>
+&lt;h2 id="local-machine">Local Machine&lt;/h2>
+&lt;p>And now on the client machine we add the remote repo as a git remote, and then push to it.&lt;/p>
+&lt;pre>&lt;code>$ git remote add web ssh://myserver/home/caius/git/somesite.git
 $ git push web +master:refs/heads/master
 Counting objects: 3, done.
 Writing objects: 100% (3/3), 229 bytes, done.
 Total 3 (delta 0), reused 0 (delta 0)
 To ssh://myserver/home/caius/git/somesite.git
 * [new branch] master -&amp;gt; master
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;all-done&#34;&gt;All Done&lt;/h2&gt;
-&lt;p&gt;And now if you go to &lt;em&gt;somesite.com&lt;/em&gt; you&#39;ll see the contents of your git repo there. (&lt;em&gt;somesite.com&lt;/em&gt; is just an example url though, I don&#39;t actually own it!)&lt;/p&gt;
-&lt;h3 id=&#34;helpful-urls&#34;&gt;Helpful URLs&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://toroid.org/ams/git-website-howto&#34;&gt;http://toroid.org/ams/git-website-howto&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.mblondel.org/journal/2008/05/25/git-memo/&#34;&gt;http://www.mblondel.org/journal/2008/05/25/git-memo/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&#34;&gt;http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Find shell commands with which</title><link>https://caiustheory.com/find-shell-commands-with-which/</link><pubDate>Sun, 19 Apr 2009 15:02:04 +0000</pubDate><guid>https://caiustheory.com/find-shell-commands-with-which/</guid><description>&lt;p&gt;So I have this command in my $PATH, &lt;code&gt;apachectl&lt;/code&gt;. Because I&#39;m on a mac and I&#39;ve installed apache2 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt;, the command that gets found first is my macports install in &lt;code&gt;/opt&lt;/code&gt;. Up until now I&#39;ve always known that &lt;code&gt;which apachectl&lt;/code&gt; will find that location, but to find any other locations of &lt;code&gt;apachectl&lt;/code&gt; I&#39;d usually use &lt;code&gt;locate&lt;/code&gt; and &lt;code&gt;egrep&lt;/code&gt; together.&lt;/p&gt;
-&lt;p&gt;Here&#39;s my original workflow, lets find the location of the &lt;code&gt;apachectl&lt;/code&gt; being called when I don&#39;t specify a path.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Julius:~ caius$ which apachectl
+&lt;/code>&lt;/pre>
+&lt;h2 id="all-done">All Done&lt;/h2>
+&lt;p>And now if you go to &lt;em>somesite.com&lt;/em> you&amp;rsquo;ll see the contents of your git repo there. (&lt;em>somesite.com&lt;/em> is just an example url though, I don&amp;rsquo;t actually own it!)&lt;/p>
+&lt;h3 id="helpful-urls">Helpful URLs&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="http://toroid.org/ams/git-website-howto">http://toroid.org/ams/git-website-howto&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://www.mblondel.org/journal/2008/05/25/git-memo/">http://www.mblondel.org/journal/2008/05/25/git-memo/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html">http://tatey.com/2009/04/29/jekyll-meets-dreamhost-automated-deployment-for-jekyll-with-git.html&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Find shell commands with which</title><link>https://caiustheory.com/find-shell-commands-with-which/</link><pubDate>Sun, 19 Apr 2009 15:02:04 +0000</pubDate><guid>https://caiustheory.com/find-shell-commands-with-which/</guid><description>&lt;p>So I have this command in my $PATH, &lt;code>apachectl&lt;/code>. Because I&amp;rsquo;m on a mac and I&amp;rsquo;ve installed apache2 through &lt;a href="http://macports.org/">MacPorts&lt;/a>, the command that gets found first is my macports install in &lt;code>/opt&lt;/code>. Up until now I&amp;rsquo;ve always known that &lt;code>which apachectl&lt;/code> will find that location, but to find any other locations of &lt;code>apachectl&lt;/code> I&amp;rsquo;d usually use &lt;code>locate&lt;/code> and &lt;code>egrep&lt;/code> together.&lt;/p>
+&lt;p>Here&amp;rsquo;s my original workflow, lets find the location of the &lt;code>apachectl&lt;/code> being called when I don&amp;rsquo;t specify a path.&lt;/p>
+&lt;pre>&lt;code>Julius:~ caius$ which apachectl
 /opt/local/apache2/bin/apachectl
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Simple enough. Now lets figure out what other locations there&#39;s an &lt;code&gt;apachectl&lt;/code&gt; installed at.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Julius:~ caius$ locate apachectl | egrep &amp;quot;\/apachectl$&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>Simple enough. Now lets figure out what other locations there&amp;rsquo;s an &lt;code>apachectl&lt;/code> installed at.&lt;/p>
+&lt;pre>&lt;code>Julius:~ caius$ locate apachectl | egrep &amp;quot;\/apachectl$&amp;quot;
 /opt/local/apache2/bin/apachectl
 /opt/local/var/macports/software/apache2/2.2.11_0+darwin_9/opt/local/apache2/bin/apachectl
 /usr/sbin/apachectl
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Right, so now I know where else a command exists in the filesystem called &lt;code&gt;apachectl&lt;/code&gt;, but I don&#39;t know if any of those is in my $PATH, or what order they come in when searching through my $PATH. In this (old) workflow I&#39;d have compared them to my $PATH manually as there&#39;s so few of them.&lt;/p&gt;
-&lt;p&gt;So I noticed &lt;a href=&#34;http://awhitebox.com&#34;&gt;Ali&lt;/a&gt; googling for the &lt;code&gt;which&lt;/code&gt; man page on IRC, and &lt;em&gt;(quite stupidly)&lt;/em&gt; poked fun at him for doing so. I then swallowed my ego and actually followed the link to the man page, and boy was I glad I did. Just shows with even a fairly simple command like &lt;code&gt;which&lt;/code&gt;, you sure don&#39;t know everything!&lt;/p&gt;
-&lt;p&gt;What I discovered was that &lt;code&gt;which&lt;/code&gt; has a single flag you can pass it, &lt;code&gt;-a&lt;/code&gt;. From the &lt;a href=&#34;https://www.freebsd.org/cgi/man.cgi?query=which&amp;amp;format=html&#34;&gt;man page&lt;/a&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;-a print all matching pathnames of each argument
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Right. So that &lt;code&gt;locate | grep&lt;/code&gt; command plus manually figuring out what is in my $PATH is really hard work then. &lt;code&gt;which -a&lt;/code&gt; should give us the same results, but a lot faster and with a lot less manual thought.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Julius:~ caius$ which -a apachectl
+&lt;/code>&lt;/pre>
+&lt;p>Right, so now I know where else a command exists in the filesystem called &lt;code>apachectl&lt;/code>, but I don&amp;rsquo;t know if any of those is in my $PATH, or what order they come in when searching through my $PATH. In this (old) workflow I&amp;rsquo;d have compared them to my $PATH manually as there&amp;rsquo;s so few of them.&lt;/p>
+&lt;p>So I noticed &lt;a href="http://awhitebox.com">Ali&lt;/a> googling for the &lt;code>which&lt;/code> man page on IRC, and &lt;em>(quite stupidly)&lt;/em> poked fun at him for doing so. I then swallowed my ego and actually followed the link to the man page, and boy was I glad I did. Just shows with even a fairly simple command like &lt;code>which&lt;/code>, you sure don&amp;rsquo;t know everything!&lt;/p>
+&lt;p>What I discovered was that &lt;code>which&lt;/code> has a single flag you can pass it, &lt;code>-a&lt;/code>. From the &lt;a href="https://www.freebsd.org/cgi/man.cgi?query=which&amp;amp;format=html">man page&lt;/a>:&lt;/p>
+&lt;pre>&lt;code>-a print all matching pathnames of each argument
+&lt;/code>&lt;/pre>
+&lt;p>Right. So that &lt;code>locate | grep&lt;/code> command plus manually figuring out what is in my $PATH is really hard work then. &lt;code>which -a&lt;/code> should give us the same results, but a lot faster and with a lot less manual thought.&lt;/p>
+&lt;pre>&lt;code>Julius:~ caius$ which -a apachectl
 /opt/local/apache2/bin/apachectl
 /usr/sbin/apachectl
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And hey presto, yet another useful bit of bash knowledge for me, thanks to &lt;a href=&#34;http://awhitebox.com&#34;&gt;Ali&lt;/a&gt; not being afraid to &lt;acronym title=&#34;Read the Fucking Manual&#34;&gt;RTFM&lt;/acronym&gt;!&lt;/p&gt;</description></item><item><title>Migrating Rubygems to Ruby 1.9.x</title><link>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</link><pubDate>Sat, 31 Jan 2009 20:29:57 +0000</pubDate><guid>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</guid><description>&lt;p&gt;So I just installed ruby 1.9.1 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt; and wanted to easily migrate my rubygems across from 1.8 to see which ones would fail to install.&lt;/p&gt;
-&lt;p&gt;Thought about it for a while, then came up with the following bash one-liner to do it:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;gem list &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;(&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $1 }&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -L &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; gem1.9 install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;NB:&lt;/strong&gt; Installing Ruby 1.9.1 through macports &lt;code&gt;sudo port install ruby19&lt;/code&gt; means I get &lt;code&gt;ruby1.9&lt;/code&gt;, &lt;code&gt;gem1.9&lt;/code&gt; and &lt;code&gt;rake1.9&lt;/code&gt; installed alongside my usual 1.8 &lt;code&gt;ruby&lt;/code&gt;, &lt;code&gt;gem&lt;/code&gt; and &lt;code&gt;rake&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;That grabs the list of installed gems from &lt;code&gt;gem&lt;/code&gt;, searches for lines containing &amp;quot;(&amp;quot; so it only grabs the gem names, spits out the first section of the line, which is the name of the gem, and finally calls &lt;code&gt;gem1.9 install&lt;/code&gt; for each line via &lt;code&gt;xargs -L 1&lt;/code&gt;. Make sure to run it as root or prefix &lt;code&gt;gem1.9&lt;/code&gt; with &lt;code&gt;sudo&lt;/code&gt;. &lt;em&gt;(Or let it install in your home folder, but I hate that.)&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;From my quick run of the above snippet, 75% of my gems installed &lt;em&gt;(73 out of 98)&lt;/em&gt; and the other few that failed to install were ones like &lt;a href=&#34;http://github.com/why/hpricot/tree/master&#34;&gt;Hpricot&lt;/a&gt; that require native extensions compiling. You can see the entire list of failures and successes of the gems in &lt;a href=&#34;http://pastie.textmate.org/pastes/376136&#34;&gt;this pastie&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Install Mysql Gem on Leopard</title><link>https://caiustheory.com/install-mysql-gem-on-leopard/</link><pubDate>Wed, 21 Jan 2009 17:09:41 +0000</pubDate><guid>https://caiustheory.com/install-mysql-gem-on-leopard/</guid><description>
-&lt;p&gt;So, I keep having to reinstall mysql5 and rubygems from time to time for various reasons. I always install mysql5 through &lt;a href=&#34;http://macports.org/&#34;&gt;MacPorts&lt;/a&gt; as a dependency for the php5 port (along with various other bits for the LA*P stack).&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo port install php5 +mysql5 +pear +readline +sockets +apache2 +sqlite&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Once this is installed then I have &lt;code&gt;mysql&lt;/code&gt; and can setup my databases, etc.&lt;/p&gt;
-&lt;p&gt;Ignoring the rest of the LAMP stack, I then need to connect Ruby to the Mysql I just installed through MacPorts. Its quite simple to do, once you know the right argument to pass to it. The easiest way is to just tell it where the &lt;code&gt;mysql5_conf&lt;/code&gt; file is and let it figure out the rest for itself.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo gem install mysql -- --with-mysql-config&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/local/bin/mysql_config5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Hopefully this will save me 10 minutes of googling next time I need to do this!&lt;/p&gt;
-&lt;h3 id=&#34;update-2009-01-21&#34;&gt;Update 2009-01-21&lt;/h3&gt;
-&lt;p&gt;I&#39;m an idiot and typed the &lt;code&gt;gem install&lt;/code&gt; command by hand, and ended up with &lt;code&gt;--with-mysql-conf&lt;/code&gt; instead of &lt;code&gt;--with-mysql-config&lt;/code&gt;. Updated now.&lt;/p&gt;
-&lt;h3 id=&#34;update-2009-10-19&#34;&gt;Update 2009-10-19&lt;/h3&gt;
-&lt;p&gt;On Snow Leopard I needed to tell rubygems to install the gem as a 64-bit binary. Hattip to &lt;a href=&#34;http://www.schmidp.com/2009/06/14/rubyrails-and-mysql-on-snow-leopard-10a380/comment-page-1/&#34;&gt;Philipp&lt;/a&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sudo env &lt;span class=&#34;nv&#34;&gt;ARCHFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;-arch x86_64&amp;#34;&lt;/span&gt; gem install mysql -- &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; --with-mysql-config&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/local/bin/mysql_config5&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>The Shell Meme</title><link>https://caiustheory.com/the-shell-meme/</link><pubDate>Tue, 30 Dec 2008 18:29:35 +0000</pubDate><guid>https://caiustheory.com/the-shell-meme/</guid><description>&lt;p&gt;I ran across &lt;a href=&#34;http://lstoll.net/2008/04/shell-meme/&#34;&gt;The Shell Meme&lt;/a&gt; on &lt;a href=&#34;http://lstoll.net/&#34;&gt;Lincoln Stoll&#39;s&lt;/a&gt; blog, and figured I&#39;d, uh, &lt;em&gt;borrow&lt;/em&gt; it.&lt;/p&gt;
-&lt;p&gt;Run this command in a new shell:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;history&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ a[$2]++ } END { for(i in a){printf &amp;#34;%5d\t%s\n &amp;#34;,a[i],i} }&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; sort -rn &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; head&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I get this as the output&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;379 git
+&lt;/code>&lt;/pre>
+&lt;p>And hey presto, yet another useful bit of bash knowledge for me, thanks to &lt;a href="http://awhitebox.com">Ali&lt;/a> not being afraid to &lt;!-- raw HTML omitted -->RTFM&lt;!-- raw HTML omitted -->!&lt;/p></description></item><item><title>Migrating Rubygems to Ruby 1.9.x</title><link>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</link><pubDate>Sat, 31 Jan 2009 20:29:57 +0000</pubDate><guid>https://caiustheory.com/migrating-rubygems-to-ruby-19x/</guid><description>&lt;p>So I just installed ruby 1.9.1 through &lt;a href="http://macports.org/">MacPorts&lt;/a> and wanted to easily migrate my rubygems across from 1.8 to see which ones would fail to install.&lt;/p>
+&lt;p>Thought about it for a while, then came up with the following bash one-liner to do it:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">gem list &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;(&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;{ print $1 }&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> xargs -L &lt;span class="m">1&lt;/span> gem1.9 install
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>NB:&lt;/strong> Installing Ruby 1.9.1 through macports &lt;code>sudo port install ruby19&lt;/code> means I get &lt;code>ruby1.9&lt;/code>, &lt;code>gem1.9&lt;/code> and &lt;code>rake1.9&lt;/code> installed alongside my usual 1.8 &lt;code>ruby&lt;/code>, &lt;code>gem&lt;/code> and &lt;code>rake&lt;/code>.&lt;/p>
+&lt;p>That grabs the list of installed gems from &lt;code>gem&lt;/code>, searches for lines containing &amp;ldquo;(&amp;rdquo; so it only grabs the gem names, spits out the first section of the line, which is the name of the gem, and finally calls &lt;code>gem1.9 install&lt;/code> for each line via &lt;code>xargs -L 1&lt;/code>. Make sure to run it as root or prefix &lt;code>gem1.9&lt;/code> with &lt;code>sudo&lt;/code>. &lt;em>(Or let it install in your home folder, but I hate that.)&lt;/em>&lt;/p>
+&lt;p>From my quick run of the above snippet, 75% of my gems installed &lt;em>(73 out of 98)&lt;/em> and the other few that failed to install were ones like &lt;a href="http://github.com/why/hpricot/tree/master">Hpricot&lt;/a> that require native extensions compiling. You can see the entire list of failures and successes of the gems in &lt;a href="http://pastie.textmate.org/pastes/376136">this pastie&lt;/a>&lt;/p></description></item><item><title>Install Mysql Gem on Leopard</title><link>https://caiustheory.com/install-mysql-gem-on-leopard/</link><pubDate>Wed, 21 Jan 2009 17:09:41 +0000</pubDate><guid>https://caiustheory.com/install-mysql-gem-on-leopard/</guid><description>&lt;p>So, I keep having to reinstall mysql5 and rubygems from time to time for various reasons. I always install mysql5 through &lt;a href="http://macports.org/">MacPorts&lt;/a> as a dependency for the php5 port (along with various other bits for the LA*P stack).&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">sudo port install php5 +mysql5 +pear +readline +sockets +apache2 +sqlite
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Once this is installed then I have &lt;code>mysql&lt;/code> and can setup my databases, etc.&lt;/p>
+&lt;p>Ignoring the rest of the LAMP stack, I then need to connect Ruby to the Mysql I just installed through MacPorts. Its quite simple to do, once you know the right argument to pass to it. The easiest way is to just tell it where the &lt;code>mysql5_conf&lt;/code> file is and let it figure out the rest for itself.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">sudo gem install mysql -- --with-mysql-config&lt;span class="o">=&lt;/span>/opt/local/bin/mysql_config5
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hopefully this will save me 10 minutes of googling next time I need to do this!&lt;/p>
+&lt;h3 id="update-2009-01-21">Update 2009-01-21&lt;/h3>
+&lt;p>I&amp;rsquo;m an idiot and typed the &lt;code>gem install&lt;/code> command by hand, and ended up with &lt;code>--with-mysql-conf&lt;/code> instead of &lt;code>--with-mysql-config&lt;/code>. Updated now.&lt;/p>
+&lt;h3 id="update-2009-10-19">Update 2009-10-19&lt;/h3>
+&lt;p>On Snow Leopard I needed to tell rubygems to install the gem as a 64-bit binary. Hattip to &lt;a href="http://www.schmidp.com/2009/06/14/rubyrails-and-mysql-on-snow-leopard-10a380/comment-page-1/">Philipp&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">sudo env &lt;span class="nv">ARCHFLAGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;-arch x86_64&amp;#34;&lt;/span> gem install mysql -- &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> --with-mysql-config&lt;span class="o">=&lt;/span>/opt/local/bin/mysql_config5
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>The Shell Meme</title><link>https://caiustheory.com/the-shell-meme/</link><pubDate>Tue, 30 Dec 2008 18:29:35 +0000</pubDate><guid>https://caiustheory.com/the-shell-meme/</guid><description>&lt;p>I ran across &lt;a href="http://lstoll.net/2008/04/shell-meme/">The Shell Meme&lt;/a> on &lt;a href="http://lstoll.net/">Lincoln Stoll&amp;rsquo;s&lt;/a> blog, and figured I&amp;rsquo;d, uh, &lt;em>borrow&lt;/em> it.&lt;/p>
+&lt;p>Run this command in a new shell:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nb">history&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;{ a[$2]++ } END { for(i in a){printf &amp;#34;%5d\t%s\n &amp;#34;,a[i],i} }&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> sort -rn &lt;span class="p">|&lt;/span> head
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I get this as the output&lt;/p>
+&lt;pre>&lt;code>379 git
 221 cd
 181 ssh
 77 sudo
@@ -482,41 +502,48 @@ To ssh://myserver/home/caius/git/somesite.git
 33 m
 32 bb
 31 m.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;code&gt;bb&lt;/code&gt; changes directory straight into my &lt;a href=&#34;http://www.brightbox.co.uk/&#34;&gt;BrightBox&lt;/a&gt; source directory. &lt;code&gt;m&lt;/code&gt; and &lt;code&gt;m.&lt;/code&gt; are &lt;a href=&#34;http://macromates.com/&#34;&gt;TextMate&lt;/a&gt; alias&#39;s to open files or directories in TextMate for editing.&lt;/p&gt;</description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p&gt;I decided to install ubuntu onto my iMac G3&lt;ref&gt;450Mhz G3, 768mb ram, 20GB Hard Drive&lt;/ref&gt; to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em&gt;slightly&lt;/em&gt; outdated and 100% 404.&lt;/p&gt;
-&lt;p&gt;Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;When the screen goes black, drop to the console&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Control - Option - F2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;(if you need to log in use the name ubuntu to log in.)&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo nano /etc/X11/xorg.conf
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Change the frequencies in monitor section as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Section “Monitor”
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>bb&lt;/code> changes directory straight into my &lt;a href="http://www.brightbox.co.uk/">BrightBox&lt;/a> source directory. &lt;code>m&lt;/code> and &lt;code>m.&lt;/code> are &lt;a href="http://macromates.com/">TextMate&lt;/a> alias&amp;rsquo;s to open files or directories in TextMate for editing.&lt;/p></description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p>I decided to install ubuntu onto my iMac G3&lt;!-- raw HTML omitted -->450Mhz G3, 768mb ram, 20GB Hard Drive&lt;!-- raw HTML omitted --> to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em>slightly&lt;/em> outdated and 100% 404.&lt;/p>
+&lt;p>Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>When the screen goes black, drop to the console&lt;/p>
+&lt;pre>&lt;code> Control - Option - F2
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>(if you need to log in use the name ubuntu to log in.)&lt;/em>&lt;/p>
+&lt;pre>&lt;code> $ sudo nano /etc/X11/xorg.conf
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Change the frequencies in monitor section as follows:&lt;/p>
+&lt;pre>&lt;code> Section “Monitor”
 Identifier “Generic Monitor”
 Option “DPMS”
 HorizSync 60-60
 VertRefresh 43-117
 EndSection
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;After the changes then type &lt;code&gt;control-o&lt;/code&gt;, &lt;code&gt;return&lt;/code&gt; (to accept the filename), then &lt;code&gt;control-x&lt;/code&gt; (save and exit nano)&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Restart X by running the following:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>Adding a remote to existing git repo</title><link>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</link><pubDate>Sun, 09 Nov 2008 18:32:55 +0000</pubDate><guid>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</guid><description>
-&lt;p&gt;Usually for me this happens when I have an existing project and I setup a &lt;a href=&#34;http://github.com/&#34;&gt;github&lt;/a&gt; repo for it. As part of the setup for the github project, it gives you the commands to run to add the github repo as a remote to my local git repo.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cd existing_git_repo
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>After the changes then type &lt;code>control-o&lt;/code>, &lt;code>return&lt;/code> (to accept the filename), then &lt;code>control-x&lt;/code> (save and exit nano)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Restart X by running the following:&lt;/p>
+&lt;pre>&lt;code> sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol></description></item><item><title>Adding a remote to existing git repo</title><link>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</link><pubDate>Sun, 09 Nov 2008 18:32:55 +0000</pubDate><guid>https://caiustheory.com/adding-a-remote-to-existing-git-repo/</guid><description>&lt;p>Usually for me this happens when I have an existing project and I setup a &lt;a href="http://github.com/">github&lt;/a> repo for it. As part of the setup for the github project, it gives you the commands to run to add the github repo as a remote to my local git repo.&lt;/p>
+&lt;pre>&lt;code>cd existing_git_repo
 git remote add origin git@github.com:caius/foo.git
 git push origin master
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The problem then is you&#39;ve added the remote account, but the local master branch isn&#39;t tracking the remote master branch, so when you try and just &lt;code&gt;git pull&lt;/code&gt; it will fail with a message telling you to set the remote refs up.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ git pull
+&lt;/code>&lt;/pre>
+&lt;p>The problem then is you&amp;rsquo;ve added the remote account, but the local master branch isn&amp;rsquo;t tracking the remote master branch, so when you try and just &lt;code>git pull&lt;/code> it will fail with a message telling you to set the remote refs up.&lt;/p>
+&lt;pre>&lt;code>$ git pull
 You asked me to pull without telling me which branch you
-want to merge with, and &#39;branch.master.merge&#39; in
+want to merge with, and 'branch.master.merge' in
 your configuration file does not tell me either. Please
 name which branch you want to merge on the command line and
-try again (e.g. &#39;git pull &amp;lt;repository&amp;gt; &amp;lt;refspec&amp;gt;&#39;).
+try again (e.g. 'git pull &amp;lt;repository&amp;gt; &amp;lt;refspec&amp;gt;').
 See git-pull(1) for details on the refspec.
 If you often merge with the same branch, you may want to
 configure the following variables in your configuration
@@ -526,24 +553,24 @@ branch.master.merge = &amp;lt;remote-ref&amp;gt;
 remote.&amp;lt;nickname&amp;gt;.url = &amp;lt;url&amp;gt;
 remote.&amp;lt;nickname&amp;gt;.fetch = &amp;lt;refspec&amp;gt;
 See git-config(1) for details.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The answer is to do what it says funnily enough, and add the remote refs tracking to the config file. The easiest way I&#39;ve found of doing this is to edit &lt;code&gt;.git/config&lt;/code&gt; and add the following at the bottom of it.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;k&#34;&gt;[branch &amp;#34;master&amp;#34;]&lt;/span&gt;
-&lt;span class=&#34;na&#34;&gt;remote&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;origin
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; merge = refs/heads/master&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Remember to change the branch or remote names if you need to.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Once you&#39;ve added that to the config you can run &lt;code&gt;git pull&lt;/code&gt; on the master branch and it&#39;ll do the usual automagical thing and pull the remote master branch changes into the local one!&lt;/p&gt;
-&lt;h4 id=&#34;updated-2008-11-09&#34;&gt;Updated 2008-11-09&lt;/h4&gt;
-&lt;p&gt;See CiarÃƒÂ¡n&#39;s comment below for an all-inclusive command to do the above.&lt;/p&gt;</description></item><item><title>Removing non-existent source from rubygems</title><link>https://caiustheory.com/removing-non-existant-source-from-rubygems/</link><pubDate>Fri, 07 Nov 2008 06:08:28 +0000</pubDate><guid>https://caiustheory.com/removing-non-existant-source-from-rubygems/</guid><description>&lt;p&gt;I just came to move some ruby scripts onto my mac mini, and to do so I needed to install a couple of gems. Now I realised I hadn&#39;t installed or updated rubygems on the machine for a while, so I figured it was best to update &lt;code&gt;gem&lt;/code&gt; before installing the gems I wanted. Easier said than done.&lt;/p&gt;
-&lt;p&gt;At some point in the past I had added &lt;code&gt;http://gems.datamapper.org&lt;/code&gt; as a source to rubygems. Since then the datamapper project has discontinued using this gem source to serve up gems, so I was getting the following output:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem update --system
+&lt;/code>&lt;/pre>
+&lt;p>The answer is to do what it says funnily enough, and add the remote refs tracking to the config file. The easiest way I&amp;rsquo;ve found of doing this is to edit &lt;code>.git/config&lt;/code> and add the following at the bottom of it.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="k">[branch &amp;#34;master&amp;#34;]&lt;/span>
+&lt;span class="na">remote&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">origin
+&lt;/span>&lt;span class="s"> merge = refs/heads/master&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>Remember to change the branch or remote names if you need to.&lt;/em>&lt;/p>
+&lt;p>Once you&amp;rsquo;ve added that to the config you can run &lt;code>git pull&lt;/code> on the master branch and it&amp;rsquo;ll do the usual automagical thing and pull the remote master branch changes into the local one!&lt;/p>
+&lt;h4 id="updated-2008-11-09">Updated 2008-11-09&lt;/h4>
+&lt;p>See CiarÃƒÂ¡n&amp;rsquo;s comment below for an all-inclusive command to do the above.&lt;/p></description></item><item><title>Removing non-existent source from rubygems</title><link>https://caiustheory.com/removing-non-existant-source-from-rubygems/</link><pubDate>Fri, 07 Nov 2008 06:08:28 +0000</pubDate><guid>https://caiustheory.com/removing-non-existant-source-from-rubygems/</guid><description>&lt;p>I just came to move some ruby scripts onto my mac mini, and to do so I needed to install a couple of gems. Now I realised I hadn&amp;rsquo;t installed or updated rubygems on the machine for a while, so I figured it was best to update &lt;code>gem&lt;/code> before installing the gems I wanted. Easier said than done.&lt;/p>
+&lt;p>At some point in the past I had added &lt;code>http://gems.datamapper.org&lt;/code> as a source to rubygems. Since then the datamapper project has discontinued using this gem source to serve up gems, so I was getting the following output:&lt;/p>
+&lt;pre>&lt;code>mm:daemons caius$ sudo gem update --system
 Updating installed gems
 Bulk updating Gem source index for: http://gems.rubyforge.org/
 ERROR: While executing gem ... (Gem::RemoteSourceException)
 HTTP Response 404 fetching http://gems.datamapper.org/yaml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Eeek! I can&#39;t update because the source no longer exists. So I figured I&#39;d remove the source before updating, that should work right? Wrong. It updates the sources before removing the source from the config it would appear.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem sources
+&lt;/code>&lt;/pre>
+&lt;p>Eeek! I can&amp;rsquo;t update because the source no longer exists. So I figured I&amp;rsquo;d remove the source before updating, that should work right? Wrong. It updates the sources before removing the source from the config it would appear.&lt;/p>
+&lt;pre>&lt;code>mm:daemons caius$ sudo gem sources
 ** CURRENT SOURCES ***
 http://gems.rubyforge.org
 http://gems.datamapper.org
@@ -551,15 +578,15 @@ mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org
 Bulk updating Gem source index for: http://gems.rubyforge.org/
 ERROR: While executing gem ... (Gem::RemoteSourceException)
 HTTP Response 404 fetching http://gems.datamapper.org/yaml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Oh balls. So how do I remove the source without updating it first. I need to update it to remove it, but to remove it I need to update from it. Gotta love catch 22s!&lt;/p&gt;
-&lt;p&gt;I remembered that &lt;code&gt;gem install&lt;/code&gt; has an option not to update sources, &lt;code&gt;--no-update-sources&lt;/code&gt;. So I figured thats gotta work when removing a source as well, but it doesn&#39;t.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org --no-update-sources
+&lt;/code>&lt;/pre>
+&lt;p>Oh balls. So how do I remove the source without updating it first. I need to update it to remove it, but to remove it I need to update from it. Gotta love catch 22s!&lt;/p>
+&lt;p>I remembered that &lt;code>gem install&lt;/code> has an option not to update sources, &lt;code>--no-update-sources&lt;/code>. So I figured thats gotta work when removing a source as well, but it doesn&amp;rsquo;t.&lt;/p>
+&lt;pre>&lt;code>mm:daemons caius$ sudo gem sources -r http://gems.datamapper.org --no-update-sources
 ERROR: While executing gem ... (OptionParser::InvalidOption)
 invalid option: --no-update-sources
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Oh crap. Now what do I do? Take my usual tactic and google for a hint of course! I&#39;d considered trying to find where the gem config was and remove the source by hand, but I figured that wouldn&#39;t be that simple. After hitting a couple of sites that weren&#39;t relevant I ended up &lt;a href=&#34;http://jaigouk.blogspot.com/2008/07/404-fetching-httpgemsdatamapperorgyaml.html&#34;&gt;on the edge of complexity&lt;/a&gt; where he mentions the command &lt;code&gt;nano ~/.gemrc&lt;/code&gt;. Which made me wonder if that file contains the sources.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mm:daemons caius$ cat ~/.gemrc
+&lt;/code>&lt;/pre>
+&lt;p>Oh crap. Now what do I do? Take my usual tactic and google for a hint of course! I&amp;rsquo;d considered trying to find where the gem config was and remove the source by hand, but I figured that wouldn&amp;rsquo;t be that simple. After hitting a couple of sites that weren&amp;rsquo;t relevant I ended up &lt;a href="http://jaigouk.blogspot.com/2008/07/404-fetching-httpgemsdatamapperorgyaml.html">on the edge of complexity&lt;/a> where he mentions the command &lt;code>nano ~/.gemrc&lt;/code>. Which made me wonder if that file contains the sources.&lt;/p>
+&lt;pre>&lt;code>mm:daemons caius$ cat ~/.gemrc
 ---
 :update_sources: true
 :verbose: true
@@ -569,19 +596,18 @@ invalid option: --no-update-sources
 - http://gems.datamapper.org
 :backtrace: false
 :benchmark: false
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;All I needed to do was remove the &lt;code&gt;- http://gems.datamapper.org&lt;/code&gt; line and &lt;em&gt;poof&lt;/em&gt;, &lt;code&gt;gem&lt;/code&gt; was working again. One quick &lt;code&gt;gem update --system&lt;/code&gt; later and I was upgraded from gem 1.1.1 to 1.3.1 and installing the gems I needed.&lt;/p&gt;</description></item><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>
-&lt;p&gt;When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em&gt;Rspec&lt;/em&gt; testing framework instead of the built-in &lt;em&gt;Test::Unit&lt;/em&gt; and &lt;em&gt;jQuery&lt;/em&gt; instead of &lt;em&gt;prototype&lt;/em&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://rspec.info/&#34;&gt;Rspec&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/rahoulb/rspec-rails/wikis&#34;&gt;Rspec-rails&lt;/a&gt; &lt;em&gt;(NB: I use &lt;a href=&#34;http://3hv.co.uk&#34;&gt;rahoul&lt;/a&gt;&#39;s fork of rspec-rails)&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/aslakhellesoy/cucumber/wikis&#34;&gt;Cucumber&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/brynary/webrat/wikis&#34;&gt;Webrat&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://ennerchi.com/projects/jrails&#34;&gt;jRails&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk&#34;&gt;Demeters Revenge&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;And here are the commands in the order I run them to create the blank app.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Create the rails app
+&lt;/code>&lt;/pre>
+&lt;p>All I needed to do was remove the &lt;code>- http://gems.datamapper.org&lt;/code> line and &lt;em>poof&lt;/em>, &lt;code>gem&lt;/code> was working again. One quick &lt;code>gem update --system&lt;/code> later and I was upgraded from gem 1.1.1 to 1.3.1 and installing the gems I needed.&lt;/p></description></item><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>&lt;p>When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em>Rspec&lt;/em> testing framework instead of the built-in &lt;em>Test::Unit&lt;/em> and &lt;em>jQuery&lt;/em> instead of &lt;em>prototype&lt;/em>.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://rspec.info/">Rspec&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://github.com/rahoulb/rspec-rails/wikis">Rspec-rails&lt;/a> &lt;em>(NB: I use &lt;a href="http://3hv.co.uk">rahoul&lt;/a>&amp;lsquo;s fork of rspec-rails)&lt;/em>&lt;/li>
+&lt;li>&lt;a href="http://github.com/aslakhellesoy/cucumber/wikis">Cucumber&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://github.com/brynary/webrat/wikis">Webrat&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://ennerchi.com/projects/jrails">jRails&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk">Demeters Revenge&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>And here are the commands in the order I run them to create the blank app.&lt;/p>
+&lt;pre>&lt;code># Create the rails app
 cd ~/Sites/apps/
 rails myapp
 cd myapp
@@ -615,37 +641,36 @@ mkdir public/javascripts
 ruby script/plugin install http://ennerchi.googlecode.com/svn/trunk/plugins/jrails
 git add vendor/plugins/jrails/ public/javascripts
 git ci -m &amp;quot;Adding jRails to replace Prototype&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p&gt;
-&lt;h4 id=&#34;updated-2008-11-04&#34;&gt;Updated 2008-11-04&lt;/h4&gt;
-&lt;p&gt;Added demeters revenge and jRails plugins.&lt;/p&gt;
-&lt;h4 id=&#34;update-2008-11-05&#34;&gt;Update 2008-11-05&lt;/h4&gt;
-&lt;p&gt;I&#39;ve also blogged the &lt;a href=&#34;http://swedishcampground.com/setting-up-git-with-rails-apps&#34;&gt;.gitignore&lt;/a&gt; file I use with rails apps as well. Usually add it into my apps before running &lt;code&gt;git init&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Command line tricks: Scripting Languages</title><link>https://caiustheory.com/command-line-tricks-scripting-languages/</link><pubDate>Thu, 14 Feb 2008 16:24:27 +0000</pubDate><guid>https://caiustheory.com/command-line-tricks-scripting-languages/</guid><description>
-&lt;p&gt;To search your php.ini file quickly and easily with the option to use regular expressions, I tend to drop back to the &lt;acronym title=&#34;command line interface&#34;&gt;cli&lt;/acronym&gt;. The reason for this is I can easily parse the output of &lt;code&gt;phpinfo()&lt;/code&gt; with &lt;code&gt;grep&lt;/code&gt;, and can do various things with the output, could even pass it to a script if I really wanted to.&lt;/p&gt;
-&lt;p&gt;Here is the line I use to search &lt;code&gt;phpinfo()&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;lt;?php phpinfo() ?&amp;gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; php &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -i &lt;span class=&#34;nv&#34;&gt;$search_string&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;It passes the string through the php interpreter and then searches through it with grep.&lt;/p&gt;
-&lt;p&gt;You can also do other nifty things with the shell &amp;amp; php + ruby especially (though I imagine python &amp;amp; perl work in the same way.) For instance I wanted to see if the following ruby would return the number of seconds since the &lt;a href=&#34;http:/en.wikipedia.org/wiki/Unix_Time&#34;&gt;epoch&lt;/a&gt; till now.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Time&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;now&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_i&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now I could fire up a PHP page and do something like the following&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;php: &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;time&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;ruby: &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;sb&#34;&gt;`ruby -e &amp;#39;print Time.now.to_i&amp;#39;`&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;But what if I&#39;ve not got a web server with PHP running on the machine I&#39;m using? Well then I could drop back to the shell and run it through &lt;code&gt;php&lt;/code&gt; using &lt;code&gt;cat&lt;/code&gt; as a way to insert multiple lines, and it would look like the following&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;cat &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;PHP | php
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;lt;?php
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; echo &amp;#34;php: &amp;#34; . time() . &amp;#34;\n&amp;#34;;
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt; echo &amp;#34;ruby: &amp;#34; . `ruby -e &amp;#39;print Time.now.to_i&amp;#39;` . &amp;#34;\n&amp;#34;;
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;PHP&lt;/span&gt;
-php: &lt;span class=&#34;m&#34;&gt;1203004463&lt;/span&gt;
-ruby: &lt;span class=&#34;m&#34;&gt;1203004463&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now this works, but why do I want to remember all that php, and seeing as I have to drop back to the shell to access the ruby statement, why not just let the shell do all the work? So after a few seconds thinking, I came up with this&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;puts &amp;#34;ruby: #{Time.now.to_i}&amp;#34;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;lt;?php echo &amp;#34;PHP: &amp;#34; . time() . &amp;#34;\n&amp;#34; ?&amp;gt;&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; php&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This runs the ruby code through &lt;code&gt;ruby&lt;/code&gt; and the php code through &lt;code&gt;php&lt;/code&gt; without dropping back to the shell from within a language interpreter :)&lt;/p&gt;
-&lt;h3 id=&#34;update&#34;&gt;Update:&lt;/h3&gt;
-&lt;p&gt;Fangel pointed out &lt;code&gt;php -r&lt;/code&gt; is the equivilent of &lt;code&gt;ruby -e&lt;/code&gt; so the final commands could just be:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ruby -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;puts &amp;#34;ruby: #{Time.now.to_i}&amp;#34;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
-&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;php -r &lt;span class=&#34;s1&#34;&gt;&amp;#39;echo &amp;#34;PHP: &amp;#34;.time().&amp;#34;\n&amp;#34;;&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p>
+&lt;h4 id="updated-2008-11-04">Updated 2008-11-04&lt;/h4>
+&lt;p>Added demeters revenge and jRails plugins.&lt;/p>
+&lt;h4 id="update-2008-11-05">Update 2008-11-05&lt;/h4>
+&lt;p>I&amp;rsquo;ve also blogged the &lt;a href="http://swedishcampground.com/setting-up-git-with-rails-apps">.gitignore&lt;/a> file I use with rails apps as well. Usually add it into my apps before running &lt;code>git init&lt;/code>&lt;/p></description></item><item><title>Command line tricks: Scripting Languages</title><link>https://caiustheory.com/command-line-tricks-scripting-languages/</link><pubDate>Thu, 14 Feb 2008 16:24:27 +0000</pubDate><guid>https://caiustheory.com/command-line-tricks-scripting-languages/</guid><description>&lt;p>To search your php.ini file quickly and easily with the option to use regular expressions, I tend to drop back to the &lt;!-- raw HTML omitted -->cli&lt;!-- raw HTML omitted -->. The reason for this is I can easily parse the output of &lt;code>phpinfo()&lt;/code> with &lt;code>grep&lt;/code>, and can do various things with the output, could even pass it to a script if I really wanted to.&lt;/p>
+&lt;p>Here is the line I use to search &lt;code>phpinfo()&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&amp;lt;?php phpinfo() ?&amp;gt;&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> php &lt;span class="p">|&lt;/span> grep -i &lt;span class="nv">$search_string&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>It passes the string through the php interpreter and then searches through it with grep.&lt;/p>
+&lt;p>You can also do other nifty things with the shell &amp;amp; php + ruby especially (though I imagine python &amp;amp; perl work in the same way.) For instance I wanted to see if the following ruby would return the number of seconds since the &lt;a href="http:/en.wikipedia.org/wiki/Unix_Time">epoch&lt;/a> till now.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="nb">puts&lt;/span> &lt;span class="no">Time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">now&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_i&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now I could fire up a PHP page and do something like the following&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-php" data-lang="php">&lt;span class="cp">&amp;lt;?php&lt;/span>
+&lt;span class="k">echo&lt;/span> &lt;span class="s2">&amp;#34;php: &amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="nx">time&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">echo&lt;/span> &lt;span class="s2">&amp;#34;ruby: &amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="sb">`ruby -e &amp;#39;print Time.now.to_i&amp;#39;`&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="cp">?&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>But what if I&amp;rsquo;ve not got a web server with PHP running on the machine I&amp;rsquo;m using? Well then I could drop back to the shell and run it through &lt;code>php&lt;/code> using &lt;code>cat&lt;/code> as a way to insert multiple lines, and it would look like the following&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">cat &lt;span class="s">&amp;lt;&amp;lt;PHP | php
+&lt;/span>&lt;span class="s">&amp;lt;?php
+&lt;/span>&lt;span class="s"> echo &amp;#34;php: &amp;#34; . time() . &amp;#34;\n&amp;#34;;
+&lt;/span>&lt;span class="s"> echo &amp;#34;ruby: &amp;#34; . `ruby -e &amp;#39;print Time.now.to_i&amp;#39;` . &amp;#34;\n&amp;#34;;
+&lt;/span>&lt;span class="s">PHP&lt;/span>
+php: &lt;span class="m">1203004463&lt;/span>
+ruby: &lt;span class="m">1203004463&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now this works, but why do I want to remember all that php, and seeing as I have to drop back to the shell to access the ruby statement, why not just let the shell do all the work? So after a few seconds thinking, I came up with this&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">ruby -e &lt;span class="s1">&amp;#39;puts &amp;#34;ruby: #{Time.now.to_i}&amp;#34;&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="s1">&amp;#39;&amp;lt;?php echo &amp;#34;PHP: &amp;#34; . time() . &amp;#34;\n&amp;#34; ?&amp;gt;&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> php
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This runs the ruby code through &lt;code>ruby&lt;/code> and the php code through &lt;code>php&lt;/code> without dropping back to the shell from within a language interpreter :)&lt;/p>
+&lt;h3 id="update">Update:&lt;/h3>
+&lt;p>Fangel pointed out &lt;code>php -r&lt;/code> is the equivilent of &lt;code>ruby -e&lt;/code> so the final commands could just be:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">ruby -e &lt;span class="s1">&amp;#39;puts &amp;#34;ruby: #{Time.now.to_i}&amp;#34;&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>php -r &lt;span class="s1">&amp;#39;echo &amp;#34;PHP: &amp;#34;.time().&amp;#34;\n&amp;#34;;&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

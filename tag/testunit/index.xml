@@ -1,35 +1,35 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>test::unit on Caius Theory</title><link>https://caiustheory.com/tag/testunit/</link><description>Recent content in test::unit on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 25 Dec 2008 15:01:54 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/testunit/index.xml" rel="self" type="application/rss+xml"/><item><title>Merry Testing</title><link>https://caiustheory.com/merry-testing/</link><pubDate>Thu, 25 Dec 2008 15:01:54 +0000</pubDate><guid>https://caiustheory.com/merry-testing/</guid><description>
-&lt;p&gt;Just a few examples of the same test written in a few languages. Its testing setting the date on an object that is created in the tests&#39; setup method already. These fall under the unit testing, rather than full-stack testing.&lt;/p&gt;
-&lt;h3 id=&#34;testing-in-objc-with-ocunit-http-www-sente-ch-software-ocunit&#34;&gt;Testing in ObjC with &lt;a href=&#34;http://www.sente.ch/software/ocunit/&#34;&gt;OCUnit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// Add a date and time
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;testSettingDate&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSDate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;STAssertNoThrow&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;setDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;@&amp;#34;Shouldn&amp;#39;t raise an exception&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;// And it should match when pulled out as well
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;STAssertEqualObjects&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s&#34;&gt;@&amp;#34;%@ should match %@&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-ruby-using-rspec-http-rspec-info&#34;&gt;Testing in Ruby using &lt;a href=&#34;http://rspec.info/&#34;&gt;RSpec&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;it&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;should set the date successfully&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# And it should match when pulled out as well&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;should&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-ruby-using-test-unit-http-www-ruby-doc-org-stdlib-libdoc-test-unit-rdoc-classes-test-unit-html&#34;&gt;Testing in Ruby using &lt;a href=&#34;http://www.ruby-doc.org/stdlib/libdoc/test/unit/rdoc/classes/Test/Unit.html&#34;&gt;Test::Unit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;test_setting_date&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# And it should match when pulled out as well&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;assert_equal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-php-using-phpunit-http-phpun-it&#34;&gt;Testing in PHP using &lt;a href=&#34;http://phpun.it/&#34;&gt;PHPUnit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;function testSettingDate()
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>test::unit on Caius Theory</title><link>https://caiustheory.com/tag/testunit/</link><description>Recent content in test::unit on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 25 Dec 2008 15:01:54 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/testunit/index.xml" rel="self" type="application/rss+xml"/><item><title>Merry Testing</title><link>https://caiustheory.com/merry-testing/</link><pubDate>Thu, 25 Dec 2008 15:01:54 +0000</pubDate><guid>https://caiustheory.com/merry-testing/</guid><description>&lt;p>Just a few examples of the same test written in a few languages. Its testing setting the date on an object that is created in the tests&amp;rsquo; setup method already. These fall under the unit testing, rather than full-stack testing.&lt;/p>
+&lt;h3 id="testing-in-objc-with-ocunithttpwwwsentechsoftwareocunit">Testing in ObjC with &lt;a href="http://www.sente.ch/software/ocunit/">OCUnit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-objc" data-lang="objc">&lt;span class="c1">// Add a date and time
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">-&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="nf">testSettingDate&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="n">NSDate&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">theDate&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">NSDate&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;span class="n">STAssertNoThrow&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="nl">setDate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">theDate&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="s">@&amp;#34;Shouldn&amp;#39;t raise an exception&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="c1">// And it should match when pulled out as well
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">STAssertEqualObjects&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">theDate&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="s">@&amp;#34;%@ should match %@&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="p">[&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">theDate&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-ruby-using-rspechttprspecinfo">Testing in Ruby using &lt;a href="http://rspec.info/">RSpec&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">it&lt;/span> &lt;span class="s2">&amp;#34;should set the date successfully&amp;#34;&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;span class="n">the_date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">today&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="c1"># And it should match when pulled out as well&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">should&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-ruby-using-testunithttpwwwruby-docorgstdliblibdoctestunitrdocclassestestunithtml">Testing in Ruby using &lt;a href="http://www.ruby-doc.org/stdlib/libdoc/test/unit/rdoc/classes/Test/Unit.html">Test::Unit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">test_setting_date&lt;/span>
+&lt;span class="n">the_date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">today&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="c1"># And it should match when pulled out as well&lt;/span>
+&lt;span class="n">assert_equal&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">the_date&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-php-using-phpunithttpphpunit">Testing in PHP using &lt;a href="http://phpun.it/">PHPUnit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-php" data-lang="php">function testSettingDate()
 {
 $date = date();
 $calc-&amp;gt;date = $date;
 # And it should match when pulled out as well
 $this-&amp;gt;assertEquals($calc-&amp;gt;date, $date);
-}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>
+}
+&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

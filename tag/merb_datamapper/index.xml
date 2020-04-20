@@ -1,28 +1,37 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>merb_datamapper on Caius Theory</title><link>https://caiustheory.com/tag/merb_datamapper/</link><description>Recent content in merb_datamapper on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 05 Feb 2008 20:27:31 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/merb_datamapper/index.xml" rel="self" type="application/rss+xml"/><item><title>Use datamapper sessions with merb &amp; datamapper</title><link>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</link><pubDate>Tue, 05 Feb 2008 20:27:31 +0000</pubDate><guid>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</guid><description>
-&lt;h3 id=&#34;issue&#34;&gt;Issue&lt;/h3&gt;
-&lt;p&gt;Can&#39;t use merb sessions with datamapper &amp;amp; mysql, get back an error about needing an id on the text column or something (I had the error a couple of days ago.)&lt;/p&gt;
-&lt;h3 id=&#34;solution&#34;&gt;Solution&lt;/h3&gt;
-&lt;p&gt;I suggest grabbing merb_datamapper svn source to fix this in. To do so make sure you have subversion installed on your machine (I&#39;m assuming a Unix based machine here.)&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Checkout the source&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;svn co http://svn.devjavu.com/merb/plugins/merb_datamapper
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Open up the affected file in your favourite editor &lt;em&gt;(I use TextMate)&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cd merb_datamapper
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>merb_datamapper on Caius Theory</title><link>https://caiustheory.com/tag/merb_datamapper/</link><description>Recent content in merb_datamapper on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 05 Feb 2008 20:27:31 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/merb_datamapper/index.xml" rel="self" type="application/rss+xml"/><item><title>Use datamapper sessions with merb &amp; datamapper</title><link>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</link><pubDate>Tue, 05 Feb 2008 20:27:31 +0000</pubDate><guid>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</guid><description>&lt;h3 id="issue">Issue&lt;/h3>
+&lt;p>Can&amp;rsquo;t use merb sessions with datamapper &amp;amp; mysql, get back an error about needing an id on the text column or something (I had the error a couple of days ago.)&lt;/p>
+&lt;h3 id="solution">Solution&lt;/h3>
+&lt;p>I suggest grabbing merb_datamapper svn source to fix this in. To do so make sure you have subversion installed on your machine (I&amp;rsquo;m assuming a Unix based machine here.)&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Checkout the source&lt;/p>
+&lt;pre>&lt;code> svn co http://svn.devjavu.com/merb/plugins/merb_datamapper
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Open up the affected file in your favourite editor &lt;em>(I use TextMate)&lt;/em>&lt;/p>
+&lt;pre>&lt;code> cd merb_datamapper
 mate lib/merb/sessions/data_mapper_session.rb
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Find line 25 that contains&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;`property :session_id, :text, :lazy =&amp;gt; false, :key =&amp;gt; true`
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;and remove &lt;code&gt;:text, :lazy =&amp;gt; false&lt;/code&gt; to replace it with &lt;code&gt;:string&lt;/code&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;`property :session_id, :string, :key =&amp;gt; true`
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Save and close the file, thats the editing done. Now to install the gem.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Build the gem&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;rake gem
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Install the gem&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo gem install pkg/merb_datamapper-0.5.gem
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;And you&#39;re away with the fix installed. Now just run &lt;code&gt;merb&lt;/code&gt; to create your sessions table in the db. Hope this helped!&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Find line 25 that contains&lt;/p>
+&lt;pre>&lt;code> `property :session_id, :text, :lazy =&amp;gt; false, :key =&amp;gt; true`
+&lt;/code>&lt;/pre>
+&lt;p>and remove &lt;code>:text, :lazy =&amp;gt; false&lt;/code> to replace it with &lt;code>:string&lt;/code>&lt;/p>
+&lt;pre>&lt;code> `property :session_id, :string, :key =&amp;gt; true`
+&lt;/code>&lt;/pre>
+&lt;p>Save and close the file, thats the editing done. Now to install the gem.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Build the gem&lt;/p>
+&lt;pre>&lt;code> rake gem
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Install the gem&lt;/p>
+&lt;pre>&lt;code> sudo gem install pkg/merb_datamapper-0.5.gem
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;p>And you&amp;rsquo;re away with the fix installed. Now just run &lt;code>merb&lt;/code> to create your sessions table in the db. Hope this helped!&lt;/p></description></item></channel></rss>

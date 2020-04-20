@@ -1,30 +1,30 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>swift on Caius Theory</title><link>https://caiustheory.com/tag/swift/</link><description>Recent content in swift on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 15 Oct 2016 09:15:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/swift/index.xml" rel="self" type="application/rss+xml"/><item><title>Stop HealthKit causing SIGABRT</title><link>https://caiustheory.com/stop-healthkit-causing-sigabrt/</link><pubDate>Sat, 15 Oct 2016 09:15:00 +0000</pubDate><guid>https://caiustheory.com/stop-healthkit-causing-sigabrt/</guid><description>&lt;p&gt;You have some crazy idea for an iOS app that uses HealthKit so you fire up Xcode, create a new project &amp;amp; add the HealthKit entitlement. Follow the tutorial to request authorization from the &lt;code&gt;HKHealthKitStore&lt;/code&gt;. Hit run to make sure the app compiles and find that it instantly crashes with a &lt;code&gt;SIGABRT&lt;/code&gt; in &lt;code&gt;AppDelegate&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Puzzled by this you go over the minimal amount of code you&#39;ve added and pare it right down to just the &lt;code&gt;HKHealthKitStore.requestAuthorization&lt;/code&gt; call which is still causing the &lt;code&gt;SIGABRT&lt;/code&gt; as soon as the app tries to boot.&lt;/p&gt;
-&lt;p&gt;The missing piece of the puzzle is &lt;code&gt;Info.plist&lt;/code&gt; needs a key adding to it for the HealthKit authorisation screen. The documentation helpfully forgets to mention this however. Here&#39;s some quick simple steps to fix it:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Open &lt;code&gt;Info.plist&lt;/code&gt; in Xcode&lt;/li&gt;
-&lt;li&gt;Click the &lt;code&gt;(+)&lt;/code&gt; at the top to add a new key/value to the file&lt;/li&gt;
-&lt;li&gt;Enter &amp;quot;Privacy - Health Share Usage Description&amp;quot; for the key&lt;/li&gt;
-&lt;li&gt;Enter a useful message to the user explaining why they should allow access to their healthkit data for your app for the value&lt;/li&gt;
-&lt;li&gt;Run your app and see the HealthKit authorisation sheet appear&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;NB&lt;/strong&gt;: if you want to update/write any data to healthkit, you&#39;ll need to add the &amp;quot;Privacy - Health Update Usage Description&amp;quot; key with a description as well.&lt;/p&gt;</description></item><item><title>Compile &amp; run swift files directly</title><link>https://caiustheory.com/compile-run-swift-files-directly/</link><pubDate>Fri, 06 Jun 2014 14:32:18 +0000</pubDate><guid>https://caiustheory.com/compile-run-swift-files-directly/</guid><description>&lt;p&gt;Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.&lt;/p&gt;
-&lt;p&gt;Using the &lt;code&gt;xcrun&lt;/code&gt; binary, we can reach into the current Xcode &lt;code&gt;/bin&lt;/code&gt; folder and run binaries within there. So &lt;code&gt;xcrun swift&lt;/code&gt; lets you run the swift binary to compile files for instance. If you view the help with &lt;code&gt;-h&lt;/code&gt;, there&#39;s a useful flag &lt;code&gt;-i&lt;/code&gt; listed there:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;-i &amp;nbsp;&amp;nbsp; Immediate mode&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Turns out immediate mode means &amp;quot;compile &amp;amp; run&amp;quot; in the same command, which is what we&#39;re after.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ cat hello.swift
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>swift on Caius Theory</title><link>https://caiustheory.com/tag/swift/</link><description>Recent content in swift on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 15 Oct 2016 09:15:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/swift/index.xml" rel="self" type="application/rss+xml"/><item><title>Stop HealthKit causing SIGABRT</title><link>https://caiustheory.com/stop-healthkit-causing-sigabrt/</link><pubDate>Sat, 15 Oct 2016 09:15:00 +0000</pubDate><guid>https://caiustheory.com/stop-healthkit-causing-sigabrt/</guid><description>&lt;p>You have some crazy idea for an iOS app that uses HealthKit so you fire up Xcode, create a new project &amp;amp; add the HealthKit entitlement. Follow the tutorial to request authorization from the &lt;code>HKHealthKitStore&lt;/code>. Hit run to make sure the app compiles and find that it instantly crashes with a &lt;code>SIGABRT&lt;/code> in &lt;code>AppDelegate&lt;/code>.&lt;/p>
+&lt;p>Puzzled by this you go over the minimal amount of code you&amp;rsquo;ve added and pare it right down to just the &lt;code>HKHealthKitStore.requestAuthorization&lt;/code> call which is still causing the &lt;code>SIGABRT&lt;/code> as soon as the app tries to boot.&lt;/p>
+&lt;p>The missing piece of the puzzle is &lt;code>Info.plist&lt;/code> needs a key adding to it for the HealthKit authorisation screen. The documentation helpfully forgets to mention this however. Here&amp;rsquo;s some quick simple steps to fix it:&lt;/p>
+&lt;ol>
+&lt;li>Open &lt;code>Info.plist&lt;/code> in Xcode&lt;/li>
+&lt;li>Click the &lt;code>(+)&lt;/code> at the top to add a new key/value to the file&lt;/li>
+&lt;li>Enter &amp;ldquo;Privacy - Health Share Usage Description&amp;rdquo; for the key&lt;/li>
+&lt;li>Enter a useful message to the user explaining why they should allow access to their healthkit data for your app for the value&lt;/li>
+&lt;li>Run your app and see the HealthKit authorisation sheet appear&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>NB&lt;/strong>: if you want to update/write any data to healthkit, you&amp;rsquo;ll need to add the &amp;ldquo;Privacy - Health Update Usage Description&amp;rdquo; key with a description as well.&lt;/p></description></item><item><title>Compile &amp; run swift files directly</title><link>https://caiustheory.com/compile-run-swift-files-directly/</link><pubDate>Fri, 06 Jun 2014 14:32:18 +0000</pubDate><guid>https://caiustheory.com/compile-run-swift-files-directly/</guid><description>&lt;p>Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.&lt;/p>
+&lt;p>Using the &lt;code>xcrun&lt;/code> binary, we can reach into the current Xcode &lt;code>/bin&lt;/code> folder and run binaries within there. So &lt;code>xcrun swift&lt;/code> lets you run the swift binary to compile files for instance. If you view the help with &lt;code>-h&lt;/code>, there&amp;rsquo;s a useful flag &lt;code>-i&lt;/code> listed there:&lt;/p>
+&lt;blockquote>
+&lt;p>-i    Immediate mode&lt;/p>
+&lt;/blockquote>
+&lt;p>Turns out immediate mode means &amp;ldquo;compile &amp;amp; run&amp;rdquo; in the same command, which is what we&amp;rsquo;re after.&lt;/p>
+&lt;pre>&lt;code>$ cat hello.swift
 println(&amp;quot;Hello World&amp;quot;)
 $ xcrun swift -i hello.swift
 Hello World
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ cat hello2.swift
+&lt;/code>&lt;/pre>
+&lt;p>Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!&lt;/p>
+&lt;pre>&lt;code>$ cat hello2.swift
 #!/usr/bin/env xcrun swift -i
 println(&amp;quot;Hello World 2&amp;quot;)
 $ chmod +x hello2.swift
 $ ./hello2.swift
 Hello World 2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!&lt;/p></description></item></channel></rss>

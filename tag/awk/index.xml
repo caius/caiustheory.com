@@ -1,44 +1,44 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>awk on Caius Theory</title><link>https://caiustheory.com/tag/awk/</link><description>Recent content in awk on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Wed, 10 Aug 2016 11:39:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/awk/index.xml" rel="self" type="application/rss+xml"/><item><title>Find dependencies blocking rails upgrades</title><link>https://caiustheory.com/find-dependencies-blocking-rails-upgrades/</link><pubDate>Wed, 10 Aug 2016 11:39:00 +0000</pubDate><guid>https://caiustheory.com/find-dependencies-blocking-rails-upgrades/</guid><description>&lt;p&gt;The initial pain point when upgrading a rails app is figuring out which of your dependencies are blocking you upgrading the actual &lt;code&gt;rails&lt;/code&gt; gem (&amp;amp; immediate dependencies, actionpack, etc.). One way to start this is to update the rails dependency in your &lt;code&gt;Gemfile&lt;/code&gt; and run &lt;code&gt;bundle update rails&lt;/code&gt;. Then check the error output &lt;em&gt;(it never works first time…)&lt;/em&gt; to see which gems are blocking the upgrade. Repeat, rinse until it works.&lt;/p&gt;
-&lt;p&gt;I figured I&#39;d cheat a little and eyeball the &lt;code&gt;Gemfile.lock&lt;/code&gt; to see which gems had an explicit dependency pinning rails (or actionpack, activejob, etc) to a version lower than I want to upgrade to, so I could get an idea of what needs to be upgraded without having to do them all one-by-one.&lt;/p&gt;
-&lt;p&gt;Then instead of eyeballing &lt;code&gt;Gemfile.lock&lt;/code&gt;, I wrote an awk script to pull out the interesting dependencies (ie, anything that depends on rails gems) so I just have to check which versions they depend on by hand.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-awk&#34; data-lang=&#34;awk&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Reads a Gemfile.lock and outputs all dependencies that depend on rails&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;BEGIN&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;parent&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;parent_printed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;rails_gems&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;^(rail(s|ties)|action(mailer|pack|view)|active(job|model|record|support))$&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# We only want the specs from the GEM section&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;NR&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;~&lt;/span&gt; &lt;span class=&#34;sr&#34;&gt;/GEM/&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;next&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# Skip parent gems we don&amp;#39;t care about (rails itself…)&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;~&lt;/span&gt; &lt;span class=&#34;sr&#34;&gt;/^ {4}[^ ]/&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;~&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rails_gems&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;parent&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;parent_printed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;kr&#34;&gt;next&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# Parent gems that aren&amp;#39;t part of rails core&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# Store the name to be printed if we match below&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;~&lt;/span&gt; &lt;span class=&#34;sr&#34;&gt;/^ {4}[^ ]/&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;parent&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;parent_printed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;kr&#34;&gt;next&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# If the nested gem (6 space prefix) matches rails-names and we have a parent value&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# set then we print them out - making sure to only print the parent once&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;~&lt;/span&gt; &lt;span class=&#34;sr&#34;&gt;/^ {6}[^ ]/&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;~&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rails_gems&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;parent&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;parent_printed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;nx&#34;&gt;parent_printed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
-&lt;span class=&#34;kr&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;parent&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;kr&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Run it against your &lt;code&gt;Gemfile.lock&lt;/code&gt; for the app you&#39;re upgrading:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;awk -f rails5.awk Gemfile.lock&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And you&#39;ll get output like this, to run through and see if any of the dependencies are pinning to lower versions than you need.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt; coffee-rails (4.0.1)
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>awk on Caius Theory</title><link>https://caiustheory.com/tag/awk/</link><description>Recent content in awk on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Wed, 10 Aug 2016 11:39:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/awk/index.xml" rel="self" type="application/rss+xml"/><item><title>Find dependencies blocking rails upgrades</title><link>https://caiustheory.com/find-dependencies-blocking-rails-upgrades/</link><pubDate>Wed, 10 Aug 2016 11:39:00 +0000</pubDate><guid>https://caiustheory.com/find-dependencies-blocking-rails-upgrades/</guid><description>&lt;p>The initial pain point when upgrading a rails app is figuring out which of your dependencies are blocking you upgrading the actual &lt;code>rails&lt;/code> gem (&amp;amp; immediate dependencies, actionpack, etc.). One way to start this is to update the rails dependency in your &lt;code>Gemfile&lt;/code> and run &lt;code>bundle update rails&lt;/code>. Then check the error output &lt;em>(it never works first time…)&lt;/em> to see which gems are blocking the upgrade. Repeat, rinse until it works.&lt;/p>
+&lt;p>I figured I&amp;rsquo;d cheat a little and eyeball the &lt;code>Gemfile.lock&lt;/code> to see which gems had an explicit dependency pinning rails (or actionpack, activejob, etc) to a version lower than I want to upgrade to, so I could get an idea of what needs to be upgraded without having to do them all one-by-one.&lt;/p>
+&lt;p>Then instead of eyeballing &lt;code>Gemfile.lock&lt;/code>, I wrote an awk script to pull out the interesting dependencies (ie, anything that depends on rails gems) so I just have to check which versions they depend on by hand.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-awk" data-lang="awk">&lt;span class="c1"># Reads a Gemfile.lock and outputs all dependencies that depend on rails&lt;/span>
+&lt;span class="nb">BEGIN&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="nx">rails_gems&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;^(rail(s|ties)|action(mailer|pack|view)|active(job|model|record|support))$&amp;#34;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="c1"># We only want the specs from the GEM section&lt;/span>
+&lt;span class="nb">NR&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="sr">/GEM/&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="kr">next&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">exit&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="c1"># Skip parent gems we don&amp;#39;t care about (rails itself…)&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="sr">/^ {4}[^ ]/&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="nx">rails_gems&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="kr">next&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="c1"># Parent gems that aren&amp;#39;t part of rails core&lt;/span>
+&lt;span class="c1"># Store the name to be printed if we match below&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="sr">/^ {4}[^ ]/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="kr">next&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="c1"># If the nested gem (6 space prefix) matches rails-names and we have a parent value&lt;/span>
+&lt;span class="c1"># set then we print them out - making sure to only print the parent once&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="sr">/^ {6}[^ ]/&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="nx">rails_gems&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span>
+&lt;span class="nx">parent&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;span class="kr">print&lt;/span> &lt;span class="nx">parent&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kr">print&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Run it against your &lt;code>Gemfile.lock&lt;/code> for the app you&amp;rsquo;re upgrading:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">awk -f rails5.awk Gemfile.lock
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And you&amp;rsquo;ll get output like this, to run through and see if any of the dependencies are pinning to lower versions than you need.&lt;/p>
+&lt;pre>&lt;code> coffee-rails (4.0.1)
 railties (&amp;gt;= 4.0.0, &amp;lt; 5.0)
 factory_girl (4.4.0)
 activesupport (&amp;gt;= 3.0.0)
@@ -65,5 +65,4 @@ railties (&amp;gt;= 4.0.0, &amp;lt; 5.0)
 sprockets-rails (2.3.3)
 actionpack (&amp;gt;= 3.0)
 activesupport (&amp;gt;= 3.0)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In this case, I&#39;m trying to take this app to rails 5.0, so all the ones specifying &lt;code&gt;&amp;lt; 5&lt;/code&gt; and &lt;code&gt;&amp;lt; 4.3&lt;/code&gt; need upgrading beforehand.&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>&lt;p>In this case, I&amp;rsquo;m trying to take this app to rails 5.0, so all the ones specifying &lt;code>&amp;lt; 5&lt;/code> and &lt;code>&amp;lt; 4.3&lt;/code> need upgrading beforehand.&lt;/p></description></item></channel></rss>

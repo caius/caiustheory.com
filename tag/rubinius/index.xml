@@ -1,21 +1,29 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rubinius on Caius Theory</title><link>https://caiustheory.com/tag/rubinius/</link><description>Recent content in Rubinius on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Wed, 05 Nov 2014 12:50:16 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/rubinius/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Rubinius on OS X</title><link>https://caiustheory.com/install-rubinius-on-os-x/</link><pubDate>Wed, 05 Nov 2014 12:50:16 +0000</pubDate><guid>https://caiustheory.com/install-rubinius-on-os-x/</guid><description>&lt;p&gt;Using &lt;a href=&#34;https://github.com/postmodern/ruby-install/&#34;&gt;ruby-install&lt;/a&gt;, &lt;a href=&#34;http://brew.sh/&#34;&gt;homebrew&lt;/a&gt; building it for use with &lt;a href=&#34;https://github.com/postmodern/chruby/&#34;&gt;chruby&lt;/a&gt;, here&#39;s how I install &lt;a href=&#34;http://rubini.us/&#34;&gt;Rubinius&lt;/a&gt; under Yosemite (works for Mavericks as well.)&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Make sure llvm is installed&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ brew install llvm
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Prepend the homebrew-installed llvm tools to your path&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ export PATH=&amp;quot;$(brew --prefix llvm)/bin:$PATH&amp;quot;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rubinius on Caius Theory</title><link>https://caiustheory.com/tag/rubinius/</link><description>Recent content in Rubinius on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Wed, 05 Nov 2014 12:50:16 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/rubinius/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Rubinius on OS X</title><link>https://caiustheory.com/install-rubinius-on-os-x/</link><pubDate>Wed, 05 Nov 2014 12:50:16 +0000</pubDate><guid>https://caiustheory.com/install-rubinius-on-os-x/</guid><description>&lt;p>Using &lt;a href="https://github.com/postmodern/ruby-install/">ruby-install&lt;/a>, &lt;a href="http://brew.sh/">homebrew&lt;/a> building it for use with &lt;a href="https://github.com/postmodern/chruby/">chruby&lt;/a>, here&amp;rsquo;s how I install &lt;a href="http://rubini.us/">Rubinius&lt;/a> under Yosemite (works for Mavericks as well.)&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Make sure llvm is installed&lt;/p>
+&lt;pre>&lt;code> $ brew install llvm
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Prepend the homebrew-installed llvm tools to your path&lt;/p>
+&lt;pre>&lt;code> $ export PATH=&amp;quot;$(brew --prefix llvm)/bin:$PATH&amp;quot;
 # Or, for ZSH
 $ path=( $(brew --prefix llvm)/bin $path )
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Install rubinius, v2.3.0 at the time of writing&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ ruby-install rbx 2.3.0
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Open a fresh shell once that&#39;s built, and you should be able to switch to rbx!&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ chruby rbx
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Install rubinius, v2.3.0 at the time of writing&lt;/p>
+&lt;pre>&lt;code> $ ruby-install rbx 2.3.0
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Open a fresh shell once that&amp;rsquo;s built, and you should be able to switch to rbx!&lt;/p>
+&lt;pre>&lt;code> $ chruby rbx
 $ ruby -v
 rubinius 2.3.0 (2.1.0 9d61df5d 2014-10-31 3.5.0 JI) [x86_64-darwin14.0.0]
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;em&gt;There is also a homebrew tap for rubinius which should also work instead of the above. I couldn&#39;t get it working on one of my laptops though, which is why I was installing by hand using the above instead. The tap is at &lt;a href=&#34;https://github.com/rubinius/homebrew-apps/&#34;&gt;https://github.com/rubinius/homebrew-apps/&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/brixen/status/529725881498226688&#34;&gt;https://twitter.com/brixen/status/529725881498226688&lt;/a&gt; explains install steps.&lt;/em&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;em>There is also a homebrew tap for rubinius which should also work instead of the above. I couldn&amp;rsquo;t get it working on one of my laptops though, which is why I was installing by hand using the above instead. The tap is at &lt;a href="https://github.com/rubinius/homebrew-apps/">https://github.com/rubinius/homebrew-apps/&lt;/a> and &lt;a href="https://twitter.com/brixen/status/529725881498226688">https://twitter.com/brixen/status/529725881498226688&lt;/a> explains install steps.&lt;/em>&lt;/p></description></item></channel></rss>

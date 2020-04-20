@@ -1,46 +1,46 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-clacks-overhead content="GNU Terry Pratchett, John Peel, Steve Jobs, Steve Irwin"><title>Compiling SmartOS for AMD processors - CaiusTheory</title><link rel=alternate type=application/atom+xml title="Caius Theory" href=https://caiustheory.com/feed.xml><link rel=alternate type=application/json title="Caius Theory" href=https://caiustheory.com/feed.json><link rel=stylesheet href=https://caiustheory.com/css/stylesheet.min.0a05db60ce3fa0e0c5aae6e4d9fdf0549192f7b5b50ffe3fc27a746a25934dc7.css type=text/css media=screen title="no title"><meta property=og:title content="Compiling SmartOS for AMD processors"><meta property=og:description content="There's a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that's quite useful for turning it into a better lab server. The main list of so called &#34;eait&#34; builds was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image here.
-The source code for the eait builds is maintained at https://github."><meta property=og:type content=article><meta property=og:url content=https://caiustheory.com/compiling-smartos-for-amd-processors/><meta property=article:published_time content=2014-09-28T10:00:00&#43;00:00><meta property=article:modified_time content=2017-08-07T00:01:15&#43;01:00><meta name=twitter:card content=summary><meta name=twitter:title content="Compiling SmartOS for AMD processors"><meta name=twitter:description content="There's a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that's quite useful for turning it into a better lab server. The main list of so called &#34;eait&#34; builds was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image here.
-The source code for the eait builds is maintained at https://github."></head><body><header><h1><a href=/>Caius Theory</a></h1><h2>Now with even more cowbell&hellip;</h2></header><main><article><header><h1><a href=https://caiustheory.com/compiling-smartos-for-amd-processors/>Compiling SmartOS for AMD processors</a></h1><time datetime=2014-09-28T10:00:00Z>2014-09-28 10:00:00</time></header><p>There's a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that's quite useful for turning it into a better lab server. The main <a href=http://imgapi.uqcloud.net/builds>list of so called &quot;eait&quot; builds</a> was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image <a href=http://builds.smartos.skylime.net>here</a>.</p><p>The source code for the eait builds is maintained at <a href=https://github.com/arekinath/smartos-live>https://github.com/arekinath/smartos-live</a>, and you can see the patches applied on top of the normal SmartOS master by going to <a href=https://github.com/arekinath/smartos-live/compare/joyent:master...eait>https://github.com/arekinath/smartos-live/compare/joyent:master...eait</a>.</p><p>So here's how to use SmartOS to compile a more up to date AMD-friendly Smartos!</p><ol><li><p>Grab the latest multiarch SmartOS image (which <strong>has</strong> to be used, or the compile will fail.) The latest at the time of writing was <code>4aec529c-55f9-11e3-868e-a37707fcbe86</code>, so that's what I'll use.</p><pre><code>imgadm import 4aec529c-55f9-11e3-868e-a37707fcbe86
-</code></pre></li><li><p>Spin up a zone for us to build in (the <a href=http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS>Building SmartOS on SmartOS</a> page has extra info about this):</p><pre><code>echo '{
-  &quot;alias&quot;: &quot;platform-builder&quot;,
-  &quot;brand&quot;: &quot;joyent&quot;,
-  &quot;dataset_uuid&quot;: &quot;4aec529c-55f9-11e3-868e-a37707fcbe86&quot;,
-  &quot;max_physical_memory&quot;: 32768,
-  &quot;quota&quot;: 0,
-  &quot;tmpfs&quot;: 8192,
-  &quot;fs_allowed&quot;: &quot;ufs,pcfs,tmpfs&quot;,
-  &quot;maintain_resolvers&quot;: true,
-  &quot;resolvers&quot;: [
-    &quot;8.8.8.8&quot;,
-    &quot;8.8.4.4&quot;
-  ],
-  &quot;nics&quot;: [
-    {
-      &quot;nic_tag&quot;: &quot;admin&quot;,
-      &quot;ip&quot;: &quot;dhcp&quot;,
-      &quot;primary&quot;: true
-    }
-  ],
-  &quot;internal_metadata&quot;: {
-    &quot;root_pw&quot;: &quot;password&quot;,
-    &quot;admin_pw&quot;: &quot;password&quot;
-  }
-}' | vmadm create
-</code></pre></li><li><p>Login to the created zone:</p><pre><code>zlogin &lt;uuid from `vmadm create` output&gt;
-</code></pre></li><li><p>Update the image to the latest packages, etc:</p><pre><code>pkgin -y update &amp;&amp; pkgin -y full-upgrade
-</code></pre></li><li><p>Install a few images we'll need to compile &amp; package SmartOS:</p><pre><code>pkgin install scmgit cdrtools pbzip2
-</code></pre></li><li><p>Grab the source code of the fork containing the patches we want, from <a href=https://github.com/arekinath/smartos-live>arekinath/smartos-live</a></p><pre><code>git clone https://github.com/arekinath/smartos-live
-cd smartos-live
-</code></pre></li><li><p><em>Optional</em>: Edit <code>src/Makefile.defs</code> and change <code>PARALLEL = -j$(MAX_JOBS)</code> to <code>PARALLEL = -j8</code> to do less at once. (Microserver only has a dual core CPU!)</p></li><li><p>Copy the configure definition into the right place and start configuration:</p><pre><code>cp {sample.,}configure.smartos
-./configure
-</code></pre><p><em>(You'll probably get asked to accept the java license during configuration, so keep half an eye on it)</em></p></li><li><p>Once configure has completed (which doesn't take <em>too</em> long, 15 minutes or so), start building:</p><pre><code>gmake world &amp;&amp; gmake live
-</code></pre></li><li><p>Once the build is successfully finished, time to package an iso &amp; usb image:</p><pre><code>export LC_ALL=C
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-clacks-overhead content="GNU Terry Pratchett, John Peel, Steve Jobs, Steve Irwin"><title>Compiling SmartOS for AMD processors - CaiusTheory</title><link rel=alternate type=application/atom+xml title="Caius Theory" href=https://caiustheory.com/feed.xml><link rel=alternate type=application/json title="Caius Theory" href=https://caiustheory.com/feed.json><link rel=stylesheet href=https://caiustheory.com/css/stylesheet.min.17aed824e39d57d3a7a8f85f7433d67b1de564197bf89de556cbdcdcb9332496.css type=text/css media=screen title="no title"><meta property="og:title" content="Compiling SmartOS for AMD processors"><meta property="og:description" content="There&rsquo;s a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that&rsquo;s quite useful for turning it into a better lab server. The main list of so called &ldquo;eait&rdquo; builds was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image here.
+The source code for the eait builds is maintained at https://github."><meta property="og:type" content="article"><meta property="og:url" content="https://caiustheory.com/compiling-smartos-for-amd-processors/"><meta property="article:published_time" content="2014-09-28T10:00:00+00:00"><meta property="article:modified_time" content="2017-08-07T00:01:15+01:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Compiling SmartOS for AMD processors"><meta name=twitter:description content="There&rsquo;s a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that&rsquo;s quite useful for turning it into a better lab server. The main list of so called &ldquo;eait&rdquo; builds was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image here.
+The source code for the eait builds is maintained at https://github."></head><body><header><h1><a href=/>Caius Theory</a></h1><h2>Now with even more cowbell&mldr;</h2></header><main><article><header><h1><a href=https://caiustheory.com/compiling-smartos-for-amd-processors/>Compiling SmartOS for AMD processors</a></h1><time datetime=2014-09-28T10:00:00Z>2014-09-28 10:00:00</time></header><p>There&rsquo;s a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that&rsquo;s quite useful for turning it into a better lab server. The main <a href=http://imgapi.uqcloud.net/builds>list of so called &ldquo;eait&rdquo; builds</a> was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image <a href=http://builds.smartos.skylime.net>here</a>.</p><p>The source code for the eait builds is maintained at <a href=https://github.com/arekinath/smartos-live>https://github.com/arekinath/smartos-live</a>, and you can see the patches applied on top of the normal SmartOS master by going to <a href=https://github.com/arekinath/smartos-live/compare/joyent:master...eait>https://github.com/arekinath/smartos-live/compare/joyent:master...eait</a>.</p><p>So here&rsquo;s how to use SmartOS to compile a more up to date AMD-friendly Smartos!</p><ol><li><p>Grab the latest multiarch SmartOS image (which <strong>has</strong> to be used, or the compile will fail.) The latest at the time of writing was <code>4aec529c-55f9-11e3-868e-a37707fcbe86</code>, so that&rsquo;s what I&rsquo;ll use.</p><pre><code> imgadm import 4aec529c-55f9-11e3-868e-a37707fcbe86
+</code></pre></li><li><p>Spin up a zone for us to build in (the <a href=http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS>Building SmartOS on SmartOS</a> page has extra info about this):</p><pre><code> echo '{
+   &quot;alias&quot;: &quot;platform-builder&quot;,
+   &quot;brand&quot;: &quot;joyent&quot;,
+   &quot;dataset_uuid&quot;: &quot;4aec529c-55f9-11e3-868e-a37707fcbe86&quot;,
+   &quot;max_physical_memory&quot;: 32768,
+   &quot;quota&quot;: 0,
+   &quot;tmpfs&quot;: 8192,
+   &quot;fs_allowed&quot;: &quot;ufs,pcfs,tmpfs&quot;,
+   &quot;maintain_resolvers&quot;: true,
+   &quot;resolvers&quot;: [
+     &quot;8.8.8.8&quot;,
+     &quot;8.8.4.4&quot;
+   ],
+   &quot;nics&quot;: [
+     {
+       &quot;nic_tag&quot;: &quot;admin&quot;,
+       &quot;ip&quot;: &quot;dhcp&quot;,
+       &quot;primary&quot;: true
+     }
+   ],
+   &quot;internal_metadata&quot;: {
+     &quot;root_pw&quot;: &quot;password&quot;,
+     &quot;admin_pw&quot;: &quot;password&quot;
+   }
+ }' | vmadm create
+</code></pre></li><li><p>Login to the created zone:</p><pre><code> zlogin &lt;uuid from `vmadm create` output&gt;
+</code></pre></li><li><p>Update the image to the latest packages, etc:</p><pre><code> pkgin -y update &amp;&amp; pkgin -y full-upgrade
+</code></pre></li><li><p>Install a few images we&rsquo;ll need to compile & package SmartOS:</p><pre><code> pkgin install scmgit cdrtools pbzip2
+</code></pre></li><li><p>Grab the source code of the fork containing the patches we want, from <a href=https://github.com/arekinath/smartos-live>arekinath/smartos-live</a></p><pre><code> git clone https://github.com/arekinath/smartos-live
+ cd smartos-live
+</code></pre></li><li><p><em>Optional</em>: Edit <code>src/Makefile.defs</code> and change <code>PARALLEL = -j$(MAX_JOBS)</code> to <code>PARALLEL = -j8</code> to do less at once. (Microserver only has a dual core CPU!)</p></li><li><p>Copy the configure definition into the right place and start configuration:</p><pre><code> cp {sample.,}configure.smartos
+ ./configure
+</code></pre><p><em>(You&rsquo;ll probably get asked to accept the java license during configuration, so keep half an eye on it)</em></p></li><li><p>Once configure has completed (which doesn&rsquo;t take <em>too</em> long, 15 minutes or so), start building:</p><pre><code> gmake world &amp;&amp; gmake live
+</code></pre></li><li><p>Once the build is successfully finished, time to package an iso & usb image:</p><pre><code>export LC_ALL=C
 tools/build_iso
 tools/build_usb
-</code></pre></li></ol><p>Hey presto, you've a freshly built AMD-friendly SmartOS build to flash to a USB key / put on your netboot server and boot your Microserver from!</p><hr><p><strong>References</strong></p><ul><li><a href=http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS>http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS</a></li><li><a href=https://github.com/arekinath/smartos-live>https://github.com/arekinath/smartos-live</a></li></ul><footer><p class=tags><strong>Tags:</strong> <a class="button is-link" href=/tag/smartos>SmartOS</a>, <a class="button is-link" href=/tag/cli>cli</a>, <a class="button is-link" href=/tag/geek>geek</a> and <a class="button is-link" href=/tag/tech>tech</a></p><p class=license>This work is licensed under a <a rel=license href=http://creativecommons.org/licenses/by-sa/4.0/>Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p></footer></article><nav><div class=pagination><ul><li class=previous><a href=https://caiustheory.com/the-peoples-triathlon-2014/>The People&#39;s Triathlon 2014</a></li><li class=next><a href=https://caiustheory.com/changing-root-password-in-global-zone/>Changing root password in global zone</a></li></ul><span class=clear></span></div></nav></main><footer><p class=first><a href=https://caiustheory.com/>Archive</a>
-&middot;
+</code></pre></li></ol><p>Hey presto, you&rsquo;ve a freshly built AMD-friendly SmartOS build to flash to a USB key / put on your netboot server and boot your Microserver from!</p><hr><p><strong>References</strong></p><ul><li><a href=http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS>http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS</a></li><li><a href=https://github.com/arekinath/smartos-live>https://github.com/arekinath/smartos-live</a></li></ul><footer><p class=tags><strong>Tags:</strong> <a class="button is-link" href=/tag/cli>cli</a>, <a class="button is-link" href=/tag/geek>geek</a>, <a class="button is-link" href=/tag/smartos>SmartOS</a> and <a class="button is-link" href=/tag/tech>tech</a></p><p class=license>This work is licensed under a <a rel=license href=http://creativecommons.org/licenses/by-sa/4.0/>Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p></footer></article><nav><div class=pagination><ul><li class=previous><a href=https://caiustheory.com/the-peoples-triathlon-2014/>The People's Triathlon 2014</a></li><li class=next><a href=https://caiustheory.com/changing-root-password-in-global-zone/>Changing root password in global zone</a></li></ul><span class=clear></span></div></nav></main><footer><p class=first><a href=https://caiustheory.com/>Archive</a>
+&#183;
 <a href=https://caiustheory.com/feed.xml>Feed (Atom)</a>
-&middot;
+&#183;
 <a href=/feed.json>Feed (JSON)</a></p><p class=last>Inspired by <a href=https://code.google.com/archive/p/sp-theme/>sp</a></p><span class=clear></span></footer><script>(function(){if(window.location.hostname.indexOf('localhost')>-1){return;}
 var script=document.createElement('script');window.counter='https://caiustheory.goatcounter.com/count'
 script.async=1;script.src='//static.goatcounter.com/count.min.js';var ins=document.getElementsByTagName('script')[0];ins.parentNode.insertBefore(script,ins)})();</script></body></html>

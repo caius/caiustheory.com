@@ -1,27 +1,27 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>iOS on Caius Theory</title><link>https://caiustheory.com/tag/ios/</link><description>Recent content in iOS on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 15 Oct 2016 09:15:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/ios/index.xml" rel="self" type="application/rss+xml"/><item><title>Stop HealthKit causing SIGABRT</title><link>https://caiustheory.com/stop-healthkit-causing-sigabrt/</link><pubDate>Sat, 15 Oct 2016 09:15:00 +0000</pubDate><guid>https://caiustheory.com/stop-healthkit-causing-sigabrt/</guid><description>&lt;p&gt;You have some crazy idea for an iOS app that uses HealthKit so you fire up Xcode, create a new project &amp;amp; add the HealthKit entitlement. Follow the tutorial to request authorization from the &lt;code&gt;HKHealthKitStore&lt;/code&gt;. Hit run to make sure the app compiles and find that it instantly crashes with a &lt;code&gt;SIGABRT&lt;/code&gt; in &lt;code&gt;AppDelegate&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Puzzled by this you go over the minimal amount of code you&#39;ve added and pare it right down to just the &lt;code&gt;HKHealthKitStore.requestAuthorization&lt;/code&gt; call which is still causing the &lt;code&gt;SIGABRT&lt;/code&gt; as soon as the app tries to boot.&lt;/p&gt;
-&lt;p&gt;The missing piece of the puzzle is &lt;code&gt;Info.plist&lt;/code&gt; needs a key adding to it for the HealthKit authorisation screen. The documentation helpfully forgets to mention this however. Here&#39;s some quick simple steps to fix it:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Open &lt;code&gt;Info.plist&lt;/code&gt; in Xcode&lt;/li&gt;
-&lt;li&gt;Click the &lt;code&gt;(+)&lt;/code&gt; at the top to add a new key/value to the file&lt;/li&gt;
-&lt;li&gt;Enter &amp;quot;Privacy - Health Share Usage Description&amp;quot; for the key&lt;/li&gt;
-&lt;li&gt;Enter a useful message to the user explaining why they should allow access to their healthkit data for your app for the value&lt;/li&gt;
-&lt;li&gt;Run your app and see the HealthKit authorisation sheet appear&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;NB&lt;/strong&gt;: if you want to update/write any data to healthkit, you&#39;ll need to add the &amp;quot;Privacy - Health Update Usage Description&amp;quot; key with a description as well.&lt;/p&gt;</description></item><item><title>Solve volume down button not working on iPhone 5</title><link>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</link><pubDate>Tue, 01 Jul 2014 11:31:39 +0000</pubDate><guid>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</guid><description>&lt;p&gt;I noticed this morning that my volume down button (-) wasn&#39;t working on my iPhone 5 running iOS 7. Pushing the physical button in didn&#39;t change the volume. The volume up button increased the volume successfully still.&lt;/p&gt;
-&lt;p&gt;As is my normal first step debugging iPhone weirdness, I rebooted the phone by turning it off, leaving it off for a few seconds, then booting it back up with the power button. Once powered off and on in this way, the volume down key still didn&#39;t decrease the volume.&lt;/p&gt;
-&lt;p&gt;Fearing a physical button issue at this point, I turned to google for suggestions on what else to try. Running across &lt;a href=&#34;https://discussions.apple.com/thread/4894152&#34;&gt;this thread&lt;/a&gt; on Apple&#39;s discussion forums, I tried out the solution in there.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Open &amp;quot;Settings&amp;quot;&lt;/li&gt;
-&lt;li&gt;Scroll down and tap on &amp;quot;General&amp;quot;&lt;/li&gt;
-&lt;li&gt;Tap on &amp;quot;Accessibility&amp;quot;&lt;/li&gt;
-&lt;li&gt;Scroll down to the bottom and tap on &amp;quot;AssistiveTouch&amp;quot;&lt;/li&gt;
-&lt;li&gt;Tap the toggle for AssistiveTouch to turn it on, and you should see a little icon appear on screen (white circle contained in a dark grey rounded square)&lt;/li&gt;
-&lt;li&gt;Tap the AssistiveTouch icon (was in the top left corner on screen for me)&lt;/li&gt;
-&lt;li&gt;Tap on &amp;quot;Device&amp;quot;&lt;/li&gt;
-&lt;li&gt;Tap &amp;quot;Volume Down&amp;quot; a bunch of times and you should see the volume being turned down&lt;/li&gt;
-&lt;li&gt;Tap outside the AssistiveTouch dialog to close it&lt;/li&gt;
-&lt;li&gt;Try pushing the physical Volume Down button&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;In my case, following these steps made my physical volume down button start working again. Makes me wonder if the solution author on the apple discussion thread is right, in that this is a software issue and forcing a volume down action through the on-screen interface makes it remember that there&#39;s a physical button to respond to as well.&lt;/p&gt;
-&lt;p&gt;Either way, I can stop deafening myself whenever I receive a notification now!&lt;/p&gt;</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>iOS on Caius Theory</title><link>https://caiustheory.com/tag/ios/</link><description>Recent content in iOS on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Sat, 15 Oct 2016 09:15:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/ios/index.xml" rel="self" type="application/rss+xml"/><item><title>Stop HealthKit causing SIGABRT</title><link>https://caiustheory.com/stop-healthkit-causing-sigabrt/</link><pubDate>Sat, 15 Oct 2016 09:15:00 +0000</pubDate><guid>https://caiustheory.com/stop-healthkit-causing-sigabrt/</guid><description>&lt;p>You have some crazy idea for an iOS app that uses HealthKit so you fire up Xcode, create a new project &amp;amp; add the HealthKit entitlement. Follow the tutorial to request authorization from the &lt;code>HKHealthKitStore&lt;/code>. Hit run to make sure the app compiles and find that it instantly crashes with a &lt;code>SIGABRT&lt;/code> in &lt;code>AppDelegate&lt;/code>.&lt;/p>
+&lt;p>Puzzled by this you go over the minimal amount of code you&amp;rsquo;ve added and pare it right down to just the &lt;code>HKHealthKitStore.requestAuthorization&lt;/code> call which is still causing the &lt;code>SIGABRT&lt;/code> as soon as the app tries to boot.&lt;/p>
+&lt;p>The missing piece of the puzzle is &lt;code>Info.plist&lt;/code> needs a key adding to it for the HealthKit authorisation screen. The documentation helpfully forgets to mention this however. Here&amp;rsquo;s some quick simple steps to fix it:&lt;/p>
+&lt;ol>
+&lt;li>Open &lt;code>Info.plist&lt;/code> in Xcode&lt;/li>
+&lt;li>Click the &lt;code>(+)&lt;/code> at the top to add a new key/value to the file&lt;/li>
+&lt;li>Enter &amp;ldquo;Privacy - Health Share Usage Description&amp;rdquo; for the key&lt;/li>
+&lt;li>Enter a useful message to the user explaining why they should allow access to their healthkit data for your app for the value&lt;/li>
+&lt;li>Run your app and see the HealthKit authorisation sheet appear&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>NB&lt;/strong>: if you want to update/write any data to healthkit, you&amp;rsquo;ll need to add the &amp;ldquo;Privacy - Health Update Usage Description&amp;rdquo; key with a description as well.&lt;/p></description></item><item><title>Solve volume down button not working on iPhone 5</title><link>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</link><pubDate>Tue, 01 Jul 2014 11:31:39 +0000</pubDate><guid>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</guid><description>&lt;p>I noticed this morning that my volume down button (-) wasn&amp;rsquo;t working on my iPhone 5 running iOS 7. Pushing the physical button in didn&amp;rsquo;t change the volume. The volume up button increased the volume successfully still.&lt;/p>
+&lt;p>As is my normal first step debugging iPhone weirdness, I rebooted the phone by turning it off, leaving it off for a few seconds, then booting it back up with the power button. Once powered off and on in this way, the volume down key still didn&amp;rsquo;t decrease the volume.&lt;/p>
+&lt;p>Fearing a physical button issue at this point, I turned to google for suggestions on what else to try. Running across &lt;a href="https://discussions.apple.com/thread/4894152">this thread&lt;/a> on Apple&amp;rsquo;s discussion forums, I tried out the solution in there.&lt;/p>
+&lt;ol>
+&lt;li>Open &amp;ldquo;Settings&amp;rdquo;&lt;/li>
+&lt;li>Scroll down and tap on &amp;ldquo;General&amp;rdquo;&lt;/li>
+&lt;li>Tap on &amp;ldquo;Accessibility&amp;rdquo;&lt;/li>
+&lt;li>Scroll down to the bottom and tap on &amp;ldquo;AssistiveTouch&amp;rdquo;&lt;/li>
+&lt;li>Tap the toggle for AssistiveTouch to turn it on, and you should see a little icon appear on screen (white circle contained in a dark grey rounded square)&lt;/li>
+&lt;li>Tap the AssistiveTouch icon (was in the top left corner on screen for me)&lt;/li>
+&lt;li>Tap on &amp;ldquo;Device&amp;rdquo;&lt;/li>
+&lt;li>Tap &amp;ldquo;Volume Down&amp;rdquo; a bunch of times and you should see the volume being turned down&lt;/li>
+&lt;li>Tap outside the AssistiveTouch dialog to close it&lt;/li>
+&lt;li>Try pushing the physical Volume Down button&lt;/li>
+&lt;/ol>
+&lt;p>In my case, following these steps made my physical volume down button start working again. Makes me wonder if the solution author on the apple discussion thread is right, in that this is a software issue and forcing a volume down action through the on-screen interface makes it remember that there&amp;rsquo;s a physical button to respond to as well.&lt;/p>
+&lt;p>Either way, I can stop deafening myself whenever I receive a notification now!&lt;/p></description></item></channel></rss>

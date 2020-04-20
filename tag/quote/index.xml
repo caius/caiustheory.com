@@ -1,180 +1,190 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>quote on Caius Theory</title><link>https://caiustheory.com/tag/quote/</link><description>Recent content in quote on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Wed, 09 Feb 2011 14:03:49 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/quote/index.xml" rel="self" type="application/rss+xml"/><item><title>Bad Recruiters - Rhys Evans at Devonshire</title><link>https://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire/</link><pubDate>Wed, 09 Feb 2011 14:03:49 +0000</pubDate><guid>https://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire/</guid><description>&lt;p&gt;This is a linked-in invitation I received from Rhys, and my reply.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;strong&gt;Update 2011-02-10:&lt;/strong&gt; As much as recruiters can be scummy twats, Rhys appears to at least care somewhat about his relationship with potential clients/contacts and has &lt;a href=&#34;http://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire#comment-34098&#34;&gt;responded in the comments&lt;/a&gt;. Normally my policy with recruiters is a two strike one, first email gets a polite &amp;quot;No thanks, go away.&amp;quot;, second gets a mini-rant to bugger off and stop contacting me. Rhys hadn&#39;t technically contacted me before, but the unsolicited xmas email showed up when I searched my mailbox (which had annoyed me back when I received it.) And asking amongst my peers around at the time showed he was fairly disliked. (As you can see in some of the comments left below as well.) Since then, including a comment left below, a few people I trust have noted he&#39;s really not that bad as recruiters go, and the fact he&#39;s left a comment acknowledging perhaps his approach is a little misguided is enough for me to see he does still care about trying to be better than the rest of the recruitment crowd.&lt;/p&gt;
-&lt;p&gt;I still stand by my initial reply to him, and all other recruiters who don&#39;t understand &amp;quot;No.&amp;quot; however.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;On 02/09/11 5:30 AM, Rhys Evans wrote:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Hi Caius,&lt;/p&gt;
-&lt;p&gt;Good afternoon, I hope all is well.&lt;/p&gt;
-&lt;p&gt;I&#39;ve noticed we are connected to a number of the same people within the Rails space on LinkedIn. I&#39;ve tried you on 07960 268100 to no avail so I&#39;d like to add you to my network and make contact.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Hi Rhys,&lt;/p&gt;
-&lt;p&gt;I&#39;ve already got you blocked on twitter, so we&#39;ve obviously run across each other in the past. You also appear to have sent me a Merry Xmas email from Devonshire, with no previous contact initiated by me. (I seem to remember a lot of my friends got those emails as well and we eventually worked out you&#39;d scraped Github for them.)&lt;/p&gt;
-&lt;p&gt;Now it would appear you&#39;re being more intrusive and hunting folk out on linked in, ignoring the fact that they are employed and have specifically set linked in to say they aren&#39;t looking for new jobs currently. From asking around you harass a few of my friends, to the point of ringing one up recently to tell them you knew they&#39;d changed jobs and where they were now working. If you&#39;re going to spend time doing that much research then why not have the decency to not be a completely mannerless cunt and leave them alone when they request you to.&lt;/p&gt;
-&lt;p&gt;It would also appear you&#39;ve just blanket-spammed me and a few people in my peer group through linked in with the same request, again a pretty dumb thing to do. It&#39;s as if you recruiters think we never talk to each other, and don&#39;t realise how much you lot being a bunch of pestering spammy bastards taints developers against ever dealing with a recruiter.&lt;/p&gt;
-&lt;p&gt;So no, I don&#39;t think I do want to accept your invitation to connect. And please never phone, email or contact me via any other means. I&#39;m happily employed and if I &lt;em&gt;ever&lt;/em&gt; need the services of a recruiter I&#39;ll find someone who actually possesses an ounce of politeness about approaching (potential) candidates.&lt;/p&gt;
-&lt;p&gt;Thanks,&lt;br /&gt;
-Caius&lt;/p&gt;</description></item><item><title>Facebook iPhone app Contact Sync isn&#39;t automatic</title><link>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</link><pubDate>Wed, 06 Oct 2010 14:10:06 +0000</pubDate><guid>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</guid><description>&lt;p&gt;There&#39;s an article on the guardian about &lt;a href=&#34;http://www.guardian.co.uk/technology/blog/2010/oct/06/facebook-privacy-phone-numbers-upload&#34;&gt;private phone numbers being uploaded from facebook&lt;/a&gt;, and another over &lt;a href=&#34;http://www.techeye.net/security/facebook-takes-and-stores-data-numbers-from-your-iphone&#34;&gt;techeye.net on the same subject.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Firstly a quote from the techeye article:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Facebook doesn&#39;t warn users that they are uploading their phone&#39;s address book to Facebook.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;And whilst the guardian article never says it happens automatically, it also doesn&#39;t lay it out that you have to &lt;strong&gt;explicitly&lt;/strong&gt; enable that feature, &lt;strong&gt;and&lt;/strong&gt; agree to the facebook app uploading the data.&lt;/p&gt;
-&lt;p&gt;I was pretty sure that facebook wouldn&#39;t be grabbing all your contact information without telling you, if they did at all, and that both articles were just pure scaremongering. So I fired up the facebook iPhone app, headed into my friends list on there, clicked sync and got the following screen:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm5.static.flickr.com/4148/5056619687_973ae660cc_d.jpg&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
-&lt;a href=&#34;http://www.flickr.com/photos/caius/5056619687/&#34;&gt;View Original&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Ok, so according to that text, they&#39;re just pulling down profile images and profile links from facebook and putting them in your address book against your contacts. Seems fairly harmless so far. So I toggled the top switch, to enable Contact Sync, and got the following screen:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://farm5.static.flickr.com/4145/5056697193_252e954ec3_d.jpg&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
-&lt;a href=&#34;http://www.flickr.com/photos/caius/5056697193/&#34;&gt;View Original&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Reading that, it&#39;s fairly obvious what data facebook are uploading (although a little ambiguous why), and it &lt;strong&gt;certainly&lt;/strong&gt; isn&#39;t happening automatically. As it says, it uploads the &amp;quot;name, email address, phone number&amp;quot; from all your contacts to facebook, and pull down &amp;quot;your friends&#39; profile photos and other info from Facebook&amp;quot;.&lt;/p&gt;
-&lt;p&gt;So whilst facebook &lt;em&gt;are&lt;/em&gt; collecting more data (albeit stored subject to their Privacy Policy), it&#39;s certainly &lt;strong&gt;NOT&lt;/strong&gt; done automatically, and is &lt;strong&gt;very explicit&lt;/strong&gt; about what is being uploaded at the point you enable it.&lt;/p&gt;</description></item><item><title>iPad? iPerfect (…for me)</title><link>https://caiustheory.com/ipad-iperfect-for-me/</link><pubDate>Wed, 27 Jan 2010 20:56:50 +0000</pubDate><guid>https://caiustheory.com/ipad-iperfect-for-me/</guid><description>
-&lt;p&gt;&lt;em&gt;Google Groups is a pile of fail and hasn&#39;t posted my message in reply to a thread on &lt;a href=&#34;http://geekup.org/&#34;&gt;Geekup&lt;/a&gt; so I&#39;m blogging it instead.&lt;/em&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;On 27 Jan 2010, at 19:53, Steve Richardson wrote:&lt;br /&gt;
-Thoughts?&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;I&#39;ve been searching for a device to fit between my Macbook Pro and iPhone. I work all day on the MBP, and moving it to then watch video in another room or read twitter/news/mail whilst watching telly, etc is a pain.&lt;/p&gt;
-&lt;p&gt;The iPhone is a great little device on the move, but for trying to multitask at home it&#39;s a bit.. tedious. Even jailbroken and running multiple apps at once it&#39;s still limiting.&lt;/p&gt;
-&lt;p&gt;I&#39;d been looking around at netbooks, but what put me off actually getting one was my previous experience with one. I know I&#39;d want it to run OS X to keep in sync (easily) with my other Apple devices, but hackintoshing one was a bit too much hassle, plus the fact ones to hackintosh cost more than I really wanted to pay for something that wasn&#39;t &lt;em&gt;quite&lt;/em&gt; what I thought I needed.&lt;/p&gt;
-&lt;p&gt;And then.. the iPad. I&#39;ve been sort of keeping up with the rumours (mainly through &lt;a href=&#34;http://daringfireball.net&#34;&gt;Daring Fireball&lt;/a&gt;) and whilst I didn&#39;t get excited about it too much ahead of announcement&lt;sup&gt;1&lt;/sup&gt;, having seen the official video of it it&#39;s pretty much guaranteed that I&#39;m going to get one.&lt;/p&gt;
-&lt;p&gt;Yes, it&#39;s limited (App Store, closed device), but.. I don&#39;t care. Take the iPhone, it&#39;s good enough for doing things on it, even if someone else is in charge of the ecosystem and has a big finger saying yes or no. I (willingly) use iTunes, Mobile Me, all the things that are so wonderfully integrated in the world of Apple, so another device that consumes my media using channels I already know and use is just a massive win for me.&lt;/p&gt;
-&lt;p&gt;All I&#39;m hoping now is that $499 doesn&#39;t equal £499. Hopefully it&#39;ll be £399, still a good £80 above direct exchange rate, but low enough that it&#39;s a no-brainer for me to get one.&lt;/p&gt;
-&lt;p&gt;…And I think this is the first Apple product that I&#39;ve seen announced and actually known from the start &lt;em&gt;why&lt;/em&gt; I&#39;m going to get one, instead of just a knee-jerk &amp;quot;SHINY!!!! WANT!!!&amp;quot; reaction. Uh oh, does that make me an adult?&lt;/p&gt;
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; I miss getting really excited about apple announcements :(&lt;/p&gt;
-&lt;h4 id=&#34;update&#34;&gt;Update&lt;/h4&gt;
-&lt;p&gt;It just got even better. Was lamenting to a &lt;a href=&#34;http://tmertz.com/&#34;&gt;friend&lt;/a&gt; on IM that it&#39;d be so much nicer once you can directly suck photos off a camera/SD card into it. Turns out there&#39;s an adapter for that. See &amp;quot;iPad Camera Connection Kit&amp;quot; at the bottom of &lt;a href=&#34;http://www.apple.com/ipad/specs/&#34;&gt;http://www.apple.com/ipad/specs/&lt;/a&gt; for details.&lt;/p&gt;</description></item><item><title>View Raw Source</title><link>https://caiustheory.com/view-raw-source/</link><pubDate>Sat, 31 Jan 2009 01:54:57 +0000</pubDate><guid>https://caiustheory.com/view-raw-source/</guid><description>
-&lt;p&gt;So I write this blog using &lt;a href=&#34;http://daringfireball.net/projects/markdown/&#34;&gt;Markdown&lt;/a&gt; because I&#39;m a human and writing &lt;code&gt;stuff &amp;lt;strong&amp;gt;with&amp;lt;/strong&amp;gt; tags&lt;/code&gt; is just &lt;strong&gt;WRONG&lt;/strong&gt;. Thankfully, &lt;a href=&#34;http://daringfireball.net/&#34;&gt;Gruber&lt;/a&gt; solved this problem by writing markdown.&lt;/p&gt;
-&lt;p&gt;Now on the &lt;a href=&#34;http://daringfireball.net/projects/markdown/&#34;&gt;markdown page&lt;/a&gt; he says:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The best way to get a feel for Markdown’s formatting syntax is simply to look at a Markdown-formatted document. For example, you can view the Markdown source for the article text on this page here: &lt;a href=&#34;http://daringfireball.net/projects/markdown/index.text&#34;&gt;http://daringfireball.net/projects/markdown/index.text&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;(You can use this ‘.text’ suffix trick to view the Markdown source for the content of each of the pages in this section, e.g. the Syntax and License pages.)&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;And ever since I noticed that I&#39;ve always read his articles using the &#39;.text&#39; trick. One of the plugins I&#39;ve been meaning to write for &lt;a href=&#34;http://habariproject.org/&#34;&gt;habari&lt;/a&gt; is one that replicates this &#39;.text&#39; behaviour. So tonight I decided to try and write it, started picking through the &lt;a href=&#34;http://wiki.habariproject.org/en/Creating_A_Plugin&#34;&gt;Plugin documentation&lt;/a&gt; in preparation. Got a bit stuck with it as I&#39;ve been out of the habari development loop for a few months, popped into &lt;a href=&#34;irc://irc.freenode.net/#habari&#34;&gt;#habari&lt;/a&gt; and asked if I was thinking along the right lines.&lt;/p&gt;
-&lt;p&gt;Few minutes later &lt;a href=&#34;http://asymptomatic.net/&#34;&gt;Owen&lt;/a&gt; pops up and sends me a link to &lt;a href=&#34;http://svn.habariproject.org/habari-extras/plugins/plaintext/trunk/plaintext.plugin.php&#34;&gt;plaintext.plugin.php&lt;/a&gt;, which does exactly what I was trying to do! Couple of tweaks later (switching it to &#39;.text&#39; instead of &#39;.md&#39;) and its installed and working on this blog. Feel free to view the &lt;a href=&#34;http://caiustheory.com/view-raw-source.text&#34;&gt;raw source&lt;/a&gt; of this post. Or any other post on this site.&lt;/p&gt;
-&lt;h3 id=&#34;updated-2009-01-31&#34;&gt;Updated 2009-01-31&lt;/h3&gt;
-&lt;p&gt;Added to the habari-extras repo as the &lt;a href=&#34;http://svn.habariproject.org/habari-extras/plugins/plaintext/trunk/plaintext.plugin.php&#34;&gt;Plaintext&lt;/a&gt; plugin.&lt;/p&gt;</description></item><item><title>This is my Compiler</title><link>https://caiustheory.com/this-is-my-compiler/</link><pubDate>Fri, 30 Jan 2009 12:18:56 +0000</pubDate><guid>https://caiustheory.com/this-is-my-compiler/</guid><description>&lt;p&gt;As some friday fun in &lt;a href=&#34;http://twitter.com/geekupirc&#34;&gt;#geekup&lt;/a&gt; we ended up converting the &lt;a href=&#34;http://usmilitary.about.com/od/marines/l/blriflecreed.htm&#34;&gt;US Marines Creed&lt;/a&gt; to a geekier version.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;This is my compiler.&lt;br /&gt;
-There are many like it, but this one is MINE.&lt;br /&gt;
-My compiler is my best friend. It is my life.&lt;br /&gt;
-I must master it as I must master my life.&lt;br /&gt;
-My compiler without me is useless. Without my compiler, I am useless.&lt;br /&gt;
-I must run my compiler true.&lt;br /&gt;
-I must run faster than my bug who is trying to kill me.&lt;br /&gt;
-I must squash him before he squashes me. I will...&lt;br /&gt;
-My compiler and myself know that what counts in war is not the warnings we squash,&lt;br /&gt;
-the builds we create, nor the optimisations we make.&lt;br /&gt;
-We know it is the build errors fixed that count. We will fix...&lt;br /&gt;
-My compiler is human, even as I, because it is my life.&lt;br /&gt;
-Thus, I will learn it as a brother.&lt;br /&gt;
-I will learn its weaknesses, its strengths, its output, its code,&lt;br /&gt;
-its quirks, and its errors.&lt;br /&gt;
-I will ever guard it against the ravages of virii and disk failures.&lt;br /&gt;
-I will keep my compiler clean and ready, even as I am clean and ready.&lt;br /&gt;
-We will become part of each other. We will...&lt;br /&gt;
-Before Assembler I swear this creed.&lt;br /&gt;
-My compiler and myself are the defenders of good code.&lt;br /&gt;
-We are the masters of our bugs.&lt;br /&gt;
-We are the saviors of our code.&lt;br /&gt;
-So be it, until code is compiling and there are no bugs, but compiled code.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;And then &lt;a href=&#34;http://jamx.org/&#34;&gt;jamx&lt;/a&gt; jumped in with the &lt;a href=&#34;http://en.wikipedia.org/wiki/Lord&#39;s_Prayer#English_versions&#34;&gt;Lords Prayer&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Our Compiler, who art in memory. GNU be thy name.&lt;br /&gt;
-Thy source code come, thy will be done.&lt;br /&gt;
-On script as it is in memory.&lt;br /&gt;
-Give us this day our daily data, and forgive us our segfaults as we forgive those who segfault against us.&lt;br /&gt;
-And lead us not into /dev/null but deliver us from M$,&lt;br /&gt;
-for thine is the domain, the cpu and the peeps.&lt;br /&gt;
-for (x=0; x&amp;lt;2; x++){ x=0; }&lt;br /&gt;
-Amen&lt;/p&gt;
-&lt;/blockquote&gt;</description></item><item><title>When work just feels right</title><link>https://caiustheory.com/when-work-just-feels-right/</link><pubDate>Fri, 21 Nov 2008 11:51:08 +0000</pubDate><guid>https://caiustheory.com/when-work-just-feels-right/</guid><description>&lt;p&gt;Much like &lt;a href=&#34;http://www.3hv.co.uk/&#34; title=&#34;3hv&#34;&gt;Rahoul&#39;s&lt;/a&gt; post on &lt;a href=&#34;http://www.3hv.co.uk/blog/2008/10/16/working-for-brightbox/&#34; title=&#34;Working for Brightbox&#34;&gt;knowing you&#39;re on the right path&lt;/a&gt;, I had that moment this morning whilst we were discussing a future feature for our control panel.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;john&lt;/strong&gt;: will I be able to superpoke our customers?&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: is that in the spec?&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: &amp;quot;John made server10 a zombie&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server10 zombified server9&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: &amp;quot;David has poked server19 19234 times&amp;quot;&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: server16 messaged David &amp;quot;My disk is filling up and I have files I need to put somewhere, please help!&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;Rahoul ended his friendship with server15&amp;quot;&lt;br /&gt;
-&lt;strong&gt;David&lt;/strong&gt;: &amp;quot;server02 is now married to server05&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Rahoul&lt;/strong&gt;: server10 has sent you 12 videos of a fat man eating a cake&lt;br /&gt;
-&lt;strong&gt;David&lt;/strong&gt;: server11 joined the group &amp;quot;KVM ftw&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server16 threw a sheep at server15&amp;quot;&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: server03 joined the group &amp;quot;Centos sucks!&amp;quot;&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;server15 sent an emergency broadcast: physical movement detected&amp;quot;&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: storage03 has logged off&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;x13 flew to the moon 0 times&amp;quot;&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: disk5 in storage02 is now a zombie&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: disk4 in storage02 is now a zombie&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: disk3 in storage02 is now a zombie&lt;br /&gt;
-&lt;strong&gt;Jeremy&lt;/strong&gt;: disk2 in storage02 is now a zombie&lt;br /&gt;
-&lt;strong&gt;john&lt;/strong&gt;: storage02 was sold on ebay by Jeremy&lt;br /&gt;
-&lt;strong&gt;Caius&lt;/strong&gt;: &amp;quot;john was sold on brightbox marketplace by storage5&amp;quot;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;em&gt;(In case you don&#39;t know, I work for &lt;a href=&#34;http://www.brightbox.co.uk/&#34;&gt;Brightbox&lt;/a&gt;.)&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Keyboards</title><link>https://caiustheory.com/keyboards/</link><pubDate>Tue, 14 Oct 2008 13:59:01 +0000</pubDate><guid>https://caiustheory.com/keyboards/</guid><description>&lt;p&gt;Back in the day I swapped the keys on my 12&amp;quot; powerbook keyboard around to read &lt;code&gt;macgenius&lt;/code&gt; across the middle row.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2941719496/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3213/2941719496_caf2a6a813_m.jpg&#34; alt=&#34;Powerbook Keyboard&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;I unearthed the picture, and figured, why not do it to my apple aluminium keyboard? So I found a &lt;a href=&#34;http://skeltoac.com/2007/10/22/apple-keyboard-aluminum-keycap-removal/&#34;&gt;tutorial&lt;/a&gt; from some other guy that&#39;d done it, and dug out my penknife.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2938651260/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3243/2938651260_915f42d92d_m.jpg&#34; alt=&#34;External Keyboard&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After that I decided to rearrange the macbook internal keyboard as well. First I googled around to make sure lifting the keys was the same as doing it on the external keyboard (which it appeared to be), then I went ahead and rearranged them as well.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2940872039/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3214/2940872039_164ee672ef_m.jpg&#34; alt=&#34;Internal Keyboard -- Macgenius&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;So whilst I was wondering what to do about it, my mother emailed me and suggested using &lt;code&gt;ontherails&lt;/code&gt; instead of &lt;code&gt;macgenius&lt;/code&gt;. So I did, and now the top row reads &lt;code&gt;ontherails&lt;/code&gt; on the macbooks&#39; internal keyboard.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/caius/2941726222/&#34;&gt;&lt;img src=&#34;http://farm4.static.flickr.com/3146/2941726222_67b2405a89_m.jpg&#34; alt=&#34;Internal Keyboard -- Ontherails&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;All pictures are licenced under &lt;a href=&#34;http://creativecommons.org/licenses/by/2.0/deed.en_GB&#34;&gt;Creative Commons Attribution 2.0 Generic licence&lt;/a&gt; and the above pictures, plus some &lt;em&gt;in progress&lt;/em&gt; shots, are available in my &lt;a href=&#34;http://www.flickr.com/photos/caius/sets/72157608015895484/&#34;&gt;Keyboard Modifications&lt;/a&gt; flickr set.&lt;/p&gt;</description></item><item><title>UK Parking</title><link>https://caiustheory.com/uk-parking/</link><pubDate>Sat, 12 Jan 2008 12:35:01 +0000</pubDate><guid>https://caiustheory.com/uk-parking/</guid><description>&lt;p&gt;So I just saw this in my twitter stream:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&#34;http://twitter.com/peterc/statuses/590099072&#34;&gt;peterc&lt;/a&gt;: Warning UK drivers.. councils get powers on March 31st to give you parking fines for infractions they see on CCTV!&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;This indeed sucks. We&#39;ll see how successful they are at ticketing people and whether anyone abuses the system...&lt;/p&gt;</description></item><item><title>dSLR Quote</title><link>https://caiustheory.com/dslr-quote/</link><pubDate>Mon, 31 Dec 2007 17:25:25 +0000</pubDate><guid>https://caiustheory.com/dslr-quote/</guid><description>&lt;p&gt;I was just talking to &lt;a href=&#34;http://keihatsu.org/&#34;&gt;Nadim&lt;/a&gt; about him getting a new camera and then this happened:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Nadim: &lt;a href=&#34;http://cyraq.deviantart.com/art/Above-the-Clouds-72170767&#34;&gt;http://cyraq.deviantart.com/art/Above-the-Clouds-72170767&lt;/a&gt;&lt;br /&gt;
-Nadim: Did you see that?&lt;br /&gt;
-Nadim: Taken couple of weeks ago&lt;br /&gt;
-Caius: woa&lt;br /&gt;
-Caius: and you need a new camera because? :P&lt;br /&gt;
-Nadim: I have wet dreams about DSLR&#39;s&lt;/p&gt;
-&lt;/blockquote&gt;</description></item><item><title>Quote to see the new year in</title><link>https://caiustheory.com/quote-to-see-the-new-year-in/</link><pubDate>Mon, 31 Dec 2007 17:11:11 +0000</pubDate><guid>https://caiustheory.com/quote-to-see-the-new-year-in/</guid><description>&lt;p&gt;So I&#39;m a geek, as my friends are gradually realising more and more. Anyway, I twitter a lot, and occasionally write quotes that need to be saved elsewhere. And what generally makes tweets funnier are other people replying to them.&lt;/p&gt;
-&lt;p&gt;A little background information. This had just taken place in #habari (a chat room.)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;h0bbel&amp;gt; ringmaster: i&#39;ll show you my winky
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>quote on Caius Theory</title><link>https://caiustheory.com/tag/quote/</link><description>Recent content in quote on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Wed, 09 Feb 2011 14:03:49 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/quote/index.xml" rel="self" type="application/rss+xml"/><item><title>Bad Recruiters - Rhys Evans at Devonshire</title><link>https://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire/</link><pubDate>Wed, 09 Feb 2011 14:03:49 +0000</pubDate><guid>https://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire/</guid><description>&lt;p>This is a linked-in invitation I received from Rhys, and my reply.&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>Update 2011-02-10:&lt;/strong> As much as recruiters can be scummy twats, Rhys appears to at least care somewhat about his relationship with potential clients/contacts and has &lt;a href="http://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire#comment-34098">responded in the comments&lt;/a>. Normally my policy with recruiters is a two strike one, first email gets a polite &amp;ldquo;No thanks, go away.&amp;quot;, second gets a mini-rant to bugger off and stop contacting me. Rhys hadn&amp;rsquo;t technically contacted me before, but the unsolicited xmas email showed up when I searched my mailbox (which had annoyed me back when I received it.) And asking amongst my peers around at the time showed he was fairly disliked. (As you can see in some of the comments left below as well.) Since then, including a comment left below, a few people I trust have noted he&amp;rsquo;s really not that bad as recruiters go, and the fact he&amp;rsquo;s left a comment acknowledging perhaps his approach is a little misguided is enough for me to see he does still care about trying to be better than the rest of the recruitment crowd.&lt;/p>
+&lt;p>I still stand by my initial reply to him, and all other recruiters who don&amp;rsquo;t understand &amp;ldquo;No.&amp;rdquo; however.&lt;/p>
+&lt;hr>
+&lt;p>On 02/09/11 5:30 AM, Rhys Evans wrote:&lt;/p>
+&lt;blockquote>
+&lt;p>Hi Caius,&lt;/p>
+&lt;p>Good afternoon, I hope all is well.&lt;/p>
+&lt;p>I&amp;rsquo;ve noticed we are connected to a number of the same people within the Rails space on LinkedIn. I&amp;rsquo;ve tried you on 07960 268100 to no avail so I&amp;rsquo;d like to add you to my network and make contact.&lt;/p>
+&lt;/blockquote>
+&lt;p>Hi Rhys,&lt;/p>
+&lt;p>I&amp;rsquo;ve already got you blocked on twitter, so we&amp;rsquo;ve obviously run across each other in the past. You also appear to have sent me a Merry Xmas email from Devonshire, with no previous contact initiated by me. (I seem to remember a lot of my friends got those emails as well and we eventually worked out you&amp;rsquo;d scraped Github for them.)&lt;/p>
+&lt;p>Now it would appear you&amp;rsquo;re being more intrusive and hunting folk out on linked in, ignoring the fact that they are employed and have specifically set linked in to say they aren&amp;rsquo;t looking for new jobs currently. From asking around you harass a few of my friends, to the point of ringing one up recently to tell them you knew they&amp;rsquo;d changed jobs and where they were now working. If you&amp;rsquo;re going to spend time doing that much research then why not have the decency to not be a completely mannerless cunt and leave them alone when they request you to.&lt;/p>
+&lt;p>It would also appear you&amp;rsquo;ve just blanket-spammed me and a few people in my peer group through linked in with the same request, again a pretty dumb thing to do. It&amp;rsquo;s as if you recruiters think we never talk to each other, and don&amp;rsquo;t realise how much you lot being a bunch of pestering spammy bastards taints developers against ever dealing with a recruiter.&lt;/p>
+&lt;p>So no, I don&amp;rsquo;t think I do want to accept your invitation to connect. And please never phone, email or contact me via any other means. I&amp;rsquo;m happily employed and if I &lt;em>ever&lt;/em> need the services of a recruiter I&amp;rsquo;ll find someone who actually possesses an ounce of politeness about approaching (potential) candidates.&lt;/p>
+&lt;p>Thanks,&lt;br>
+Caius&lt;/p></description></item><item><title>Facebook iPhone app Contact Sync isn't automatic</title><link>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</link><pubDate>Wed, 06 Oct 2010 14:10:06 +0000</pubDate><guid>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</guid><description>&lt;p>There&amp;rsquo;s an article on the guardian about &lt;a href="http://www.guardian.co.uk/technology/blog/2010/oct/06/facebook-privacy-phone-numbers-upload">private phone numbers being uploaded from facebook&lt;/a>, and another over &lt;a href="http://www.techeye.net/security/facebook-takes-and-stores-data-numbers-from-your-iphone">techeye.net on the same subject.&lt;/a>&lt;/p>
+&lt;p>Firstly a quote from the techeye article:&lt;/p>
+&lt;blockquote>
+&lt;p>Facebook doesn&amp;rsquo;t warn users that they are uploading their phone&amp;rsquo;s address book to Facebook.&lt;/p>
+&lt;/blockquote>
+&lt;p>And whilst the guardian article never says it happens automatically, it also doesn&amp;rsquo;t lay it out that you have to &lt;strong>explicitly&lt;/strong> enable that feature, &lt;strong>and&lt;/strong> agree to the facebook app uploading the data.&lt;/p>
+&lt;p>I was pretty sure that facebook wouldn&amp;rsquo;t be grabbing all your contact information without telling you, if they did at all, and that both articles were just pure scaremongering. So I fired up the facebook iPhone app, headed into my friends list on there, clicked sync and got the following screen:&lt;/p>
+&lt;p>&lt;img src="http://farm5.static.flickr.com/4148/5056619687_973ae660cc_d.jpg" alt="">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/5056619687/">View Original&lt;/a>&lt;/p>
+&lt;p>Ok, so according to that text, they&amp;rsquo;re just pulling down profile images and profile links from facebook and putting them in your address book against your contacts. Seems fairly harmless so far. So I toggled the top switch, to enable Contact Sync, and got the following screen:&lt;/p>
+&lt;p>&lt;img src="http://farm5.static.flickr.com/4145/5056697193_252e954ec3_d.jpg" alt="">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/5056697193/">View Original&lt;/a>&lt;/p>
+&lt;p>Reading that, it&amp;rsquo;s fairly obvious what data facebook are uploading (although a little ambiguous why), and it &lt;strong>certainly&lt;/strong> isn&amp;rsquo;t happening automatically. As it says, it uploads the &amp;ldquo;name, email address, phone number&amp;rdquo; from all your contacts to facebook, and pull down &amp;ldquo;your friends&amp;rsquo; profile photos and other info from Facebook&amp;rdquo;.&lt;/p>
+&lt;p>So whilst facebook &lt;em>are&lt;/em> collecting more data (albeit stored subject to their Privacy Policy), it&amp;rsquo;s certainly &lt;strong>NOT&lt;/strong> done automatically, and is &lt;strong>very explicit&lt;/strong> about what is being uploaded at the point you enable it.&lt;/p></description></item><item><title>iPad? iPerfect (…for me)</title><link>https://caiustheory.com/ipad-iperfect-for-me/</link><pubDate>Wed, 27 Jan 2010 20:56:50 +0000</pubDate><guid>https://caiustheory.com/ipad-iperfect-for-me/</guid><description>&lt;p>&lt;em>Google Groups is a pile of fail and hasn&amp;rsquo;t posted my message in reply to a thread on &lt;a href="http://geekup.org/">Geekup&lt;/a> so I&amp;rsquo;m blogging it instead.&lt;/em>&lt;/p>
+&lt;blockquote>
+&lt;p>On 27 Jan 2010, at 19:53, Steve Richardson wrote:&lt;br>
+Thoughts?&lt;/p>
+&lt;/blockquote>
+&lt;p>I&amp;rsquo;ve been searching for a device to fit between my Macbook Pro and iPhone. I work all day on the MBP, and moving it to then watch video in another room or read twitter/news/mail whilst watching telly, etc is a pain.&lt;/p>
+&lt;p>The iPhone is a great little device on the move, but for trying to multitask at home it&amp;rsquo;s a bit.. tedious. Even jailbroken and running multiple apps at once it&amp;rsquo;s still limiting.&lt;/p>
+&lt;p>I&amp;rsquo;d been looking around at netbooks, but what put me off actually getting one was my previous experience with one. I know I&amp;rsquo;d want it to run OS X to keep in sync (easily) with my other Apple devices, but hackintoshing one was a bit too much hassle, plus the fact ones to hackintosh cost more than I really wanted to pay for something that wasn&amp;rsquo;t &lt;em>quite&lt;/em> what I thought I needed.&lt;/p>
+&lt;p>And then.. the iPad. I&amp;rsquo;ve been sort of keeping up with the rumours (mainly through &lt;a href="http://daringfireball.net">Daring Fireball&lt;/a>) and whilst I didn&amp;rsquo;t get excited about it too much ahead of announcement&lt;!-- raw HTML omitted -->1&lt;!-- raw HTML omitted -->, having seen the official video of it it&amp;rsquo;s pretty much guaranteed that I&amp;rsquo;m going to get one.&lt;/p>
+&lt;p>Yes, it&amp;rsquo;s limited (App Store, closed device), but.. I don&amp;rsquo;t care. Take the iPhone, it&amp;rsquo;s good enough for doing things on it, even if someone else is in charge of the ecosystem and has a big finger saying yes or no. I (willingly) use iTunes, Mobile Me, all the things that are so wonderfully integrated in the world of Apple, so another device that consumes my media using channels I already know and use is just a massive win for me.&lt;/p>
+&lt;p>All I&amp;rsquo;m hoping now is that $499 doesn&amp;rsquo;t equal £499. Hopefully it&amp;rsquo;ll be £399, still a good £80 above direct exchange rate, but low enough that it&amp;rsquo;s a no-brainer for me to get one.&lt;/p>
+&lt;p>…And I think this is the first Apple product that I&amp;rsquo;ve seen announced and actually known from the start &lt;em>why&lt;/em> I&amp;rsquo;m going to get one, instead of just a knee-jerk &amp;ldquo;SHINY!!!! WANT!!!&amp;rdquo; reaction. Uh oh, does that make me an adult?&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->1&lt;!-- raw HTML omitted --> I miss getting really excited about apple announcements :(&lt;/p>
+&lt;h4 id="update">Update&lt;/h4>
+&lt;p>It just got even better. Was lamenting to a &lt;a href="http://tmertz.com/">friend&lt;/a> on IM that it&amp;rsquo;d be so much nicer once you can directly suck photos off a camera/SD card into it. Turns out there&amp;rsquo;s an adapter for that. See &amp;ldquo;iPad Camera Connection Kit&amp;rdquo; at the bottom of &lt;a href="http://www.apple.com/ipad/specs/">http://www.apple.com/ipad/specs/&lt;/a> for details.&lt;/p></description></item><item><title>View Raw Source</title><link>https://caiustheory.com/view-raw-source/</link><pubDate>Sat, 31 Jan 2009 01:54:57 +0000</pubDate><guid>https://caiustheory.com/view-raw-source/</guid><description>&lt;p>So I write this blog using &lt;a href="http://daringfireball.net/projects/markdown/">Markdown&lt;/a> because I&amp;rsquo;m a human and writing &lt;code>stuff &amp;lt;strong&amp;gt;with&amp;lt;/strong&amp;gt; tags&lt;/code> is just &lt;strong>WRONG&lt;/strong>. Thankfully, &lt;a href="http://daringfireball.net/">Gruber&lt;/a> solved this problem by writing markdown.&lt;/p>
+&lt;p>Now on the &lt;a href="http://daringfireball.net/projects/markdown/">markdown page&lt;/a> he says:&lt;/p>
+&lt;blockquote>
+&lt;p>The best way to get a feel for Markdown’s formatting syntax is simply to look at a Markdown-formatted document. For example, you can view the Markdown source for the article text on this page here: &lt;a href="http://daringfireball.net/projects/markdown/index.text">http://daringfireball.net/projects/markdown/index.text&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>(You can use this ‘.text’ suffix trick to view the Markdown source for the content of each of the pages in this section, e.g. the Syntax and License pages.)&lt;/p>
+&lt;/blockquote>
+&lt;p>And ever since I noticed that I&amp;rsquo;ve always read his articles using the &amp;lsquo;.text&amp;rsquo; trick. One of the plugins I&amp;rsquo;ve been meaning to write for &lt;a href="http://habariproject.org/">habari&lt;/a> is one that replicates this &amp;lsquo;.text&amp;rsquo; behaviour. So tonight I decided to try and write it, started picking through the &lt;a href="http://wiki.habariproject.org/en/Creating_A_Plugin">Plugin documentation&lt;/a> in preparation. Got a bit stuck with it as I&amp;rsquo;ve been out of the habari development loop for a few months, popped into &lt;a href="irc://irc.freenode.net/#habari">#habari&lt;/a> and asked if I was thinking along the right lines.&lt;/p>
+&lt;p>Few minutes later &lt;a href="http://asymptomatic.net/">Owen&lt;/a> pops up and sends me a link to &lt;a href="http://pastoid.com/bn5">plaintext.plugin.php&lt;/a>, which does exactly what I was trying to do! Couple of tweaks later (switching it to &amp;lsquo;.text&amp;rsquo; instead of &amp;lsquo;.md&amp;rsquo;) and its installed and working on this blog. Feel free to view the &lt;a href="http://caiustheory.com/view-raw-source.text">raw source&lt;/a> of this post. Or any other post on this site.&lt;/p>
+&lt;h3 id="updated-2009-01-31">Updated 2009-01-31&lt;/h3>
+&lt;p>Added to the habari-extras repo as the &lt;a href="http://pastoid.com/bn5">Plaintext&lt;/a> plugin.&lt;/p></description></item><item><title>This is my Compiler</title><link>https://caiustheory.com/this-is-my-compiler/</link><pubDate>Fri, 30 Jan 2009 12:18:56 +0000</pubDate><guid>https://caiustheory.com/this-is-my-compiler/</guid><description>&lt;p>As some friday fun in &lt;a href="http://twitter.com/geekupirc">#geekup&lt;/a> we ended up converting the &lt;a href="http://usmilitary.about.com/od/marines/l/blriflecreed.htm">US Marines Creed&lt;/a> to a geekier version.&lt;/p>
+&lt;blockquote>
+&lt;p>This is my compiler.&lt;br>
+There are many like it, but this one is MINE.&lt;br>
+My compiler is my best friend. It is my life.&lt;br>
+I must master it as I must master my life.&lt;br>
+My compiler without me is useless. Without my compiler, I am useless.&lt;br>
+I must run my compiler true.&lt;br>
+I must run faster than my bug who is trying to kill me.&lt;br>
+I must squash him before he squashes me. I will&amp;hellip;&lt;br>
+My compiler and myself know that what counts in war is not the warnings we squash,&lt;br>
+the builds we create, nor the optimisations we make.&lt;br>
+We know it is the build errors fixed that count. We will fix&amp;hellip;&lt;br>
+My compiler is human, even as I, because it is my life.&lt;br>
+Thus, I will learn it as a brother.&lt;br>
+I will learn its weaknesses, its strengths, its output, its code,&lt;br>
+its quirks, and its errors.&lt;br>
+I will ever guard it against the ravages of virii and disk failures.&lt;br>
+I will keep my compiler clean and ready, even as I am clean and ready.&lt;br>
+We will become part of each other. We will&amp;hellip;&lt;br>
+Before Assembler I swear this creed.&lt;br>
+My compiler and myself are the defenders of good code.&lt;br>
+We are the masters of our bugs.&lt;br>
+We are the saviors of our code.&lt;br>
+So be it, until code is compiling and there are no bugs, but compiled code.&lt;/p>
+&lt;/blockquote>
+&lt;p>And then &lt;a href="http://jamx.org/">jamx&lt;/a> jumped in with the &lt;a href="http://en.wikipedia.org/wiki/Lord's_Prayer#English_versions">Lords Prayer&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>Our Compiler, who art in memory. GNU be thy name.&lt;br>
+Thy source code come, thy will be done.&lt;br>
+On script as it is in memory.&lt;br>
+Give us this day our daily data, and forgive us our segfaults as we forgive those who segfault against us.&lt;br>
+And lead us not into /dev/null but deliver us from M$,&lt;br>
+for thine is the domain, the cpu and the peeps.&lt;br>
+for (x=0; x&amp;lt;2; x++){ x=0; }&lt;br>
+Amen&lt;/p>
+&lt;/blockquote></description></item><item><title>When work just feels right</title><link>https://caiustheory.com/when-work-just-feels-right/</link><pubDate>Fri, 21 Nov 2008 11:51:08 +0000</pubDate><guid>https://caiustheory.com/when-work-just-feels-right/</guid><description>&lt;p>Much like &lt;a href="http://www.3hv.co.uk/" title="3hv">Rahoul&amp;rsquo;s&lt;/a> post on &lt;a href="http://www.3hv.co.uk/blog/2008/10/16/working-for-brightbox/" title="Working for Brightbox">knowing you&amp;rsquo;re on the right path&lt;/a>, I had that moment this morning whilst we were discussing a future feature for our control panel.&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>john&lt;/strong>: will I be able to superpoke our customers?&lt;br>
+&lt;strong>john&lt;/strong>: is that in the spec?&lt;br>
+&lt;strong>Jeremy&lt;/strong>: &amp;ldquo;John made server10 a zombie&amp;rdquo;&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;server10 zombified server9&amp;rdquo;&lt;br>
+&lt;strong>Jeremy&lt;/strong>: &amp;ldquo;David has poked server19 19234 times&amp;rdquo;&lt;br>
+&lt;strong>john&lt;/strong>: server16 messaged David &amp;ldquo;My disk is filling up and I have files I need to put somewhere, please help!&amp;rdquo;&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;Rahoul ended his friendship with server15&amp;rdquo;&lt;br>
+&lt;strong>David&lt;/strong>: &amp;ldquo;server02 is now married to server05&amp;rdquo;&lt;br>
+&lt;strong>Rahoul&lt;/strong>: server10 has sent you 12 videos of a fat man eating a cake&lt;br>
+&lt;strong>David&lt;/strong>: server11 joined the group &amp;ldquo;KVM ftw&amp;rdquo;&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;server16 threw a sheep at server15&amp;rdquo;&lt;br>
+&lt;strong>john&lt;/strong>: server03 joined the group &amp;ldquo;Centos sucks!&amp;rdquo;&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;server15 sent an emergency broadcast: physical movement detected&amp;rdquo;&lt;br>
+&lt;strong>john&lt;/strong>: storage03 has logged off&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;x13 flew to the moon 0 times&amp;rdquo;&lt;br>
+&lt;strong>john&lt;/strong>: disk5 in storage02 is now a zombie&lt;br>
+&lt;strong>Jeremy&lt;/strong>: disk4 in storage02 is now a zombie&lt;br>
+&lt;strong>Jeremy&lt;/strong>: disk3 in storage02 is now a zombie&lt;br>
+&lt;strong>Jeremy&lt;/strong>: disk2 in storage02 is now a zombie&lt;br>
+&lt;strong>john&lt;/strong>: storage02 was sold on ebay by Jeremy&lt;br>
+&lt;strong>Caius&lt;/strong>: &amp;ldquo;john was sold on brightbox marketplace by storage5&amp;rdquo;&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;em>(In case you don&amp;rsquo;t know, I work for &lt;a href="http://www.brightbox.co.uk/">Brightbox&lt;/a>.)&lt;/em>&lt;/p></description></item><item><title>Keyboards</title><link>https://caiustheory.com/keyboards/</link><pubDate>Tue, 14 Oct 2008 13:59:01 +0000</pubDate><guid>https://caiustheory.com/keyboards/</guid><description>&lt;p>Back in the day I swapped the keys on my 12&amp;rdquo; powerbook keyboard around to read &lt;code>macgenius&lt;/code> across the middle row.&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/2941719496/">&lt;img src="http://farm4.static.flickr.com/3213/2941719496_caf2a6a813_m.jpg" alt="Powerbook Keyboard">&lt;/a>&lt;/p>
+&lt;p>I unearthed the picture, and figured, why not do it to my apple aluminium keyboard? So I found a &lt;a href="http://skeltoac.com/2007/10/22/apple-keyboard-aluminum-keycap-removal/">tutorial&lt;/a> from some other guy that&amp;rsquo;d done it, and dug out my penknife.&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/2938651260/">&lt;img src="http://farm4.static.flickr.com/3243/2938651260_915f42d92d_m.jpg" alt="External Keyboard">&lt;/a>&lt;/p>
+&lt;p>After that I decided to rearrange the macbook internal keyboard as well. First I googled around to make sure lifting the keys was the same as doing it on the external keyboard (which it appeared to be), then I went ahead and rearranged them as well.&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/2940872039/">&lt;img src="http://farm4.static.flickr.com/3214/2940872039_164ee672ef_m.jpg" alt="Internal Keyboard &amp;ndash; Macgenius">&lt;/a>&lt;/p>
+&lt;p>So whilst I was wondering what to do about it, my mother emailed me and suggested using &lt;code>ontherails&lt;/code> instead of &lt;code>macgenius&lt;/code>. So I did, and now the top row reads &lt;code>ontherails&lt;/code> on the macbooks&amp;rsquo; internal keyboard.&lt;/p>
+&lt;p>&lt;a href="http://www.flickr.com/photos/caius/2941726222/">&lt;img src="http://farm4.static.flickr.com/3146/2941726222_67b2405a89_m.jpg" alt="Internal Keyboard &amp;ndash; Ontherails">&lt;/a>&lt;/p>
+&lt;p>All pictures are licenced under &lt;a href="http://creativecommons.org/licenses/by/2.0/deed.en_GB">Creative Commons Attribution 2.0 Generic licence&lt;/a> and the above pictures, plus some &lt;em>in progress&lt;/em> shots, are available in my &lt;a href="http://www.flickr.com/photos/caius/sets/72157608015895484/">Keyboard Modifications&lt;/a> flickr set.&lt;/p></description></item><item><title>UK Parking</title><link>https://caiustheory.com/uk-parking/</link><pubDate>Sat, 12 Jan 2008 12:35:01 +0000</pubDate><guid>https://caiustheory.com/uk-parking/</guid><description>&lt;p>So I just saw this in my twitter stream:&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://twitter.com/peterc/statuses/590099072">peterc&lt;/a>: Warning UK drivers.. councils get powers on March 31st to give you parking fines for infractions they see on CCTV!&lt;/p>
+&lt;/blockquote>
+&lt;p>This indeed sucks. We&amp;rsquo;ll see how successful they are at ticketing people and whether anyone abuses the system&amp;hellip;&lt;/p></description></item><item><title>dSLR Quote</title><link>https://caiustheory.com/dslr-quote/</link><pubDate>Mon, 31 Dec 2007 17:25:25 +0000</pubDate><guid>https://caiustheory.com/dslr-quote/</guid><description>&lt;p>I was just talking to &lt;a href="http://keihatsu.org/">Nadim&lt;/a> about him getting a new camera and then this happened:&lt;/p>
+&lt;blockquote>
+&lt;p>Nadim: &lt;a href="http://cyraq.deviantart.com/art/Above-the-Clouds-72170767">http://cyraq.deviantart.com/art/Above-the-Clouds-72170767&lt;/a>&lt;br>
+Nadim: Did you see that?&lt;br>
+Nadim: Taken couple of weeks ago&lt;br>
+Caius: woa&lt;br>
+Caius: and you need a new camera because? :P&lt;br>
+Nadim: I have wet dreams about DSLR&amp;rsquo;s&lt;/p>
+&lt;/blockquote></description></item><item><title>Quote to see the new year in</title><link>https://caiustheory.com/quote-to-see-the-new-year-in/</link><pubDate>Mon, 31 Dec 2007 17:11:11 +0000</pubDate><guid>https://caiustheory.com/quote-to-see-the-new-year-in/</guid><description>&lt;p>So I&amp;rsquo;m a geek, as my friends are gradually realising more and more. Anyway, I twitter a lot, and occasionally write quotes that need to be saved elsewhere. And what generally makes tweets funnier are other people replying to them.&lt;/p>
+&lt;p>A little background information. This had just taken place in #habari (a chat room.)&lt;/p>
+&lt;pre>&lt;code>&amp;lt;h0bbel&amp;gt; ringmaster: i'll show you my winky
 * ringmaster runs.
 &amp;lt;h0bbel&amp;gt; as jmullan has seen it
 &amp;lt;h0bbel&amp;gt; i think
-&amp;lt;jmullan&amp;gt; no, I didn&#39;t look
+&amp;lt;jmullan&amp;gt; no, I didn't look
 &amp;lt;ringmaster&amp;gt; 0_o
 &amp;lt;h0bbel&amp;gt; i was kinda drunk at the time
 &amp;lt;h0bbel&amp;gt; lol
 &amp;lt;jmullan&amp;gt; we were playing &amp;quot;lightsabers&amp;quot; while peeing
 &amp;lt;jmullan&amp;gt; not &amp;quot;swords&amp;quot;
 &amp;lt;jmullan&amp;gt; I had the yellow saber, h0bbel had the green one
-&amp;lt;jmullan&amp;gt; I&#39;m not sure how that worked
-&amp;lt;h0bbel&amp;gt; you said you didn&#39;t look!
+&amp;lt;jmullan&amp;gt; I'm not sure how that worked
+&amp;lt;h0bbel&amp;gt; you said you didn't look!
 &amp;lt;h0bbel&amp;gt; How did you know it was green?
-&amp;lt;jmullan&amp;gt; I just saw the beam, not the handle, if you know what I&#39;m saying
+&amp;lt;jmullan&amp;gt; I just saw the beam, not the handle, if you know what I'm saying
 &amp;lt;h0bbel&amp;gt; ehehe
 &amp;lt;Caius&amp;gt; xD
 &amp;lt;ringmaster&amp;gt; This is all somewhat disturbing.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So in order&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;man, #habari just wouldn&#39;t be the same without the semi-homosexual discussions every now and then&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Formatting some SQL queries for a fellow dev&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/h0bbel/statuses/549895502&#34;&gt;h0bbel&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549893582&#34;&gt;http://twitter.com/caius/st...&lt;/a&gt; is realy quoteworthy ;-)&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/tmertz/statuses/549899752&#34;&gt;Mertz&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;@&lt;a href=&#34;http://twitter.com/caius&#34;&gt;caius&lt;/a&gt;, wtf are you doing? put down the computer, take five steps back and go find a new years celebration.&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://twitter.com/caius/statuses/549903292&#34;&gt;me&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;@&lt;a href=&#34;http://twitter.com/tmertz&#34;&gt;tmertz&lt;/a&gt; just hanging in #habari whilst editing some SQL queries @&lt;a href=&#34;http://twitter.com/h0bbel&#34;&gt;h0bbel&lt;/a&gt; wrote waiting for 1900GMT to go round my mates and get drunk&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;And on the back of that, I&#39;d just like to say have a very merry new years eve and just follow your desires onwards in life!&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>So in order&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>man, #habari just wouldn&amp;rsquo;t be the same without the semi-homosexual discussions every now and then&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>Formatting some SQL queries for a fellow dev&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/h0bbel/statuses/549895502">h0bbel&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">http://twitter.com/caius/st&amp;hellip;&lt;/a> is realy quoteworthy ;-)&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/tmertz/statuses/549899752">Mertz&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>@&lt;a href="http://twitter.com/caius">caius&lt;/a>, wtf are you doing? put down the computer, take five steps back and go find a new years celebration.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549903292">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>@&lt;a href="http://twitter.com/tmertz">tmertz&lt;/a> just hanging in #habari whilst editing some SQL queries @&lt;a href="http://twitter.com/h0bbel">h0bbel&lt;/a> wrote waiting for 1900GMT to go round my mates and get drunk&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul>
+&lt;p>And on the back of that, I&amp;rsquo;d just like to say have a very merry new years eve and just follow your desires onwards in life!&lt;/p></description></item></channel></rss>

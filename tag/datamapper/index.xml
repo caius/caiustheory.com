@@ -1,86 +1,95 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>datamapper on Caius Theory</title><link>https://caiustheory.com/tag/datamapper/</link><description>Recent content in datamapper on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 12 Feb 2008 12:28:38 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/datamapper/index.xml" rel="self" type="application/rss+xml"/><item><title>Refactoring code logically</title><link>https://caiustheory.com/refactoring-code-logically/</link><pubDate>Tue, 12 Feb 2008 12:28:38 +0000</pubDate><guid>https://caiustheory.com/refactoring-code-logically/</guid><description>&lt;p&gt;And now an example of how I write my ruby code and get it down to the bare, readable, minimum code needed. This is real life code taken from a website I&#39;m building, but I&#39;ve changed the objects to a blog post because more people will relate to that easier.&lt;/p&gt;
-&lt;p&gt;The show object has an id passed in using the &lt;code&gt;params&lt;/code&gt; Hash, I want to check if that post exists in the database first. If it does, then render the page, and if it doesn&#39;t return a 404 error page.&lt;/p&gt;
-&lt;p&gt;So I start off by writing this in &lt;em&gt;longhand&lt;/em&gt; ruby, I&#39;m using the &lt;a href=&#34;http://merbivore.com/&#34;&gt;merb&lt;/a&gt; framework with &lt;a href=&#34;http://datamapper.com/&#34;&gt;DataMapper&lt;/a&gt; ORM by the way.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now whilst theres nothing wrong with this code, it just doesn&#39;t look right to me. There is a big if/else statement in there whilst I&#39;m sure there doesn&#39;t need to be.&lt;/p&gt;
-&lt;p&gt;Now I know if I return at any point in a ruby method, it exits the method at that point. So the first thing to is to refactor the &lt;code&gt;if&lt;/code&gt; test to remove a line of code. I shall assign &lt;code&gt;@post&lt;/code&gt; to the result of the DB as the actual if statement&#39;s test.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;So thats reading slightly better, and also is a line less of code. Now I wonder if I can use a &lt;code&gt;return true&lt;/code&gt; in there to stop me having to explicitly state an &lt;code&gt;else&lt;/code&gt; clause.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;true&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now the eagerest amongst you will be wondering what the advantage of that code is. It doesn&#39;t appear any more readable (slightly less in fact as you have to figure out its an implicit else) and is exactly the same amount of lines as the previous example. But what if we change the &lt;code&gt;if&lt;/code&gt; to an &lt;code&gt;if !&lt;/code&gt; and flip the code logic around?&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - not found&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now a raise will stop the code executing, and in the real application you would in fact just redirect to your 404 error page. The problem now is the &lt;code&gt;if !&lt;/code&gt; looks ugly and isn&#39;t easily readable.&lt;/p&gt;
-&lt;p&gt;All &lt;code&gt;unless&lt;/code&gt; does is &lt;code&gt;if !&lt;/code&gt;, that is, if the inverse of the result of the test statement is true, then invoke the block given to it. A quick example for you:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# without unless&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;logged_in?&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Please login.&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# using unless&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;unless&lt;/span&gt; &lt;span class=&#34;vi&#34;&gt;@user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;logged_in?&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;puts&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Please login.&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now whilst &lt;code&gt;if !&lt;/code&gt; doesn&#39;t seem that bad compared to &lt;code&gt;unless&lt;/code&gt;, the readablility of the code increases. It reads more as a flow of logic, and is quicker for the human brain to walk through (my brain anyway!)&lt;/p&gt;
-&lt;p&gt;So using unless we get 4 lines of code that is easily readable.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;unless&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now what if we go one step further and use the unless shorthand way of testing and exectuting one line of code?&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;show&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;404 - Not found&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;unless&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@post&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Post&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;render&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And that is generally how I write my code logically. Of course for something simple like this I&#39;d probably jump in at the last block having refactored it in my head first, but for more complex things I tend to write them exlicitly and then refactor them down whilst maintaining readability of my code.&lt;/p&gt;</description></item><item><title>Use datamapper sessions with merb &amp; datamapper</title><link>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</link><pubDate>Tue, 05 Feb 2008 20:27:31 +0000</pubDate><guid>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</guid><description>
-&lt;h3 id=&#34;issue&#34;&gt;Issue&lt;/h3&gt;
-&lt;p&gt;Can&#39;t use merb sessions with datamapper &amp;amp; mysql, get back an error about needing an id on the text column or something (I had the error a couple of days ago.)&lt;/p&gt;
-&lt;h3 id=&#34;solution&#34;&gt;Solution&lt;/h3&gt;
-&lt;p&gt;I suggest grabbing merb_datamapper svn source to fix this in. To do so make sure you have subversion installed on your machine (I&#39;m assuming a Unix based machine here.)&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Checkout the source&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;svn co http://svn.devjavu.com/merb/plugins/merb_datamapper
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Open up the affected file in your favourite editor &lt;em&gt;(I use TextMate)&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cd merb_datamapper
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>datamapper on Caius Theory</title><link>https://caiustheory.com/tag/datamapper/</link><description>Recent content in datamapper on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 12 Feb 2008 12:28:38 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/datamapper/index.xml" rel="self" type="application/rss+xml"/><item><title>Refactoring code logically</title><link>https://caiustheory.com/refactoring-code-logically/</link><pubDate>Tue, 12 Feb 2008 12:28:38 +0000</pubDate><guid>https://caiustheory.com/refactoring-code-logically/</guid><description>&lt;p>And now an example of how I write my ruby code and get it down to the bare, readable, minimum code needed. This is real life code taken from a website I&amp;rsquo;m building, but I&amp;rsquo;ve changed the objects to a blog post because more people will relate to that easier.&lt;/p>
+&lt;p>The show object has an id passed in using the &lt;code>params&lt;/code> Hash, I want to check if that post exists in the database first. If it does, then render the page, and if it doesn&amp;rsquo;t return a 404 error page.&lt;/p>
+&lt;p>So I start off by writing this in &lt;em>longhand&lt;/em> ruby, I&amp;rsquo;m using the &lt;a href="http://merbivore.com/">merb&lt;/a> framework with &lt;a href="http://datamapper.com/">DataMapper&lt;/a> ORM by the way.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">show&lt;/span>
+&lt;span class="vi">@post&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Post&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">first&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="ss">:id&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="vi">@post&lt;/span>
+&lt;span class="n">render&lt;/span>
+&lt;span class="k">else&lt;/span>
+&lt;span class="k">raise&lt;/span> &lt;span class="s2">&amp;#34;404 - Not found&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now whilst theres nothing wrong with this code, it just doesn&amp;rsquo;t look right to me. There is a big if/else statement in there whilst I&amp;rsquo;m sure there doesn&amp;rsquo;t need to be.&lt;/p>
+&lt;p>Now I know if I return at any point in a ruby method, it exits the method at that point. So the first thing to is to refactor the &lt;code>if&lt;/code> test to remove a line of code. I shall assign &lt;code>@post&lt;/code> to the result of the DB as the actual if statement&amp;rsquo;s test.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">show&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="vi">@post&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Post&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">first&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="ss">:id&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;span class="n">render&lt;/span>
+&lt;span class="k">else&lt;/span>
+&lt;span class="k">raise&lt;/span> &lt;span class="s2">&amp;#34;404 - Not found&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So thats reading slightly better, and also is a line less of code. Now I wonder if I can use a &lt;code>return true&lt;/code> in there to stop me having to explicitly state an &lt;code>else&lt;/code> clause.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">show&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="vi">@post&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">post&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">first&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="ss">:id&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;span class="n">render&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="kp">true&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">raise&lt;/span> &lt;span class="s2">&amp;#34;404 - Not found&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now the eagerest amongst you will be wondering what the advantage of that code is. It doesn&amp;rsquo;t appear any more readable (slightly less in fact as you have to figure out its an implicit else) and is exactly the same amount of lines as the previous example. But what if we change the &lt;code>if&lt;/code> to an &lt;code>if !&lt;/code> and flip the code logic around?&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">show&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="o">!&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="vi">@post&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Post&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">first&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="ss">:id&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;span class="k">raise&lt;/span> &lt;span class="s2">&amp;#34;404 - not found&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="n">render&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now a raise will stop the code executing, and in the real application you would in fact just redirect to your 404 error page. The problem now is the &lt;code>if !&lt;/code> looks ugly and isn&amp;rsquo;t easily readable.&lt;/p>
+&lt;p>All &lt;code>unless&lt;/code> does is &lt;code>if !&lt;/code>, that is, if the inverse of the result of the test statement is true, then invoke the block given to it. A quick example for you:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="c1"># without unless&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="o">!&lt;/span>&lt;span class="vi">@user&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">logged_in?&lt;/span>
+&lt;span class="nb">puts&lt;/span> &lt;span class="s2">&amp;#34;Please login.&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="c1"># using unless&lt;/span>
+&lt;span class="k">unless&lt;/span> &lt;span class="vi">@user&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">logged_in?&lt;/span>
+&lt;span class="nb">puts&lt;/span> &lt;span class="s2">&amp;#34;Please login.&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now whilst &lt;code>if !&lt;/code> doesn&amp;rsquo;t seem that bad compared to &lt;code>unless&lt;/code>, the readablility of the code increases. It reads more as a flow of logic, and is quicker for the human brain to walk through (my brain anyway!)&lt;/p>
+&lt;p>So using unless we get 4 lines of code that is easily readable.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">show&lt;/span>
+&lt;span class="k">unless&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="vi">@post&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Post&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">first&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="ss">:id&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;span class="k">raise&lt;/span> &lt;span class="s2">&amp;#34;404 - Not found&amp;#34;&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="n">render&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now what if we go one step further and use the unless shorthand way of testing and exectuting one line of code?&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">show&lt;/span>
+&lt;span class="k">raise&lt;/span> &lt;span class="s2">&amp;#34;404 - Not found&amp;#34;&lt;/span> &lt;span class="k">unless&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="vi">@post&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Post&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">first&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="ss">:id&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;span class="n">render&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And that is generally how I write my code logically. Of course for something simple like this I&amp;rsquo;d probably jump in at the last block having refactored it in my head first, but for more complex things I tend to write them exlicitly and then refactor them down whilst maintaining readability of my code.&lt;/p></description></item><item><title>Use datamapper sessions with merb &amp; datamapper</title><link>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</link><pubDate>Tue, 05 Feb 2008 20:27:31 +0000</pubDate><guid>https://caiustheory.com/use-datamapper-sessions-with-merb-datamapper/</guid><description>&lt;h3 id="issue">Issue&lt;/h3>
+&lt;p>Can&amp;rsquo;t use merb sessions with datamapper &amp;amp; mysql, get back an error about needing an id on the text column or something (I had the error a couple of days ago.)&lt;/p>
+&lt;h3 id="solution">Solution&lt;/h3>
+&lt;p>I suggest grabbing merb_datamapper svn source to fix this in. To do so make sure you have subversion installed on your machine (I&amp;rsquo;m assuming a Unix based machine here.)&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Checkout the source&lt;/p>
+&lt;pre>&lt;code> svn co http://svn.devjavu.com/merb/plugins/merb_datamapper
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Open up the affected file in your favourite editor &lt;em>(I use TextMate)&lt;/em>&lt;/p>
+&lt;pre>&lt;code> cd merb_datamapper
 mate lib/merb/sessions/data_mapper_session.rb
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Find line 25 that contains&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;`property :session_id, :text, :lazy =&amp;gt; false, :key =&amp;gt; true`
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;and remove &lt;code&gt;:text, :lazy =&amp;gt; false&lt;/code&gt; to replace it with &lt;code&gt;:string&lt;/code&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;`property :session_id, :string, :key =&amp;gt; true`
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Save and close the file, thats the editing done. Now to install the gem.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Build the gem&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;rake gem
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Install the gem&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo gem install pkg/merb_datamapper-0.5.gem
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;And you&#39;re away with the fix installed. Now just run &lt;code&gt;merb&lt;/code&gt; to create your sessions table in the db. Hope this helped!&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Find line 25 that contains&lt;/p>
+&lt;pre>&lt;code> `property :session_id, :text, :lazy =&amp;gt; false, :key =&amp;gt; true`
+&lt;/code>&lt;/pre>
+&lt;p>and remove &lt;code>:text, :lazy =&amp;gt; false&lt;/code> to replace it with &lt;code>:string&lt;/code>&lt;/p>
+&lt;pre>&lt;code> `property :session_id, :string, :key =&amp;gt; true`
+&lt;/code>&lt;/pre>
+&lt;p>Save and close the file, thats the editing done. Now to install the gem.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Build the gem&lt;/p>
+&lt;pre>&lt;code> rake gem
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Install the gem&lt;/p>
+&lt;pre>&lt;code> sudo gem install pkg/merb_datamapper-0.5.gem
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;p>And you&amp;rsquo;re away with the fix installed. Now just run &lt;code>merb&lt;/code> to create your sessions table in the db. Hope this helped!&lt;/p></description></item></channel></rss>

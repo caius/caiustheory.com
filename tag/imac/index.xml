@@ -1,22 +1,30 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>imac on Caius Theory</title><link>https://caiustheory.com/tag/imac/</link><description>Recent content in imac on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 09 Dec 2008 08:51:48 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/imac/index.xml" rel="self" type="application/rss+xml"/><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p&gt;I decided to install ubuntu onto my iMac G3&lt;ref&gt;450Mhz G3, 768mb ram, 20GB Hard Drive&lt;/ref&gt; to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em&gt;slightly&lt;/em&gt; outdated and 100% 404.&lt;/p&gt;
-&lt;p&gt;Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;When the screen goes black, drop to the console&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Control - Option - F2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;(if you need to log in use the name ubuntu to log in.)&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo nano /etc/X11/xorg.conf
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Change the frequencies in monitor section as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Section “Monitor”
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>imac on Caius Theory</title><link>https://caiustheory.com/tag/imac/</link><description>Recent content in imac on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 09 Dec 2008 08:51:48 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/imac/index.xml" rel="self" type="application/rss+xml"/><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p>I decided to install ubuntu onto my iMac G3&lt;!-- raw HTML omitted -->450Mhz G3, 768mb ram, 20GB Hard Drive&lt;!-- raw HTML omitted --> to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em>slightly&lt;/em> outdated and 100% 404.&lt;/p>
+&lt;p>Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>When the screen goes black, drop to the console&lt;/p>
+&lt;pre>&lt;code> Control - Option - F2
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>(if you need to log in use the name ubuntu to log in.)&lt;/em>&lt;/p>
+&lt;pre>&lt;code> $ sudo nano /etc/X11/xorg.conf
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Change the frequencies in monitor section as follows:&lt;/p>
+&lt;pre>&lt;code> Section “Monitor”
 Identifier “Generic Monitor”
 Option “DPMS”
 HorizSync 60-60
 VertRefresh 43-117
 EndSection
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;After the changes then type &lt;code&gt;control-o&lt;/code&gt;, &lt;code&gt;return&lt;/code&gt; (to accept the filename), then &lt;code&gt;control-x&lt;/code&gt; (save and exit nano)&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Restart X by running the following:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>After the changes then type &lt;code>control-o&lt;/code>, &lt;code>return&lt;/code> (to accept the filename), then &lt;code>control-x&lt;/code> (save and exit nano)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Restart X by running the following:&lt;/p>
+&lt;pre>&lt;code> sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

@@ -1,77 +1,76 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>rspec on Caius Theory</title><link>https://caiustheory.com/tag/rspec/</link><description>Recent content in rspec on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 16 Jun 2009 10:19:11 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/rspec/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding XHTML output validation to Cucumber stories</title><link>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</link><pubDate>Tue, 16 Jun 2009 10:19:11 +0000</pubDate><guid>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</guid><description>&lt;p&gt;At the 2009 &lt;a href=&#34;http://barcampleeds.com/&#34;&gt;Barcamp Leeds&lt;/a&gt; I attended a talk by &lt;a href=&#34;http://neilcrosby.com/vcard/&#34;&gt;Neil Crosby&lt;/a&gt; where he talked about automated testing, and about how he felt there was a gap in everything that people were testing. Everyone has unit tests, and people are doing full stack testing too, but no-one (so he feels) does XHTML/CSS/JS validation as part of their automated test suite. And certainly from what I&#39;ve seen on the mainstream Ruby site&#39;s about testing, I agreed with him.&lt;/p&gt;
-&lt;p&gt;So after his talk I had a quick look at his &lt;a href=&#34;http://github.com/NeilCrosby/frontend-test-suite/tree/master&#34;&gt;frontend test suite&lt;/a&gt;, and started wondering where exactly I would fit frontend validation testing into my workflow. Would it be part of my unit tests (RSpec), or part of the full stack tests (Cucumber)? As you&#39;ve probably guessed by the title of this post, its ended up going into my cucumber tests. Since the initial play its been something I&#39;ve mused about occasionally, but not something I&#39;ve actively looked into how to implement as part of my test workflow.&lt;/p&gt;
-&lt;p&gt;Fast-forward a few weeks from &lt;a href=&#34;http://barcampleeds.com/&#34;&gt;Barcamp Leeds&lt;/a&gt; and I see a news article in my feed reader entitled &lt;a href=&#34;http://tenderlovemaking.com/2009/06/12/easy-markup-validation/&#34;&gt;&amp;quot;Easy Markup Validation&amp;quot;&lt;/a&gt; which gets me hopeful someone&#39;s solved this frontend validation thing easily for Rubyists. A quick read through and I&#39;m sold on it and installing the gem. Opened an existing project I&#39;m working on which has a fairly extensive test suite (both unit tests &amp;amp; full stack tests) and tried to slot the validation into my controller unit tests.&lt;/p&gt;
-&lt;p&gt;Problem with doing this is by default RSpec-rails doesn&#39;t generate the views in your controller specs. At that point I realised I was already generating the full page when I was doing a full stack test using &lt;a href=&#34;http://github.com/langalex/culerity/tree/master&#34;&gt;culerity&lt;/a&gt; and &lt;a href=&#34;http://cukes.info/&#34;&gt;cucumber&lt;/a&gt;. So why not just add a cucumber step in my stories to validate the HTML on each page I visit? Mainly because its not enough of a failure for this app to have invalid XHTML markup. Having valid markup would be nice, but I&#39;d rather have it as a separate test to my stories in some way.&lt;/p&gt;
-&lt;p&gt;Currently I just do that by only validating if &lt;code&gt;ENV[&amp;quot;VALIDATION&amp;quot;]&lt;/code&gt; is set to anything, so a normal run of my cucumber stories will just test the app does what its supposed to do. If I run them with &lt;code&gt;VALIDATION=true&lt;/code&gt; then it will check my markup is valid as well.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;features/support/env.rb&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;markup_validity&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ENV&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;VALIDATION&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;features/step_definitions/general_steps.rb&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;no&#34;&gt;Then&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;%r/the page is valid XHTML/&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
-&lt;span class=&#34;vg&#34;&gt;$browser&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;html&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;should&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be_xhtml_strict&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ENV&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;VALIDATION&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;features/logging_in.feature&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cucumber&#34; data-lang=&#34;cucumber&#34;&gt;Feature: Logging in
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>rspec on Caius Theory</title><link>https://caiustheory.com/tag/rspec/</link><description>Recent content in rspec on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 16 Jun 2009 10:19:11 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/rspec/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding XHTML output validation to Cucumber stories</title><link>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</link><pubDate>Tue, 16 Jun 2009 10:19:11 +0000</pubDate><guid>https://caiustheory.com/adding-xhtml-output-validation-to-cucumber-stories/</guid><description>&lt;p>At the 2009 &lt;a href="http://barcampleeds.com/">Barcamp Leeds&lt;/a> I attended a talk by &lt;a href="http://neilcrosby.com/vcard/">Neil Crosby&lt;/a> where he talked about automated testing, and about how he felt there was a gap in everything that people were testing. Everyone has unit tests, and people are doing full stack testing too, but no-one (so he feels) does XHTML/CSS/JS validation as part of their automated test suite. And certainly from what I&amp;rsquo;ve seen on the mainstream Ruby site&amp;rsquo;s about testing, I agreed with him.&lt;/p>
+&lt;p>So after his talk I had a quick look at his &lt;a href="http://github.com/NeilCrosby/frontend-test-suite/tree/master">frontend test suite&lt;/a>, and started wondering where exactly I would fit frontend validation testing into my workflow. Would it be part of my unit tests (RSpec), or part of the full stack tests (Cucumber)? As you&amp;rsquo;ve probably guessed by the title of this post, its ended up going into my cucumber tests. Since the initial play its been something I&amp;rsquo;ve mused about occasionally, but not something I&amp;rsquo;ve actively looked into how to implement as part of my test workflow.&lt;/p>
+&lt;p>Fast-forward a few weeks from &lt;a href="http://barcampleeds.com/">Barcamp Leeds&lt;/a> and I see a news article in my feed reader entitled &lt;a href="http://tenderlovemaking.com/2009/06/12/easy-markup-validation/">&amp;ldquo;Easy Markup Validation&amp;rdquo;&lt;/a> which gets me hopeful someone&amp;rsquo;s solved this frontend validation thing easily for Rubyists. A quick read through and I&amp;rsquo;m sold on it and installing the gem. Opened an existing project I&amp;rsquo;m working on which has a fairly extensive test suite (both unit tests &amp;amp; full stack tests) and tried to slot the validation into my controller unit tests.&lt;/p>
+&lt;p>Problem with doing this is by default RSpec-rails doesn&amp;rsquo;t generate the views in your controller specs. At that point I realised I was already generating the full page when I was doing a full stack test using &lt;a href="http://github.com/langalex/culerity/tree/master">culerity&lt;/a> and &lt;a href="http://cukes.info/">cucumber&lt;/a>. So why not just add a cucumber step in my stories to validate the HTML on each page I visit? Mainly because its not enough of a failure for this app to have invalid XHTML markup. Having valid markup would be nice, but I&amp;rsquo;d rather have it as a separate test to my stories in some way.&lt;/p>
+&lt;p>Currently I just do that by only validating if &lt;code>ENV[&amp;quot;VALIDATION&amp;quot;]&lt;/code> is set to anything, so a normal run of my cucumber stories will just test the app does what its supposed to do. If I run them with &lt;code>VALIDATION=true&lt;/code> then it will check my markup is valid as well.&lt;/p>
+&lt;p>&lt;strong>features/support/env.rb&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="nb">require&lt;/span> &lt;span class="s2">&amp;#34;markup_validity&amp;#34;&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="no">ENV&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;VALIDATION&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>features/step_definitions/general_steps.rb&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="no">Then&lt;/span> &lt;span class="s">%r/the page is valid XHTML/&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;span class="vg">$browser&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">should&lt;/span> &lt;span class="n">be_xhtml_strict&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="no">ENV&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;VALIDATION&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>features/logging_in.feature&lt;/strong>&lt;/p>
+&lt;pre>&lt;code class="language-cucumber" data-lang="cucumber">Feature: Logging in
 In order to do stuff
 As a registered user
 I want to login
 Scenario: Successful Login
-Given there is a user called &amp;#34;Caius&amp;#34;
+Given there is a user called &amp;quot;Caius&amp;quot;
 When I goto the homepage
 Then the page is valid XHTML
-When I click on the &amp;#34;Login&amp;#34; link
+When I click on the &amp;quot;Login&amp;quot; link
 Then I am redirected to the login page
 And the page is valid XHTML
 When I enter my login details
-And I click &amp;#34;Login&amp;#34;
+And I click &amp;quot;Login&amp;quot;
 Then I am redirected to my dashboard
-And the page is valid XHTML&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now when I run &lt;code&gt;cucumber features/logging_in.feature&lt;/code&gt;, it doesn&#39;t validate the HTML, it just makes sure that I can login as my user and that I am redirected to the right places. But if I run &lt;code&gt;VALIDATION=true cucumber features/logging_in.feature&lt;/code&gt;, then it &lt;em&gt;does&lt;/em&gt; validate my XHTML on the homepage, the login page and on the user&#39;s dashboard. If it fails validation then it gives you a fairly helpful error message as to what it was expecting and what it found instead.&lt;/p&gt;
-&lt;p&gt;From a quick run against a couple of stories in my app I discovered that I&#39;ve not been wrapping form elements in an enclosing element, so they&#39;ve been quickly fixed and now they validate. Now I realise this gem is only testing XHTML output, and doesn&#39;t include CSS or JS validation, but from a quick peek at the gem&#39;s source it should be fairly easy to add both of those in I think, although again they aren&#39;t major errors for me yet in this app.&lt;/p&gt;</description></item><item><title>Merry Testing</title><link>https://caiustheory.com/merry-testing/</link><pubDate>Thu, 25 Dec 2008 15:01:54 +0000</pubDate><guid>https://caiustheory.com/merry-testing/</guid><description>
-&lt;p&gt;Just a few examples of the same test written in a few languages. Its testing setting the date on an object that is created in the tests&#39; setup method already. These fall under the unit testing, rather than full-stack testing.&lt;/p&gt;
-&lt;h3 id=&#34;testing-in-objc-with-ocunit-http-www-sente-ch-software-ocunit&#34;&gt;Testing in ObjC with &lt;a href=&#34;http://www.sente.ch/software/ocunit/&#34;&gt;OCUnit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-objc&#34; data-lang=&#34;objc&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// Add a date and time
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;testSettingDate&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;NSDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NSDate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;STAssertNoThrow&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;setDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;@&amp;#34;Shouldn&amp;#39;t raise an exception&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;// And it should match when pulled out as well
-&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;STAssertEqualObjects&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s&#34;&gt;@&amp;#34;%@ should match %@&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;calc&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theDate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-ruby-using-rspec-http-rspec-info&#34;&gt;Testing in Ruby using &lt;a href=&#34;http://rspec.info/&#34;&gt;RSpec&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;n&#34;&gt;it&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;should set the date successfully&amp;#34;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# And it should match when pulled out as well&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;should&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-ruby-using-test-unit-http-www-ruby-doc-org-stdlib-libdoc-test-unit-rdoc-classes-test-unit-html&#34;&gt;Testing in Ruby using &lt;a href=&#34;http://www.ruby-doc.org/stdlib/libdoc/test/unit/rdoc/classes/Test/Unit.html&#34;&gt;Test::Unit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;test_setting_date&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;today&lt;/span&gt;
-&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;# And it should match when pulled out as well&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;assert_equal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vi&#34;&gt;@calc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the_date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&#34;testing-in-php-using-phpunit-http-phpun-it&#34;&gt;Testing in PHP using &lt;a href=&#34;http://phpun.it/&#34;&gt;PHPUnit&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;function testSettingDate()
+And the page is valid XHTML
+&lt;/code>&lt;/pre>&lt;p>Now when I run &lt;code>cucumber features/logging_in.feature&lt;/code>, it doesn&amp;rsquo;t validate the HTML, it just makes sure that I can login as my user and that I am redirected to the right places. But if I run &lt;code>VALIDATION=true cucumber features/logging_in.feature&lt;/code>, then it &lt;em>does&lt;/em> validate my XHTML on the homepage, the login page and on the user&amp;rsquo;s dashboard. If it fails validation then it gives you a fairly helpful error message as to what it was expecting and what it found instead.&lt;/p>
+&lt;p>From a quick run against a couple of stories in my app I discovered that I&amp;rsquo;ve not been wrapping form elements in an enclosing element, so they&amp;rsquo;ve been quickly fixed and now they validate. Now I realise this gem is only testing XHTML output, and doesn&amp;rsquo;t include CSS or JS validation, but from a quick peek at the gem&amp;rsquo;s source it should be fairly easy to add both of those in I think, although again they aren&amp;rsquo;t major errors for me yet in this app.&lt;/p></description></item><item><title>Merry Testing</title><link>https://caiustheory.com/merry-testing/</link><pubDate>Thu, 25 Dec 2008 15:01:54 +0000</pubDate><guid>https://caiustheory.com/merry-testing/</guid><description>&lt;p>Just a few examples of the same test written in a few languages. Its testing setting the date on an object that is created in the tests&amp;rsquo; setup method already. These fall under the unit testing, rather than full-stack testing.&lt;/p>
+&lt;h3 id="testing-in-objc-with-ocunithttpwwwsentechsoftwareocunit">Testing in ObjC with &lt;a href="http://www.sente.ch/software/ocunit/">OCUnit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-objc" data-lang="objc">&lt;span class="c1">// Add a date and time
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="p">-&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="nf">testSettingDate&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="n">NSDate&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">theDate&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">NSDate&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;span class="n">STAssertNoThrow&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="nl">setDate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">theDate&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="s">@&amp;#34;Shouldn&amp;#39;t raise an exception&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="c1">// And it should match when pulled out as well
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">STAssertEqualObjects&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">theDate&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="s">@&amp;#34;%@ should match %@&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="p">[&lt;/span>&lt;span class="n">calc&lt;/span> &lt;span class="n">date&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">theDate&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-ruby-using-rspechttprspecinfo">Testing in Ruby using &lt;a href="http://rspec.info/">RSpec&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">it&lt;/span> &lt;span class="s2">&amp;#34;should set the date successfully&amp;#34;&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;span class="n">the_date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">today&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="c1"># And it should match when pulled out as well&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">should&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-ruby-using-testunithttpwwwruby-docorgstdliblibdoctestunitrdocclassestestunithtml">Testing in Ruby using &lt;a href="http://www.ruby-doc.org/stdlib/libdoc/test/unit/rdoc/classes/Test/Unit.html">Test::Unit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">def&lt;/span> &lt;span class="nf">test_setting_date&lt;/span>
+&lt;span class="n">the_date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Date&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">today&lt;/span>
+&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">the_date&lt;/span>
+&lt;span class="c1"># And it should match when pulled out as well&lt;/span>
+&lt;span class="n">assert_equal&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="vi">@calc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">date&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">the_date&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="testing-in-php-using-phpunithttpphpunit">Testing in PHP using &lt;a href="http://phpun.it/">PHPUnit&lt;/a>&lt;/h3>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-php" data-lang="php">function testSettingDate()
 {
 $date = date();
 $calc-&amp;gt;date = $date;
 # And it should match when pulled out as well
 $this-&amp;gt;assertEquals($calc-&amp;gt;date, $date);
-}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>
-&lt;p&gt;When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em&gt;Rspec&lt;/em&gt; testing framework instead of the built-in &lt;em&gt;Test::Unit&lt;/em&gt; and &lt;em&gt;jQuery&lt;/em&gt; instead of &lt;em&gt;prototype&lt;/em&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://rspec.info/&#34;&gt;Rspec&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/rahoulb/rspec-rails/wikis&#34;&gt;Rspec-rails&lt;/a&gt; &lt;em&gt;(NB: I use &lt;a href=&#34;http://3hv.co.uk&#34;&gt;rahoul&lt;/a&gt;&#39;s fork of rspec-rails)&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/aslakhellesoy/cucumber/wikis&#34;&gt;Cucumber&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://github.com/brynary/webrat/wikis&#34;&gt;Webrat&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://ennerchi.com/projects/jrails&#34;&gt;jRails&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk&#34;&gt;Demeters Revenge&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;And here are the commands in the order I run them to create the blank app.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Create the rails app
+}
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>&lt;p>When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em>Rspec&lt;/em> testing framework instead of the built-in &lt;em>Test::Unit&lt;/em> and &lt;em>jQuery&lt;/em> instead of &lt;em>prototype&lt;/em>.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://rspec.info/">Rspec&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://github.com/rahoulb/rspec-rails/wikis">Rspec-rails&lt;/a> &lt;em>(NB: I use &lt;a href="http://3hv.co.uk">rahoul&lt;/a>&amp;lsquo;s fork of rspec-rails)&lt;/em>&lt;/li>
+&lt;li>&lt;a href="http://github.com/aslakhellesoy/cucumber/wikis">Cucumber&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://github.com/brynary/webrat/wikis">Webrat&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://ennerchi.com/projects/jrails">jRails&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://plugins.code.lukeredpath.co.uk/browser/demeters_revenge/trunk">Demeters Revenge&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>And here are the commands in the order I run them to create the blank app.&lt;/p>
+&lt;pre>&lt;code># Create the rails app
 cd ~/Sites/apps/
 rails myapp
 cd myapp
@@ -105,9 +104,9 @@ mkdir public/javascripts
 ruby script/plugin install http://ennerchi.googlecode.com/svn/trunk/plugins/jrails
 git add vendor/plugins/jrails/ public/javascripts
 git ci -m &amp;quot;Adding jRails to replace Prototype&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p&gt;
-&lt;h4 id=&#34;updated-2008-11-04&#34;&gt;Updated 2008-11-04&lt;/h4&gt;
-&lt;p&gt;Added demeters revenge and jRails plugins.&lt;/p&gt;
-&lt;h4 id=&#34;update-2008-11-05&#34;&gt;Update 2008-11-05&lt;/h4&gt;
-&lt;p&gt;I&#39;ve also blogged the &lt;a href=&#34;http://swedishcampground.com/setting-up-git-with-rails-apps&#34;&gt;.gitignore&lt;/a&gt; file I use with rails apps as well. Usually add it into my apps before running &lt;code&gt;git init&lt;/code&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;/code>&lt;/pre>
+&lt;p>And now you have a blank app waiting for you to write using features for full stack testing, and rspec for testing model and controller code.&lt;/p>
+&lt;h4 id="updated-2008-11-04">Updated 2008-11-04&lt;/h4>
+&lt;p>Added demeters revenge and jRails plugins.&lt;/p>
+&lt;h4 id="update-2008-11-05">Update 2008-11-05&lt;/h4>
+&lt;p>I&amp;rsquo;ve also blogged the &lt;a href="http://swedishcampground.com/setting-up-git-with-rails-apps">.gitignore&lt;/a> file I use with rails apps as well. Usually add it into my apps before running &lt;code>git init&lt;/code>&lt;/p></description></item></channel></rss>

@@ -1,9 +1,9 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>google drive on Caius Theory</title><link>https://caiustheory.com/tag/google-drive/</link><description>Recent content in google drive on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 06 Mar 2014 15:49:22 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/google-drive/index.xml" rel="self" type="application/rss+xml"/><item><title>Rename Google Drive folder on Mac</title><link>https://caiustheory.com/rename-google-drive-folder-on-mac/</link><pubDate>Thu, 06 Mar 2014 15:49:22 +0000</pubDate><guid>https://caiustheory.com/rename-google-drive-folder-on-mac/</guid><description>&lt;ol&gt;
-&lt;li&gt;Quit Google Drive app&lt;/li&gt;
-&lt;li&gt;Rename &lt;code&gt;~/Google Drive/&lt;/code&gt; to whatever you want&lt;/li&gt;
-&lt;li&gt;Open Google Drive and wait for it to complain the folder is missing&lt;/li&gt;
-&lt;li&gt;Click the menu item and click the warning item&lt;/li&gt;
-&lt;li&gt;Click &amp;quot;Locate Folder..&amp;quot; button on the right in window that pops up&lt;/li&gt;
-&lt;li&gt;Find your renamed folder and hit OK&lt;/li&gt;
-&lt;li&gt;There is no step seven&lt;/li&gt;
-&lt;/ol&gt;</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>google drive on Caius Theory</title><link>https://caiustheory.com/tag/google-drive/</link><description>Recent content in google drive on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Thu, 06 Mar 2014 15:49:22 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/google-drive/index.xml" rel="self" type="application/rss+xml"/><item><title>Rename Google Drive folder on Mac</title><link>https://caiustheory.com/rename-google-drive-folder-on-mac/</link><pubDate>Thu, 06 Mar 2014 15:49:22 +0000</pubDate><guid>https://caiustheory.com/rename-google-drive-folder-on-mac/</guid><description>&lt;ol>
+&lt;li>Quit Google Drive app&lt;/li>
+&lt;li>Rename &lt;code>~/Google Drive/&lt;/code> to whatever you want&lt;/li>
+&lt;li>Open Google Drive and wait for it to complain the folder is missing&lt;/li>
+&lt;li>Click the menu item and click the warning item&lt;/li>
+&lt;li>Click &amp;ldquo;Locate Folder..&amp;rdquo; button on the right in window that pops up&lt;/li>
+&lt;li>Find your renamed folder and hit OK&lt;/li>
+&lt;li>There is no step seven&lt;/li>
+&lt;/ol></description></item></channel></rss>
