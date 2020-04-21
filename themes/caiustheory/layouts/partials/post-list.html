@@ -1,5 +1,5 @@
 <ol>
-  {{ range (where .Data.Pages "Section" "post").GroupByDate "2006" }}
+  {{ range (where .Site.RegularPages "Section" "post").GroupByDate "2006" }}
     <li class="year">
       <h2>{{ .Key }}</h2><!-- Year heading -->
 
