@@ -1,4 +1,678 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>geek on Caius Theory</title><link>https://caiustheory.com/tag/geek/</link><description>Recent content in geek on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Mon, 25 Jul 2016 17:59:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/geek/index.xml" rel="self" type="application/rss+xml"/><item><title>SmartOS Recovery mount /usbkey</title><link>https://caiustheory.com/smartos-recovery-mount-usbkey/</link><pubDate>Mon, 25 Jul 2016 17:59:00 +0000</pubDate><guid>https://caiustheory.com/smartos-recovery-mount-usbkey/</guid><description>&lt;p>Recently I managed to hose a box in a perfectly self-inflicted storm of idiocy. Imagine a SmartOS server with the following issues:&lt;/p>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>geek on Caius Theory</title><link>https://caiustheory.com/tag/geek/</link><description>Recent content in geek on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Mon, 25 Jul 2016 17:59:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/geek/index.xml" rel="self" type="application/rss+xml"/><item><title>curl --resolve</title><link>https://caiustheory.com/curl-resolve/</link><pubDate>Sat, 14 Sep 2019 18:10:00 +0100</pubDate><guid>https://caiustheory.com/curl-resolve/</guid><description>&lt;p>Sometimes it&amp;rsquo;s useful to be able to craft a request to one server, using a DNS name that&amp;rsquo;s either not defined or currently pointed to a different IP. (Migrating webservers, testing a new webserver config out, etc.)&lt;/p>
+&lt;p>Historically for HTTP calls this was easy, just set the &lt;code>Host&lt;/code> header as you make the http request to the IP directly:&lt;/p>
+&lt;pre>&lt;code> curl -H &amp;quot;Host: caiustheory.com&amp;quot; http://10.200.0.1/
+&lt;/code>&lt;/pre>
+&lt;p>However, HTTPS throws a bit of a spanner in the works, if we just try to connect using an overridden &lt;code>Host&lt;/code> header, we get an error back from the server if it&amp;rsquo;s not configured with a certificate for the IP address:&lt;/p>
+&lt;pre>&lt;code> $ curl -H &amp;quot;Host: caiustheory.com&amp;quot; https://10.200.0.1/
+curl: (51) SSL: no alternative certificate subject name matches target host name '10.200.0.1'
+&lt;/code>&lt;/pre>
+&lt;p>Usually at this point I&amp;rsquo;d just start editing &lt;code>/etc/hosts&lt;/code> to add &lt;code>10.200.0.1 caius.name&lt;/code> to it and carry on testing. This is a pain when you&amp;rsquo;re testing more than one server, or you&amp;rsquo;re on a machine where you don&amp;rsquo;t have root access to edit &lt;code>/etc/hosts&lt;/code>.&lt;/p>
+&lt;p>In later versions of curl there&amp;rsquo;s a solution for this built into the binary, in the form of the &lt;code>--resolve&lt;/code> flag. You can tell it to override the DNS lookup for a specific hostname/port combination. This in turn means that the correct host is forwarded to the server for the correct SSL certificate to be chosen to serve the request based on host.&lt;/p>
+&lt;p>It takes the form &lt;code>--resolve HOST:PORT:IP&lt;/code> where &lt;code>HOST&lt;/code> is the human-friendly host, &lt;code>PORT&lt;/code> is the webserver&amp;rsquo;s port (convention is 80 for HTTP, 443 for HTTPS) and IP being the destination IP you want to hit. (As opposed to the one in DNS currently.)&lt;/p>
+&lt;pre>&lt;code>$ curl --silent --head --resolve caiustheory.com:443:10.200.0.1 https://caiustheory.com | head -n1
+HTTP/2 200
+&lt;/code>&lt;/pre>&lt;p>And voila, you don&amp;rsquo;t need to fiddle with editing &lt;code>/etc/hosts&lt;/code>. Just use &lt;code>--resolve&lt;/code> to hit a different IP for a given host.&lt;/p></description></item><item><title>Cheaper Oil for Mini One R50</title><link>https://caiustheory.com/cheaper-oil-for-mini-one-r50/</link><pubDate>Tue, 02 Apr 2019 12:00:00 +0000</pubDate><guid>https://caiustheory.com/cheaper-oil-for-mini-one-r50/</guid><description>&lt;p>My Mini One 2003 R50 1.6 litre petrol engine takes specific BMW 5w30 Longlife-04 oil. (I believe the R52 and R53 models take the same oil too.) The oil is 5w30 fully synthetic made to BMW&amp;rsquo;s exacting standards.&lt;/p>
+&lt;p>The cheapest I&amp;rsquo;ve found to buy currently is a GM (Vauxhall/Opel) manufactured one, made to BMW&amp;rsquo;s specifications. Searching for something like &amp;ldquo;dexos 2 5w30 gm&amp;rdquo; &lt;a href="https://www.ebay.co.uk/sch/i.html?_nkw=dexos+2+5w30+gm">on ebay&lt;/a> finds them at about £20 for 5 litres with free delivery in UK. (Comparatively, an equivalent from Castrol is about £50 at time of writing.)&lt;/p>
+&lt;p>Sounds like a small saving, but if your Mini is anything like mine it needs topping up once a month or so, and I do a full oil/filter change every 5k miles as an attempt at longevity. Soon adds up.&lt;/p></description></item><item><title>Download All Your Gists</title><link>https://caiustheory.com/download-all-your-gists/</link><pubDate>Sun, 17 Mar 2019 14:32:30 +0000</pubDate><guid>https://caiustheory.com/download-all-your-gists/</guid><description>&lt;p>Over time I&amp;rsquo;ve managed to build up quite the collection of &lt;a href="https://gist.github.com/">Gists&lt;/a> over at Github, including secret ones there&amp;rsquo;s about 1200 currently. Some of these have useful code in, some are just garbage output. I&amp;rsquo;d quite like a local copy either way, so I can easily search&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> across them.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Install the &lt;code>gist&lt;/code> command from Github&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">brew install gist
+&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Login to your Github Account through the gist tool (it&amp;rsquo;ll prompt for your login credentials, then generate you an API Token to allow it future access.)&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">gist --login
+&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Create a folder, go inside it and download all your gists!&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">mkdir gist_archive
+&lt;span class="nb">cd&lt;/span> gist_archive
+&lt;span class="k">for&lt;/span> repo in &lt;span class="k">$(&lt;/span>gist -l &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;{ print $1 }&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> git clone &lt;span class="nv">$repo&lt;/span> 2&amp;gt; /dev/null&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Now you have a snapshot of all your gists. To update them in future, you can run the above for any new gists, and update all the existing ones with:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nb">cd&lt;/span> gist_archive
+&lt;span class="k">for&lt;/span> i in */&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nb">cd&lt;/span> &lt;span class="nv">$i&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> git pull --rebase&lt;span class="o">)&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">done&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;p>Now go forth and search out your favourite snippet you saved years ago and forgot about!&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>&lt;a href="https://beyondgrep.com">ack&lt;/a>, &lt;a href="https://geoff.greer.fm/ag/">ag&lt;/a>, &lt;a href="https://www.freebsd.org/cgi/man.cgi?query=grep&amp;amp;sektion=&amp;amp;n=1">grep&lt;/a>, &lt;a href="https://github.com/BurntSushi/ripgrep">ripgrep&lt;/a>, etc. Pick your flavour. &lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item><item><title>Prefixing Git Branch With Initials</title><link>https://caiustheory.com/prefixing-git-branch-with-initials/</link><pubDate>Wed, 21 Nov 2018 20:30:40 +0000</pubDate><guid>https://caiustheory.com/prefixing-git-branch-with-initials/</guid><description>&lt;p>Working somewhere where we prefix our branches with the creator&amp;rsquo;s initials, I sometimes forget to do so.&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> This leads to me having to rename the branch, typing out the whole name again after adding &lt;code>cd/&lt;/code> to the start of it.&lt;/p>
+&lt;p>Computers are meant to solve repetitive problems for us, so let&amp;rsquo;s put it to work in this case too. My &lt;a href="https://github.com/caius/BinFiles">~/bin&lt;/a> contains &lt;a href="https://github.com/caius/BinFiles/blob/c7c5c6ababd70e65fa4d072bf8392aaa014c607c/git-current-branch">&lt;code>git current-branch&lt;/code>&lt;/a>, which returns the current branch name.&lt;/p>
+&lt;p>If we hardcode the initials, this becomes a simple command to recall from our history:&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">git branch --move --force cd/&lt;span class="k">$(&lt;/span>git current-branch&lt;span class="k">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>But computers are supposed to solve all repetitive work, including knowing who I am, right? Correct, my local user account knows my full name, so we can work out my initials from that. Lets lean on the &lt;code>id(1)&lt;/code> command to lookup the user&amp;rsquo;s details then strip it down to just the initials.&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">id -F
+&lt;span class="c1"># =&amp;gt; &amp;#34;Caius Durling&amp;#34;&lt;/span>
+id -F &lt;span class="p">|&lt;/span> sed -Ee &lt;span class="s1">&amp;#39;s/(^| )(.)[^ ]+/\2/g&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> tr &lt;span class="s1">&amp;#39;A-Z&amp;#39;&lt;/span> &lt;span class="s1">&amp;#39;a-z&amp;#39;&lt;/span>
+&lt;span class="c1"># =&amp;gt; cd&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Bingo, we can wrap that into a subshell passed to the branch move command and we&amp;rsquo;re done in a one-liner.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">git branch --move --force &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>id -F &lt;span class="p">|&lt;/span> sed -Ee &lt;span class="s1">&amp;#39;s/(^| )(.)[^ ]+/\2/g&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> tr &lt;span class="s1">&amp;#39;A-Z&amp;#39;&lt;/span> &lt;span class="s1">&amp;#39;a-z&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">/&lt;/span>&lt;span class="k">$(&lt;/span>git current-branch&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>I don&amp;rsquo;t follow that policy for my personal repos, or working on forks of other people&amp;rsquo;s code. And I&amp;rsquo;m human, so I forget. &lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2" role="doc-endnote">
+&lt;p>You can also replace &lt;code>--move --force&lt;/code> with &lt;code>-M&lt;/code>: &lt;code>git branch -M newname&lt;/code> &lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3" role="doc-endnote">
+&lt;p>On macOS you can use &lt;code>id -F&lt;/code> to return the full name of the user. Doing this on other platforms is left as an exercise for the reader. &lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:4" role="doc-endnote">
+&lt;p>Yes, this is an incredibly naive way to initialize a name, but it&amp;rsquo;s good enough for the people I work with. Handling edge cases is left as … you got it, an exercise for the reader. &lt;a href="#fnref:4" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item><item><title>Struct-uring your data</title><link>https://caiustheory.com/struct-uring-your-data/</link><pubDate>Fri, 09 Nov 2018 00:31:00 +0000</pubDate><guid>https://caiustheory.com/struct-uring-your-data/</guid><description>&lt;p>In Ruby it&amp;rsquo;s easy to structure data in hashes and pass it around, and usually that leads to errors with calling methods on &lt;code>nil&lt;/code>, or misspelling the name of a key, or some such silly bug that we might catch earlier given a defined object with a custom Class behind it. But it&amp;rsquo;s so much work to create a Class just to represent some grab bag of data we&amp;rsquo;ve been handed, right? Well, maybe!&lt;/p>
+&lt;p>Lets say we have some event data that we&amp;rsquo;re being sent and we want to do some stuff with it in memory, we could just represent this as an array of hashes:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">events&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="nb">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Writing&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ss">duration&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">15&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ss">started&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kp">true&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ss">finished&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kp">false&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="p">},&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="nb">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Evening walk&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ss">duration&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">60&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ss">started&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kp">true&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="ss">finished&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kp">true&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="o">]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This is not a &lt;em>bad&lt;/em> way to represent the data, but if we want to start asking questions of it like &amp;ldquo;find all events currently happening&amp;rdquo; it becomes trickier. We could filter the collection to just those &amp;ldquo;in progress&amp;rdquo; events with the following&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">events&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">select&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">event&lt;/span>&lt;span class="o">|&lt;/span> &lt;span class="n">event&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="ss">:started&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="o">!&lt;/span>&lt;span class="n">event&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="ss">:finished&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Next time someone reads this though, they have to figure out what it means to have an event that&amp;rsquo;s started but not finished. Also what happens when someone in future misremembers &lt;code>:finished&lt;/code> as &lt;code>:completed&lt;/code> when running over the data in new code?&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> Wouldn&amp;rsquo;t it be better if we could do the following instead?&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">events&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">select&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">event&lt;/span>&lt;span class="o">|&lt;/span> &lt;span class="n">event&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">in_progress?&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>An easy way to do this is to just create a Struct for the event, with the extra method defined internally. Whilst we&amp;rsquo;re in there, we could add a couple more methods to make us querying the state of boolean attributes nicer to read(eh?)&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="no">Event&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Struct&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">new&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="ss">:name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:duration&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:started&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:finished&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;span class="n">alias_method&lt;/span> &lt;span class="ss">:started?&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:started&lt;/span>
+&lt;span class="n">alias_method&lt;/span> &lt;span class="ss">:finished?&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:finished&lt;/span>
+&lt;span class="k">def&lt;/span> &lt;span class="nf">in_progress?&lt;/span>
+&lt;span class="n">started?&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="o">!&lt;/span>&lt;span class="n">finished?&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And then to create the objects, we can either use the positional arguments to &lt;code>.new&lt;/code> (same order as the symbols given to &lt;code>Struct.new&lt;/code>), or tap the object and use the setters directly for each attribute.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">events&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[&lt;/span>
+&lt;span class="no">Event&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">new&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Writing&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">15&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kp">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kp">false&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;span class="no">Event&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">new&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tap&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="o">|&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Evening Walk&amp;#34;&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">duration&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">60&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">started&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kp">true&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">finished&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kp">false&lt;/span>
+&lt;span class="p">},&lt;/span>
+&lt;span class="o">]&lt;/span>
+&lt;span class="c1"># =&amp;gt; [#&amp;lt;struct Event&lt;/span>
+&lt;span class="c1"># name=&amp;#34;Writing&amp;#34;,&lt;/span>
+&lt;span class="c1"># duration=15,&lt;/span>
+&lt;span class="c1"># started=true,&lt;/span>
+&lt;span class="c1"># finished=false&amp;gt;,&lt;/span>
+&lt;span class="c1"># #&amp;lt;struct Event&lt;/span>
+&lt;span class="c1"># name=&amp;#34;Evening Walk&amp;#34;,&lt;/span>
+&lt;span class="c1"># duration=60,&lt;/span>
+&lt;span class="c1"># started=true,&lt;/span>
+&lt;span class="c1"># finished=false&amp;gt;]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now we can use our easier-to-read code for selecting all in-progress events, or ignoring all of those. Or if we just want to grab all finished events, we now have a method to call—&lt;code>Event#finished?&lt;/code>—that conveys the intent of what it returns without having to look up the data structure of the hash to work out if that field is a &lt;code>String&lt;/code> or &lt;code>Boolean&lt;/code>.&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>For super-powered structs, you don&amp;rsquo;t even need to assign them to a &lt;code>Constant&lt;/code>. You can just assign them to normal variables and use them locally in that scope without needing to define a constant.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">class&lt;/span> &lt;span class="nc">Grabber&lt;/span>
+&lt;span class="k">def&lt;/span> &lt;span class="nf">call&lt;/span>
+&lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="no">Struct&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">new&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="ss">:success&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:output&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;span class="n">alias_method&lt;/span> &lt;span class="ss">:success?&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:success&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">grab_data&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">new&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kp">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">else&lt;/span>
+&lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">new&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kp">false&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kp">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>That&amp;rsquo;ll handily return you an object you can interrogate for &lt;code>success?&lt;/code> and ask for the &lt;code>output&lt;/code> if it was successful. And no Constants were created in the making of this method. 🎉&lt;/p>
+&lt;p>Keep an eye out for where you can Struct-ure your data. It might be more often than you expect.&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>It would always returns &lt;code>true&lt;/code> - &lt;code>!nil&lt;/code>. &lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2" role="doc-endnote">
+&lt;p>That&amp;rsquo;s &lt;code>events.select(&amp;amp;:in_progress?)&lt;/code> for the golfers amongst you. &lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3" role="doc-endnote">
+&lt;p>&lt;code>…?&lt;/code> methods in ruby are truthy/falsy by convention. &lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item><item><title>Running rails tests under CircleCI 2.0 with MariaDB</title><link>https://caiustheory.com/running-rails-tests-under-circleci-2.0-with-mariadb/</link><pubDate>Wed, 11 Jul 2018 18:30:00 +0000</pubDate><guid>https://caiustheory.com/running-rails-tests-under-circleci-2.0-with-mariadb/</guid><description>&lt;p>&lt;a href="https://circleci.com">CircleCI&lt;/a> have released their version 2.0 platform, which is based on top of docker and moves the configuration for each project into a config file in the git repository.&lt;/p>
+&lt;p>They have a bunch of documentation at &lt;a href="https://circleci.com/docs/2.0/">https://circleci.com/docs/2.0/&lt;/a>. Basic gist is the config file lives at &lt;code>.circleci/config.yml&lt;/code> and defines which images to run a series of commands in. You can either specify jobs to run in series, or a workflow containing jobs which can depend on each other and/or run in parallel.&lt;/p>
+&lt;p>The first step is finding a base image that contains ruby, node and chrome/chromedriver so the the app runs, assets compile and rails feature specs work respectively.&lt;/p>
+&lt;p>The available images for ruby are listed at &lt;a href="https://github.com/CircleCI-Public/circleci-dockerfiles/tree/master/ruby/images">https://github.com/CircleCI-Public/circleci-dockerfiles/tree/master/ruby/images&lt;/a>, and the mariadb images are listed at &lt;a href="https://github.com/CircleCI-Public/circleci-dockerfiles/tree/master/mariadb/images">https://github.com/CircleCI-Public/circleci-dockerfiles/tree/master/mariadb/images&lt;/a>. For the ruby images you&amp;rsquo;ll want to use the &lt;code>…-node-browsers&lt;/code> image as it has Node.js for assets and Chrome/chromedriver installed for headless browser testing.&lt;/p>
+&lt;p>So the start of our config file looks something like the following:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">working_directory&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;~/project&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">docker&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;circleci/ruby:2.4.1-node-browsers&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">RAILS_ENV&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;test&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;mariadb:10.2.12&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">MYSQL_DATABASE&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;app_test&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">MYSQL_USER&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;root&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">MYSQL_ALLOW_EMPTY_PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">MYSQL_HOST&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;localhost&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Once we have that then we can start on setting up our rails environment to the point we can run tests. First of all we need to install all our ruby dependencies via &lt;a href="https://bundler.io">bundler&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">jobs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Install ruby dependencies&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;bundle install --path vendor/bundle&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then we need to install our JS dependencies via &lt;a href="https://yarnpkg.com/lang/en/">yarn&lt;/a>, in much the same way as we did for the ruby dependencies.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Install js dependencies&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;yarn install&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then we need to sort out our database. There&amp;rsquo;s a chance that the docker instance for MariaDB hasn&amp;rsquo;t come up yet, so we can lean on a tool called &lt;code>dockerize&lt;/code> to wait for it to be available. Then we can ask rails to go ahead and setup our test database.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Wait for database to be available&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;dockerize -wait tcp://127.0.0.1:3306 -timeout 1m&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Setup database&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;bundle exec rake db:setup&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>And then finally we can run our tests as the final step.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Run tests&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;bundle exec rspec&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Putting it all together, we have the following in &lt;code>.circleci/config.yml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">working_directory&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;~/project&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">docker&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;circleci/ruby:2.4.1-node-browsers&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">RAILS_ENV&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;test&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;mariadb:10.2.12&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">MYSQL_DATABASE&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;app_test&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">MYSQL_USER&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;root&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">MYSQL_ALLOW_EMPTY_PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">MYSQL_HOST&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;localhost&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">jobs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Install ruby dependencies&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;bundle install --path vendor/bundle&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Install js dependencies&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;yarn install&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Wait for database to be available&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;dockerize -wait tcp://127.0.0.1:3306 -timeout 1m&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Setup database&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;bundle exec rake db:setup&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="k">run&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;Run tests&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;bundle exec rspec&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>May your test runs always be green and your bugs be squished.&lt;/p></description></item><item><title>Overcommit git hooks: puppet validate</title><link>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</link><pubDate>Thu, 05 Jul 2018 14:44:41 +0000</pubDate><guid>https://caiustheory.com/overcommit-git-hooks-puppet-validate/</guid><description>&lt;p>Computers are great at automatically checking things, and git has a mechanism for running hooks before events happen. Bosh these two things together and you can have git trigger anything you like before you&amp;rsquo;re allowed to commit, which in turn means you can sanity check exactly what you&amp;rsquo;re committing to make sure it meets whatever criteria you have.&lt;/p>
+&lt;p>To make it easy to manage my git hooks in a consistent fashion, I use a tool called &lt;a href="https://github.com/brigade/overcommit">overcommit&lt;/a>. This comes with a config file to tell it what you want triggered when, and a bunch of standard plugins to choose from.&lt;/p>
+&lt;p>In a &lt;a href="https://puppet.com">puppet&lt;/a> repo for instance, I have it check&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://bundler.io">bundler&lt;/a> is happy everything&amp;rsquo;s installed&lt;/li>
+&lt;li>&lt;a href="http://puppet-lint.com">puppet-lint&lt;/a> is happy with any changed puppet files&lt;/li>
+&lt;li>Any JSON or YAML files involved in the commit have valid syntax&lt;/li>
+&lt;li>Any shell scripts are valid (according to &lt;a href="https://www.shellcheck.net">shellcheck&lt;/a>)&lt;/li>
+&lt;li>There is no trailing whitespace left in files&lt;/li>
+&lt;/ul>
+&lt;p>This usually means something like the following in &lt;code>.overcommit.yml&lt;/code> in the git repo&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">PreCommit&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">BundleCheck&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">JsonSyntax&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">PuppetLint&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">ShellCheck&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">YamlSyntax&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on_warn&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>fail&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>For the most part this works absolutely great. I have on occasion noticed that &lt;a href="http://puppet-lint.com">puppet-lint&lt;/a> will let invalid puppet syntax slip through though which is irritating to find after you&amp;rsquo;ve pushed the changes up to the puppetmaster. The &lt;a href="https://puppet.com">puppet&lt;/a> command line tool has a validate subcommand however, so we can hook that into overcommit as a custom hook in the repo.&lt;/p>
+&lt;p>To do this we need to add our custom hook into the right directory, and we&amp;rsquo;re adding a hook to run before commits, so it goes into &lt;code>.git-hooks/pre_commit&lt;/code>. Lets name it for what it does, validating puppet syntax. So into &lt;code>puppet_validate.rb&lt;/code> we put the following:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="c1"># .git-hooks/pre_commit/puppet_validate.rb&lt;/span>
+&lt;span class="k">module&lt;/span> &lt;span class="nn">Overcommit::Hook::PreCommit&lt;/span>
+&lt;span class="k">class&lt;/span> &lt;span class="nc">PuppetValidate&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="no">Base&lt;/span>
+&lt;span class="k">def&lt;/span> &lt;span class="nf">run&lt;/span>
+&lt;span class="n">errors&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[]&lt;/span>
+&lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sx">%w(puppet parser validate)&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="ss">:args&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="n">applicable_files&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="ss">:pass&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">success?&lt;/span>
+&lt;span class="o">[&lt;/span>&lt;span class="ss">:fail&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">stderr&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;span class="k">end&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then we need to tell &lt;a href="https://github.com/brigade/overcommit">overcommit&lt;/a> that it needs to run this custom hook as a check whenever we commit, that goes into &lt;code>.overcommit.yml&lt;/code> under the &lt;code>PreCommit&lt;/code> key:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="k">PreCommit&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">PuppetValidate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Validates puppet syntax&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">include&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;**/*.pp&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hey voila, along with all our other safety checks we&amp;rsquo;re now checking that any puppet files added or changed in the repo have valid syntax.&lt;/p></description></item><item><title>Cleaning up locally installed Rubies &amp; Gems</title><link>https://caiustheory.com/cleaning-up-locally-installed-rubies-gems/</link><pubDate>Sun, 12 Nov 2017 11:30:24 +0000</pubDate><guid>https://caiustheory.com/cleaning-up-locally-installed-rubies-gems/</guid><description>&lt;p>Given the following is broadly true:&lt;/p>
+&lt;ul>
+&lt;li>Rubies installed to &lt;code>~/.rubies&lt;/code> (via ruby-install most likely)&lt;/li>
+&lt;li>Gems for each ruby version installed under ~/.gem (via chruby most likely)&lt;/li>
+&lt;/ul>
+&lt;p>What to do when you want to reclaim some disk space? Delete unused ruby versions of course! Pretty straight forward, look in ~/.rubies for ones you want to remove, then delete them.&lt;/p>
+&lt;pre>&lt;code>$ ls ~/.rubies
+ruby-2.0.0
+ruby-2.1.7
+ruby-2.3.1
+ruby-2.4.1
+$ rm -r ~/.rubies/ruby-{2.0.0,2.1.7}
+&lt;/code>&lt;/pre>
+&lt;p>Then the problem is we&amp;rsquo;re left with artifacts hanging around, namely any gems we installed for ruby 2.0.0 or 2.1.7 are still present under &lt;code>~/.gem&lt;/code> using up disk space. We could go through and find them by hand, or we could get the computer to delete anything under &lt;code>~/.gem&lt;/code> that doesn&amp;rsquo;t have a corresponding runtime under &lt;code>~/.rubies&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">diff --old-line-format&lt;span class="o">=&lt;/span> --unchanged-line-format&lt;span class="o">=&lt;/span> --new-line-format&lt;span class="o">=&lt;/span>&lt;span class="nv">$HOME&lt;/span>/.gem/ruby/%L &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &amp;lt;&lt;span class="o">(&lt;/span>ls ~/.rubies &lt;span class="p">|&lt;/span> sed -Ee &lt;span class="s1">&amp;#39;s/ruby-|-p[0-9]+//g&amp;#39;&lt;/span>&lt;span class="o">)&lt;/span> &amp;lt;&lt;span class="o">(&lt;/span>ls ~/.gem/ruby&lt;span class="o">)&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &lt;span class="p">|&lt;/span> xargs -pL1 rm -r
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>(&lt;code>xargs -pL1&lt;/code> will prompt with each command it wants to run before running it - answer &lt;code>y&lt;/code> to proceed, anything else to prevent it running that command. Lets you see what ruby versions it is removing before it does so.)&lt;/p>
+&lt;pre>&lt;code>$ ls ~/.gem/ruby
+2.0.0
+2.1.7
+2.3.1
+2.4.1
+$ diff --old-line-format= --unchanged-line-format= --new-line-format=$HOME/.gem/ruby/%L \
+&amp;lt;(ls ~/.rubies | sed -Ee 's/ruby-|-p[0-9]+//g') &amp;lt;(ls ~/.gem/ruby) \
+| xargs -pL1 rm -r
+rm -r /Users/caius/.gem/ruby/2.0.0?...y
+rm -r /Users/caius/.gem/ruby/2.1.7?...y
+$ ls ~/.gem/ruby
+2.3.1
+2.4.1
+&lt;/code>&lt;/pre>
+&lt;p>And now revel in your reclaimed disk space. (Hunting other large folders/items on your disk? &lt;a href="http://dev.yorhel.nl/ncdu">&lt;code>ncdu&lt;/code>&lt;/a> is a great tool for that.)&lt;/p></description></item><item><title>Something Goes Here</title><link>https://caiustheory.com/something-goes-here/</link><pubDate>Fri, 10 Nov 2017 00:27:07 +0000</pubDate><guid>https://caiustheory.com/something-goes-here/</guid><description>&lt;!-- raw HTML omitted -->
+&lt;pre>&lt;code>Something goes here
+and something else
+over there slowly
+wrapping lines a
+little each time
+oh no, you fucked
+up one little comma
+and now everything is running away drastically from you
+End it.
+&lt;/code>&lt;/pre>
+&lt;!-- raw HTML omitted --></description></item><item><title>git git git git git</title><link>https://caiustheory.com/git-git-git-git-git/</link><pubDate>Tue, 26 Sep 2017 11:00:23 +0000</pubDate><guid>https://caiustheory.com/git-git-git-git-git/</guid><description>&lt;p>Ever found you&amp;rsquo;ve accidentally entered too many &lt;code>git&lt;/code>s in your terminal and wondered if there&amp;rsquo;s a solution to it? I quite often type &lt;code>git&lt;/code> then go away and come back, then type a full &lt;code>git status&lt;/code> after it. This leads to a lovely (annoying) error out the box:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">$ git git status
+git: &lt;span class="s1">&amp;#39;git&amp;#39;&lt;/span> is not a git command. See &lt;span class="s1">&amp;#39;git --help&amp;#39;&lt;/span>.
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>What a git.&lt;/p>
+&lt;p>My initial thought was overriding the &lt;code>git&lt;/code> binary in my &lt;code>$PATH&lt;/code> and having it strip any leading arguments that match &lt;code>git&lt;/code>, so we end up running just the &lt;code>git status&lt;/code> at the end of the arguments. An easier way is to just use &lt;a href="https://git-scm.com/docs/git-config">&lt;code>git-config&lt;/code>&lt;/a>&amp;lsquo;s &lt;code>alias.*&lt;/code> functionality to expand the first argument being &lt;code>git&lt;/code> to a shell command.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">git config --global alias.git &lt;span class="s1">&amp;#39;!exec git&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which adds the following git config to your &lt;code>.gitconfig&lt;/code> file&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="k">[alias]&lt;/span>
+&lt;span class="na">git&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">!exec git&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And then you&amp;rsquo;ll find you can &lt;code>git git&lt;/code> to your heart&amp;rsquo;s content&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">$ git sha
+cc9c642663c0b63fba3964297c13ce9b61209313
+$ git git sha
+cc9c642663c0b63fba3964297c13ce9b61209313
+$ git git git git git git git git git git git git git git git git git git git git git git git git git git sha
+cc9c642663c0b63fba3964297c13ce9b61209313
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>(&lt;code>git sha&lt;/code> is an alias for &lt;code>git rev-parse HEAD&lt;/code>.)&lt;/p>
+&lt;p>See what other git alias&amp;rsquo; I have in my &lt;a href="https://github.com/caius/zshrc/blob/master/dotfiles/gitconfig">&lt;code>~/.gitconfig&lt;/code>&lt;/a>, and laugh at all the typo corrections I have in there. (Yes, git provides autocorrection if you enable it, but I&amp;rsquo;m used to these typos working!)&lt;/p>
+&lt;p>Now &lt;code>git&lt;/code> back to doing useful things!&lt;/p></description></item><item><title>Upgrading Microserver G8 CPU</title><link>https://caiustheory.com/upgrading-microserver-g8-cpu/</link><pubDate>Wed, 09 Aug 2017 00:30:23 +0000</pubDate><guid>https://caiustheory.com/upgrading-microserver-g8-cpu/</guid><description>&lt;p>My home server is a &lt;a href="https://www.hpe.com/uk/en/product-catalog/servers/proliant-servers/pip.hpe-proliant-microserver-gen8.5379860.html">HP Proliant Microserver Gen 8&lt;/a>, which is modestly powerful and runs everything I need at home in a fairly compact footprint without being too noisy or power hungry.&lt;/p>
+&lt;p>Both the G8 and the previous revision, the G7, are moderately expandable in terms of memory &amp;amp; storage devices. (Not least of which is an internal USB port, which is useful plugging the SmartOS boot device into, no chance of it being knocked out!) I&amp;rsquo;ve upgraded the memory and HDDs in the time I&amp;rsquo;ve had the machine. (&lt;a href="https://caiustheory.com/finding-cheap-microserver-g8-memory/">Here&amp;rsquo;s how I upgraded the memory on the cheap&lt;/a>!)&lt;/p>
+&lt;p>The Gen 8 specifically is a little more upgradable however, as it comes with a 1155 CPU socket. Mine contained a &lt;a href="https://ark.intel.com/products/71074/Intel-Celeron-Processor-G1610T-2M-Cache-2_30-GHz">Celeron G1610T CPU&lt;/a> from new, which whilst quicker than the AMD one in the G7, was only two cores / two threads and not massively fast in the grand scheme of things.&lt;/p>
+&lt;p>Given I run a few different things on the home server, it acts as a NAS for a handful of laptops, &lt;a href="https://www.plex.tv/">plex server&lt;/a>, &lt;a href="https://www.crashplan.com/">crashplan&lt;/a> backup server, gathers various stats from network devices &amp;amp; runs the &lt;a href="https://unifi-hd.ubnt.com">unifi controller&lt;/a>. Mostly it&amp;rsquo;s fine, but transcoding in Plex specifically burns the CPU and on the odd occasion I&amp;rsquo;ve noticed it being slower than realtime and having to wait for the server to catch up.&lt;/p>
+&lt;p>So what to do? As you&amp;rsquo;ve no doubt guessed from the title of the post, I upgraded the CPU in it. I did some research and found &lt;a href="https://b3n.org/installed-xeon-e3-1230v2-in-gen8-hp-microserver/">someone else who documented the upgrading process&lt;/a>, as well as the &lt;a href="http://n40l.wikia.com/wiki/Cpu_gen8">N40L wiki listing potential upgrade candidates&lt;/a>. I then pulled together my own table of processors, specs &amp;amp; price on fleabay to work out which I want.&lt;/p>
+&lt;p>My criteria were more than 2 cores/threads, ECC ram &lt;strong>has&lt;/strong> to be supported and ideally not much higher TDP than the stock CPU. &lt;a href="https://support.plex.tv/hc/en-us/articles/201774043">Plex guidelines for CPU power&lt;/a> state that as a (very) rough guideline, you need a 2000 PassMark score per 1080p transcode. Given I would like other things running alongside Plex, allowing 2-3x that figure sounds ideal.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>CPU&lt;/th>
+&lt;th>Cores&lt;/th>
+&lt;th>Threads&lt;/th>
+&lt;th>TDP (W)&lt;/th>
+&lt;th>Passmark&lt;/th>
+&lt;th>Price (£)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;em>G1610T&lt;/em>&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>35&lt;/td>
+&lt;td>2322&lt;/td>
+&lt;td>12.00&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>E3-1220L v2&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>17&lt;/td>
+&lt;td>3701&lt;/td>
+&lt;td>120.00&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>E3-1220L&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>20&lt;/td>
+&lt;td>3563&lt;/td>
+&lt;td>60.00&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>E3-1260L&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>8&lt;/td>
+&lt;td>45&lt;/td>
+&lt;td>6534&lt;/td>
+&lt;td>80.00&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>E3-1265L&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>8&lt;/td>
+&lt;td>45&lt;/td>
+&lt;td>6054&lt;/td>
+&lt;td>64.00&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>E3-1265L v2&lt;/strong>&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>8&lt;/td>
+&lt;td>45&lt;/td>
+&lt;td>7733&lt;/td>
+&lt;td>133.00&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;em>Stock CPU is first in the list for comparison. Bold one is the chosen upgrade.&lt;/em>&lt;/p>
+&lt;p>After some deliberation, I decided to pick up the E3-1265L v2 from Ebay. It has a slightly higher TDP, but not so much that I&amp;rsquo;m worried about the temperature in the server. Most importantly it supports ECC ram &amp;amp; quadruples the physical cores, whilst providing a whopping eight threads for processing power. More than enough for a couple of concurrent Plex transcodes with cycles left over for other things at the same time.&lt;/p>
+&lt;p>I ordered it from a Hong Kong seller, and it arrived in the UK after 10 days or so as expected. It came with thermal paste, which I applied in a cross formation before refitting everything. The G8 is really easy to pull apart, HP really thought about that!&lt;/p>
+&lt;p>First boot with the processor went very smoothly, SmartOS recognises it quite happily.&lt;/p>
+&lt;pre>&lt;code> [root@oscar ~]# sysinfo | grep -i cpu
+&amp;quot;CPU Type&amp;quot;: &amp;quot;Intel(R) Xeon(R) CPU E3-1265L V2 @ 2.50GHz&amp;quot;,
+&amp;quot;CPU Virtualization&amp;quot;: &amp;quot;vmx&amp;quot;,
+&amp;quot;CPU Physical Cores&amp;quot;: 1,
+&amp;quot;CPU Total Cores&amp;quot;: 8,
+&lt;/code>&lt;/pre>
+&lt;p>I&amp;rsquo;m also happy with the temperatures, even after streaming a couple of videos via plex for an hour or so, whilst backing up a laptop via crashplan, as well as the usual stuff that&amp;rsquo;s always running on the machine, everything was still well within normal ranges.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Sensor&lt;/th>
+&lt;th>Value&lt;/th>
+&lt;th>Units&lt;/th>
+&lt;th>State&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Inlet Ambient&lt;/td>
+&lt;td>22.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>CPU&lt;/td>
+&lt;td>40.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>P1 DIMM 1-2&lt;/td>
+&lt;td>40.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Chipset&lt;/td>
+&lt;td>56.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Chipset Zone&lt;/td>
+&lt;td>44.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>VR P1 Zone&lt;/td>
+&lt;td>61.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>iLO Zone&lt;/td>
+&lt;td>49.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>PCI 1 Zone&lt;/td>
+&lt;td>40.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Sys Exhaust&lt;/td>
+&lt;td>48.000&lt;/td>
+&lt;td>degrees C&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Fan 1&lt;/td>
+&lt;td>12.544&lt;/td>
+&lt;td>percent&lt;/td>
+&lt;td>ok&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>All in all, great success!&lt;/p>
+&lt;p> 
+ &lt;/p>
+&lt;p>&lt;em>Updated 2018-12-30: &lt;a href="https://twitter.com/tomwardill/">@tomwardill&lt;/a> &lt;a href="https://twitter.com/tomwardill/status/999002779887824896">notes&lt;/a> the E3-1230L V3 doesn&amp;rsquo;t fit: &amp;ldquo;The E3-1230L V3 that you list doesn&amp;rsquo;t fit, it&amp;rsquo;s a 1150 socket, not a 1155&amp;rdquo;. The table of candidates has been altered to remove it.&lt;/em>&lt;/p></description></item><item><title>Wenlock Olympian Triathlon 2017</title><link>https://caiustheory.com/wenlock-olympian-triathlon-2017/</link><pubDate>Thu, 13 Jul 2017 12:55:45 +0000</pubDate><guid>https://caiustheory.com/wenlock-olympian-triathlon-2017/</guid><description>&lt;p>Second year in a row doing this Tri, &lt;a href="http://caiustheory.com/much-wenlock-triathlon-2016/">last year&lt;/a> I came away feeling like I hadn&amp;rsquo;t given it my best and wanted to return to complete unfinished business. &lt;em>(Spoilers: I managed better this year.)&lt;/em>&lt;/p>
+&lt;p>&lt;strong>500m Swim: 00:10:37&lt;/strong> &lt;em>(&lt;a href="https://www.strava.com/activities/1076088498">Strava&lt;/a>)&lt;/em>&lt;/p>
+&lt;p>Started last in a lane of three, didn&amp;rsquo;t get overtaken which meant swimming at my own pace without being under pressure was easily achieved. Failed to exit the pool initially, dropped a handful of seconds there for sure.&lt;/p>
+&lt;p>Didn&amp;rsquo;t feel like I was pushing too hard, certainly felt energetic after leaving the building. Given my lack of swimming this year, I&amp;rsquo;m surprised at how well it went. Strength training over the winter months has definitely paid off more than I expected.&lt;/p>
+&lt;p>Took nearly a minute off my previous swim time, which is more than I would&amp;rsquo;ve expected. Was only +7 seconds off my estimated time when entering too!&lt;/p>
+&lt;p>&lt;strong>19km Cycle 00:45:44&lt;/strong> &lt;em>(&lt;a href="https://www.strava.com/activities/1076088548">Strava&lt;/a>)&lt;/em>&lt;/p>
+&lt;p>The wonderful (👻) cycle route down and back up Wenlock Edge. Ran out of gear heading down the valley side (again), coasted most of the way down. Attempted to pace myself on the climbing, keeping an eye on my heart rate to know whether I could push harder or needed to ease off. Felt strong nearly all the way round, only came close to blowing on the final 15% climb (which was also nearer the end than I remembered/expected!)&lt;/p>
+&lt;p>Got off the bike with less left in my legs than I thought whilst I was in the saddle. Took a solid 11 minutes 10 seconds off my previous time (which did include walking to be fair - none of that this year) which I&amp;rsquo;m &lt;em>very&lt;/em> happy with. Think I paced it nigh on perfectly on the day. Probably my strongest discipline currently too.&lt;/p>
+&lt;p>&lt;strong>7km Run 00:53:06&lt;/strong> &lt;em>(&lt;a href="https://www.strava.com/activities/1076088534">Strava&lt;/a>)&lt;/em>&lt;/p>
+&lt;p>Started the run feeling like crap. First couple of km is a mostly flat trail run, where I didn&amp;rsquo;t push very hard and was basically attempting to find some energy from somewhere. Pretty sure this was a mental battle rather than physical, no cramps or super tired muscles.&lt;/p>
+&lt;p>A friend overtook me about 2.5km in and rather handily goaded me on by saying, &amp;ldquo;See you at the end!&amp;rdquo; as he went past (Thanks Paul!) which naturally made me kick harder and try to stick with him. Clung on to the halfway point (and the massive hill they make you climb just to turn round at the summit), and pulled ahead coming back down the route.&lt;/p>
+&lt;p>Resorted to walking some sections of the run (probably about 750m in total), tailing and then dropping back from my mate in the last kilometre. (Dropped a minute in total to him on the run.) Technically I ran a 10k this season, but I&amp;rsquo;ve not run aside from that.&lt;/p>
+&lt;p>(Also binned my trainers upon returning home. They&amp;rsquo;ve finally given up after being beaten on pavements &amp;amp; woodland floors for about 50 miles.)&lt;/p>
+&lt;p>&lt;strong>Total 01:49:27&lt;/strong> &lt;em>(Previously 02:14:40)&lt;/em>&lt;/p>
+&lt;p>Completed in under two hours! Completely astounded at that, especially as I don&amp;rsquo;t &lt;em>feel&lt;/em> like I&amp;rsquo;ve been training much this year. (I have, but more socially than on a strict timetable and without doing many previous events this season.)&lt;/p>
+&lt;p>If you&amp;rsquo;d told me at the end of last year that my second attempt would take ~25 minutes off my finish time, I&amp;rsquo;d have laughed at you.&lt;/p>
+&lt;p>&lt;a href="http://www.wenlock-olympian-society.org.uk/games/triathlon/">Wenlock Olympian Triathlon&lt;/a> is definitely my favourite Triathlon, and also the most challenging I&amp;rsquo;ve done to date. I&amp;rsquo;m intending on doing it next year and seriously aiming to take at least another 10 minutes off my total time.&lt;/p></description></item><item><title>Raspberry Pi 3 as an emergency router</title><link>https://caiustheory.com/raspberry-pi-3-as-an-emergency-router/</link><pubDate>Tue, 09 May 2017 20:55:00 +0000</pubDate><guid>https://caiustheory.com/raspberry-pi-3-as-an-emergency-router/</guid><description>&lt;p>Given a dead router, how do you get back online whilst you wait for the replacement part to arrive? Grab a Raspberry Pi 3 off the shelf, along with a USB to Ethernet adapter and hey presto the internet works again.&lt;/p>
+&lt;p>This is with a fibre modem (FTTC), using PPPoE to connect out. Plug the modem (WAN) into the RPi&amp;rsquo;s ethernet port, and plug the LAN switch into the USB adapter.&lt;/p>
+&lt;p>First thing is to get the WAN link working, get it talking PPPoE to the ISP. Usually this will be configured in &lt;code>/etc/ppp/pppoe.conf&lt;/code> (depends on your linux distro). (That&amp;rsquo;ll require your username/password for your ISP usually too.)&lt;/p>
+&lt;p>Get it up &amp;amp; connected, and make sure you can ping the internet from the RPi. Then it&amp;rsquo;s time to get the LAN working. Give it a static IP in the range you want shared out.&lt;/p>
+&lt;pre>&lt;code># /etc/network/interfaces
+iface eth0 inet static
+address 192.168.1.1
+netmask 255.255.255.0
+gateway 192.168.1.1
+auto eth1
+iface eth1 inet dhcp
+&lt;/code>&lt;/pre>&lt;p>Get a dhcp server running on the LAN connection,&lt;/p>
+&lt;pre>&lt;code># /etc/dhcpcd.conf
+interface eth0
+static ip_address=192.168.1.1
+static routers=192.168.1.1
+static domain_name_servers=8.8.8.8,8.8.4.4
+&lt;/code>&lt;/pre>&lt;p>And then it&amp;rsquo;s time to handle WAN -&amp;gt; LAN traffic and the reverse. Make sure you have packet forwarding enabled, and then setup the firewall to handle NAT and also keep out undesirable traffic.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">sysctl net.ipv4.ip_forward&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -i eth0 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type any -j ACCEPT
+iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+iptables -A INPUT -f -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
+iptables -A INPUT -j DROP
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hey presto, you have a working emergency router. In testing I found my fibre connection (80/20Mb) was slower than the traffic the RPi could push, so didn&amp;rsquo;t notice any difference vs my normal router. (Although I did disable a bunch of automated stuff, so there was less contention on the WAN link.)&lt;/p></description></item><item><title>Finding cheap Microserver G8 memory</title><link>https://caiustheory.com/finding-cheap-microserver-g8-memory/</link><pubDate>Tue, 09 May 2017 19:03:00 +0000</pubDate><guid>https://caiustheory.com/finding-cheap-microserver-g8-memory/</guid><description>&lt;p>I&amp;rsquo;ve been wanting to drop more memory in my &lt;a href="https://www.hpe.com/uk/en/product-catalog/servers/proliant-servers/pip.hpe-proliant-microserver-gen8.5379860.html">HP Microserver G8&lt;/a>, but hoping to find a cheaper alternative to buying new sticks from &lt;a href="http://uk.crucial.com/gbr/en/">Crucial&lt;/a>. I needed one or two 4GB sticks, but they had to be ECC of course.&lt;/p>
+&lt;p>At the time of writing (May 2017), &lt;a href="http://uk.crucial.com/gbr/en/compatible-upgrade-for/HP-Compaq/proliant-microserver-gen8">Crucial&amp;rsquo;s offering for the G8&lt;/a> shows a 4GB stick to be £43.19, and an 8GB stick to be £81.59. This was a little more than I wanted to pay, but I was struggling to find anything on eBay or Amazon UK that I could be sure was ECC, and also cheaper.&lt;/p>
+&lt;p>Eventually I wondered what else had compatible memory, after all this isn&amp;rsquo;t a bespoke machine. It should share the same memory specifications as plenty of other machines. The spec I was looking for was:&lt;/p>
+&lt;ul>
+&lt;li>DDR3 240-Pin UDIMM&lt;/li>
+&lt;li>ECC&lt;/li>
+&lt;li>1600Mhz (or faster)&lt;/li>
+&lt;li>4 or 8GB sticks&lt;/li>
+&lt;/ul>
+&lt;p>After a little while of searching, I happened to find the previous Mac Pro (ie. the tower, not the trashcan) also uses that specification of memory. One quick search on eBay and up turned someone selling off his 4GB sticks where he&amp;rsquo;d upgrade his Mac Pro to 8GB sticks across the board. £29 for 2x 4GB sticks is better than I was hoping for, and once fitted in the Microserver they work flawlessly.&lt;/p>
+&lt;p>(The onboard management software warns me that some processor features are disabled because I&amp;rsquo;m not using HP Approved memory, but it also logged that warning when I &lt;em>was&lt;/em> using HP Approved memory previously and the machine worked perfectly then. No doubt it&amp;rsquo;s to make IT Managers who don&amp;rsquo;t like warnings spend more money with HP.)&lt;/p></description></item><item><title>Bash script setup</title><link>https://caiustheory.com/bash-script-setup/</link><pubDate>Tue, 09 May 2017 18:23:58 +0000</pubDate><guid>https://caiustheory.com/bash-script-setup/</guid><description>&lt;p>Recently I&amp;rsquo;ve been writing a bunch of bash scripts for various things. As some up-front safety checks I&amp;rsquo;ve taken to opening every script with the following:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="cp">#!/usr/bin/env bash
+&lt;/span>&lt;span class="cp">&lt;/span>
+&lt;span class="o">[[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$TRACE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">set&lt;/span> -o xtrace
+&lt;span class="nb">set&lt;/span> -o errexit
+&lt;span class="nb">set&lt;/span> -o nounset
+&lt;span class="nb">set&lt;/span> -o pipefail
+&lt;span class="nb">set&lt;/span> -o noclobber
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Other things I&amp;rsquo;m also trying to be good about doing:&lt;/p>
+&lt;ul>
+&lt;li>using &lt;code>readonly&lt;/code> when declaring variables which shouldn&amp;rsquo;t be mutated&lt;/li>
+&lt;li>Trapping errors using an error function, and cleaning up anything temporary in there&lt;/li>
+&lt;/ul>
+&lt;p>And some useful reading I ran across in my quest to level up bash-scripts:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://redsymbol.net/articles/bash-exit-traps/">Bash Exit Traps&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://redsymbol.net/articles/unofficial-bash-strict-mode/">Use the unofficial Bash Strict Mode&lt;/a> (Yes, &lt;em>two&lt;/em> posts from &lt;a href="http://redsymbol.net/">http://redsymbol.net/&lt;/a>. Well worth reading.)&lt;/li>
+&lt;li>&lt;a href="https://jvns.ca/blog/2017/03/26/bash-quirks/">Bash scripting quirks &amp;amp; safety tips&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://wiki.bash-hackers.org/">Bash hackers wiki&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>BMW 328i crankshaft sensor issue</title><link>https://caiustheory.com/bmw-328i-crankshaft-sensor-issue/</link><pubDate>Fri, 21 Apr 2017 22:18:00 +0000</pubDate><guid>https://caiustheory.com/bmw-328i-crankshaft-sensor-issue/</guid><description>&lt;p>My 1996 e36 BMW 328i Convertible was having trouble starting, and it&amp;rsquo;s always broken up &lt;em>slightly&lt;/em> at idle since I took ownership of the car. On a couple of hot days last summer it also stalled during idle, then started doing it again recently (even though the ambient temperature was much colder.)&lt;/p>
+&lt;p>The main sympton at the point I took notice was it struggling to start, then hunting at idle until warm, then promptly stalling when warm and idling. It would also cut out when coming to a stop at junctions.&lt;/p>
+&lt;p>Reading the codes showed one related to the crankshaft sensor:&lt;/p>
+&lt;blockquote>
+&lt;p>53 Crankshaft Sensor&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;em>(Codes can also show up in hex, which would be &amp;ldquo;83 Crankshaft Sensor&amp;rdquo;.)&lt;/em>&lt;/p>
+&lt;p>I duly replaced both the Crankshaft Sensor (Part # 12141703277) and the Camshaft Sensor (Part # 12141703221), but it was still throwing the crankshaft sensor code.&lt;/p>
+&lt;p>Upon closer inspection, the sensor wire in the plug for the crankshaft sensor wasn&amp;rsquo;t pushed fully into the socket under the intake manifold. This lead to the ECU not being able to get a signal from the sensor, so it quite correctly threw a code and didn&amp;rsquo;t run correctly.&lt;/p>
+&lt;p>Made sure all the pins were seated in the plug correctly, and reconnected the plug under the intake manifold and she started up perfectly. Drives much better, and the engine pulls more smoothly all the way up the rev range.&lt;/p></description></item><item><title>Stop HealthKit causing SIGABRT</title><link>https://caiustheory.com/stop-healthkit-causing-sigabrt/</link><pubDate>Sat, 15 Oct 2016 09:15:00 +0000</pubDate><guid>https://caiustheory.com/stop-healthkit-causing-sigabrt/</guid><description>&lt;p>You have some crazy idea for an iOS app that uses HealthKit so you fire up Xcode, create a new project &amp;amp; add the HealthKit entitlement. Follow the tutorial to request authorization from the &lt;code>HKHealthKitStore&lt;/code>. Hit run to make sure the app compiles and find that it instantly crashes with a &lt;code>SIGABRT&lt;/code> in &lt;code>AppDelegate&lt;/code>.&lt;/p>
+&lt;p>Puzzled by this you go over the minimal amount of code you&amp;rsquo;ve added and pare it right down to just the &lt;code>HKHealthKitStore.requestAuthorization&lt;/code> call which is still causing the &lt;code>SIGABRT&lt;/code> as soon as the app tries to boot.&lt;/p>
+&lt;p>The missing piece of the puzzle is &lt;code>Info.plist&lt;/code> needs a key adding to it for the HealthKit authorisation screen. The documentation helpfully forgets to mention this however. Here&amp;rsquo;s some quick simple steps to fix it:&lt;/p>
+&lt;ol>
+&lt;li>Open &lt;code>Info.plist&lt;/code> in Xcode&lt;/li>
+&lt;li>Click the &lt;code>(+)&lt;/code> at the top to add a new key/value to the file&lt;/li>
+&lt;li>Enter &amp;ldquo;Privacy - Health Share Usage Description&amp;rdquo; for the key&lt;/li>
+&lt;li>Enter a useful message to the user explaining why they should allow access to their healthkit data for your app for the value&lt;/li>
+&lt;li>Run your app and see the HealthKit authorisation sheet appear&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>NB&lt;/strong>: if you want to update/write any data to healthkit, you&amp;rsquo;ll need to add the &amp;ldquo;Privacy - Health Update Usage Description&amp;rdquo; key with a description as well.&lt;/p></description></item><item><title>Remove OS X Disk Password</title><link>https://caiustheory.com/remove-os-x-disk-password/</link><pubDate>Fri, 16 Sep 2016 10:27:00 +0000</pubDate><guid>https://caiustheory.com/remove-os-x-disk-password/</guid><description>&lt;p>I recently reinstalled a laptop and in doing so setup full disk encryption in a slightly strange fashion. The basic flow I followed was:&lt;/p>
+&lt;ol>
+&lt;li>Boot into Recovery mode (hold ⌘-R at boot)&lt;/li>
+&lt;li>Erase the internal HD as &lt;code>HFS+ (Journaled, Encrypted)&lt;/code> and set a disk password&lt;/li>
+&lt;li>Install OS X onto the internal disk&lt;/li>
+&lt;li>During setup, use Migration Assistant to copy clone containing previous install data from backup disk&lt;/li>
+&lt;/ol>
+&lt;p>This worked great in the end, once I&amp;rsquo;d recompiling various utilities I had installed. (Downside of moving from one CPU arch to another - can&amp;rsquo;t just copy all compiled binaries over.)&lt;/p>
+&lt;p>However, I failed at step 2 above and entered &amp;ldquo;password&amp;rdquo; as my disk password since it was only intended to be temporary. Usually OS X&amp;rsquo;s full disk encryption (FileVault 2) allows the machine users to unlock the disk, and not a standalone password. Due to the slightly odd way I setup the machine, I had the option of either using the disk password or my user account&amp;rsquo;s password.&lt;/p>
+&lt;p>Having hunted around trying to find how to change or remove this disk password and leave only my users password, I finally stumbled across the magic incantations in an apple discussion thread asking &lt;a href="https://discussions.apple.com/thread/5105759?start=0&amp;amp;tstart=0">How to disable &amp;ldquo;Disk Password&amp;rdquo; on boot?&lt;/a>.&lt;/p>
+&lt;p>The magic incantations are as follows:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>List all the passwords that can currently unlock the drive&lt;/p>
+&lt;p>&lt;strong>Make sure there is a second password listed or removing the disk password will lock you out of the disk&lt;/strong>.&lt;/p>
+&lt;pre>&lt;code> $ sudo fdesetup list -extended
+ESCROW UUID TYPE USER
+28376DDE-B6E1-48BE-A06F-4212067581D6 Disk Passphrase User
+4DBF8CEF-40F7-4F00-902F-A47AA643C656 OS User caius
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Note the UUID of the &amp;ldquo;Disk Passphrase&amp;rdquo; entry, and remove that from the list&lt;/p>
+&lt;pre>&lt;code> sudo fdesetup remove -uuid 28376DDE-B6E1-48BE-A06F-4212067581D6
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>List the passwords again to make sure the Disk Passphrase entry was removed&lt;/p>
+&lt;pre>&lt;code> $ sudo fdesetup list -extended
+ESCROW UUID TYPE USER
+4DBF8CEF-40F7-4F00-902F-A47AA643C656 OS User caius
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;p>Hey presto, only your user is left being able to unlock the disk.&lt;/p></description></item><item><title>Find dependencies blocking rails upgrades</title><link>https://caiustheory.com/find-dependencies-blocking-rails-upgrades/</link><pubDate>Wed, 10 Aug 2016 11:39:00 +0000</pubDate><guid>https://caiustheory.com/find-dependencies-blocking-rails-upgrades/</guid><description>&lt;p>The initial pain point when upgrading a rails app is figuring out which of your dependencies are blocking you upgrading the actual &lt;code>rails&lt;/code> gem (&amp;amp; immediate dependencies, actionpack, etc.). One way to start this is to update the rails dependency in your &lt;code>Gemfile&lt;/code> and run &lt;code>bundle update rails&lt;/code>. Then check the error output &lt;em>(it never works first time…)&lt;/em> to see which gems are blocking the upgrade. Repeat, rinse until it works.&lt;/p>
+&lt;p>I figured I&amp;rsquo;d cheat a little and eyeball the &lt;code>Gemfile.lock&lt;/code> to see which gems had an explicit dependency pinning rails (or actionpack, activejob, etc) to a version lower than I want to upgrade to, so I could get an idea of what needs to be upgraded without having to do them all one-by-one.&lt;/p>
+&lt;p>Then instead of eyeballing &lt;code>Gemfile.lock&lt;/code>, I wrote an awk script to pull out the interesting dependencies (ie, anything that depends on rails gems) so I just have to check which versions they depend on by hand.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-awk" data-lang="awk">&lt;span class="c1"># Reads a Gemfile.lock and outputs all dependencies that depend on rails&lt;/span>
+&lt;span class="nb">BEGIN&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="nx">rails_gems&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;^(rail(s|ties)|action(mailer|pack|view)|active(job|model|record|support))$&amp;#34;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="c1"># We only want the specs from the GEM section&lt;/span>
+&lt;span class="nb">NR&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="sr">/GEM/&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="kr">next&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">exit&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="c1"># Skip parent gems we don&amp;#39;t care about (rails itself…)&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="sr">/^ {4}[^ ]/&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="nx">rails_gems&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="kr">next&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="c1"># Parent gems that aren&amp;#39;t part of rails core&lt;/span>
+&lt;span class="c1"># Store the name to be printed if we match below&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="sr">/^ {4}[^ ]/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">parent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;span class="kr">next&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="c1"># If the nested gem (6 space prefix) matches rails-names and we have a parent value&lt;/span>
+&lt;span class="c1"># set then we print them out - making sure to only print the parent once&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="sr">/^ {6}[^ ]/&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span>
+&lt;span class="o">$&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">~&lt;/span> &lt;span class="nx">rails_gems&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span>
+&lt;span class="nx">parent&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">parent_printed&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;span class="kr">print&lt;/span> &lt;span class="nx">parent&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kr">print&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Run it against your &lt;code>Gemfile.lock&lt;/code> for the app you&amp;rsquo;re upgrading:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">awk -f rails5.awk Gemfile.lock
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And you&amp;rsquo;ll get output like this, to run through and see if any of the dependencies are pinning to lower versions than you need.&lt;/p>
+&lt;pre>&lt;code> coffee-rails (4.0.1)
+railties (&amp;gt;= 4.0.0, &amp;lt; 5.0)
+factory_girl (4.4.0)
+activesupport (&amp;gt;= 3.0.0)
+factory_girl_rails (4.4.1)
+railties (&amp;gt;= 3.0.0)
+globalid (0.3.7)
+activesupport (&amp;gt;= 4.1.0)
+google-api-client (0.8.6)
+activesupport (&amp;gt;= 3.2)
+jquery-rails (3.1.4)
+railties (&amp;gt;= 3.0, &amp;lt; 5.0)
+jquery-ui-rails (5.0.5)
+railties (&amp;gt;= 3.2.16)
+rails-deprecated_sanitizer (1.0.3)
+activesupport (&amp;gt;= 4.2.0.alpha)
+rails-dom-testing (1.0.7)
+activesupport (&amp;gt;= 4.2.0.beta, &amp;lt; 5.0)
+rspec-rails (3.4.2)
+actionpack (&amp;gt;= 3.0, &amp;lt; 4.3)
+activesupport (&amp;gt;= 3.0, &amp;lt; 4.3)
+railties (&amp;gt;= 3.0, &amp;lt; 4.3)
+sass-rails (4.0.5)
+railties (&amp;gt;= 4.0.0, &amp;lt; 5.0)
+sprockets-rails (2.3.3)
+actionpack (&amp;gt;= 3.0)
+activesupport (&amp;gt;= 3.0)
+&lt;/code>&lt;/pre>&lt;p>In this case, I&amp;rsquo;m trying to take this app to rails 5.0, so all the ones specifying &lt;code>&amp;lt; 5&lt;/code> and &lt;code>&amp;lt; 4.3&lt;/code> need upgrading beforehand.&lt;/p></description></item><item><title>SmartOS Recovery mount /usbkey</title><link>https://caiustheory.com/smartos-recovery-mount-usbkey/</link><pubDate>Mon, 25 Jul 2016 17:59:00 +0000</pubDate><guid>https://caiustheory.com/smartos-recovery-mount-usbkey/</guid><description>&lt;p>Recently I managed to hose a box in a perfectly self-inflicted storm of idiocy. Imagine a SmartOS server with the following issues:&lt;/p>
 &lt;ul>
 &lt;li>Root password not noted down anywhere&lt;/li>
 &lt;li>&lt;code>/usbkey/config&lt;/code> edited badly, meaning the network settings are wrong&lt;/li>
@@ -10,7 +684,18 @@
 &lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">zpool import zones
 mkdir /usbkey
 mount -F zfs zones/usbkey /usbkey
-&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Setup DHCP interface in FreeBSD</title><link>https://caiustheory.com/setup-dhcp-interface-in-freebsd/</link><pubDate>Tue, 05 Jul 2016 10:00:00 +0000</pubDate><guid>https://caiustheory.com/setup-dhcp-interface-in-freebsd/</guid><description>&lt;p>Given a FreeBSD instance without a configured network interface that you&amp;rsquo;d like to configure, first check what the name of the interface you want to configure is with &lt;code>ifconfig&lt;/code>. (Mine is &lt;code>em0&lt;/code> in this instance.)&lt;/p>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Much Wenlock Triathlon 2016</title><link>https://caiustheory.com/much-wenlock-triathlon-2016/</link><pubDate>Sun, 10 Jul 2016 16:00:00 +0000</pubDate><guid>https://caiustheory.com/much-wenlock-triathlon-2016/</guid><description>&lt;p>&lt;strong>500m Pool Swim: 00:11:34&lt;/strong>&lt;/p>
+&lt;p>Felt good setting off, within a couple of lengths felt like I had no energy. Didn’t have enough to eat/drink during the morning before starting, really makes a huge difference once you set off. Must remember to replace my goggles at some point too, the strap comes loose without warning.&lt;/p>
+&lt;p>&lt;strong>Transition 1: 00:03:06&lt;/strong>&lt;/p>
+&lt;p>Rough time for transition. Legs felt good as soon as I was out the pool. Got my kit on without too much trouble, although taking a t-shirt style cycling top instead of a full zip jacket was a mistake—forgot I’d be putting it on wet. Had a gel in transition in the hope it would give me some energy.&lt;/p>
+&lt;p>&lt;strong>19km Cycle: 00:48:03&lt;/strong>&lt;/p>
+&lt;p>Lovely start to the cycle route, massive downhill on recently resurfaced roads for the most part. Best part of the cycle ride, with the rest of the route consisting of climbing back up to the start. Couple of nasty steep hills I had to walk sections of, for all I fitted lower gears they still weren&amp;rsquo;t low enough given my lack of bike fitness currently.&lt;/p>
+&lt;p>&lt;strong>Transition 2: 00:06:57&lt;/strong>&lt;/p>
+&lt;p>Bike racked easily, shoes swapped, gel necked and a couple of Lucozade bottles clutched and off to run. Took on another gel.&lt;/p>
+&lt;p>&lt;strong>7km Run: 01:04:37&lt;/strong>&lt;/p>
+&lt;p>Needed all the fluid I carried, didn&amp;rsquo;t take anything else during the run and felt no less energetic than the other disciplines. Legs didn&amp;rsquo;t really hurt, just felt like lead and had no power. Route was basically a mini trail run then up a tarmac road to the turning point then head back via trail run to finish. Adopted a walk/run approach.&lt;/p>
+&lt;p>&lt;strong>Total: 02:14:17&lt;/strong>&lt;/p>
+&lt;p>Certainly the hardest triathlon I&amp;rsquo;ve done, and I&amp;rsquo;m probably at my least fittest compared to any of the others I&amp;rsquo;ve done to boot. The location was lovely, the weather was pretty decent (sunny but not too hot). Don&amp;rsquo;t feel like I was beaten by it, but definitely haven&amp;rsquo;t given it my best. One to redo next year and train towards.&lt;/p></description></item><item><title>Setup DHCP interface in FreeBSD</title><link>https://caiustheory.com/setup-dhcp-interface-in-freebsd/</link><pubDate>Tue, 05 Jul 2016 10:00:00 +0000</pubDate><guid>https://caiustheory.com/setup-dhcp-interface-in-freebsd/</guid><description>&lt;p>Given a FreeBSD instance without a configured network interface that you&amp;rsquo;d like to configure, first check what the name of the interface you want to configure is with &lt;code>ifconfig&lt;/code>. (Mine is &lt;code>em0&lt;/code> in this instance.)&lt;/p>
 &lt;p>Then we need to add the configuration telling services that we want to use DHCP for this interface, and setting up our default router (use your IP, not mine!) too:&lt;/p>
 &lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">cat &amp;gt;&amp;gt; rc.conf &lt;span class="s">&amp;lt;&amp;lt;CONF
 &lt;/span>&lt;span class="s">ifconfig_em0=&amp;#34;DHCP&amp;#34;
@@ -27,7 +712,121 @@ t.attributes[%22property%22]&amp;amp;&amp;amp;t.attributes[%22property%22].value
 window.location=%22http://feeds.soundcloud.com/users/soundcloud:%22+u+
 %22/sounds.rss%22;}
 &lt;/code>&lt;/pre>
-&lt;p>Or as a &lt;a href="">handy link&lt;/a> to copy to your bookmarks bar. Simply click/run that when on a SoundCloud profile page and you&amp;rsquo;ll be taken to the RSS Feed URL.&lt;/p></description></item><item><title>Compiling SmartOS for AMD processors</title><link>https://caiustheory.com/compiling-smartos-for-amd-processors/</link><pubDate>Sun, 28 Sep 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/compiling-smartos-for-amd-processors/</guid><description>&lt;p>There&amp;rsquo;s a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that&amp;rsquo;s quite useful for turning it into a better lab server. The main &lt;a href="http://imgapi.uqcloud.net/builds">list of so called &amp;ldquo;eait&amp;rdquo; builds&lt;/a> was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image &lt;a href="http://builds.smartos.skylime.net">here&lt;/a>.&lt;/p>
+&lt;p>Or as a &lt;a href="">handy link&lt;/a> to copy to your bookmarks bar. Simply click/run that when on a SoundCloud profile page and you&amp;rsquo;ll be taken to the RSS Feed URL.&lt;/p></description></item><item><title>exec(3) in Go</title><link>https://caiustheory.com/exec-3-in-go/</link><pubDate>Sat, 31 Jan 2015 09:37:37 +0000</pubDate><guid>https://caiustheory.com/exec-3-in-go/</guid><description>&lt;p>Using &lt;a href="http://man7.org/linux/man-pages/man3/exec.3.html">exec(3)&lt;/a> from Go is simple enough, once you figure out to look in the &lt;a href="http://golang.org/pkg/syscall/">syscall&lt;/a> package and how to pass arguments to the new command.&lt;/p>
+&lt;p>As a simple example, I&amp;rsquo;m going to exec &lt;code>/bin/echo&lt;/code> with a hardcoded string from the go binary. &lt;em>The program built here is in the &lt;a href="https://github.com/caius/gecho">gecho&lt;/a> (Gecko, geddit?) git repo, which each stage as a commit.&lt;/em>&lt;/p>
+&lt;p>In our main function lets setup some variables we&amp;rsquo;re going to need for arguments to &lt;code>syscall.Exec&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="kd">func&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">cmdPath&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="s">&amp;#34;/bin/echo&amp;#34;&lt;/span>
+&lt;span class="nx">cmdArgs&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="p">[]&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="s">&amp;#34;Hello&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;World&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;span class="nx">cmdEnv&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="p">[]&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">{}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>(We could use &lt;code>os.Environ()&lt;/code> for &lt;code>cmdEnv&lt;/code> to take the ENV from the go binary, but we don&amp;rsquo;t require anything from the environmnt here so it doesn&amp;rsquo;t matter that we aren&amp;rsquo;t.)&lt;/em>&lt;/p>
+&lt;p>Now we have the arguments for &lt;code>syscall.Exec&lt;/code>, lets add that in and see what happens:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="nx">err&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="nx">syscall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Exec&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">cmdPath&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">cmdArgs&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">cmdEnv&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nb">panic&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">err&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And running the file (&lt;code>go run gecho.go&lt;/code> compiles &amp;amp; runs for us) gives the following output:&lt;/p>
+&lt;pre>&lt;code>World
+&lt;/code>&lt;/pre>
+&lt;p>Err, say what now? Where&amp;rsquo;s &amp;ldquo;Hello&amp;rdquo; gone?!&lt;/p>
+&lt;p>Took me a while to figure this out when I originally ran into this. The answer is staring us right in the face if we go look at the &lt;a href="http://golang.org/pkg/syscall/#Exec">syscall.Exec docs&lt;/a>. Lets have a look at the function signature, argument names and all:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="kd">func&lt;/span> &lt;span class="nf">Exec&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">argv0&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">argv&lt;/span> &lt;span class="p">[]&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">envv&lt;/span> &lt;span class="p">[]&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">err&lt;/span> &lt;span class="kt">error&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hmm. The first argument is &lt;code>argv0&lt;/code> (and a string), rather than &lt;code>binaryPath&lt;/code> or something similar. The second argument is then &lt;code>argv&lt;/code> and an array of strings.&lt;/p>
+&lt;p>&lt;em>At this point I remember that the first element of &lt;code>argv&lt;/code> in other runtimes is the name of the binary or command invoked - &lt;code>$0&lt;/code> in a bash script is the name of the script for example.&lt;/em>&lt;/p>
+&lt;p>The answer is simple. &lt;code>cmdArgs&lt;/code> in our script should have &lt;code>/bin/echo&lt;/code> as the first element, and then we pass &lt;code>cmdArgs[0], cmdArgs&lt;/code> as the first two arguments to &lt;code>syscall.Exec&lt;/code>. Lets give that a go:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="kd">func&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">cmdArgs&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="p">[]&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="s">&amp;#34;/bin/echo&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;Hello&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;World&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;span class="nx">cmdEnv&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="p">[]&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">{}&lt;/span>
+&lt;span class="nx">err&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="nx">syscall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Exec&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">cmdArgs&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="nx">cmdArgs&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">cmdEnv&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nb">panic&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">err&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And running it (&lt;code>go run gecho.go&lt;/code> remember) gives the expected output:&lt;/p>
+&lt;pre>&lt;code>Hello World
+&lt;/code>&lt;/pre>
+&lt;p>Excellent. Now I just need to remember &lt;code>argv&lt;/code> contains the command name as &lt;code>argv[0]&lt;/code> and we&amp;rsquo;re golden.&lt;/p>
+&lt;hr>
+&lt;p>There is also the &lt;a href="http://golang.org/pkg/os/exec/">os/exec&lt;/a> package in the stdlib, which is intended for executing other binaries as child processes from what I can tell. Tellingly, when you create a &lt;code>exec.Cmd&lt;/code> struct with &lt;code>exec.Command()&lt;/code> you give it the name as first argument, and args as following arguments. Then it has the following snippet in the documentation:&lt;/p>
+&lt;blockquote>
+&lt;p>The returned Cmd&amp;rsquo;s Args field is constructed from the command name followed by the elements of arg, so arg should not include the command name itself. For example, &lt;code>Command(&amp;quot;echo&amp;quot;, &amp;quot;hello&amp;quot;)&lt;/code>&lt;/p>
+&lt;/blockquote>
+&lt;p>So &lt;code>cmd := exec.Command(&amp;quot;echo&amp;quot;, &amp;quot;hello&amp;quot;); cmd.Args&lt;/code> would return &lt;code>[]string{&amp;quot;echo&amp;quot;, &amp;quot;hello&amp;quot;}&lt;/code> - which is recognisable as what we have to pass to &lt;code>syscall.Exec&lt;/code>!&lt;/p></description></item><item><title>Changing hostname in SmartOS Zone</title><link>https://caiustheory.com/changing-hostname-in-smartos-zone/</link><pubDate>Thu, 18 Dec 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/changing-hostname-in-smartos-zone/</guid><description>&lt;p>Given a non-global zone in SmartOS that we want to change the hostname of, we need to make sure to edit the following files to change it:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>/etc/hosts&lt;/code>&lt;/li>
+&lt;li>&lt;code>/etc/nodename&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>A quick way to do that is with &lt;code>sed&lt;/code> &lt;em>(renaming &amp;ldquo;fred&amp;rdquo; to &amp;ldquo;beth&amp;rdquo; here)&lt;/em>:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">sed -e &lt;span class="s1">&amp;#39;s/fred/beth/g&amp;#39;&lt;/span> -i /etc/hosts /etc/nodename
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then shutdown &amp;amp; start the zone &lt;em>(from my testing a restart doesn&amp;rsquo;t apply it)&lt;/em>.&lt;/p></description></item><item><title>Install Rubinius on OS X</title><link>https://caiustheory.com/install-rubinius-on-os-x/</link><pubDate>Wed, 05 Nov 2014 12:50:16 +0000</pubDate><guid>https://caiustheory.com/install-rubinius-on-os-x/</guid><description>&lt;p>Using &lt;a href="https://github.com/postmodern/ruby-install/">ruby-install&lt;/a>, &lt;a href="http://brew.sh/">homebrew&lt;/a> building it for use with &lt;a href="https://github.com/postmodern/chruby/">chruby&lt;/a>, here&amp;rsquo;s how I install &lt;a href="http://rubini.us/">Rubinius&lt;/a> under Yosemite (works for Mavericks as well.)&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Make sure llvm is installed&lt;/p>
+&lt;pre>&lt;code> $ brew install llvm
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Prepend the homebrew-installed llvm tools to your path&lt;/p>
+&lt;pre>&lt;code> $ export PATH=&amp;quot;$(brew --prefix llvm)/bin:$PATH&amp;quot;
+# Or, for ZSH
+$ path=( $(brew --prefix llvm)/bin $path )
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Install rubinius, v2.3.0 at the time of writing&lt;/p>
+&lt;pre>&lt;code> $ ruby-install rbx 2.3.0
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Open a fresh shell once that&amp;rsquo;s built, and you should be able to switch to rbx!&lt;/p>
+&lt;pre>&lt;code> $ chruby rbx
+$ ruby -v
+rubinius 2.3.0 (2.1.0 9d61df5d 2014-10-31 3.5.0 JI) [x86_64-darwin14.0.0]
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;em>There is also a homebrew tap for rubinius which should also work instead of the above. I couldn&amp;rsquo;t get it working on one of my laptops though, which is why I was installing by hand using the above instead. The tap is at &lt;a href="https://github.com/rubinius/homebrew-apps/">https://github.com/rubinius/homebrew-apps/&lt;/a> and &lt;a href="https://twitter.com/brixen/status/529725881498226688">https://twitter.com/brixen/status/529725881498226688&lt;/a> explains install steps.&lt;/em>&lt;/p></description></item><item><title>Changing root password in global zone</title><link>https://caiustheory.com/changing-root-password-in-global-zone/</link><pubDate>Sun, 19 Oct 2014 17:44:20 +0000</pubDate><guid>https://caiustheory.com/changing-root-password-in-global-zone/</guid><description>&lt;p>SmartOS mounts &lt;code>/etc/shadow&lt;/code> from &lt;code>/usbkey/shadow&lt;/code> so we can change the root password for the global zone after install. Here&amp;rsquo;s how:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Fire up a console or ssh session as root in the global zone&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Check the existing permissions on the file&lt;/p>
+&lt;pre>&lt;code> $ ls -l /usbkey/shadow
+-r-------- 1 root root 560 Oct 19 16:45 /usbkey/shadow
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Make the file writable&lt;/p>
+&lt;pre>&lt;code> $ chmod 600 /usbkey/shadow
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Fire up &lt;code>vi&lt;/code> to edit the file&lt;/p>
+&lt;pre>&lt;code> $ vi /usbkey/shadow
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Edit the line containing root to change the crypted password. See &lt;a href="https://us-east.manta.joyent.com/smartosman/public/man4/shadow.4.html">&lt;code>shadow(4)&lt;/code>&lt;/a> if you need help with the format of &lt;code>/etc/shadow&lt;/code> &amp;amp; use &lt;code>/usr/lib/cryptpass&lt;/code> to generate a hash for the password you desire. &lt;em>(Remember to clean the bash history!)&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Save the file and exit &lt;code>vi&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Make the file readonly again&lt;/p>
+&lt;pre>&lt;code> $ chmod 400 /usbkey/shadow
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Double check permissions are correct on the file again&lt;/p>
+&lt;pre>&lt;code> $ ls -l /usbkey/shadow
+-r-------- 1 root root 560 Oct 19 16:49 /usbkey/shadow
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;p>Job done. Verify by logging in as root (invoking &lt;code>/usr/bin/login&lt;/code> from an ssh session makes this easy to verify.)&lt;/p></description></item><item><title>Compiling SmartOS for AMD processors</title><link>https://caiustheory.com/compiling-smartos-for-amd-processors/</link><pubDate>Sun, 28 Sep 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/compiling-smartos-for-amd-processors/</guid><description>&lt;p>There&amp;rsquo;s a few community-provided patches for SmartOS that enable KVM on AMD processors amongst other things, and given the HP Microserver has an AMD processor, that&amp;rsquo;s quite useful for turning it into a better lab server. The main &lt;a href="http://imgapi.uqcloud.net/builds">list of so called &amp;ldquo;eait&amp;rdquo; builds&lt;/a> was hiccuping when I tried to download the latest, and all I could find was a 20140812T062241Z image &lt;a href="http://builds.smartos.skylime.net">here&lt;/a>.&lt;/p>
 &lt;p>The source code for the eait builds is maintained at &lt;a href="https://github.com/arekinath/smartos-live">https://github.com/arekinath/smartos-live&lt;/a>, and you can see the patches applied on top of the normal SmartOS master by going to &lt;a href="https://github.com/arekinath/smartos-live/compare/joyent:master...eait">https://github.com/arekinath/smartos-live/compare/joyent:master...eait&lt;/a>.&lt;/p>
 &lt;p>So here&amp;rsquo;s how to use SmartOS to compile a more up to date AMD-friendly Smartos!&lt;/p>
 &lt;ol>
@@ -115,7 +914,83 @@ tools/build_usb
 &lt;ul>
 &lt;li>&lt;a href="http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS">http://wiki.smartos.org/display/DOC/Building+SmartOS+on+SmartOS&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/arekinath/smartos-live">https://github.com/arekinath/smartos-live&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Add to iCloud Reading List programmatically</title><link>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</link><pubDate>Mon, 16 Dec 2013 22:26:31 +0000</pubDate><guid>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</guid><description>&lt;p>One piece of a larger puzzle I&amp;rsquo;m trying to solve currently, was how to add a given URL to my Apple &amp;ldquo;&lt;a href="http://www.apple.com/uk/safari/#icloud">Reading List&lt;/a>&amp;rdquo; that is stored in iCloud and synced across all my OS X and iOS devices. More specifically, I wanted to add URLs to the list from my mac running Mavericks (10.9). I had a quick look at the Cocoa APIs and couldn&amp;rsquo;t see anything in OS X to do this. (iOS has an API to do it from Cocoa-land it seems though.)&lt;/p>
+&lt;/ul></description></item><item><title>The People's Triathlon 2014</title><link>https://caiustheory.com/the-peoples-triathlon-2014/</link><pubDate>Mon, 11 Aug 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/the-peoples-triathlon-2014/</guid><description>&lt;p>My first Olympic distance triathlon, and the first time I&amp;rsquo;ve ever run 10km to boot.&lt;/p>
+&lt;p>&lt;strong>1500m Open Water (Freshwater Lake) Swim: 00:38:08&lt;/strong>&lt;/p>
+&lt;p>Equally happy and upset with my swim. Basically everything went well except my wetsuit, must get a proper swimming one (possibly sleeveless) before my next wetsuit event. Having to get out at the end of each lap and run down the bank to re-enter the water was a bit strange but not too bad. Worst bit of that was diving back in and forgetting to look down - goggles bruised the edge of my eyesocket!&lt;/p>
+&lt;p>&lt;strong>Transition 1: 00:03:53&lt;/strong>&lt;/p>
+&lt;p>Took this at a sedate pace, didn&amp;rsquo;t rush but didn&amp;rsquo;t dawdle either. Perhaps could&amp;rsquo;ve gone a bit quicker but not unhappy with it. Found bike OK this time, although chain fell off as I went to mount which was slightly annoying.&lt;/p>
+&lt;p>&lt;strong>40km Cycle: 01:28:49&lt;/strong>&lt;/p>
+&lt;p>Started off really badly, managed to knock my watch from cycle into Transition 2 before I&amp;rsquo;d gotten out the car park. Had to reset it quickly into just bike mode from multisport mode which wasn&amp;rsquo;t too bad to be fair, just annoying. Having done the route in training was a &lt;em>big&lt;/em> help on the day, I was aiming for about the time I did it in. Didn&amp;rsquo;t push too hard on the two hills (one of which looks deceptively easy). Very happy with my time and more importantly how little effort it was comparatively.&lt;/p>
+&lt;p>&lt;strong>Transition 2: 00:01:28&lt;/strong>&lt;/p>
+&lt;p>Quicker than T1, as normal. Got my shit on quickly, didn&amp;rsquo;t forget anything and even managed to get my watch in run mode whilst jogging to the exit of the transition area.&lt;/p>
+&lt;p>&lt;strong>10km Run: 01:18:40&lt;/strong>&lt;/p>
+&lt;p>The bit I was dreading the most. Very very happy with my performance here though. Walked about 90 seconds of the whole thing and kept plodding away the rest of the time. Given the furthest I&amp;rsquo;d run solidly in training was about 5.5km, I was exceptionally happy to just keep plodding the whole time. Managed to not take on liquid for the third lap, which lead to some impressive cramping in my right quad, so making sure I take liquid on is a definite thing to watch out for in future. And amazingly I wasn&amp;rsquo;t even tail end charlie (not that it really matters, given I race the clock, not other people. But still.)&lt;/p>
+&lt;p>&lt;strong>Total: 03:30:51&lt;/strong>&lt;/p>
+&lt;p>There&amp;rsquo;s a tiny part of me that&amp;rsquo;s gutted I didn&amp;rsquo;t manage it in under 3:30 hours, but what&amp;rsquo;s 51 seconds over that period of time. More importantly, I completed the bloody thing! Especially happy with the run, enjoyed the cycle even if it was trying to drown us (there was 6&amp;rdquo; deep standing water on one of the roundabouts by the end), and mostly happy with my swim.&lt;/p>
+&lt;p>Looking forward to returning next year and beating 3:30!&lt;/p></description></item><item><title>Solve volume down button not working on iPhone 5</title><link>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</link><pubDate>Tue, 01 Jul 2014 11:31:39 +0000</pubDate><guid>https://caiustheory.com/solve-volume-down-button-not-working-on-iphone-5/</guid><description>&lt;p>I noticed this morning that my volume down button (-) wasn&amp;rsquo;t working on my iPhone 5 running iOS 7. Pushing the physical button in didn&amp;rsquo;t change the volume. The volume up button increased the volume successfully still.&lt;/p>
+&lt;p>As is my normal first step debugging iPhone weirdness, I rebooted the phone by turning it off, leaving it off for a few seconds, then booting it back up with the power button. Once powered off and on in this way, the volume down key still didn&amp;rsquo;t decrease the volume.&lt;/p>
+&lt;p>Fearing a physical button issue at this point, I turned to google for suggestions on what else to try. Running across &lt;a href="https://discussions.apple.com/thread/4894152">this thread&lt;/a> on Apple&amp;rsquo;s discussion forums, I tried out the solution in there.&lt;/p>
+&lt;ol>
+&lt;li>Open &amp;ldquo;Settings&amp;rdquo;&lt;/li>
+&lt;li>Scroll down and tap on &amp;ldquo;General&amp;rdquo;&lt;/li>
+&lt;li>Tap on &amp;ldquo;Accessibility&amp;rdquo;&lt;/li>
+&lt;li>Scroll down to the bottom and tap on &amp;ldquo;AssistiveTouch&amp;rdquo;&lt;/li>
+&lt;li>Tap the toggle for AssistiveTouch to turn it on, and you should see a little icon appear on screen (white circle contained in a dark grey rounded square)&lt;/li>
+&lt;li>Tap the AssistiveTouch icon (was in the top left corner on screen for me)&lt;/li>
+&lt;li>Tap on &amp;ldquo;Device&amp;rdquo;&lt;/li>
+&lt;li>Tap &amp;ldquo;Volume Down&amp;rdquo; a bunch of times and you should see the volume being turned down&lt;/li>
+&lt;li>Tap outside the AssistiveTouch dialog to close it&lt;/li>
+&lt;li>Try pushing the physical Volume Down button&lt;/li>
+&lt;/ol>
+&lt;p>In my case, following these steps made my physical volume down button start working again. Makes me wonder if the solution author on the apple discussion thread is right, in that this is a software issue and forcing a volume down action through the on-screen interface makes it remember that there&amp;rsquo;s a physical button to respond to as well.&lt;/p>
+&lt;p>Either way, I can stop deafening myself whenever I receive a notification now!&lt;/p></description></item><item><title>Compile &amp; run swift files directly</title><link>https://caiustheory.com/compile-run-swift-files-directly/</link><pubDate>Fri, 06 Jun 2014 14:32:18 +0000</pubDate><guid>https://caiustheory.com/compile-run-swift-files-directly/</guid><description>&lt;p>Turns out you can run a swift file without having to compile it into a binary somewhere and then run that binary. Makes swift behave a bit more like a scripting language like ruby or python when you need it to.&lt;/p>
+&lt;p>Using the &lt;code>xcrun&lt;/code> binary, we can reach into the current Xcode &lt;code>/bin&lt;/code> folder and run binaries within there. So &lt;code>xcrun swift&lt;/code> lets you run the swift binary to compile files for instance. If you view the help with &lt;code>-h&lt;/code>, there&amp;rsquo;s a useful flag &lt;code>-i&lt;/code> listed there:&lt;/p>
+&lt;blockquote>
+&lt;p>-i    Immediate mode&lt;/p>
+&lt;/blockquote>
+&lt;p>Turns out immediate mode means &amp;ldquo;compile &amp;amp; run&amp;rdquo; in the same command, which is what we&amp;rsquo;re after.&lt;/p>
+&lt;pre>&lt;code>$ cat hello.swift
+println(&amp;quot;Hello World&amp;quot;)
+$ xcrun swift -i hello.swift
+Hello World
+&lt;/code>&lt;/pre>
+&lt;p>Bingo. But what if we want to make hello.swift executable and call it directly without having to know it needs the swift binary to call it. Unix lets files define their shebang to say how the file needs to be executed, so lets go for that here too!&lt;/p>
+&lt;pre>&lt;code>$ cat hello2.swift
+#!/usr/bin/env xcrun swift -i
+println(&amp;quot;Hello World 2&amp;quot;)
+$ chmod +x hello2.swift
+$ ./hello2.swift
+Hello World 2
+&lt;/code>&lt;/pre>
+&lt;p>No more having to fire up Xcode for quick CLI tools, especially ones using the system frameworks!&lt;/p></description></item><item><title>Cheshire Triathlon 2014</title><link>https://caiustheory.com/cheshire-triathlon-2014/</link><pubDate>Mon, 02 Jun 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/cheshire-triathlon-2014/</guid><description>&lt;p>Successfully completed my second Sprint Triathlon of the season in Nantwich.&lt;/p>
+&lt;p>&lt;strong>500m Swim - 00:10:49&lt;/strong>&lt;/p>
+&lt;p>Felt good swimming this. Mixed up my usual breaststroke with some front crawl to overtake and use my legs less towards the end. Think I need to put a shorter time down on paper next time though, was in with people who were swimming much slower than me. (Including one chap who was doing doggy paddle in the deep end and walking as soon as his feet touched bottom. Oh well!) Need to continue with front crawl practice, and aim to do next sprint tri entirely crawl.&lt;/p>
+&lt;p>&lt;strong>Transition 1 - 00:02:43&lt;/strong>&lt;/p>
+&lt;p>Went well. Ran from pool to bike and felt OK. Kit on without any fuckups. Didn&amp;rsquo;t fall off getting on bike. Winning. Need to practice getting on my bike in shoes at a run though.&lt;/p>
+&lt;p>&lt;strong>20km Bike - 00:42:31&lt;/strong>&lt;/p>
+&lt;p>10 minutes quicker than same length course last year. (Although a slightly new route this year.) Lost a minute when my water bottle fell out about 12km in though. Barely saw a soul, got stuck at one pedestrian crossing on red. Felt very good on the bike (and finally beat Liam on the same route &amp;amp; day ). Need to fit a tighter bottle carrier to stop the bottle falling out on bumpy roads.&lt;/p>
+&lt;p>&lt;strong>Transition 2 - 00:01:21&lt;/strong>&lt;/p>
+&lt;p>Came off bike well and ran to shoes. Couldn&amp;rsquo;t find where I&amp;rsquo;d left them, was trying to find Liam&amp;rsquo;s bike as my marker for it, only someone else earlier in the same row had the same bike as him! Wasted 10 seconds looking probably. Need to remember where my stuff is more accurately in future.&lt;/p>
+&lt;p>&lt;strong>5km Run - 00:39:03&lt;/strong>&lt;/p>
+&lt;p>Boiling hot by the point I started running; didn&amp;rsquo;t feel great in the first few hundred meters and never really got comfortable after that. Walked about 800m of it in total at a guess, really didn&amp;rsquo;t have much left in my legs. Not convinced pushing less on the bike would&amp;rsquo;ve helped my run though. On the plus side, only 7 minutes slower than a training run a couple of weeks ago in similar heat, and this was on grass. Need to continue running at 5km distance, and train on grass as well as tarmac I think.&lt;/p>
+&lt;p>&lt;strong>Total time - 01:36:27&lt;/strong>&lt;/p>
+&lt;p>8 minutes slower than York a couple of months ago, and felt &lt;em>much&lt;/em> worse on the run. Very happy with my bike &amp;amp; swim though. More run training required!&lt;/p></description></item><item><title>York April 2014 Triathlon</title><link>https://caiustheory.com/york-triathlon-2014/</link><pubDate>Mon, 28 Apr 2014 10:00:00 +0000</pubDate><guid>https://caiustheory.com/york-triathlon-2014/</guid><description>&lt;p>Completed the York sprint distance tri in 1:28:37 total, and didn&amp;rsquo;t die in the process. Split times &amp;amp; my thoughts below..&lt;/p>
+&lt;p>&lt;strong>400m Swim: 00:08:08&lt;/strong>&lt;br>
+&lt;strong>T1: 00:03:47&lt;/strong>&lt;br>
+&lt;strong>18km Bike: 00:38:43&lt;/strong>&lt;br>
+&lt;strong>T2: 00:00:58&lt;/strong>&lt;br>
+&lt;strong>5km Run: 00:38:08&lt;/strong>&lt;/p>
+&lt;p>(Amusingly the official time for my swim was 00:10:10, which then makes my official time for T1 00:00:38; Fastest Swim/Bike transition time in the tri on paper! Ahem.)&lt;/p>
+&lt;p>Happy with my swim, not much different from training speed &amp;amp; felt good getting out the pool. T1 was okay, and I remembered to put my tshirt on before my helmet this time! Quite happy with my cycling, got down on the drop bars going downhill with tailwind, and could maintain 16mph uphill on the return leg, the bike itself had a major service 2 weeks ago and I&amp;rsquo;d not really ridden much since that either. Legs responded with life in them coming off the bike, second transition was quicker than expected (elastic laces win!). Moderately happy with the run, was hoping to do it in under 40 minutes (and did), but still felt like I had no more distance/pace left before halfway through. Pushed through to the end okay, and didn&amp;rsquo;t walk at all. Overall very happy for my first sprint distance, and especially happy to be running 5km after swim/bike without walking.&lt;/p>
+&lt;p>First event of the season done. Main area to work on is my run, but that&amp;rsquo;s been the case since last season. Winter running training seems to have paid off so far.&lt;/p></description></item><item><title>Rename Google Drive folder on Mac</title><link>https://caiustheory.com/rename-google-drive-folder-on-mac/</link><pubDate>Thu, 06 Mar 2014 15:49:22 +0000</pubDate><guid>https://caiustheory.com/rename-google-drive-folder-on-mac/</guid><description>&lt;ol>
+&lt;li>Quit Google Drive app&lt;/li>
+&lt;li>Rename &lt;code>~/Google Drive/&lt;/code> to whatever you want&lt;/li>
+&lt;li>Open Google Drive and wait for it to complain the folder is missing&lt;/li>
+&lt;li>Click the menu item and click the warning item&lt;/li>
+&lt;li>Click &amp;ldquo;Locate Folder..&amp;rdquo; button on the right in window that pops up&lt;/li>
+&lt;li>Find your renamed folder and hit OK&lt;/li>
+&lt;li>There is no step seven&lt;/li>
+&lt;/ol></description></item><item><title>Add to iCloud Reading List programmatically</title><link>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</link><pubDate>Mon, 16 Dec 2013 22:26:31 +0000</pubDate><guid>https://caiustheory.com/add-to-icloud-reading-list-programmatically/</guid><description>&lt;p>One piece of a larger puzzle I&amp;rsquo;m trying to solve currently, was how to add a given URL to my Apple &amp;ldquo;&lt;a href="http://www.apple.com/uk/safari/#icloud">Reading List&lt;/a>&amp;rdquo; that is stored in iCloud and synced across all my OS X and iOS devices. More specifically, I wanted to add URLs to the list from my mac running Mavericks (10.9). I had a quick look at the Cocoa APIs and couldn&amp;rsquo;t see anything in OS X to do this. (iOS has an API to do it from Cocoa-land it seems though.)&lt;/p>
 &lt;p>I figured &lt;a href="http://www.apple.com/uk/safari/">Safari.app&lt;/a> was the key to getting this done on OS X, given it has the ability itself to add the current page to the reading list, either via a keyboard command, a menu item, or a button in the address bar. One quick mental leap later, and I was wondering if the engineers at Apple had been nice enough to expose that via Applescript for me to take advantage of.&lt;/p>
 &lt;p>One quick stop in &amp;ldquo;Script Editor.app&amp;rdquo; later, and I had the Applescript dictionary open for Safari.app. Lo and behold, there is rather handily an Applescript command called &amp;ldquo;add reading list item&amp;rdquo;, which does &lt;strong>exactly&lt;/strong> what I want. It has a few different options you can call it with, depending on whether you want Safari to go populate the title &amp;amp; preview text, or if you want to specify it yourself at save-time.&lt;/p>
 &lt;p>As I want to be able to call this from multiple runtimes, I&amp;rsquo;ve chosen to save it as an executable, which leans on &lt;a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/osascript.1.html">&lt;code>osascript&lt;/code>&lt;/a> to run the actual Applescript. And here it is:&lt;/p>
@@ -131,7 +1006,54 @@ $ add_to_reading_list &amp;quot;http://google.com/&amp;quot;
 # … etc …
 &lt;/code>&lt;/pre>
 &lt;p>&lt;em>(Adding support for specifying preview text and title is left as an exercise for the reader!)&lt;/em>&lt;/p>
-&lt;p>Have fun reading later!&lt;/p></description></item><item><title>evil.rb</title><link>https://caiustheory.com/evil-rb/</link><pubDate>Wed, 23 Jan 2013 11:07:43 +0000</pubDate><guid>https://caiustheory.com/evil-rb/</guid><description>&lt;p>Here be hax. Don&amp;rsquo;t &lt;strong>ever&lt;/strong> do these. ;-)&lt;/p>
+&lt;p>Have fun reading later!&lt;/p></description></item><item><title>North West Triathlon 2013</title><link>https://caiustheory.com/north-west-triathlon-2013/</link><pubDate>Thu, 12 Sep 2013 10:00:00 +0000</pubDate><guid>https://caiustheory.com/north-west-triathlon-2013/</guid><description>&lt;p>&amp;ldquo;Fun&amp;rdquo; triathlon (super sprint distance) done in Nantwich. First ever Triathlon, 7 months after starting training properly.&lt;/p>
+&lt;p>&lt;strong>200m swim: 00:04:08&lt;/strong>&lt;/p>
+&lt;p>Despite feeling like I was going super slow. Brine pool was fairly nice.&lt;/p>
+&lt;p>&lt;strong>20km bike: 00:52:31&lt;/strong>&lt;/p>
+&lt;p>Pretty happy with that, strongest discipline for me anyway.&lt;/p>
+&lt;p>&lt;strong>2.5km run: 00:21:08&lt;/strong>&lt;/p>
+&lt;p>Walked 2/3s of it at a guess. Really hate running, so happyish with this. Need to work on running over the winter.&lt;/p>
+&lt;p>&lt;strong>Total: 1h 17m 47s&lt;/strong>&lt;/p>
+&lt;p>BOOYA. Enjoyable. Pretty damn happy with that (had a vague plan of being under 1h30m. So yay.)&lt;/p></description></item><item><title>Happy Villanelle</title><link>https://caiustheory.com/happy-villanelle/</link><pubDate>Fri, 22 Feb 2013 15:15:03 +0000</pubDate><guid>https://caiustheory.com/happy-villanelle/</guid><description>&lt;p>The writing group that Carole and Liberty belong to had a homework this month to write a Villanelle. It&amp;rsquo;s a very specific kind of poem, written to both a repeating line structure and a rhyming pattern. (If you go read &lt;a href="http://libertyfallsdown.wordpress.com/2013/02/22/villanelle/">Liberty&amp;rsquo;s villanelle&lt;/a> she explains it properly at the start.)&lt;/p>
+&lt;p>However, after reading both &lt;a href="http://carolefindsherwings.wordpress.com/2013/02/23/ward-26-a-villanelle/">Carole&amp;rsquo;s&lt;/a> and &lt;a href="http://libertyfallsdown.wordpress.com/2013/02/22/villanelle/">Liberty&amp;rsquo;s&lt;/a>, I was feeling they&amp;rsquo;d both done very depressing poems. It might be a strict structure of poem, but there&amp;rsquo;s no need to make the subject matter so down!&lt;/p>
+&lt;p>So here&amp;rsquo;s my overly enthusiastically attempt to try and balance the world of villanelle&amp;rsquo;s into something less depressing!&lt;/p>
+&lt;blockquote>
+&lt;p>Striding out down the street at last,&lt;br>
+Like I own this town,&lt;br>
+Tipping my hat to all that I passed.&lt;/p>
+&lt;p>Smiling at a friendly chugger who asked,&lt;br>
+Grinning at an exuberant clown,&lt;br>
+Striding out down the street at last.&lt;/p>
+&lt;p>Saluting the bookie behind his glass,&lt;br>
+Turning frowns upside down,&lt;br>
+Tipping my hat to all that I passed.&lt;/p>
+&lt;p>Tapping my feet and having a blast,&lt;br>
+Abusing verbs like they were a noun,&lt;br>
+Striding out down the street at last.&lt;/p>
+&lt;p>Being amused by kids playing on grass,&lt;br>
+Seeing the queen in her glorious crown,&lt;br>
+Tipping my hat to all that I passed.&lt;/p>
+&lt;p>Compared to sadness I am a contrast,&lt;br>
+Cheering folk up in my dressing gown,&lt;br>
+Striding out down the street at last,&lt;br>
+Tipping my hat to all that I passed.&lt;/p>
+&lt;/blockquote></description></item><item><title>Pair new device with Nexxus Drive Transmit Pro</title><link>https://caiustheory.com/pair-new-device-with-nexxus-drive-transmit-pro/</link><pubDate>Tue, 12 Feb 2013 18:26:59 +0000</pubDate><guid>https://caiustheory.com/pair-new-device-with-nexxus-drive-transmit-pro/</guid><description>&lt;p>The device is a bluetooth to FM transmitter with Model number NEX-FMTX-BTCK. (Hereafter DTP.)&lt;/p>
+&lt;p>The set of instructions I use to pair it to a new device, having lost the user manual/instruction booklet, is as follows:&lt;/p>
+&lt;ol>
+&lt;li>Remove all previously paired devices from range (turn them off/move them away from the DTP.)&lt;/li>
+&lt;li>Turn the power on to the DTP without touching any buttons.&lt;/li>
+&lt;li>Let it flash the blue call button a couple of times as it searches for known devices.&lt;/li>
+&lt;li>Hold the call button down until the call/hangup buttons flash blue/red respectively.&lt;/li>
+&lt;li>Find the &amp;ldquo;Drive Transmit Pro&amp;rdquo; on your device you want paired to it and pair with DTP.&lt;/li>
+&lt;li>Test out the pairing by calling your girlfriend and talking to her in a funny accent.&lt;/li>
+&lt;li>Celebrate with a beer!&lt;/li>
+&lt;/ol></description></item><item><title>Church intertwined with State</title><link>https://caiustheory.com/church-intertwined-with-state/</link><pubDate>Tue, 05 Feb 2013 23:06:18 +0000</pubDate><guid>https://caiustheory.com/church-intertwined-with-state/</guid><description>&lt;p>In the UK currently we&amp;rsquo;re moving (slowly) toward the &lt;a href="http://www.publications.parliament.uk/pa/bills/cbill/2012-2013/0126/cbill_2012-20130126_en_1.htm">same sex marriage bill&lt;/a> making it&amp;rsquo;s way into law. (It&amp;rsquo;s got a way to go still, but support seems to be there now at least.)&lt;/p>
+&lt;p>For the record, I&amp;rsquo;m glad to see the state moving toward allowing two people to be united under law, irrespective of terminology used - and with equal rights to those currently enjoyed by the uniting of a man &amp;amp; woman to date. But for a while now I&amp;rsquo;ve been thinking that the discussion is presented in an unclear fashion, which causes people to jump to polarising positions on it, without any common ground.&lt;/p>
+&lt;p>The way I see it is the UK has been a country with Religion and State intertwined for many, many hundreds of years - and therefore we have some constructs that exist both in law, and religion, but are conflated under one word and changing one appears to be changing them both.&lt;/p>
+&lt;p>The Church of England is Protestant, because Henry VIII wanted to get a divorce and the Catholics wouldn&amp;rsquo;t allow him that, so we as a country &amp;ldquo;forked&amp;rdquo; our own religion that wasn&amp;rsquo;t so different, but allowed divorce of marriage. Times were slightly different back then, the church had a lot more direct power in terms of laws &amp;amp; how people lived. We&amp;rsquo;re a more diverse society today, and the church has less (direct?) involvement in our laws, although older laws are still based upon that original conflation of state and church.&lt;/p>
+&lt;p>I almost wonder if in this case (and others) we need to start diverging church from state and allowing the state to change things irrespective of the church, whilst still allowing the church to continue unhindered with practices it&amp;rsquo;s held for many years. Seems like the best of both worlds almost - in law we are a very generic and equal society, and if you wish to belong to or align with a group that has more specific beliefs, then that is open to you as well.&lt;/p>
+&lt;p>Lets jump back to gay marriage here as an example then. If we define state marriage to be &amp;ldquo;the unity of two human beings, irrespective of their attributes&amp;rdquo;, then everyone is equal to join with a partner in the eyes of the law, and all such partnerships are afforded the lawful benefits that come with that unity. The church (and indeed, all religions) are also then free to define religious marriage in their doctrine as they wish, so they can say that for them it&amp;rsquo;s only permissible between a man and a woman. And if you wish to join with a partner following that doctrine, then you have to meet their rules.&lt;/p>
+&lt;p>In this circumstance, I wonder how much of it is a hangup on the word &amp;ldquo;marriage&amp;rdquo;. I can see how the state wants to keep hold of it to describe partnerships between two people, and also that religions want to keep hold of it as they&amp;rsquo;ve been using it for years and neither wish to yield the word for the other to use. Which possibly means people think solely of this issue as just being an intertwined construct between state and religion, and not as the state giving everyone equality being a separate issue.&lt;/p></description></item><item><title>evil.rb</title><link>https://caiustheory.com/evil-rb/</link><pubDate>Wed, 23 Jan 2013 11:07:43 +0000</pubDate><guid>https://caiustheory.com/evil-rb/</guid><description>&lt;p>Here be hax. Don&amp;rsquo;t &lt;strong>ever&lt;/strong> do these. ;-)&lt;/p>
 &lt;h2 id="reduce-local-variables-with-instance_eval">Reduce local variables with instance_eval&lt;/h2>
 &lt;p>Sometimes (usually in a one-liner) I want to do some work with a value without assigning it to a variable. Chucking an &lt;code>#instance_eval&lt;/code> call in there will set &lt;code>self&lt;/code> to the value, which saves having to assign it to a local value. Pretty much only used by me in one-off scripts or cli commands.&lt;/p>
 &lt;h4 id="good">Good&lt;/h4>
@@ -296,10 +1218,58 @@ perl &amp;lt;&lt;span class="o">(&lt;/span>curl -s https://raw.github.com/nginx/
 &lt;!-- raw HTML omitted -->
 &lt;p>Lastly, I just zip tied the cables together behind the mirror, and ran them down vertically from the middle to the floor and plugged them in. Sounds fantastic, and due to being plugged into an &lt;a href="http://www.apple.com/airportexpress/">Airport Express&lt;/a>, anything compatible can stream audio through them wirelessly. Fabulous darling!&lt;/p>
 &lt;!-- raw HTML omitted -->
-&lt;p>&lt;em>(Click any image for a larger version)&lt;/em>&lt;/p></description></item><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p>Dear future Caius searching for this issue,&lt;/p>
+&lt;p>&lt;em>(Click any image for a larger version)&lt;/em>&lt;/p></description></item><item><title>Musical Quiz</title><link>https://caiustheory.com/musical-quiz/</link><pubDate>Wed, 10 Oct 2012 14:11:41 +0000</pubDate><guid>https://caiustheory.com/musical-quiz/</guid><description>&lt;p>Using only song titles from ONE ARTIST, cleverly answer these questions. Try not to repeat a song title. It’s harder than you think.&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted --></description></item><item><title>Human Affliction</title><link>https://caiustheory.com/human-affliction/</link><pubDate>Mon, 09 Apr 2012 14:04:32 +0000</pubDate><guid>https://caiustheory.com/human-affliction/</guid><description>&lt;p>That damned human affliction,&lt;br>
+Missing someone like an addiction,&lt;br>
+The cure&amp;rsquo;s quite simple,&lt;br>
+Like bursting a pimple,&lt;br>
+Hug them, hold them, repetition.&lt;/p></description></item><item><title>Where did life go?</title><link>https://caiustheory.com/where-did-life-go/</link><pubDate>Fri, 30 Mar 2012 16:33:51 +0000</pubDate><guid>https://caiustheory.com/where-did-life-go/</guid><description>&lt;p>Into the past,&lt;br>
+with our regrets and tears,&lt;br>
+and our successes and cheers.&lt;/p></description></item><item><title>Install capybara-webkit gem on Ubuntu</title><link>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</link><pubDate>Thu, 01 Mar 2012 11:01:34 +0000</pubDate><guid>https://caiustheory.com/install-capybara-webkit-gem-on-ubuntu/</guid><description>&lt;p>Dear future Caius searching for this issue,&lt;/p>
 &lt;p>The apt package you need to install to use the capybara-webkit rubygem on ubuntu (tested on 10.04 and 11.10) is &lt;code>libqt4-dev&lt;/code>. That is, to &lt;code>gem install capybara-webkit&lt;/code>, you need to run &lt;code>aptitude install libqt4-dev&lt;/code>.&lt;/p>
 &lt;p>Yours helpfully,&lt;br>
-Past Caius&lt;/p></description></item><item><title>End Of An Era</title><link>https://caiustheory.com/end-of-an-era/</link><pubDate>Thu, 12 Jan 2012 15:30:00 +0000</pubDate><guid>https://caiustheory.com/end-of-an-era/</guid><description>&lt;p>I remember watching &lt;a href="http://www.youtube.com/watch?v=UF8uR6Z6KLc">Steve Jobs&amp;rsquo; commencement speech&lt;/a> for the first time and being fairly touched by the three stories he told in it. The major one that resonated with me at the time, and has since made more sense to me, is the first story he tells about joining the dots later on when you&amp;rsquo;re looking backwards. To quote from it:&lt;/p>
+Past Caius&lt;/p></description></item><item><title>Use Readline With Default Ruby on OS X</title><link>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</link><pubDate>Sun, 05 Feb 2012 18:13:20 +0000</pubDate><guid>https://caiustheory.com/use-readline-with-default-ruby-on-os-x/</guid><description>&lt;p>OS X Lion comes with ruby 1.8.7-p249 installed, although it&amp;rsquo;s compiled against libedit rather than libreadline. Whilst libedit is a mostly-compatible replacement for libreadline, I find there&amp;rsquo;s a couple of settings I&amp;rsquo;m used to that don&amp;rsquo;t work in libedit. (Like &lt;code>history-beginning-search-backward&lt;/code>.)&lt;/p>
+&lt;p>Luckily you can grab the source of ruby and compile just the readline extension, and move it into the right place for it to just work. Here&amp;rsquo;s what&amp;rsquo;s been working for me:&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># Install readline using homebrew&lt;/span>
+brew install readline
+&lt;span class="c1"># Download the ruby source and check out 1.8.7-p249&lt;/span>
+mkdir ~/tmp &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">cd&lt;/span> ~/tmp
+git clone git://github.com/ruby/ruby
+&lt;span class="nb">cd&lt;/span> ruby
+git checkout v1_8_7_249
+&lt;span class="nb">cd&lt;/span> ext/readline
+ruby extconf.rb --with-readline-dir&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>brew --prefix readline&lt;span class="k">)&lt;/span> --disable-libedit
+make
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now you should have &lt;code>readline.bundle&lt;/code> in the current directory, and it should be compiled against your homebrew-installed readline library, rather than libedit that comes with the system. We can quickly double-check that by using &lt;code>otool&lt;/code> to check what the binary is linked against.&lt;/p>
+&lt;pre>&lt;code>$ otool -L readline.bundle
+readline.bundle:
+/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/libruby.1.dylib (compatibility version 1.8.0, current version 1.8.7)
+/usr/local/Cellar/readline/6.2.2/lib/libreadline.6.2.dylib (compatibility version 6.0.0, current version 6.2.0)
+/usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
+/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 159.1.0)
+&lt;/code>&lt;/pre>
+&lt;p>And in the output you should see a line listing &amp;ldquo;libreadline&amp;rdquo;, and no lines listing &amp;ldquo;libedit&amp;rdquo;. Which that shows, we&amp;rsquo;ve compiled it properly then. Now the bundle is built we need to move it into the right place so it&amp;rsquo;s loaded when ruby is invoked.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nv">RL_PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin11.0&amp;#34;&lt;/span>
+&lt;span class="c1"># Back up the original bundle, just in cases&lt;/span>
+sudo mv &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle.libedit&amp;#34;&lt;/span>
+sudo mv readline.bundle &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$RL_PATH&lt;/span>&lt;span class="s2">/readline.bundle&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And that&amp;rsquo;s it. You&amp;rsquo;ve got a proper compiled-against-readline installed ruby 1.8.7-p249 on 10.7 now.&lt;/p>
+&lt;p>One gotcha I ran into was needing to pass the same arguments to rvm when installing any other version of 1.8.7 on the same machine. Simple enough, just need to remember to do it though.&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="nv">CC&lt;/span>&lt;span class="o">=&lt;/span>gcc-4.2 rvm install 1.8.7-p357 -C --with-readline-dir&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>brew --prefix readline&lt;span class="k">)&lt;/span> --disable-libedit
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>End Of An Era</title><link>https://caiustheory.com/end-of-an-era/</link><pubDate>Thu, 12 Jan 2012 15:30:00 +0000</pubDate><guid>https://caiustheory.com/end-of-an-era/</guid><description>&lt;p>I remember watching &lt;a href="http://www.youtube.com/watch?v=UF8uR6Z6KLc">Steve Jobs&amp;rsquo; commencement speech&lt;/a> for the first time and being fairly touched by the three stories he told in it. The major one that resonated with me at the time, and has since made more sense to me, is the first story he tells about joining the dots later on when you&amp;rsquo;re looking backwards. To quote from it:&lt;/p>
 &lt;blockquote>
 &lt;p>Of course, it was impossible to connect the dots looking forward when I was in college. But it was very very clear looking backwards ten years later. Again, you can&amp;rsquo;t connect the dots looking forward, you can only connect them looking backwards. So you have to trust that the dots will somehow connect in your future.&lt;/p>
 &lt;/blockquote>
@@ -309,7 +1279,14 @@ Past Caius&lt;/p></description></item><item><title>End Of An Era</title><link>ht
 &lt;p>When I look back over the last few years of my life, I find the dots quite amazing to connect. First there was BarCamp Sheffield 2007 where I met &lt;a href="http://www.thehodge.co.uk/">Dom&lt;/a>, and there was Twitter and BarCamp Manchester &amp;amp; Leeds where I met geeks like &lt;a href="http://www.3hv.co.uk/">Rahoul&lt;/a>, &lt;a href="http://johnleach.co.uk/">John&lt;/a> and &lt;a href="http://brightbox.co.uk/">Jeremy&lt;/a> both online and offline. And then in June 2008 I moved to Leeds, sharing a house with Dom and quite quickly ended up being hired into what was basically my dream first job at &lt;a href="http://www.brightbox.com/">Brightbox&lt;/a>.&lt;/p>
 &lt;p>And that&amp;rsquo;s where I&amp;rsquo;ve been working for the last 1198 days, having far too much fun, solving weird, wonderful and sometimes downright frustrating problems, all with fantastically awesome and hilarious colleagues. And working on a massive variety of things, from &lt;a href="https://github.com/brightbox/rujitsu/">tiny utilities&lt;/a> to the newly launched &lt;a href="http://www.brightbox.com/">Cloud Platform&lt;/a>.&lt;/p>
 &lt;p>And today I flick my wrist ever so slightly more than normal by leaving Brightbox, without really knowing where the future end of the string will eventually end up, but knowing that I&amp;rsquo;ll look back in a few years and see dots connected that I can&amp;rsquo;t imagine today. I truly don&amp;rsquo;t think I could have had a better job to start off as a professional geek, and especially want to thank &lt;a href="http://johnleach.co.uk/">John&lt;/a> and &lt;a href="http://brightbox.co.uk/">Jeremy&lt;/a> for hiring me and helping me start my career in the best way possible.&lt;/p>
-&lt;p>As for my next challenge, I&amp;rsquo;m solving interesting problems in the online advertising world with &lt;a href="http://cristianobetta.com/">Cristiano&lt;/a>, &lt;a href="http://www.thehodge.co.uk/">Dom&lt;/a>, &lt;a href="http://missgeeky.com/">Melinda&lt;/a> and &lt;a href="http://www.3hv.co.uk/">Rahoul&lt;/a>. And we&amp;rsquo;re bloody amazing together. :-)&lt;/p></description></item><item><title>Defining Ruby Superclasses On The Fly</title><link>https://caiustheory.com/defining-ruby-superclasses-on-the-fly/</link><pubDate>Sun, 18 Dec 2011 01:13:14 +0000</pubDate><guid>https://caiustheory.com/defining-ruby-superclasses-on-the-fly/</guid><description>&lt;p>Any rubyist that&amp;rsquo;s defined a class should understand the following class definition:&lt;/p>
+&lt;p>As for my next challenge, I&amp;rsquo;m solving interesting problems in the online advertising world with &lt;a href="http://cristianobetta.com/">Cristiano&lt;/a>, &lt;a href="http://www.thehodge.co.uk/">Dom&lt;/a>, &lt;a href="http://missgeeky.com/">Melinda&lt;/a> and &lt;a href="http://www.3hv.co.uk/">Rahoul&lt;/a>. And we&amp;rsquo;re bloody amazing together. :-)&lt;/p></description></item><item><title>Nighttime Horrors</title><link>https://caiustheory.com/nighttime-horrors/</link><pubDate>Tue, 10 Jan 2012 10:51:03 +0000</pubDate><guid>https://caiustheory.com/nighttime-horrors/</guid><description>&lt;blockquote>
+&lt;p>Screaming ghouls and scary monsters,&lt;br>
+Permeating our subconscious,&lt;br>
+At night they roam freely through our dreams,&lt;br>
+With the sole intent of causing our screams,&lt;br>
+Scaring us until we awake,&lt;br>
+Annoyingly, for we know they are fake.&lt;/p>
+&lt;/blockquote></description></item><item><title>Defining Ruby Superclasses On The Fly</title><link>https://caiustheory.com/defining-ruby-superclasses-on-the-fly/</link><pubDate>Sun, 18 Dec 2011 01:13:14 +0000</pubDate><guid>https://caiustheory.com/defining-ruby-superclasses-on-the-fly/</guid><description>&lt;p>Any rubyist that&amp;rsquo;s defined a class should understand the following class definition:&lt;/p>
 &lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="k">class&lt;/span> &lt;span class="nc">Foo&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="no">Object&lt;/span>
 &lt;span class="k">end&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>It creates a new Constant (&lt;code>Foo&lt;/code>) that is a subclass of &lt;code>Object&lt;/code>. Pretty straightforward. But what you might not know is that ruby executes each line it reads in as it reads them. So we could do the following to show that:&lt;/p>
@@ -353,7 +1330,12 @@ Past Caius&lt;/p></description></item><item><title>End Of An Era</title><link>ht
 &lt;span class="k">class&lt;/span> &lt;span class="nc">Albert&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="no">ArrogantBastard&lt;/span>
 &lt;span class="k">end&lt;/span>
 &lt;span class="no">Albert&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">superclass&lt;/span> &lt;span class="c1"># =&amp;gt; Harold&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>So here we&amp;rsquo;re choosing from Simon and Harold on the fly each time a missing constant is referenced (in this case the aptly named &lt;code>ArrogantBastard&lt;/code> constant.) If you run this code yourself you&amp;rsquo;ll see the superclasses change on each run according to what your computer picks that time.&lt;/p></description></item><item><title>Experimental Procrastination</title><link>https://caiustheory.com/experimental-procrastination/</link><pubDate>Mon, 07 Nov 2011 00:41:49 +0000</pubDate><guid>https://caiustheory.com/experimental-procrastination/</guid><description>&lt;p>A while ago I read a blog post that Elizabeth N wrote, on the &lt;a href="http://naramore.net/blog/the-value-of-self-serving-code">value of writing self-serving code&lt;/a>. Ever since I&amp;rsquo;ve been moderately aware of when I&amp;rsquo;ve written self-serving code, usually either at hackdays, or just little projects where I&amp;rsquo;m either experimenting with something or just bashing out a new idea.&lt;/p>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So here we&amp;rsquo;re choosing from Simon and Harold on the fly each time a missing constant is referenced (in this case the aptly named &lt;code>ArrogantBastard&lt;/code> constant.) If you run this code yourself you&amp;rsquo;ll see the superclasses change on each run according to what your computer picks that time.&lt;/p></description></item><item><title>Magic Bubble</title><link>https://caiustheory.com/magic-bubble/</link><pubDate>Tue, 06 Dec 2011 22:03:46 +0000</pubDate><guid>https://caiustheory.com/magic-bubble/</guid><description>&lt;blockquote>
+&lt;p>You and me,&lt;br>
+Quietly,&lt;br>
+Watching the rain in the stars,&lt;br>
+From a bubble near Mars.&lt;/p>
+&lt;/blockquote></description></item><item><title>Experimental Procrastination</title><link>https://caiustheory.com/experimental-procrastination/</link><pubDate>Mon, 07 Nov 2011 00:41:49 +0000</pubDate><guid>https://caiustheory.com/experimental-procrastination/</guid><description>&lt;p>A while ago I read a blog post that Elizabeth N wrote, on the &lt;a href="http://naramore.net/blog/the-value-of-self-serving-code">value of writing self-serving code&lt;/a>. Ever since I&amp;rsquo;ve been moderately aware of when I&amp;rsquo;ve written self-serving code, usually either at hackdays, or just little projects where I&amp;rsquo;m either experimenting with something or just bashing out a new idea.&lt;/p>
 &lt;p>In fact, I even wrote about one of my recent &amp;ldquo;self-serving&amp;rdquo; projects I bashed out in an evening, &lt;a href="http://caiustheory.com/tweetsavr">TweetSavr&lt;/a>. It has no tests, was written moderately quickly and not refactored immensely (here&amp;rsquo;s hoping the git history backs me up on that! I certainly didn&amp;rsquo;t knowingly majorly refactor it at any point at least.) But it &amp;ldquo;scratched an itch&amp;rdquo; and solved the problem I had, and it works for the limited use case I need it to, so it&amp;rsquo;s a success as far as I&amp;rsquo;m concerned.&lt;/p>
 &lt;p>More recently a friend remarked to me in a private conversation that everyone needs to procrastinate occasionally, to save them going &amp;ldquo;stir crazy&amp;rdquo;. Whilst I agree with what she said, everyone needs to switch gears and do something that perhaps you shouldn&amp;rsquo;t, or that won&amp;rsquo;t directly contribute to completing your current task, I couldn&amp;rsquo;t help but draw a link between procrastinating and writing self-serving code.&lt;/p>
 &lt;p>Now I&amp;rsquo;m a programmer, it&amp;rsquo;s what I did for a hobby through school, it&amp;rsquo;s what I leapt into a career doing when I was offered the chance and even when I&amp;rsquo;ve had a particularly exhausting week, it&amp;rsquo;s something I&amp;rsquo;ll eventually turn back to. But I realised that often when I procrastinate, I do so by writing self-serving code. My creative output or process if you will is to create things digitally on the computer, be that a web app, hacky script to let me do something I&amp;rsquo;m not supposed to be able to with someone else&amp;rsquo;s application, just dicking around or exploring whatever tidbit of interesting info/behaviour in a language or library someone&amp;rsquo;s just shared on IRC.&lt;/p>
@@ -404,7 +1386,24 @@ sudo ditto build/dst /
 &lt;span class="k">end&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>And going to an invalid path like &lt;code>/posts/70-ruby-19-sucks-and-python-rules-4eva&lt;/code> just renders the default rails 404 page with a 404 HTTP status. (If you want the id to appear at the end of the path, alter &lt;code>to_param&lt;/code> accordingly and do something like &lt;code>params[:id].match(/\d+$/)&lt;/code> to extract the Post&amp;rsquo;s id to search on.)&lt;/p>
 &lt;p>Hey presto, we&amp;rsquo;ve implemented human readable slugs that are tamper-proof (without storing them in the database.)&lt;/p>
-&lt;p>&lt;em>(And bonus points if in fact you spotted I used my blog as an example, but that it isn&amp;rsquo;t a rails app. (Nor contains the blog post ID in the pretty URL.) It&amp;rsquo;s actually powered by &lt;a href="http://habariproject.org/">Habari&lt;/a> at the time of posting!&lt;/em>&lt;/p></description></item><item><title>Abusing Ruby 1.9 &amp; JSON for fun</title><link>https://caiustheory.com/abusing-ruby-19-and-json-for-fun/</link><pubDate>Mon, 07 Feb 2011 19:16:58 +0000</pubDate><guid>https://caiustheory.com/abusing-ruby-19-and-json-for-fun/</guid><description>&lt;p>Ever since I found out about the new hash syntax you can use in ruby 1.9, and how similar that syntax is to JSON, I&amp;rsquo;ve been waiting for someone to realise you can just abuse &lt;code>eval()&lt;/code> for parsing (some) JSON now.&lt;/p>
+&lt;p>&lt;em>(And bonus points if in fact you spotted I used my blog as an example, but that it isn&amp;rsquo;t a rails app. (Nor contains the blog post ID in the pretty URL.) It&amp;rsquo;s actually powered by &lt;a href="http://habariproject.org/">Habari&lt;/a> at the time of posting!&lt;/em>&lt;/p></description></item><item><title>Bad Recruiters - Rhys Evans at Devonshire</title><link>https://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire/</link><pubDate>Wed, 09 Feb 2011 14:03:49 +0000</pubDate><guid>https://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire/</guid><description>&lt;p>This is a linked-in invitation I received from Rhys, and my reply.&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>Update 2011-02-10:&lt;/strong> As much as recruiters can be scummy twats, Rhys appears to at least care somewhat about his relationship with potential clients/contacts and has &lt;a href="http://caiustheory.com/bad-recruiters-rhys-evans-at-devonshire#comment-34098">responded in the comments&lt;/a>. Normally my policy with recruiters is a two strike one, first email gets a polite &amp;ldquo;No thanks, go away.&amp;quot;, second gets a mini-rant to bugger off and stop contacting me. Rhys hadn&amp;rsquo;t technically contacted me before, but the unsolicited xmas email showed up when I searched my mailbox (which had annoyed me back when I received it.) And asking amongst my peers around at the time showed he was fairly disliked. (As you can see in some of the comments left below as well.) Since then, including a comment left below, a few people I trust have noted he&amp;rsquo;s really not that bad as recruiters go, and the fact he&amp;rsquo;s left a comment acknowledging perhaps his approach is a little misguided is enough for me to see he does still care about trying to be better than the rest of the recruitment crowd.&lt;/p>
+&lt;p>I still stand by my initial reply to him, and all other recruiters who don&amp;rsquo;t understand &amp;ldquo;No.&amp;rdquo; however.&lt;/p>
+&lt;hr>
+&lt;p>On 02/09/11 5:30 AM, Rhys Evans wrote:&lt;/p>
+&lt;blockquote>
+&lt;p>Hi Caius,&lt;/p>
+&lt;p>Good afternoon, I hope all is well.&lt;/p>
+&lt;p>I&amp;rsquo;ve noticed we are connected to a number of the same people within the Rails space on LinkedIn. I&amp;rsquo;ve tried you on 07960 268100 to no avail so I&amp;rsquo;d like to add you to my network and make contact.&lt;/p>
+&lt;/blockquote>
+&lt;p>Hi Rhys,&lt;/p>
+&lt;p>I&amp;rsquo;ve already got you blocked on twitter, so we&amp;rsquo;ve obviously run across each other in the past. You also appear to have sent me a Merry Xmas email from Devonshire, with no previous contact initiated by me. (I seem to remember a lot of my friends got those emails as well and we eventually worked out you&amp;rsquo;d scraped Github for them.)&lt;/p>
+&lt;p>Now it would appear you&amp;rsquo;re being more intrusive and hunting folk out on linked in, ignoring the fact that they are employed and have specifically set linked in to say they aren&amp;rsquo;t looking for new jobs currently. From asking around you harass a few of my friends, to the point of ringing one up recently to tell them you knew they&amp;rsquo;d changed jobs and where they were now working. If you&amp;rsquo;re going to spend time doing that much research then why not have the decency to not be a completely mannerless cunt and leave them alone when they request you to.&lt;/p>
+&lt;p>It would also appear you&amp;rsquo;ve just blanket-spammed me and a few people in my peer group through linked in with the same request, again a pretty dumb thing to do. It&amp;rsquo;s as if you recruiters think we never talk to each other, and don&amp;rsquo;t realise how much you lot being a bunch of pestering spammy bastards taints developers against ever dealing with a recruiter.&lt;/p>
+&lt;p>So no, I don&amp;rsquo;t think I do want to accept your invitation to connect. And please never phone, email or contact me via any other means. I&amp;rsquo;m happily employed and if I &lt;em>ever&lt;/em> need the services of a recruiter I&amp;rsquo;ll find someone who actually possesses an ounce of politeness about approaching (potential) candidates.&lt;/p>
+&lt;p>Thanks,&lt;br>
+Caius&lt;/p></description></item><item><title>Abusing Ruby 1.9 &amp; JSON for fun</title><link>https://caiustheory.com/abusing-ruby-19-and-json-for-fun/</link><pubDate>Mon, 07 Feb 2011 19:16:58 +0000</pubDate><guid>https://caiustheory.com/abusing-ruby-19-and-json-for-fun/</guid><description>&lt;p>Ever since I found out about the new hash syntax you can use in ruby 1.9, and how similar that syntax is to JSON, I&amp;rsquo;ve been waiting for someone to realise you can just abuse &lt;code>eval()&lt;/code> for parsing (some) JSON now.&lt;/p>
 &lt;p>For example, lets say we have the following ruby hash, which could be generated by a RESTful api:&lt;/p>
 &lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="n">thing&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
 &lt;span class="ss">:person&lt;/span> &lt;span class="o">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
@@ -437,7 +1436,20 @@ sudo ditto build/dst /
 &lt;p>Seems my joy was short-lived. I&amp;rsquo;d re-downloaded an app I&amp;rsquo;d already purchased and it just showed download progress in the MAS app, not in the dock. Installing new applications still shows up in the dock (annoyingly.)&lt;/p>
 &lt;p>I&amp;rsquo;ve been having a poke through how it all hangs together, and if it&amp;rsquo;s possible to actually block downloads from the Dock or not. It doesn&amp;rsquo;t look like there&amp;rsquo;s a hidden preference to hide new apps from downloading in the dock, you can just disable the progress bars in the dock with prefs. The MAS.app seems to be codenamed &amp;ldquo;Firenze&amp;rdquo;, with &lt;a href="https://gist.github.com/768829">the &amp;ldquo;hidden&amp;rdquo; prefs&lt;/a> being prefixed with &amp;ldquo;FRDebug&amp;rdquo;.&lt;/p>
 &lt;p>As I understand it, the App\ Store.app invokes a binary inside &lt;code>/System/Library/PrivateFrameworks/CommerceKit.framework&lt;/code> called &amp;ldquo;storeagent&amp;rdquo; to do the actual downloading/talking to the dock. From looking at the &lt;a href="https://gist.github.com/768837">class-dump&lt;/a> of storeagent it communicates with the dock to place a new type of DockTile. Interesting sounding methods to (potentially?) swizzle are &lt;code>-[DownloadQueue sendDownloadListToDock]&lt;/code> and &lt;code>-[DownloadQueue tellDockToAddDownload:]&lt;/code>.&lt;/p>
-&lt;p>I&amp;rsquo;ve given up for now, but I reckon it should be possible to create a bundle that swizzles the right methods in storeagent to stop it placing the downloads on the Dock.&lt;/p></description></item><item><title>+[NSObject load] in MacRuby</title><link>https://caiustheory.com/nsobject-load-in-macruby/</link><pubDate>Sat, 12 Jun 2010 02:11:32 +0000</pubDate><guid>https://caiustheory.com/nsobject-load-in-macruby/</guid><description>&lt;p>&lt;em>If you&amp;rsquo;ve not heard of it, &lt;a href="http://www.macruby.org/">MacRuby&lt;/a> is &lt;!-- raw HTML omitted -->an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.&lt;!-- raw HTML omitted --> Basically means you write in Ruby using Objective-C frameworks, and vice versa. It&amp;rsquo;s pretty damn cool to be honest!&lt;/em>&lt;/p>
+&lt;p>I&amp;rsquo;ve given up for now, but I reckon it should be possible to create a bundle that swizzles the right methods in storeagent to stop it placing the downloads on the Dock.&lt;/p></description></item><item><title>Facebook iPhone app Contact Sync isn't automatic</title><link>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</link><pubDate>Wed, 06 Oct 2010 14:10:06 +0000</pubDate><guid>https://caiustheory.com/facebook-iphone-app-contact-sync-isnt-automatic/</guid><description>&lt;p>There&amp;rsquo;s an article on the guardian about &lt;a href="http://www.guardian.co.uk/technology/blog/2010/oct/06/facebook-privacy-phone-numbers-upload">private phone numbers being uploaded from facebook&lt;/a>, and another over &lt;a href="http://www.techeye.net/security/facebook-takes-and-stores-data-numbers-from-your-iphone">techeye.net on the same subject.&lt;/a>&lt;/p>
+&lt;p>Firstly a quote from the techeye article:&lt;/p>
+&lt;blockquote>
+&lt;p>Facebook doesn&amp;rsquo;t warn users that they are uploading their phone&amp;rsquo;s address book to Facebook.&lt;/p>
+&lt;/blockquote>
+&lt;p>And whilst the guardian article never says it happens automatically, it also doesn&amp;rsquo;t lay it out that you have to &lt;strong>explicitly&lt;/strong> enable that feature, &lt;strong>and&lt;/strong> agree to the facebook app uploading the data.&lt;/p>
+&lt;p>I was pretty sure that facebook wouldn&amp;rsquo;t be grabbing all your contact information without telling you, if they did at all, and that both articles were just pure scaremongering. So I fired up the facebook iPhone app, headed into my friends list on there, clicked sync and got the following screen:&lt;/p>
+&lt;p>&lt;img src="http://farm5.static.flickr.com/4148/5056619687_973ae660cc_d.jpg" alt="">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/5056619687/">View Original&lt;/a>&lt;/p>
+&lt;p>Ok, so according to that text, they&amp;rsquo;re just pulling down profile images and profile links from facebook and putting them in your address book against your contacts. Seems fairly harmless so far. So I toggled the top switch, to enable Contact Sync, and got the following screen:&lt;/p>
+&lt;p>&lt;img src="http://farm5.static.flickr.com/4145/5056697193_252e954ec3_d.jpg" alt="">&lt;br>
+&lt;a href="http://www.flickr.com/photos/caius/5056697193/">View Original&lt;/a>&lt;/p>
+&lt;p>Reading that, it&amp;rsquo;s fairly obvious what data facebook are uploading (although a little ambiguous why), and it &lt;strong>certainly&lt;/strong> isn&amp;rsquo;t happening automatically. As it says, it uploads the &amp;ldquo;name, email address, phone number&amp;rdquo; from all your contacts to facebook, and pull down &amp;ldquo;your friends&amp;rsquo; profile photos and other info from Facebook&amp;rdquo;.&lt;/p>
+&lt;p>So whilst facebook &lt;em>are&lt;/em> collecting more data (albeit stored subject to their Privacy Policy), it&amp;rsquo;s certainly &lt;strong>NOT&lt;/strong> done automatically, and is &lt;strong>very explicit&lt;/strong> about what is being uploaded at the point you enable it.&lt;/p></description></item><item><title>+[NSObject load] in MacRuby</title><link>https://caiustheory.com/nsobject-load-in-macruby/</link><pubDate>Sat, 12 Jun 2010 02:11:32 +0000</pubDate><guid>https://caiustheory.com/nsobject-load-in-macruby/</guid><description>&lt;p>&lt;em>If you&amp;rsquo;ve not heard of it, &lt;a href="http://www.macruby.org/">MacRuby&lt;/a> is &lt;!-- raw HTML omitted -->an implementation of Ruby 1.9 directly on top of Mac OS X core technologies such as the Objective-C runtime and garbage collector, the LLVM compiler infrastructure and the Foundation and ICU frameworks.&lt;!-- raw HTML omitted --> Basically means you write in Ruby using Objective-C frameworks, and vice versa. It&amp;rsquo;s pretty damn cool to be honest!&lt;/em>&lt;/p>
 &lt;h3 id="what-is-nsobject-load">What is +[NSObject load]?&lt;/h3>
 &lt;p>From the &lt;a href="http://developer.apple.com/mac/library/documentation/cocoa/reference/foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load">documentation&lt;/a>:&lt;/p>
 &lt;blockquote>
@@ -1062,7 +2074,16 @@ $this-&amp;gt;assertEquals($calc-&amp;gt;date, $date);
 &lt;/blockquote>
 &lt;p>The &lt;a href="http://www.thinkvisibility.com/speakers.html">speaker line-up&lt;/a> has rather a lot of big names in it if you follow the SEO/Online marketing world, and its only £30 to turn up for the day and listen to them speak. Oh, and theres an afterparty with free drinks &lt;em>(Sponsor permitting)&lt;/em> where you can get drunk with your hero&amp;rsquo;s. (Or something.)&lt;/p>
 &lt;p>Me, I&amp;rsquo;m attending simply because up until a year or so ago I thought SEO was a complete heap of crap, but having known &lt;a href="http://www.thehodge.co.uk/">Dom&lt;/a> for a while, and worked for an SEO agency, I&amp;rsquo;m starting to appreciate that there is an art to it, and it is a much needed skill to run a successful website.&lt;/p></description></item><item><title>Fix Mail.app crashing after 10.5.6 upgrade</title><link>https://caiustheory.com/fix-mailapp-crashing-after-1056-upgrade/</link><pubDate>Wed, 17 Dec 2008 13:58:04 +0000</pubDate><guid>https://caiustheory.com/fix-mailapp-crashing-after-1056-upgrade/</guid><description>&lt;p>When you upgrade to Mac OS 10.5.6, Mail.app might start crashing a few seconds after starting due to the GPG Bundle.&lt;/p>
-&lt;p>The solution is to grab the updated version of the &lt;a href="http://www.sente.ch/software/GPGMail/English.lproj/GPGMail.html">GPG bundle&lt;/a> – &lt;a href="http://www.sente.ch/pub/beta/GPGMail_d55_Leopard.dmg">GPGMail_d55_Leopard.dmg&lt;/a>&lt;/p></description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p>I decided to install ubuntu onto my iMac G3&lt;!-- raw HTML omitted -->450Mhz G3, 768mb ram, 20GB Hard Drive&lt;!-- raw HTML omitted --> to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em>slightly&lt;/em> outdated and 100% 404.&lt;/p>
+&lt;p>The solution is to grab the updated version of the &lt;a href="http://www.sente.ch/software/GPGMail/English.lproj/GPGMail.html">GPG bundle&lt;/a> – &lt;a href="http://www.sente.ch/pub/beta/GPGMail_d55_Leopard.dmg">GPGMail_d55_Leopard.dmg&lt;/a>&lt;/p></description></item><item><title>Quick Picture of Yourself</title><link>https://caiustheory.com/quick-picture-of-yourself/</link><pubDate>Tue, 16 Dec 2008 18:12:53 +0000</pubDate><guid>https://caiustheory.com/quick-picture-of-yourself/</guid><description>&lt;p>Theres a meme going round the &lt;a href="http://www.google.com/search?q=Take+a+picture+of+yourself+right+now">blogosphere&lt;/a>/&lt;a href="http://search.twitter.com/search?q=Take+a+picture+of+yourself+right+now">twitterverse&lt;/a> recently, so I figured I&amp;rsquo;d jump on it because there aren&amp;rsquo;t any pictures of me on this blog yet. And there aren&amp;rsquo;t that many in my &lt;a href="http://flickr.com/photos/caius/">flickr&lt;/a> photostream either actually.&lt;/p>
+&lt;p>&lt;img src="http://caius.name/images/qs/Me.png" alt="Picture of Caius" title="Caius Durling">&lt;/p>
+&lt;p>&lt;em>&lt;a href="http://caius.name/images/qs/Me.png">Fullsize Picture&lt;/a>&lt;/em>&lt;/p>
+&lt;h2 id="instructions">Instructions&lt;/h2>
+&lt;ol>
+&lt;li>Take a picture of yourself right now.&lt;/li>
+&lt;li>Don’t change your clothes, don’t fix your hair… just take a picture.&lt;/li>
+&lt;li>Post that picture with NO editing.&lt;/li>
+&lt;li>Post these instructions with your picture.&lt;/li>
+&lt;/ol></description></item><item><title>Installing Ubuntu on an iMac G3</title><link>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</link><pubDate>Tue, 09 Dec 2008 08:51:48 +0000</pubDate><guid>https://caiustheory.com/installing-ubuntu-on-an-imac-g3/</guid><description>&lt;p>I decided to install ubuntu onto my iMac G3&lt;!-- raw HTML omitted -->450Mhz G3, 768mb ram, 20GB Hard Drive&lt;!-- raw HTML omitted --> to play around with. Only problem was it would boot so far, then just stop at a black screen. In googling the fix, the blog post that contains the fix is &lt;em>slightly&lt;/em> outdated and 100% 404.&lt;/p>
 &lt;p>Here is the fix, updated for Ubuntu 6.10 Desktop PPC:&lt;/p>
 &lt;ol>
 &lt;li>
@@ -1091,7 +2112,16 @@ EndSection
 &lt;pre>&lt;code> sudo killall gdm &amp;amp;&amp;amp; sudo /etc/init.d/gdm start
 &lt;/code>&lt;/pre>
 &lt;/li>
-&lt;/ol></description></item><item><title>When work just feels right</title><link>https://caiustheory.com/when-work-just-feels-right/</link><pubDate>Fri, 21 Nov 2008 11:51:08 +0000</pubDate><guid>https://caiustheory.com/when-work-just-feels-right/</guid><description>&lt;p>Much like &lt;a href="http://www.3hv.co.uk/" title="3hv">Rahoul&amp;rsquo;s&lt;/a> post on &lt;a href="http://www.3hv.co.uk/blog/2008/10/16/working-for-brightbox/" title="Working for Brightbox">knowing you&amp;rsquo;re on the right path&lt;/a>, I had that moment this morning whilst we were discussing a future feature for our control panel.&lt;/p>
+&lt;/ol></description></item><item><title>About</title><link>https://caiustheory.com/about/</link><pubDate>Sun, 07 Dec 2008 04:09:28 +0000</pubDate><guid>https://caiustheory.com/about/</guid><description>&lt;h2 id="the-domain-name">The Domain Name&lt;/h2>
+&lt;p>This blog used to be located at &lt;a href="http://swedishcampground.com/">SwedishCampground.com&lt;/a>, but I ended up with a better use for that name, so this got sidelined over here. I bought &lt;a href="http://caiustheory.com/">CaiusTheory.com&lt;/a> after having someone mention it to me in parody of Chaos Theory, and decided it was fairly apt for my musings and technical waffling.&lt;/p>
+&lt;h2 id="the-author">The Author&lt;/h2>
+&lt;p>I&amp;rsquo;m a:&lt;/p>
+&lt;ul>
+&lt;li>Mac User&lt;/li>
+&lt;li>Developer at &lt;a href="http://freeagent.com/">FreeAgent&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://twitter.com/caius">Twitter Addict&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Find out more about me over on my &lt;a href="http://caius.name/">profile site&lt;/a>.&lt;/p></description></item><item><title>When work just feels right</title><link>https://caiustheory.com/when-work-just-feels-right/</link><pubDate>Fri, 21 Nov 2008 11:51:08 +0000</pubDate><guid>https://caiustheory.com/when-work-just-feels-right/</guid><description>&lt;p>Much like &lt;a href="http://www.3hv.co.uk/" title="3hv">Rahoul&amp;rsquo;s&lt;/a> post on &lt;a href="http://www.3hv.co.uk/blog/2008/10/16/working-for-brightbox/" title="Working for Brightbox">knowing you&amp;rsquo;re on the right path&lt;/a>, I had that moment this morning whilst we were discussing a future feature for our control panel.&lt;/p>
 &lt;blockquote>
 &lt;p>&lt;strong>john&lt;/strong>: will I be able to superpoke our customers?&lt;br>
 &lt;strong>john&lt;/strong>: is that in the spec?&lt;br>
@@ -1193,7 +2223,11 @@ tmp/*
 &lt;p>Then to make sure &lt;code>log/&lt;/code> and &lt;code>tmp/&lt;/code> are tracked, convention is to add a blank &lt;code>.gitkeep&lt;/code> file in them.&lt;/p>
 &lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-shell" data-lang="shell">touch log/.gitkeep
 touch tmp/.gitkeep
-&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>&lt;p>When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em>Rspec&lt;/em> testing framework instead of the built-in &lt;em>Test::Unit&lt;/em> and &lt;em>jQuery&lt;/em> instead of &lt;em>prototype&lt;/em>.&lt;/p>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Spanning Sync</title><link>https://caiustheory.com/spanning-sync/</link><pubDate>Mon, 03 Nov 2008 11:40:04 +0000</pubDate><guid>https://caiustheory.com/spanning-sync/</guid><description>&lt;p>So for &lt;a href="http://www.brightbox.co.uk" title="Brightbox - Serious rails hosting">work&lt;/a> I have to subscribe to a shared google calendar the company uses. Annoyingly this can&amp;rsquo;t be through my Google Apps account though, it has to be through my normal google account.&lt;/p>
+&lt;p>Also annoying is the fact google doesn&amp;rsquo;t let me subscribe to my shared calendars without making them 100% public. Which means the shared private calendar work uses would have to be a &lt;em>public&lt;/em> shared calendar, which is obviously not going to happen. (Can&amp;rsquo;t have everyone knowing when the secret drinking parties are!)&lt;/p>
+&lt;p>Thankfully, there is already a solution out there to this problem, and it comes in the form of a Preference Pane called &lt;a href="http://spanningsync.com/" title="Spanning Sync">SpanningSync&lt;/a> that syncs iCal to Google Calendar. All you need to do is install the prefpane and enter your google email/password (which is then safely secured in your keychain I believe.)&lt;/p>
+&lt;p>What it does is stick an icon in the menubar, and then at a pre-defined (and customisable) interval, sync any new changes between the local iCal calendar and the remote shared calendar in your google acccount.&lt;/p>
+&lt;p>Spanning Sync is only $25 to register for the year, but you can save yourself $5 by entering &lt;strong>6EMQAC&lt;/strong> as the spanning sync coupon code, or &lt;a href="http://spanningsync.com/?r=6EMQAC">clicking here&lt;/a>&lt;/p></description></item><item><title>Create a blank rails app including plugins</title><link>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</link><pubDate>Mon, 03 Nov 2008 06:48:27 +0000</pubDate><guid>https://caiustheory.com/create-a-blank-rails-app-including-plugins/</guid><description>&lt;p>When I create a rails app from scratch I like to include certain plugins to help me write the app, such as the &lt;em>Rspec&lt;/em> testing framework instead of the built-in &lt;em>Test::Unit&lt;/em> and &lt;em>jQuery&lt;/em> instead of &lt;em>prototype&lt;/em>.&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="http://rspec.info/">Rspec&lt;/a>&lt;/li>
 &lt;li>&lt;a href="http://github.com/rahoulb/rspec-rails/wikis">Rspec-rails&lt;/a> &lt;em>(NB: I use &lt;a href="http://3hv.co.uk">rahoul&lt;/a>&amp;lsquo;s fork of rspec-rails)&lt;/em>&lt;/li>
@@ -1266,7 +2300,8 @@ git ci -m &amp;quot;Adding jRails to replace Prototype&amp;quot;
 &lt;span class="k">end&lt;/span>
 &lt;span class="k">end&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>old_parent&lt;/code> and &lt;code>parent&lt;/code> return exactly the same, but one is 2 lines compared to 5 and easier to read.&lt;/p>
-&lt;p>&lt;strong>Update:&lt;/strong> &lt;a href="http://ciaranwal.sh/">Ciaran&lt;/a> pointed out that the Page.parent method would only ever return false. Added the return statement to it to fix the bug.&lt;/p></description></item><item><title>BarCamp Manchester</title><link>https://caiustheory.com/barcamp-manchester/</link><pubDate>Sat, 01 Mar 2008 11:34:25 +0000</pubDate><guid>https://caiustheory.com/barcamp-manchester/</guid><description>&lt;p>So I&amp;rsquo;m at BarCamp Manchester for the day. Its great meeting people I already know, and meeting new ones; most impressed by &lt;a href="http://petercooper.co.uk/">Peter&lt;/a>&amp;lsquo;s ruby shoes.. they glitter!&lt;/p>
+&lt;p>&lt;strong>Update:&lt;/strong> &lt;a href="http://ciaranwal.sh/">Ciaran&lt;/a> pointed out that the Page.parent method would only ever return false. Added the return statement to it to fix the bug.&lt;/p></description></item><item><title>Inaugural Habaricon</title><link>https://caiustheory.com/inaugural-habaricon/</link><pubDate>Tue, 01 Apr 2008 07:27:55 +0000</pubDate><guid>https://caiustheory.com/inaugural-habaricon/</guid><description>&lt;p>So I managed to secure a place to &lt;a href="http://habaricon.com/">HabariCon &amp;lsquo;08&lt;/a>. Not quite sure what to expect, but being able to meet other people in real life and talk about habari &amp;amp; related things all day will be quite cool.&lt;/p>
+&lt;p>Expect a round-up post of the &amp;lsquo;con tonight!&lt;/p></description></item><item><title>BarCamp Manchester</title><link>https://caiustheory.com/barcamp-manchester/</link><pubDate>Sat, 01 Mar 2008 11:34:25 +0000</pubDate><guid>https://caiustheory.com/barcamp-manchester/</guid><description>&lt;p>So I&amp;rsquo;m at BarCamp Manchester for the day. Its great meeting people I already know, and meeting new ones; most impressed by &lt;a href="http://petercooper.co.uk/">Peter&lt;/a>&amp;lsquo;s ruby shoes.. they glitter!&lt;/p>
 &lt;p>So heres a little list of links for the day:&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="http://www.flickr.com/photos/tags/BarCampManchesterUk/">http://www.flickr.com/photos/tags/BarCampManchesterUk/&lt;/a>&lt;/li>
@@ -1430,6 +2465,83 @@ mate lib/merb/sessions/data_mapper_session.rb
 &lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-php" data-lang="php">&lt;span class="cp">&amp;lt;?php&lt;/span>
 &lt;span class="k">echo&lt;/span> &lt;span class="nx">strrev&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="s2">&amp;#34;Hello World&amp;#34;&lt;/span> &lt;span class="p">);&lt;/span>
 &lt;span class="cp">?&amp;gt;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>So it turns out this was a bad way to show why I prefer Ruby to PHP code wise to mother, think I might have to just bite the bullet and write about why I prefer &lt;code>object.method&lt;/code> to &lt;code>method( object )&lt;/code>!&lt;/p></description></item><item><title>Twitter Statistics</title><link>https://caiustheory.com/twitter-statistics/</link><pubDate>Wed, 02 Jan 2008 07:15:00 +0000</pubDate><guid>https://caiustheory.com/twitter-statistics/</guid><description>&lt;p>&lt;a href="http://flickr.com/photo_zoom.gne?id=2157771886&amp;amp;size=o">&lt;img src="http://farm3.static.flickr.com/2345/2157771886_9e41008ac2_m.jpg" alt="Twitter Statistics for caius">&lt;/a>&lt;/p>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So it turns out this was a bad way to show why I prefer Ruby to PHP code wise to mother, think I might have to just bite the bullet and write about why I prefer &lt;code>object.method&lt;/code> to &lt;code>method( object )&lt;/code>!&lt;/p></description></item><item><title>UK Parking</title><link>https://caiustheory.com/uk-parking/</link><pubDate>Sat, 12 Jan 2008 12:35:01 +0000</pubDate><guid>https://caiustheory.com/uk-parking/</guid><description>&lt;p>So I just saw this in my twitter stream:&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://twitter.com/peterc/statuses/590099072">peterc&lt;/a>: Warning UK drivers.. councils get powers on March 31st to give you parking fines for infractions they see on CCTV!&lt;/p>
+&lt;/blockquote>
+&lt;p>This indeed sucks. We&amp;rsquo;ll see how successful they are at ticketing people and whether anyone abuses the system&amp;hellip;&lt;/p></description></item><item><title>Published Pictures</title><link>https://caiustheory.com/published-pictures/</link><pubDate>Sat, 05 Jan 2008 16:08:39 +0000</pubDate><guid>https://caiustheory.com/published-pictures/</guid><description>&lt;p>Interesting email arrived in my inbox today. I attended &lt;a href="http://barcamp.org/BarCampLeeds">BarCamp Leeds&lt;/a> in late 2007 and whilst I was there I happened to take some pictures (as I am apt to do these days.)&lt;/p>
+&lt;p>Anyway, I was rather happy to see that at least one picture isn&amp;rsquo;t just stagnating in my &lt;a href="http://flickr.com/photos/caius/">flickr stream&lt;/a>:&lt;/p>
+&lt;blockquote>
+&lt;p>Hi Caius,&lt;/p>
+&lt;p>I am delighted to let you know that one of your photos with&lt;br>
+a Creative Commons license has been selected for inclusion&lt;br>
+in the newly released fourth edition of our Schmap Leeds&lt;br>
+Guide:&lt;/p>
+&lt;p>Town Hall&lt;br>
+&lt;a href="http://www.schmap.com/leeds/sights_hydepark/p=39139/i=39139_10.jpg">http://www.schmap.com/leeds/sights_hydepark/p=39139/i=39139_10.jpg&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;a href="">Original Picture on flickr&lt;/a>&lt;/p></description></item><item><title>Twitter Statistics</title><link>https://caiustheory.com/twitter-statistics/</link><pubDate>Wed, 02 Jan 2008 07:15:00 +0000</pubDate><guid>https://caiustheory.com/twitter-statistics/</guid><description>&lt;p>&lt;a href="http://flickr.com/photo_zoom.gne?id=2157771886&amp;amp;size=o">&lt;img src="http://farm3.static.flickr.com/2345/2157771886_9e41008ac2_m.jpg" alt="Twitter Statistics for caius">&lt;/a>&lt;/p>
 &lt;p>&lt;a href="http://dcortesi.com/2007/12/27/twitter-stats/">Just&lt;/a> &lt;a href="http://www.flickr.com/photos/gruber/2156085517/">joining&lt;/a> &lt;a href="http://www.randsinrepose.com/archives/2008/01/01/year_in_twitter.html">the&lt;/a> &lt;a href="http://kosmar.de/archives/2007/12/29/twitter-statistics/">band&lt;/a> &lt;a href="http://blog.nordquist.org/?p=2083">wagon&lt;/a> in posting up my twitter statistics. The skew towards december being the month I twitter most in is because I enabled twitter sms, and ended up replying/updating a lot more often than I expected.&lt;/p></description></item><item><title>OS X User has a virus</title><link>https://caiustheory.com/os-x-user-has-a-virus/</link><pubDate>Wed, 02 Jan 2008 01:15:15 +0000</pubDate><guid>https://caiustheory.com/os-x-user-has-a-virus/</guid><description>&lt;p>No not my computer, me. I&amp;rsquo;ve managed to pickup an &lt;!-- raw HTML omitted -->acute coryza&lt;!-- raw HTML omitted --> virus. It causes &lt;code>/dev/random&lt;/code> to constantly pass data to &lt;code>/Volumes/nose&lt;/code>. I don&amp;rsquo;t think I got this from reading email, but I&amp;rsquo;m pretty sure it was a windows user who passed it to me.&lt;/p>
-&lt;p>If I flush my partitions to disk every now and then I can get by with a clean &lt;code>/Volumes/nose&lt;/code> for a while before &lt;code>/dev/random&lt;/code> starts clogging it up again.&lt;/p></description></item></channel></rss>
+&lt;p>If I flush my partitions to disk every now and then I can get by with a clean &lt;code>/Volumes/nose&lt;/code> for a while before &lt;code>/dev/random&lt;/code> starts clogging it up again.&lt;/p></description></item><item><title>dSLR Quote</title><link>https://caiustheory.com/dslr-quote/</link><pubDate>Mon, 31 Dec 2007 17:25:25 +0000</pubDate><guid>https://caiustheory.com/dslr-quote/</guid><description>&lt;p>I was just talking to &lt;a href="http://keihatsu.org/">Nadim&lt;/a> about him getting a new camera and then this happened:&lt;/p>
+&lt;blockquote>
+&lt;p>Nadim: &lt;a href="http://cyraq.deviantart.com/art/Above-the-Clouds-72170767">http://cyraq.deviantart.com/art/Above-the-Clouds-72170767&lt;/a>&lt;br>
+Nadim: Did you see that?&lt;br>
+Nadim: Taken couple of weeks ago&lt;br>
+Caius: woa&lt;br>
+Caius: and you need a new camera because? :P&lt;br>
+Nadim: I have wet dreams about DSLR&amp;rsquo;s&lt;/p>
+&lt;/blockquote></description></item><item><title>Quote to see the new year in</title><link>https://caiustheory.com/quote-to-see-the-new-year-in/</link><pubDate>Mon, 31 Dec 2007 17:11:11 +0000</pubDate><guid>https://caiustheory.com/quote-to-see-the-new-year-in/</guid><description>&lt;p>So I&amp;rsquo;m a geek, as my friends are gradually realising more and more. Anyway, I twitter a lot, and occasionally write quotes that need to be saved elsewhere. And what generally makes tweets funnier are other people replying to them.&lt;/p>
+&lt;p>A little background information. This had just taken place in #habari (a chat room.)&lt;/p>
+&lt;pre>&lt;code>&amp;lt;h0bbel&amp;gt; ringmaster: i'll show you my winky
+* ringmaster runs.
+&amp;lt;h0bbel&amp;gt; as jmullan has seen it
+&amp;lt;h0bbel&amp;gt; i think
+&amp;lt;jmullan&amp;gt; no, I didn't look
+&amp;lt;ringmaster&amp;gt; 0_o
+&amp;lt;h0bbel&amp;gt; i was kinda drunk at the time
+&amp;lt;h0bbel&amp;gt; lol
+&amp;lt;jmullan&amp;gt; we were playing &amp;quot;lightsabers&amp;quot; while peeing
+&amp;lt;jmullan&amp;gt; not &amp;quot;swords&amp;quot;
+&amp;lt;jmullan&amp;gt; I had the yellow saber, h0bbel had the green one
+&amp;lt;jmullan&amp;gt; I'm not sure how that worked
+&amp;lt;h0bbel&amp;gt; you said you didn't look!
+&amp;lt;h0bbel&amp;gt; How did you know it was green?
+&amp;lt;jmullan&amp;gt; I just saw the beam, not the handle, if you know what I'm saying
+&amp;lt;h0bbel&amp;gt; ehehe
+&amp;lt;Caius&amp;gt; xD
+&amp;lt;ringmaster&amp;gt; This is all somewhat disturbing.
+&lt;/code>&lt;/pre>
+&lt;p>So in order&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>man, #habari just wouldn&amp;rsquo;t be the same without the semi-homosexual discussions every now and then&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>Formatting some SQL queries for a fellow dev&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/h0bbel/statuses/549895502">h0bbel&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549893582">http://twitter.com/caius/st&amp;hellip;&lt;/a> is realy quoteworthy ;-)&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/tmertz/statuses/549899752">Mertz&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>@&lt;a href="http://twitter.com/caius">caius&lt;/a>, wtf are you doing? put down the computer, take five steps back and go find a new years celebration.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="http://twitter.com/caius/statuses/549903292">me&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>@&lt;a href="http://twitter.com/tmertz">tmertz&lt;/a> just hanging in #habari whilst editing some SQL queries @&lt;a href="http://twitter.com/h0bbel">h0bbel&lt;/a> wrote waiting for 1900GMT to go round my mates and get drunk&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul>
+&lt;p>And on the back of that, I&amp;rsquo;d just like to say have a very merry new years eve and just follow your desires onwards in life!&lt;/p></description></item></channel></rss>
