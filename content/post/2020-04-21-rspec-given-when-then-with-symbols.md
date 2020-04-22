@@ -1,7 +1,10 @@
 ---
 title: "RSpec Given/When/Then with symbols"
-date: 2020-04-21T00:00:01+00:00
+date: 2020-04-22T18:30:00+01:00
 author: Caius Durling
+reviewers:
+  - James Inman
+  - davie668
 tag:
   - code
   - funny
