@@ -35,7 +35,7 @@ RSpec.feature "Admin: Posts" do
 end
 ```
 
-After some reading around, I eventually stumbled back across [this gem from Future Learn][futurelearn] where they lay out the above test by splitting it into private methods within the feature block, but leaving it more readable to future readers. I then found [Made Tech's take on this same idea][madetech], and riffing off the both of them ended up with the following instead:
+After some reading around, I eventually stumbled back across [this idea from Future Learn][futurelearn] where they lay out the above test by splitting it into private methods within the feature block, but leaving it more readable to future readers. I then found [Made Tech's take on this same idea][madetech], and riffing off the both of them ended up with the following instead:
 
 ```ruby
 RSpec.feature "Admin: Posts" do
