@@ -90,7 +90,7 @@ end
 
 Now this didn't _quite_ fit with what I wanted. However, I did wonder if it was possible to go down the route of having a `Given` method that takes a token to identify the code it should call. (A method if you will.) It's possible in ruby to call a method starting with a Capital letter, but convention dictates those are usually class/module names (constants) rather than methods.
 
-A little bit of hacking later and this is what I ended up getting working, with help from this [`spec/support/given_when_then.rb`][gwt.rb] helper file:
+A little bit of hacking later and this is what I ended up getting working:
 
 ```ruby
 RSpec.feature "Admin: Posts" do
@@ -141,6 +141,7 @@ NoMethodError:
   undefined method `Given I am logged in as an admin' for #<RSpec::ExampleGroups::AdminPosts:0x00007fbd06598498>
 ```
 
+The magic behind that makes all this work is in [`spec/support/given_when_then.rb`][gwt.rb], which is not terrible, but also probably not a great idea. 🙃
 
 [rspec feature specs]: https://relishapp.com/rspec/rspec-rails/docs/feature-specs/feature-spec
 [futurelearn]: https://www.futurelearn.com/info/blog/how-we-write-readable-feature-tests-with-rspec
