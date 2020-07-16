@@ -16,7 +16,7 @@ tag:
 
 We recently replaced [OpenVPN][] servers with [Tailscale][] subnet relays, and ran into a funky issue with DNS lookups and rebinding attack protection that took a little thinking to work around.
 
-Imagine we have a fleet of machines sat in a private network somewhere on a `172.16.20.20/24` IP range, with entries pointing at them published on public DNS servers. Eg, `dig workhorse.fake.tld` returns `172.16.20.21`. There’s an OpenVPN server sat there with a public IP address on it that everyone connects into, likely using something like [Viscosity][] on macOS.
+Imagine we have a fleet of machines sat in a private network somewhere on a `172.16.20.20/24` IP range, with entries pointing at them published on public DNS servers. Eg, `dig +short workhorse.fake.tld` returns `172.16.20.21`. There’s an OpenVPN server sat there with a public IP address on it that everyone connects into, likely using something like [Viscosity][] on macOS.
 
 Initially this all works swimmingly, until someone comes along that is using a DNS forwarder that has enabled protection against DNS rebinding attacks. Daniel Miessler has a [wonderfully succinct explanation on his blog][daniel rebinding post] about DNS Rebinding, but to protect against it you stop your resolver returning answers to DNS queries from public servers which resolve to IP addresses within standard internal network ranges. (ie, [rfc1918][].)
 
