@@ -1,4 +1,75 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>deployment on Caius Theory</title><link>https://caiustheory.com/tag/deployment/</link><description>Recent content in deployment on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 04 Dec 2012 09:42:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/deployment/index.xml" rel="self" type="application/rss+xml"/><item><title>Tailscale, RFC1918, and DNS Rebinding Protection</title><link>https://caiustheory.com/tailscale-rfc1918-and-dns-rebinding-protection/</link><pubDate>Thu, 16 Jul 2020 21:00:00 +0100</pubDate><guid>https://caiustheory.com/tailscale-rfc1918-and-dns-rebinding-protection/</guid><description>&lt;p>&lt;strong>Edit:&lt;/strong> &lt;em>Originally this post was written to be a workaround for Tailscale routing all DNS traffic over its own link when you configured it to push out existing DNS Server IPs. This turned out to be a bad assumption on my part. Thanks to &lt;a href="https://twitter.com/apenwarr">apenwarr&lt;/a> for helping me understand that shouldn&amp;rsquo;t be the case, and encouraging me to debug it properly rather than making assumptions.&lt;/em>&lt;/p>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>deployment on Caius Theory</title><link>https://caiustheory.com/tag/deployment/</link><description>Recent content in deployment on Caius Theory</description><generator>Hugo -- gohugo.io</generator><language>en-gb</language><copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License</copyright><lastBuildDate>Tue, 04 Dec 2012 09:42:00 +0000</lastBuildDate><atom:link href="https://caiustheory.com/tag/deployment/index.xml" rel="self" type="application/rss+xml"/><item><title>Let's Peek: A tale of finding "Waypoint"</title><link>https://caiustheory.com/lets-peek/</link><pubDate>Thu, 15 Oct 2020 20:00:00 +0100</pubDate><guid>https://caiustheory.com/lets-peek/</guid><description>&lt;p>Following a product launch at work earlier this year, I theorised if someone was watching the published lists of SSL Certificates they could potentially sneak a peak at things before they were publicised. Probably far too much noise to monitor continuously, but as a potential hint towards naming of things with a more targeted search it might be useful. Sites like &lt;a href="https://crt.sh/">https://crt.sh/&lt;/a> and &lt;a href="https://censys.io/certificates">https://censys.io/certificates&lt;/a> make these logs searchable and queryable.&lt;/p>
+&lt;p>Fast forward to this week, where at &lt;a href="https://digital.hashiconf.com/">HashiConf Digital&lt;/a> &lt;a href="https://hashicorp.com/">HashiCorp&lt;/a> are announcing two new products, which they&amp;rsquo;ve been teasing for a month or so. Watching &lt;a href="https://boundaryproject.io/">Boundary&lt;/a> get announced in the HashiConf opening keynote I then wondered what the second project might be called.&lt;/p>
+&lt;p>I&amp;rsquo;ve spent a chunk of the last month looking at various HashiCorp documentation for their projects, and I noticed they have a pattern recently of using &lt;code>&amp;lt;name&amp;gt;project.io&lt;/code> as the product websites. The newly announced Boundary also fits this pattern.&lt;/p>
+&lt;p>🤔 Could I figure out the second product name 24 hours before public release? &lt;a href="https://twitter.com/Caius/status/1316435256875143168">Amazingly, yes&lt;/a>! 🎉&lt;/p>
+&lt;p>Searching at random for all certificates issued for &lt;code>*project.io&lt;/code> was probably going to be a bit futile, so to narrow the search space slightly I started by looking at when &lt;code>boundaryproject.io&lt;/code> had its certificate issued, and who by. The list of things I spotted were:&lt;/p>
+&lt;ul>
+&lt;li>Common name is &amp;ldquo;boundaryproject.io&amp;rdquo;&lt;/li>
+&lt;li>Issued by LetsEncrypt (no real surprise there)&lt;/li>
+&lt;li>Issued on 2020-09-23&lt;/li>
+&lt;li>Leaf certificate&lt;/li>
+&lt;li>Not yet expired (still trusted)&lt;/li>
+&lt;li>No alternate names in the certificate&lt;/li>
+&lt;/ul>
+&lt;p>Loading up &lt;a href="https://censys.io/certificates">https://censys.io/certificates&lt;/a> and building a query for this, resulted in a regexp lookup against the common name, and an issued at date range of 10 days, just before and a week after the boundary certificate issued date.&lt;/p>
+&lt;pre>&lt;code>parsed.subject.common_name:/[a-z]+project\.io/ AND
+parsed.issuer.organization.raw:&amp;quot;Let's Encrypt&amp;quot; AND
+parsed.validity.start:[&amp;quot;2020-09-20&amp;quot; TO &amp;quot;2020-09-30&amp;quot;] AND
+tags.raw:&amp;quot;leaf&amp;quot; AND
+tags.raw:&amp;quot;trusted&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>(&lt;a href="https://censys.io/certificates?q=parsed.subject.common_name%3A%2F%5Ba-z%5D%2Bproject%5C.io%2F+AND+parsed.issuer.organization.raw%3A%22Let%27s+Encrypt%22+AND+tags.raw%3A%22leaf%22+AND+tags.raw%3A%22trusted%22+AND+parsed.validity.start%3A%5B%222020-09-20%22+TO+%222020-09-30%22%5D">Run the search yourself&lt;/a>)&lt;/p>
+&lt;p>Searching brought back a couple of pages of results, I scanned them by eye and copied out the ones that only had the single name in the certificate which resulted in the following shortlist:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>boundaryproject.io&lt;/code>&lt;/li>
+&lt;li>&lt;code>essenceproject.io&lt;/code>&lt;/li>
+&lt;li>&lt;code>lumiereproject.io&lt;/code>&lt;/li>
+&lt;li>&lt;code>techproject.io&lt;/code>&lt;/li>
+&lt;li>&lt;code>udproject.io&lt;/code>&lt;/li>
+&lt;li>&lt;code>vesselproject.io&lt;/code>&lt;/li>
+&lt;li>&lt;code>waypointproject.io&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>We already know about Boundary, so the fact we found it in our list suggests the query &lt;em>might&lt;/em> have captured the new product site too. Loading all these sites in a web browser showed some had password protection on them (ooh!) and some just plain didn&amp;rsquo;t load (ooh!), and some others were blatently other things (boo!). Remove the latter ones, left us with a much shorter list:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>essenceproject.io&lt;/code>&lt;/li>
+&lt;li>&lt;code>udproject.io&lt;/code>&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>&lt;/li>
+&lt;li>&lt;code>waypointproject.io&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>All domains on the internet have to point somewhere, using DNS records. On a hunch I looked up a couple of the existing HashiCorp websites to see if they happened to all point at the same IP Address(es).&lt;/p>
+&lt;pre>&lt;code>$ host boundaryproject.io
+boundaryproject.io has address 76.76.21.21
+$ host nomadproject.io
+nomadproject.io has address 76.76.21.21
+$ host hashicorp.com | head -1
+hashicorp.com has address 76.76.21.21
+&lt;/code>&lt;/pre>&lt;p>Ah ha, now I wonder if any of the shortlist also points to &lt;code>76.76.21.21&lt;/code> 🤔&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>&lt;/p>
+&lt;pre>&lt;code>$ host essenceproject.io | head -1
+essenceproject.io has address 198.185.159.145
+$ host udproject.io | head -1
+udproject.io has address 137.74.116.3
+$ host waypointproject.io
+waypointproject.io has address 76.76.21.21
+&lt;/code>&lt;/pre>&lt;p>🎉 Excellent, &lt;a href="https://waypointproject.io">https://waypointproject.io&lt;/a> was a password protected site pointed at HashiCorp&amp;rsquo;s IP address 🎉&lt;/p>
+&lt;p>I then wondered if I could verify this somehow ahead of waiting for the second keynote. I firstly &lt;a href="https://twitter.com/Caius/status/1316435256875143168">tweeted about it&lt;/a> but didn&amp;rsquo;t name Waypoint explicitly, just hid &amp;ldquo;way&amp;rdquo; and &amp;ldquo;point&amp;rdquo; in the tweet. I got a reply from &lt;a href="https://twitter.com/ksatirli/status/1316435508046815234">@ksatirli&lt;/a> which suggested it was correct (and then later &lt;a href="https://twitter.com/mitchellh/status/1316468703584645121">@mitchellh&lt;/a> confirmed it.&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>)&lt;/p>
+&lt;p>HashiCorp also does a lot in public, and all the source code and related materials are on GitHub so perhaps some of their commit messages or marketing sites will contain reference to Waypoint. One github search later across their organisation: &lt;a href="https://github.com/search?q=org%3Ahashicorp+waypoint&amp;amp;type=issues">https://github.com/search?q=org%3Ahashicorp+waypoint&amp;amp;type=issues&lt;/a> and I&amp;rsquo;d discovered a commit in the newly-public &lt;code>hashicorp/boundary-ui&lt;/code> repo which references Waypoint: &lt;a href="https://github.com/hashicorp/boundary-ui/commit/346f76404d9a0c90dedbccdd3d2c228572eb5ec1">346f76404&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>chore: tweak colors to match waypoint and for a11y&lt;/p>
+&lt;/blockquote>
+&lt;p>Good enough for me, now to wait and see what the project is for. Given it&amp;rsquo;s now all announced and live, you can just visit &lt;a href="https://waypointproject.io">https://waypointproject.io&lt;/a> to find out! (It&amp;rsquo;s so much cooler/useful than I&amp;rsquo;d hoped for.)&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>I so hope whoever registered this was going for UDP in the name, rather than UD Project. &lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2" role="doc-endnote">
+&lt;p>I&amp;rsquo;m a massive fan of IP address related quirks. Facebook&amp;rsquo;s IPv6 address contains &lt;code>face:b00c&lt;/code> for example. A nice repeating &lt;code>76.76.21.21&lt;/code> is almost IPv4 art somehow. &lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3" role="doc-endnote">
+&lt;p>Secrets are more fun when they are kept secret. 🥳 &lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item><item><title>Tailscale, RFC1918, and DNS Rebinding Protection</title><link>https://caiustheory.com/tailscale-rfc1918-and-dns-rebinding-protection/</link><pubDate>Thu, 16 Jul 2020 21:00:00 +0100</pubDate><guid>https://caiustheory.com/tailscale-rfc1918-and-dns-rebinding-protection/</guid><description>&lt;p>&lt;strong>Edit:&lt;/strong> &lt;em>Originally this post was written to be a workaround for Tailscale routing all DNS traffic over its own link when you configured it to push out existing DNS Server IPs. This turned out to be a bad assumption on my part. Thanks to &lt;a href="https://twitter.com/apenwarr">apenwarr&lt;/a> for helping me understand that shouldn&amp;rsquo;t be the case, and encouraging me to debug it properly rather than making assumptions.&lt;/em>&lt;/p>
 &lt;p>&lt;em>Naturally it turned out to be a &lt;a href="https://www.urbandictionary.com/define.php?term=pebkac">PEBKAC&lt;/a>. I&amp;rsquo;d pushed out &lt;code>162.159.25.4&lt;/code> as the DNS Server IP which is a nameserver rather than a forwarder. This in turn meant people were getting empty answers back to DNS queries, which stopped once they quit tailscale. (Go figure, Tailscale removes the resolver from the network stack when it quits.) The post has been updated to remove that invalid assumption. 🤦🏻‍♂️&lt;/em>&lt;/p>
 &lt;p>Imagine we have a fleet of machines sat in a private network somewhere on a &lt;code>172.16.20.20/24&lt;/code> IP range, with entries pointing at them published on public DNS servers. Eg, &lt;code>dig +short workhorse.fake.tld&lt;/code> returns &lt;code>172.16.20.21&lt;/code>.&lt;/p>
 &lt;p>Initially this all works swimmingly, until someone comes along that is using a DNS forwarder that with DNS rebinding protection enabled. Daniel Miessler has a &lt;a href="https://danielmiessler.com/blog/dns-rebinding-explained/">wonderfully succinct explanation on his blog&lt;/a> about DNS Rebinding attacks, but to protect against it you stop your resolver returning answers to DNS queries from public servers which resolve to IP addresses within standard internal network ranges. (ie, &lt;a href="https://www.ietf.org/rfc/rfc1918.txt">rfc1918&lt;/a>.)&lt;/p>
