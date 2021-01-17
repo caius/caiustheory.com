@@ -21,3 +21,7 @@ diff:
 	make postprocess
 	diff -r -U0 production/ public/ | grep -v -e Binary\ files -e Only  || true
 	@git worktree remove production
+
+.PHONY: test
+test:
+	./bin/test
