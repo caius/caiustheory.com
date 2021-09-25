@@ -2,6 +2,8 @@
 title: Cheshire Triathlon 2014
 date: 2014-06-02 10:00:00
 tag:
+  - exercise
+  - retrospective
   - triathlon
 ---
 Successfully completed my second Sprint Triathlon of the season in Nantwich.

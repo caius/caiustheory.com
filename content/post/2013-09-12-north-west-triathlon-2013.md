@@ -2,6 +2,8 @@
 title: North West Triathlon 2013
 date: 2013-09-12 10:00:00
 tag:
+  - exercise
+  - retrospective
   - triathlon
 ---
 
