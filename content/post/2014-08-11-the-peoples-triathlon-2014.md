@@ -2,6 +2,8 @@
 title: The People's Triathlon 2014
 date: 2014-08-11 10:00:00
 tag:
+  - exercise
+  - retrospective
   - triathlon
 ---
 

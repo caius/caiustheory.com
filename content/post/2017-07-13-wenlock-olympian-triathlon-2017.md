@@ -3,6 +3,8 @@ title: Wenlock Olympian Triathlon 2017
 author: Caius Durling
 date: 2017-07-13T12:55:45Z
 tag:
+  - exercise
+  - retrospective
   - triathlon
 ---
 
