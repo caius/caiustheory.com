@@ -15,10 +15,8 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.92.0'
+      - name: Nix Quick Install
+        uses: nixbuild/nix-quick-install-action@v9
 
       - name: Build
-        run: hugo --gc --minify --cleanDestinationDir
+        run: nix develop . --command hugo --gc --minify --cleanDestinationDir
