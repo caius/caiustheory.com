@@ -13,10 +13,6 @@ disableKinds = ["section", "taxonomyTerm"]
 # We then override this for all formats except plaintext for pretty urls
 uglyurls = true
 
-PygmentsCodeFences = true
-PygmentsUseClasses = true
-pygmentsUseClassic=true
-
 enableGitInfo = true
 
 [params]
@@ -29,8 +25,12 @@ tag = "tag"
 [permalinks]
 post = "/:slug/"
 
-[mediaTypes]
+[markup]
+  [markup.highlight]
+    style = "github"
+    noClasses = false
 
+[mediaTypes]
   [mediaTypes."text/markdown"]
   suffixes = ["text"]
 
@@ -57,11 +57,6 @@ post = "/:slug/"
 [outputs]
 page = ["HTML", "PlainText"]
 home = ["HTML", "RSSFeed", "JSONFeed"]
-
-[blackfriday]
-smartypants = false
-smartDashes = false
-extensions = ["strikethrough", "footnotes", "autoHeaderIds"]
 
 [sitemap]
   changefreq = "monthly"
