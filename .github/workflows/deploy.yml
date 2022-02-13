@@ -21,7 +21,7 @@ jobs:
           hugo-version: '0.92.0'
 
       - name: Build
-        run: hugo --gc --minify --cleanDestinationDir
+        run: hugo --gc --minify
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
