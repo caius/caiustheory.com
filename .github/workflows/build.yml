@@ -1,22 +1,24 @@
 ---
-name: Build caiustheory
+name: "Build caiustheory"
 
 "on":
   push:
     branches-ignore:
-      - main
+      - "main"
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: "ubuntu-20.04"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: "actions/checkout@v2"
         with:
           fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
 
-      - name: Nix Quick Install
-        uses: nixbuild/nix-quick-install-action@v9
+      - uses: "nixbuild/nix-quick-install-action@v9"
+        with:
+          nix_version: 2.4
+          nix_conf: "experimental-features = nix-command flakes"
 
-      - name: Build
-        run: nix develop . --command hugo --gc --minify --cleanDestinationDir
+      - name: "Build"
+        run: "nix develop . --command hugo --gc --minify --cleanDestinationDir"
