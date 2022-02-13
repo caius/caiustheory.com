@@ -1,17 +1,17 @@
 ---
-name: Build caiustheory
+name: "Build caiustheory"
 
 "on":
   push:
     branches-ignore:
-      - main
+      - "main"
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: "ubuntu-20.04"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: "actions/checkout@v2"
         with:
           fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
 
@@ -21,4 +21,4 @@ jobs:
           hugo-version: '0.92.0'
 
       - name: Build
-        run: hugo --gc --minify --cleanDestinationDir
+        run: hugo --gc --minify
