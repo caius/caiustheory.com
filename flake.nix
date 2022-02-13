@@ -16,6 +16,7 @@
       devShell = pkgs.mkShell {
         buildInputs = [
           pkgs.hugo
+          pkgs.terraform
         ];
       };
     }
