@@ -18,6 +18,5 @@ tags:
 diff:
 	@git worktree add production gh-pages
 	make build
-	make postprocess
 	diff -r -U0 production/ public/ | grep -v -e Binary\ files -e Only  || true
 	@git worktree remove production
