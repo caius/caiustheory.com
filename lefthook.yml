@@ -1,0 +1,8 @@
+# https://github.com/evilmartians/lefthook/blob/master/docs/full_guide.md
+
+pre-commit:
+  parallel: true
+  commands:
+    "terraform fmt":
+      glob: "*.tf"
+      run: "terraform fmt {staged_files}"
