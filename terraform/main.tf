@@ -1,5 +1,5 @@
 resource "vercel_project" "caiustheory" {
-  name = "caiustheory"
+  name      = "caiustheory"
   framework = "hugo"
 
   # baseURL magic builds with SITE_URL if set, if not then VERCEL_URL
@@ -8,7 +8,7 @@ resource "vercel_project" "caiustheory" {
   environment = [
     # Preview builds drafts/expired/future posts
     {
-      key = "BUILD_ENV_ARGS"
+      key   = "BUILD_ENV_ARGS"
       value = "--buildDrafts --buildExpired --buildFuture"
       target = [
         "development",
@@ -17,7 +17,7 @@ resource "vercel_project" "caiustheory" {
     },
     # Production builds point at caiustheory.com
     {
-      key = "SITE_URL"
+      key   = "SITE_URL"
       value = "caiustheory.com"
       target = [
         "production"
