@@ -12,12 +12,12 @@ terraform {
 terraform {
   required_providers {
     vercel = {
-      source = "chronark/vercel"
-      version = "0.14.4"
+      source = "vercel/vercel"
+      version = "0.1.0"
     }
   }
 }
 
 provider "vercel" {
-  token = var.vercel_token
+  api_token = var.vercel_token
 }
