@@ -22,6 +22,16 @@ resource "vercel_project" "caiustheory" {
       target = [
         "production"
       ]
+    },
+    # Pin hugo version used for deployments
+    {
+      key   = "HUGO_VERSION"
+      value = "0.92.2"
+      target = [
+        "development",
+        "preview",
+        "production"
+      ]
     }
   ]
 
