@@ -2,8 +2,9 @@
   description = "caiustheory.com";
 
   inputs = {
-    # Contains hugo 0.92.1
-    nixpkgs.url = "github:NixOS/nixpkgs/04e546b93148b4c31026a14fb3edae876816105e";
+    # Check for new releases at https://github.com/NixOS/nixpkgs/commits/master/pkgs/applications/misc/hugo/default.nix
+    # 0.92.2
+    nixpkgs.url = "github:NixOS/nixpkgs/2186c8c5834826ef71099a85becd5465768dd843";
 
     flake-utils.url = "github:numtide/flake-utils";
   };
