@@ -1,11 +1,11 @@
 
     <footer>
       <p class="first">
-        <a href="{{ .Site.BaseURL }}/">Archive</a>
+        <a href="{{ "/" | absURL }}">Archive</a>
         &middot;
-        <a href="{{ .Site.BaseURL }}/feed.xml">Feed (Atom)</a>
+        <a href="{{ "/feed.xml" | absURL }}">Feed (Atom)</a>
         &middot;
-        <a href="/feed.json">Feed (JSON)</a>
+        <a href="{{ "/feed.json" | absURL }}">Feed (JSON)</a>
       </p>
       <p class="last">
         Inspired by <a href="https://code.google.com/archive/p/sp-theme/">sp</a>
