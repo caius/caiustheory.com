@@ -15,6 +15,23 @@ resource "vercel_project" "caiustheory" {
         "preview"
       ]
     },
+    # Preview builds are in development env
+    {
+      key   = "HUGO_ENV"
+      value = "development"
+      target = [
+        "development",
+        "preview"
+      ]
+    },
+    # Production builds are in production env
+    {
+      key   = "HUGO_ENV"
+      value = "production"
+      target = [
+        "production"
+      ]
+    },
     # Production builds point at caiustheory.com
     {
       key   = "SITE_URL"
