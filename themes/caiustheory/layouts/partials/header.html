@@ -7,8 +7,12 @@
 
     <link rel="canonical" href="{{ .Permalink }}">
 
-    <link rel="alternate" type="application/atom+xml" title="Caius Theory" href="{{ .Site.BaseURL }}/feed.xml" />
-    <link rel="alternate" type="application/json" title="Caius Theory" href="{{ .Site.BaseURL }}/feed.json" />
+{{ with .OutputFormats.Get "RSSFeed" -}}
+    {{ printf `    <link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end -}}
+{{ with .OutputFormats.Get "JSONFeed" -}}
+    {{ printf `    <link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end -}}
 
     {{ $styles := resources.Get "css/stylesheet.css" | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $styles.Permalink }}" type="text/css" media="screen" title="no title">
