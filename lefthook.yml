@@ -3,6 +3,6 @@
 pre-commit:
   parallel: true
   commands:
-    "terraform fmt":
+    terraform_fmt:
       glob: "*.tf"
-      run: "terraform fmt {staged_files}"
+      run: "for staged_file in {staged_files}; do terraform fmt -check -diff \"${staged_file}\"; done"
