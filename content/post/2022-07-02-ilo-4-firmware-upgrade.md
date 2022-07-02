@@ -27,5 +27,5 @@ Once you have that `bin` file on disk, go to your iLO web interface and login. N
 
 Wait for flashing to complete and the iLO to restart. If you've upgraded from < 2.78 then you'll get a new UI as part of the upgrade which looks better and works just as well as the old one. It also adds new functionality, like a HTML5 remote console rather than having to download a `.jar` file to take remote control of the machine.
 
-[^1]: out the box at least. The iLo can be configured to share eth0 with the host instead I believe.
+[^1]: Out the box at least. The iLo can be configured to share eth0 with the host instead I believe.
 [^2]: I think both Windows and Red Hat linux are supported for this.
