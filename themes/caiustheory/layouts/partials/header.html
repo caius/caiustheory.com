@@ -2,7 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    {{/* "Hide" all preview sites from GoogleBot */}}
+    {{- if hugo.IsProduction }}{{- else -}}
+    <meta name="googlebot" content="noindex">
+    {{ end -}}
     <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett, John Peel, Steve Jobs, Steve Irwin">
+    {{ hugo.Generator }}
+
     <title>{{ if .IsHome }}Latest{{ else }}{{ .Title }}{{ end }} - CaiusTheory</title>
 
     <link rel="canonical" href="{{ .Permalink }}">
