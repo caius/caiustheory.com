@@ -10,7 +10,7 @@ tag:
   - "twitter"
 ---
 
-An amusing idea from [`@xor@mastodon.social`][@xor] for Mastodon instance names (which form part of your username) has been taking three word phrases from Moby Dick and trying to find available domain names, so you could host your instance at `famous.whaling.house` for example.
+An amusing idea from [`@xor@mastodon.xyz`][@xor] for Mastodon instance names (which form part of your username) has been taking three word phrases from Moby Dick and trying to find available domain names, so you could host your instance at `famous.whaling.house` for example.
 
 Parker has since [blogged his idea and some examples][parker-post] which is well worth a read and explains it in more depth, as well as explaining how he did and linking to the script if you want a go.
 
@@ -36,7 +36,7 @@ A quick search on the Wikipedia page for [Internet Top Level Domains][wikipedia-
 
 [^1]: what3words has issues when it comes to critical safety scenarios, when it involves humans reading the phrases to each other. See <https://cybergibbons.com/security-2/why-what3words-is-not-suitable-for-safety-critical-applications/> for more information. And yet they appear to pay Emergency Services to use and advertise their proprietary service. 🤨
 
-[@xor]: https://mastodon.social/@xor
+[@xor]: https://mastodon.xyz/@xor
 [@knowtheory]: https://mastodon.social/@knowtheory
 [parker-post]: https://parkerhiggins.net/2022/11/public-sub-domains
 [define.rental.yoga]: https://what3words.com/define.rental.yoga
