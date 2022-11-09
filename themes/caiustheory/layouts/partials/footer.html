@@ -19,5 +19,11 @@
       <img src="https://caiustheory.goatcounter.com/count?p={{ .RelPermalink | safeURL }}">
     </noscript>
 {{ end }}
+
+{{ if .IsHome }}
+<div style="display: none;">
+  <a rel="me" href="https://ruby.social/@caius">Mastodon</a>
+</div>
+{{ end }}
   </body>
 </html>
