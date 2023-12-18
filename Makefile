@@ -21,4 +21,4 @@ dev: ## Run a local development server
 
 .PHONY: tags
 tags: # Display all tags
-	ruby -ryaml -e 'puts Dir["content/post/*.md"].flat_map { |path| YAML.load_file(path)["tag"] }.compact.sort.uniq'
+	ruby -ryaml -e 'puts Dir["content/post/*.md"].flat_map { |path| YAML.unsafe_load_file(path)["tag"] }.compact.sort.uniq'
