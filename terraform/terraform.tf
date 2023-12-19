@@ -7,13 +7,13 @@ terraform {
       name = "caiustheory"
     }
   }
-}
 
-terraform {
+  required_version = "1.5.2"
+
   required_providers {
     vercel = {
       source  = "vercel/vercel"
-      version = "~> 0.1"
+      version = "0.15.4"
     }
   }
 }
