@@ -6,13 +6,12 @@ resource "vercel_project" "caiustheory" {
   build_command = "hugo --gc --minify --baseURL https://$${SITE_URL:-$VERCEL_URL}/ $${BUILD_ENV_ARGS}"
 
   environment = [
-    # Preview builds drafts/expired/future posts
+    # Production builds are in production env
     {
-      key   = "BUILD_ENV_ARGS"
-      value = "--buildDrafts --buildExpired --buildFuture"
+      key   = "HUGO_ENV"
+      value = "production"
       target = [
-        "development",
-        "preview"
+        "production"
       ]
     },
     # Preview builds are in development env
@@ -24,12 +23,23 @@ resource "vercel_project" "caiustheory" {
         "preview"
       ]
     },
-    # Production builds are in production env
+    # Pin hugo version used for deployments
     {
-      key   = "HUGO_ENV"
-      value = "production"
+      key   = "HUGO_VERSION"
+      value = "0.92.2"
       target = [
+        "development",
+        "preview",
         "production"
+      ]
+    },
+    # Preview builds drafts/expired/future posts
+    {
+      key   = "BUILD_ENV_ARGS"
+      value = "--buildDrafts --buildExpired --buildFuture"
+      target = [
+        "development",
+        "preview"
       ]
     },
     # Production builds point at caiustheory.com
@@ -40,16 +50,6 @@ resource "vercel_project" "caiustheory" {
         "production"
       ]
     },
-    # Pin hugo version used for deployments
-    {
-      key   = "HUGO_VERSION"
-      value = "0.92.2"
-      target = [
-        "development",
-        "preview",
-        "production"
-      ]
-    }
   ]
 
   git_repository = {
