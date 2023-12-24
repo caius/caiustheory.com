@@ -1,8 +1,10 @@
 {
   "framework": "hugo",
   "buildCommand": "bin/vercel_build.sh",
-  "env": {
-    "HUGO_VERSION": "0.119.0"
+  "build": {
+    "env": {
+      "HUGO_VERSION": "0.119.0"
+    }
   },
   "public": false,
   "trailingSlash": true
