@@ -1,8 +1,5 @@
 # https://github.com/evilmartians/lefthook/blob/master/docs/full_guide.md
 
-pre-commit:
-  parallel: true
-  commands:
-    terraform_fmt:
-      glob: "*.tf"
-      run: "for staged_file in {staged_files}; do terraform fmt -check -diff \"${staged_file}\"; done"
+# pre-commit:
+#   parallel: true
+#   commands:
