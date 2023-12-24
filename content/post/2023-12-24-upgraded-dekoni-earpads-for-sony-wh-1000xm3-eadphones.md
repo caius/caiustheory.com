@@ -13,7 +13,7 @@ Back in 2019 I picked up a pair of [Sony WH-1000XM3 Headphones][xm3] for using i
 
 [xm3]:https://www.sony.co.uk/electronics/headband-headphones/wh-1000xm3
 
-The original earpads had a shiny synthetic surface, after some research I happened across Dekoni's Synthetic Suede Earpads as a suggested upgrade for the XM3's. Discovered [Electromod][] are a UK business that imports them for sale here, and [ordered them][product]. Arrived promptly, and an unrelated issue around payment was easily resolved by customer services. Would buy from them without any worries.
+The original earpads had a shiny synthetic surface, after some research I happened across Dekoni's Synthetic Suede Earpads as a suggested upgrade for the XM3's. Discovered [Electromod][] are a UK business that imports them for sale here, and [ordered them][product]. Arrived promptly, and an unrelated issue around payment was easily resolved by customer services. Would buy from them again without any worries.
 
 [Electromod]: https://www.electromod.co.uk/
 [product]: https://www.electromod.co.uk/dekoni-choice-synthetic-earpads-for-sony-wh1000xm3-headphones
