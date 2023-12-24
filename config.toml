@@ -6,7 +6,7 @@ theme = "caiustheory"
 languageCode = "en-gb"
 copyright = "This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License"
 
-disableKinds = ["section", "taxonomy"]
+disableKinds = ["section", "term"]
 
 # Turn on Ugly URLs for everything (/slug.format)
 # We then override this for all formats except plaintext for pretty urls
