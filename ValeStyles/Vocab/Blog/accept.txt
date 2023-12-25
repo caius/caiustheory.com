@@ -1,6 +1,0 @@
-asdf
-OpenSSL
-homebrew
-runtimes
-envariable
-Moby Dick
