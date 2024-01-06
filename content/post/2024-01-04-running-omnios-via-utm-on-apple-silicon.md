@@ -2,7 +2,6 @@
 title: "Running OmniOS via UTM on Apple Silicon"
 date: 2024-01-05T01:00:00Z
 author: "Caius Durling"
-draft: true
 tag:
     - "apple"
     - "cpu"
