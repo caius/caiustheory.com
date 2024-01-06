@@ -19,6 +19,10 @@ build: clean # Build the site to disk
 dev: ## Run a local development server
 	hugo server --buildDrafts --buildFuture --disableFastRender
 
+.PHONY: strip_exif
+strip_exif: ## Strip EXIF data from images in static/
+	find static/ -type f -name '*.{jpg,png}' -exec exiftool -all= --icc_profile:all {} \;
+
 .PHONY: tags
 tags: # Display all tags
 	ruby -ryaml -e 'puts Dir["content/post/*.md"].flat_map { |path| YAML.unsafe_load_file(path)["tag"] }.compact.sort.uniq'
