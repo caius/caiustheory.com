@@ -1,23 +1,24 @@
-
-    <footer>
-      <p class="first">
-        <a href="{{ "/" | absURL }}">Archive</a>
-        &middot;
-        <a href="{{ "/feed.xml" | absURL }}">Feed (Atom)</a>
-        &middot;
-        <a href="{{ "/feed.json" | absURL }}">Feed (JSON)</a>
-      </p>
-      <p class="last">
-        Inspired by <a href="https://code.google.com/archive/p/sp-theme/">sp</a>
-      </p>
-      <span class="clear"></span>
-    </footer>
+<footer>
+  <p class="first">
+    <a href="{{ " /" | absURL }}">Archive</a>
+    &middot;
+    <a href="{{ " /search" | absURL }}">Search</a>
+    &middot;
+    <a href="{{ " /feed.xml" | absURL }}">Feed (Atom)</a>
+    &middot;
+    <a href="{{ " /feed.json" | absURL }}">Feed (JSON)</a>
+  </p>
+  <p class="last">
+    Inspired by <a href="https://code.google.com/archive/p/sp-theme/">sp</a>
+  </p>
+  <span class="clear"></span>
+</footer>
 
 {{ if hugo.IsProduction }}
-    <script data-goatcounter="https://caiustheory.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-    <noscript>
-      <img src="https://caiustheory.goatcounter.com/count?p={{ .RelPermalink | safeURL }}">
-    </noscript>
+<script data-goatcounter="https://caiustheory.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<noscript>
+  <img src="https://caiustheory.goatcounter.com/count?p={{ .RelPermalink | safeURL }}">
+</noscript>
 {{ end }}
 
 {{ if .IsHome }}
@@ -25,5 +26,6 @@
   <a rel="me" href="https://ruby.social/@caius">Mastodon</a>
 </div>
 {{ end }}
-  </body>
+</body>
+
 </html>
