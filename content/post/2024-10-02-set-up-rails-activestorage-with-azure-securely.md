@@ -61,9 +61,10 @@ We can follow the Rails documentation for [setting up ActiveStorage][rails activ
 
 [rails activestorage setup]: https://guides.rubyonrails.org/active_storage_overview.html#setup
 
-Follow the rails docs [for configuring `config/storage.yml` with Azure][rails azure config], and pulling `azure-storage-blob` into your app. I suggest storing the key in Rails credentials (or however you inject secrets into your rails app), and creating a new block in `storage.yml` for Azure storage. Using credentials per-environment makes using a different storage account for Staging & Production easy.
+Follow the rails docs [for configuring `config/storage.yml` with Azure][rails azure config], and pulling `azure-storage-blob` into your app. (In Rails 8.1 this will be `azure-blob` instead, see [test double's post on the subject for more information][azure-blob-post]) I suggest storing the key in Rails credentials (or however you inject secrets into your rails app), and creating a new block in `storage.yml` for Azure storage. Using credentials per-environment makes using a different storage account for Staging & Production easy.
 
 [rails azure config]: https://guides.rubyonrails.org/active_storage_overview.html#microsoft-azure-storage-service
+[azure-blob-post]: https://testdouble.com/insights/azure-blob-a-new-ruby-gem-for-azure-blob-storage
 
 ```yaml
 azure_storage:
