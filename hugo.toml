@@ -43,7 +43,7 @@ page = ["HTML", "PlainText"]
 home = ["HTML", "RSSFeed", "JSONFeed"]
 
 [taxonomies]
-tag = "tags"
+tag = "tag"
 
 [markup.highlight]
 style = "github"
