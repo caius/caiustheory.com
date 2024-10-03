@@ -1,0 +1,54 @@
+title = "Caius Theory"
+theme = "caiustheory-new"
+baseURL = 'https://caiustheory.com/'
+
+languageCode = 'en-gb'
+copyright = "This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License"
+
+[author]
+name = "Caius Durling"
+
+disableKinds = ["section", "term"]
+enableGitInfo = true
+
+# Enable uglyURLs (/filename.ext) for all kinds, then disable below for some
+uglyURLs = true
+
+[permalinks]
+post = "/:slug/"
+
+[mediaTypes."text/markdown"]
+suffixes = ["text"]
+
+[outputFormats.HTML]
+noUgly = true
+
+[outputFormats.PlainText]
+mediaType = "text/markdown"
+baseName = "index"
+isPlainText = true
+noUgly = false
+rel = "alternate"
+
+[outputFormats.RSSFeed]
+mediaType = "application/rss+xml"
+baseName = "feed"
+
+[outputFormats.JSONFeed]
+mediaType = "application/json"
+baseName = "feed"
+
+[outputs]
+page = ["HTML", "PlainText"]
+home = ["HTML", "RSSFeed", "JSONFeed"]
+
+[taxonomies]
+tag = "tags"
+
+[markup.highlight]
+style = "github"
+noClasses = false
+
+[sitemap]
+changefreq = "monthly"
+priority = 0.5
