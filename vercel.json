@@ -3,7 +3,7 @@
   "buildCommand": "bin/vercel_build.sh",
   "build": {
     "env": {
-      "HUGO_VERSION": "0.119.0"
+      "HUGO_VERSION": "0.135.0"
     }
   },
   "public": false,
