@@ -1,9 +1,7 @@
 ---
-title: "{{ replace .TranslationBaseName "-" " " | title }}"
-date: {{ .Date }}
-author: Caius Durling
+title: "{{ replace .File.ContentBaseName "-" " " | title }}"
+date: "{{ .Date }}"
+author: "Caius Durling"
 draft: true
-tag:
-  - 
+tags: []
 ---
-
