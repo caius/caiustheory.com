@@ -1,2 +1,4 @@
 # Also update hugo version in vercel.json
 hugo 0.135.0
+# Make targets depend on ruby
+ruby 3.3.5

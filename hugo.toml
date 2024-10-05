@@ -1,5 +1,5 @@
 title = "Caius Theory"
-theme = "caiustheory-new"
+theme = "caiustheory"
 baseURL = 'https://caiustheory.com/'
 
 languageCode = 'en-gb'
