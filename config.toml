@@ -16,6 +16,7 @@ enableGitInfo = true
 
 [params]
   description = "Now with even more cowbell…"
+  author = "Caius Durling"
 
 [taxonomies]
   tag = "tag"
@@ -60,6 +61,3 @@ enableGitInfo = true
 [sitemap]
   changefreq = "monthly"
   priority = 0.5
-
-[author]
-  name = "Caius Durling"
