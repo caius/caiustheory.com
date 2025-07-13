@@ -15,14 +15,14 @@ uglyurls = true
 enableGitInfo = true
 
 [params]
-description = "Now with even more cowbell…"
+  description = "Now with even more cowbell…"
 
 [taxonomies]
-tag = "tag"
+  tag = "tag"
 
 # We don't want no stinking dates in our permalinks
 [permalinks]
-post = "/:slug/"
+  post = "/:slug/"
 
 [markup]
   [markup.highlight]
@@ -31,31 +31,31 @@ post = "/:slug/"
 
 [mediaTypes]
   [mediaTypes."text/markdown"]
-  suffixes = ["text"]
+    suffixes = ["text", "md"]
 
 [outputFormats]
   [outputFormats.HTML]
-  noUgly = true
+    noUgly = true
 
   # Let the magic happen for /:slug.text
   [outputFormats.PlainText]
-  mediaType = "text/markdown"
-  baseName = "index"
-  isPlainText = true
-  noUgly = false
-  rel = "alternate"
+    mediaType = "text/markdown"
+    baseName = "index"
+    isPlainText = true
+    noUgly = false
+    rel = "alternate"
 
   [outputFormats.RSSFeed]
-  mediaType = "application/rss"
-  baseName = "feed"
+    mediaType = "application/rss"
+    baseName = "feed"
 
   [outputFormats.JSONFeed]
-  mediaType = "application/json"
-  baseName = "feed"
+    mediaType = "application/json"
+    baseName = "feed"
 
 [outputs]
-page = ["HTML", "PlainText"]
-home = ["HTML", "RSSFeed", "JSONFeed"]
+  page = ["HTML", "PlainText"]
+  home = ["HTML", "RSSFeed", "JSONFeed"]
 
 [sitemap]
   changefreq = "monthly"
