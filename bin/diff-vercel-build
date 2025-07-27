@@ -1,0 +1,56 @@
+#!/bin/bash
+
+[[ "$TRACE" ]] && set -o xtrace
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o noclobber
+
+# Check if first argument is provided
+if [ -z "${1:-}" ]; then
+    echo "Error: First argument is preview site hostname"
+    exit 1
+fi
+readonly preview_url="https://${1}"
+readonly live_url="https://caiustheory.com"
+
+if [ -z "${2:-}" ]; then
+  echo "Error: Second argument is path to retrieve"
+  exit 1
+fi
+readonly path="${2}"
+
+function curlURL() {
+  # "https://foo.com/"
+  local url="${1}"
+
+  curl --silent --fail-with-body --show-error --location --max-redirs 0 "${url}" |
+    ruby -pe '$_.gsub!("'"${preview_url}"'", "https://__SITE_URL__"); $_.gsub!("'"${live_url}"'", "https://__SITE_URL__")'
+}
+
+case "${path}" in
+  "/feed.xml")
+    # XML differences
+    diff -wU0 \
+      <(curlURL "${live_url}${path}" | xmllint --format -) \
+      <(curlURL "${preview_url}${path}" | xmllint --format -)
+    ;;
+  "/feed.json")
+    # JSON differences
+    diff -wU0 \
+      <(curlURL "${live_url}${path}" | jq .) \
+      <(curlURL "${preview_url}${path}" | jq .)
+    ;;
+  *.text)
+  # Plaintext differences
+  diff -wU0 \
+    <(curlURL "${live_url}${path}") \
+    <(curlURL "${preview_url}${path}")
+    ;;
+  *)
+    # HTML differences
+    diff -wU0 \
+      <(curlURL "${live_url}${path}" | ruby -pe '$_.gsub!("><", ">\n<")') \
+      <(curlURL "${preview_url}${path}" | ruby -pe '$_.gsub!("><", ">\n<")')
+    ;;
+esac
