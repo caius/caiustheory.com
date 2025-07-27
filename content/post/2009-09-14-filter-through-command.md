@@ -2,6 +2,7 @@
 title: "Filter through command"
 author: "Caius Durling"
 date: 2009-09-14 22:39:37 +0000
+lastmod: "2009-09-15T01:12:00+0000"
 tag:
   - "geek"
   - "ruby"

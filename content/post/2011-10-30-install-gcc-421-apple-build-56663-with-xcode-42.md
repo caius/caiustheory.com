@@ -3,6 +3,7 @@ title: "Install GCC-4.2.1 (Apple build 5666.3) with Xcode 4.2"
 slug: install-gcc-421-apple-build-56663-with-xcode-42
 author: "Caius Durling"
 date: 2011-10-30 17:36:48 +0000
+lastmod: "2016-07-03T12:00:00+0100"
 tag:
   - "geek"
   - "tech"

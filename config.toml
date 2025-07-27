@@ -61,3 +61,7 @@ enableGitInfo = true
 [sitemap]
   changefreq = "monthly"
   priority = 0.5
+
+[frontmatter]
+  # Removes :git from the list
+  lastmod = ["lastmod", "modified", "date", "publishdate", "pubdate", "published"]

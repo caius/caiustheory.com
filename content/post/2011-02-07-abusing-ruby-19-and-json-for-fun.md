@@ -3,6 +3,7 @@ title: "Abusing Ruby 1.9 & JSON for fun"
 slug: abusing-ruby-19-and-json-for-fun
 author: "Caius Durling"
 date: 2011-02-07 19:16:58 +0000
+lastmod: "2011-02-07T20:00:01+0000"
 tag:
   - "funny"
   - "geek"
