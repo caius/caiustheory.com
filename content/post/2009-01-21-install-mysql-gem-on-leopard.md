@@ -2,6 +2,7 @@
 title: "Install Mysql Gem on Leopard"
 author: "Caius Durling"
 date: 2009-01-21 17:09:41 +0000
+lastmod: "2009-10-19T14:15:16+0100"
 tag:
   - "geek"
   - "ruby"

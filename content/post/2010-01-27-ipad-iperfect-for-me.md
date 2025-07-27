@@ -2,6 +2,7 @@
 title: "iPad? iPerfect (…for me)"
 author: "Caius Durling"
 date: 2010-01-27 20:56:50 +0000
+lastmod: "2010-01-18T11:12:13+0000"
 tag:
   - "quote"
   - "geek"
@@ -16,7 +17,7 @@ tag:
 
 *Google Groups is a pile of fail and hasn't posted my message in reply to a thread on [Geekup](http://geekup.org/) so I'm blogging it instead.*
 
-> On 27 Jan 2010, at 19:53, Steve Richardson wrote:  
+> On 27 Jan 2010, at 19:53, Steve Richardson wrote:
 > Thoughts?
 
 I've been searching for a device to fit between my Macbook Pro and iPhone. I work all day on the MBP, and moving it to then watch video in another room or read twitter/news/mail whilst watching telly, etc is a pain.

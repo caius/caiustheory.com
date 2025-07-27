@@ -2,6 +2,7 @@
 title: "App Store Hidden Preferences"
 author: "Caius Durling"
 date: 2011-01-06 19:45:49 +0000
+lastmod: "2011-01-06T23:00:00+0000"
 tag:
   - "geek"
   - "fix"

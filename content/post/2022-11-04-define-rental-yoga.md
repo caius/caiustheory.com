@@ -2,6 +2,7 @@
 title: "@fediverse@twitter via ///"
 slug: "define.rental.yoga"
 date: "2022-11-04T22:47:00Z"
+lastmod: "2022-11-05T12:30:00Z"
 author: "Caius Durling"
 tag:
   - "fediverse"

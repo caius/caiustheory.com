@@ -1,6 +1,7 @@
 ---
 title: "Tailscale, RFC1918, and DNS Rebinding Protection"
-date: 2020-07-16T21:00:00+01:00
+date: "2020-07-16T21:00:00+0100"
+lastmod: "2020-07-18T18:49:00+0100"
 author: Caius Durling
 tag:
   - Tailscale
