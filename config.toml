@@ -26,6 +26,8 @@ enableGitInfo = true
   post = "/:slug/"
 
 [markup]
+  [markup.goldmark]
+    renderer.unsafe = true
   [markup.highlight]
     style = "github"
     noClasses = false
