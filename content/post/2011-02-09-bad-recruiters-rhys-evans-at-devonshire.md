@@ -2,7 +2,8 @@
 title: "Bad Recruiters - Rhys Evans at Devonshire"
 slug: bad-recruiters-rhys-evans-at-devonshire
 author: "Caius Durling"
-date: 2011-02-09 14:03:49 +0000
+date: "2011-02-09T14:03:49+0000"
+lastmod: "2022-02-11T14:02:14+0000"
 tag:
   - "quote"
   - "tech"
@@ -26,11 +27,11 @@ I still stand by my initial reply to him, and all other recruiters who don't und
 On 02/09/11 5:30 AM, Rhys Evans wrote:
 
 > Hi Caius,
-> 
+>
 > Good afternoon, I hope all is well.
-> 
+>
 > I've noticed we are connected to a number of the same people within the Rails space on LinkedIn. I've tried you on 07960 268100 to no avail so I'd like to add you to my network and make contact.
-> 
+>
 
 Hi Rhys,
 
@@ -42,6 +43,5 @@ It would also appear you've just blanket-spammed me and a few people in my peer 
 
 So no, I don't think I do want to accept your invitation to connect. And please never phone, email or contact me via any other means. I'm happily employed and if I _ever_ need the services of a recruiter I'll find someone who actually possesses an ounce of politeness about approaching (potential) candidates.
 
-Thanks,  
+Thanks,
 Caius
-

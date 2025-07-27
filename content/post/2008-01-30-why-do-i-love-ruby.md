@@ -2,6 +2,7 @@
 title: "Why do I love Ruby?"
 author: "Caius Durling"
 date: 2008-01-30 14:15:24 +0000
+lastmod: "2008-02-01T14:15:24+0000"
 tag:
   - "geek"
   - "tech"

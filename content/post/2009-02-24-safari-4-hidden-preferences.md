@@ -2,6 +2,7 @@
 title: "Safari 4 Hidden Preferences"
 author: "Caius Durling"
 date: 2009-02-24 16:11:05 +0000
+lastmod: "2010-11-18T14:14:14+0000"
 tag:
   - "geek"
   - "programming"
@@ -14,7 +15,7 @@ tag:
 * * * *
 
 Having a quick poke through the new Safari binary yields the following strings:
-    
+
     $ strings /Applications/Safari.app/Contents/MacOS/Safari | grep DebugSafari4
     DebugSafari4TabBarIsOnTop
     DebugSafari4IncludeToolbarRedesign

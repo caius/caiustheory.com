@@ -1,6 +1,7 @@
 ---
 title: "Set Up Rails Activestorage With Azure Securely"
-date: 2024-10-02T22:28:49+0100
+date: "2024-10-02T22:28:49+0100"
+lastmod: "2024-10-02T22:44:15+0100"
 author: Caius Durling
 tag:
   - "Azure"
