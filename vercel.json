@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "hugo",
   "buildCommand": "bin/vercel_build.sh",
   "build": {
