@@ -2,6 +2,7 @@
 title: "Validating Data with Regular Expressions in Ruby"
 author: "Caius Durling"
 date: 2009-04-11 12:41:48 +0000
+lastmod: "2009-04-11T17:15:15+0000"
 tag:
   - "geek"
   - "tech"

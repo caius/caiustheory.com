@@ -1,0 +1,4 @@
+[formatting]
+  column_width = 115
+  indent_tables = true
+  indent_entries = true

@@ -2,6 +2,7 @@
 title: "Another Concise Code Example"
 author: "Caius Durling"
 date: 2008-04-26 15:54:09 +0000
+lastmod: "2008-04-26T18:30:00+0000"
 tag:
   - "geek"
   - "ruby"
@@ -14,7 +15,7 @@ This is just another example showing how I refactor code down to its bare minimu
 ```ruby
 class Page
   attr_accessor :parent_id
-        
+
   def old_parent
     if self.parent?
       Page.find( self.parent_id )
@@ -27,7 +28,7 @@ class Page
     return Page.find( self.parent_id ) if self.parent?
     false
   end
-    
+
 end
 ```
 
